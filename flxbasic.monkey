@@ -1,9 +1,12 @@
+#rem
+	header:This module contains the FlxBasic class.
+#end
 Import flxcamera
 Import flxg
 
 #Rem
 summary:This is a useful "generic" Flixel object.
-Both [b]FlxObject[/b] and [b]FlxGroup[/b] extend this class, 
+Both [a flxobject.monkey.html]FlxObject[/a] and [b]FlxGroup[/b] extend this class, 
 as do the plugins.  Has no size, position or graphical data.
 #End
 Class FlxBasic
@@ -20,17 +23,17 @@ Public
 	Field ID:Int
 	
 	#Rem
-	summary:Controls whether update() and draw() are automatically called by FlxState/FlxGroup.
+	summary:Controls whether Update() and Draw() are automatically called by FlxState/FlxGroup.
 	#End
 	Field exists:Bool
 	
 	#Rem
-	summary:Controls whether update() is automatically called by FlxState/FlxGroup.
+	summary:Controls whether Update() is automatically called by FlxState/FlxGroup.
 	#End
 	Field active:Bool
 	
 	#Rem
-	summary:Controls whether draw() is automatically called by FlxState/FlxGroup.
+	summary:Controls whether Draw() is automatically called by FlxState/FlxGroup.
 	#End
 	Field visible:Bool
 	
@@ -41,7 +44,7 @@ Public
 	Field alive:Bool
 	
 	#Rem
-	summary:An array of camera objects that this object will use during draw().
+	summary:An array of camera objects that this object will use during Draw().
 	This value will initialize itself during the first draw to automatically
 	point at the main camera list out in [b]FlxG[/b] unless you already set it.
 	You can also change it afterward too, very flexible!
@@ -67,15 +70,15 @@ Public
 	
 	#Rem
 	summary:Override this function to null out variables or manually call destroy() on class members if necessary.
-	Don't forget to call [b]super.destroy()[/b]!
+	Don't forget to call [b]super.Destroy()[/b]!
 	#End
-	Method destroy:Void()		
+	Method Destroy:Void()		
 	End Method
 	
 	#Rem
-	summary:Pre-update is called right before [b]update()[/b] on each object in the game loop.
+	summary:Pre-update is called right before [b]Update()[/b] on each object in the game loop.
 	#End
-	Method preUpdate:Void()
+	Method PreUpdate:Void()
 		_ACTIVECOUNT+=1
 	End Method
 	
@@ -83,36 +86,36 @@ Public
 	summary:Override this function to update your class's position and appearance.
 	This is where most of your game rules and behavioral code will go.
 	#End
-	Method update:Void()
+	Method Update:Void()
 	End Method
 	
 	#Rem
-	summary:Post-update is called right after update() on each object in the game loop.
+	summary:Post-update is called right after Update() on each object in the game loop.
 	#End
-	Method postUpdate:Void()
+	Method PostUpdate:Void()
 	End Method
 	
 	#Rem
 	summary:Override this function to control how the object is drawn.
-	Overriding [b]draw()[/b] is rarely necessary, but can be very useful.
+	Overriding [b]Draw()[/b] is rarely necessary, but can be very useful.
 	#End
-	Method draw:Void()		
+	Method Draw:Void()		
 		If (cameras = null) cameras = FlxG.cameras
 		
 		For Local camera:FlxCamera = EachIn cameras
 			_VISIBLECOUNT+=1			
-			If (FlxG.visualDebug And Not ignoreDrawDebug) drawDebug(camera)				
+			If (FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(camera)				
 		Next
 	End Method
 	
 	#Rem
 	summary:Override this function to draw custom "debug mode" graphics to the specified camera while the debugger's visual mode is toggled on.
-	[b]Params:[/b]
+	Params:
 	[list]
-	[b]camera:[/b] Which camera to draw the debug visuals to.
+	[*]camera: Which camera to draw the debug visuals to.
 	[/list]
 	#End
-	Method drawDebug:Void(camera:FlxCamera = null)
+	Method DrawDebug:Void(camera:FlxCamera = null)
 	End Method
 	
 	#Rem
@@ -122,16 +125,16 @@ Public
 	like to animate an effect or whatever, you should override this,
 	setting only alive to false, and leaving exists true.
 	#End
-	Method kill:Void()
+	Method Kill:Void()
 		alive = False
 		exists = False
 	End Method
 	
 	#Rem
 	summary:Handy function for bringing game objects "back to life". Just sets alive and exists back to true.
-	In practice, this function is most often called by [b]FlxObject.reset()[/b].
+	In practice, this function is most often called by [b]FlxObject.Reset()[/b].
 	#End
-	Method revive:Void()
+	Method Revive:Void()
 		alive = True
 		exists = True
 	End Method
@@ -139,14 +142,14 @@ Public
 	#Rem
 	summary:Convert object to readable string name.  Useful for debugging, save games, etc.
 	#End
-	Method toString:String()
+	Method ToString:String()
 		Return "FlxBasic"
 	End Method
 
 End Class
 
 #Rem 
-Footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
+footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
 [quote]Copyright: Flixel - 2009-2011 Adam 'Atomic' Saltsman
 Copyright: Monkey port - 2011 Arthur 'devolonter' Bikmullin
 
