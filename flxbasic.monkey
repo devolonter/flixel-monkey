@@ -69,7 +69,7 @@ Public
 	End Method
 	
 	#Rem
-	summary:Override this function to null out variables or manually call destroy() on class members if necessary.
+	summary:Override this function to null out variables or manually call Destroy() on class members if necessary.
 	Don't forget to call [b]super.Destroy()[/b]!
 	#End
 	Method Destroy:Void()		

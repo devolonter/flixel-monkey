@@ -1,31 +1,61 @@
 #rem
-	header:This module contains the FlxPoint class.
+	header:This module contains the FlxRect class.
 	[b]IMPORTANT![/b] When porting the library were excluded following original Flixel library FlxPoint class methods:
 	[code]copyFromFlash, copyToFlash[/code]
 #end
 
 #Rem
-summary:Stores a 2D floating point coordinate.
+summary:Stores a rectangle.
 #End
-Class FlxPoint
-
+Class FlxRect
+	
 	'summary:The X-coordinate of the point in space.
 	Field x:Float
 	
 	'summary:The Y-coordinate of the point in space.
 	Field y:Float
 	
+	'summary:Width of the rectangle..
+	Field width:Float
+	
+	'summary:Height of the rectangle.
+	Field height:Float
+	
 	#Rem
 	summary:Instantiate a new point object.
 	Params:
 	[list]
 	[*]x: The X-coordinate of the point in space.
 	[*]y: The Y-coordinate of the point in space.
+	[*]width: Desired width of the rectangle.
+	[*]height: Desired height of the rectangle.
 	[/list]
 	#End
-	Method New(x:Float=0, y:Float=0)
+	Method New(x:Float=0, y:Float=0, width:Float=0, height:Float=0)
 		Self.x = x
-		Self.y = y	
+		Self.y = y
+		Self.width = width
+		Self.height = height	
+	End Method
+	
+	'summary:The X-coordinate of the left side of the rectangle.
+	Method Left:Float()
+		Return x
+	End Method
+	
+	'summary:The X-coordinate of the right side of the rectangle.
+	Method Right:Float()
+		Return x + width
+	End Method
+	
+	'summary:The Y-coordinate of the top side of the rectangle.
+	Method Top:Float()
+		Return y
+	End Method
+	
+	'summary:The Y-coordinate of the bottom side of the rectangle.
+	Method Bottom:Float()
+		Return y + height
 	End Method
 	
 	#Rem
@@ -34,38 +64,46 @@ Class FlxPoint
 	[list]
 	[*]x: The X-coordinate of the point in space.
 	[*]y: The Y-coordinate of the point in space.
+	[*]width: Desired width of the rectangle.
+	[*]height: Desired height of the rectangle.
 	[/list]
 	#End
-	Function Make:FlxPoint(x:Float=0, y:Float=0)
-		Return New FlxPoint(x, y)
+	Function Make:FlxRect(x:Float=0, y:Float=0, width:Float=0, height:Float=0)
+		Return New FlxRect(x ,y, width, height)
 	End Function
 	
 	#Rem
-	summary:Helper function, just copies the values from the specified point.
+	summary:Helper function, just copies the values from the specified rectangle.
 	Return a reference to itself.
 	[list]
-	[*]point: Any [a flxpoint.monkey.html]FlxPoint[/a]
+	[*]rect: Any [a flxrect.monkey.html]FlxRect[/a]
 	[/list] 
 	#End
-	Method CopyFrom:FlxPoint(point:FlxPoint)
-		x = point.x
-		y = point.y
+	Method CopyFrom:FlxRect(rect:FlxRect)
+		x = rect.x
+		y = rect.y
+		width = rect.width
+		height = rect.height
 		return Self
 	End Method
 	
 	#Rem
-	summary:Helper function, just copies the values from this point to the specified point.
-	Return A reference to the altered point parameter.
+	summary:Helper function, just copies the values from this rectangle to the specified rectangle.
+	Return a reference to the altered rectangle parameter.
 	[list]
-	[*]point: Any [a flxpoint.monkey.html]FlxPoint[/a]
+	[*]point: Any [a flxrect.monkey.html]FlxRect[/a]
 	[/list] 
 	#End
-	Method CopyTo:FlxPoint(point:FlxPoint)
-		point.x = x
-		point.y = y
-		return point
+	Method CopyTo:FlxRect(rect:FlxRect)
+		rect.x = x
+		rect.y = y
+		rect.width = width
+		rect.height = height
+		return rect
 	End Method
 	
+		
+
 End Class
 
 #Rem 
