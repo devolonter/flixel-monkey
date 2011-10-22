@@ -39,22 +39,22 @@ Class FlxRect
 	End Method
 	
 	'summary:The X-coordinate of the left side of the rectangle.
-	Method Left:Float()
+	Method Left:Float() Property
 		Return x
 	End Method
 	
 	'summary:The X-coordinate of the right side of the rectangle.
-	Method Right:Float()
+	Method Right:Float() Property
 		Return x + width
 	End Method
 	
 	'summary:The Y-coordinate of the top side of the rectangle.
-	Method Top:Float()
+	Method Top:Float() Property
 		Return y
 	End Method
 	
 	'summary:The Y-coordinate of the bottom side of the rectangle.
-	Method Bottom:Float()
+	Method Bottom:Float() Property
 		Return y + height
 	End Method
 	
