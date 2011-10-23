@@ -2,8 +2,10 @@
 
 Import unittest
 
+Import flxbasic
 Import flxpoint
 Import flxrect
+Import flxgroup
 
 '#Region FlxPoint tests bundle
 
@@ -216,6 +218,68 @@ End Class
 
 '#End Region
 
+'#Region FlxGroup tests bundle
+
+Class FlxGroupUnitTestBase Implements IUnitTest Abstract
+
+	Field countObjects:Int = 10
+	Field objects:FlxBasic[]
+	Field group:FlxGroup
+	
+	Method New()
+		objects = new FlxBasic[countObjects]
+		
+		For Local i:Int = 0 To countObjects - 1
+			objects[i] = New FlxBasic()
+			objects[i].ID = i
+		Next
+	End Method
+	
+	Method Run:Bool() Abstract
+	
+	Method GetName:String() Abstract	
+
+End Class
+
+Class FlxGroupAddUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		Local i:Int = 0
+		For Local basic:FlxBasic = EachIn group.Members
+			UnitTest.AssertEqualsI(basic.ID, objects[i].ID)
+			i+=1
+		Next
+		
+		If (Not UnitTest.AssertEqualsI(countObjects, group.Members.Length)) Return False		
+		
+		Local maxSize:Int = 5	
+		group = New FlxGroup(maxSize)		
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next		
+		
+		i = 0
+		For Local basic:FlxBasic = EachIn group.Members			
+			If (basic <> Null) UnitTest.AssertEqualsI(basic.ID, objects[i].ID)
+			i+=1
+		Next
+		
+		Return UnitTest.AssertEqualsI(i, maxSize)
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Add"
+	End Method
+	
+End Class
+
+'#End Region
+
 Class FlixelUnitTest Extends UnitTestApp
 
 	Method Setup:Void()
@@ -238,6 +302,12 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxRectBottomUnitTest())
 		AddTest(New FlxRectCopyToUnitTest())
 		AddTest(New FlxRectCopyFromUnitTest())
+		
+		'#End Region
+		
+		'#Region add FlxGroup tests bundle
+		
+		AddTest(New FlxGroupAddUnitTest())
 		
 		'#End Region
 		

@@ -8,28 +8,35 @@ Class FlxGroup Extends FlxBasic
 
 	Const ASCENDING:Bool = True
 	
-	Const DESCENDING:Bool = False
-	
-	Field length:Int
+	Const DESCENDING:Bool = False	
 	
 Private
-	Field _members:FlxBasicList
+	Field _members:FlxBasicStack
 	
 	Field _maxSize:Int
 	
 	Field _marker:Int
 	
+	Field _isFragmented:Bool
+	
+	Field _length:Int
+	
 Public
 	Method New(maxSize:Int = 0)
 		Super.New()
-		_members = New FlxBasicList()
-		length = 0
+		_members = New FlxBasicStack()
 		_maxSize = maxSize
 		_marker = 0
+		_isFragmented = False
+		_length = 0
 	End Method
 	
-	Method Members:List<FlxBasic>() Property
-		Return _members	
+	Method Members:Stack<FlxBasic>() Property
+		Return _members
+	End Method
+	
+	Method Length:Int() Property
+		Return _members.Length	
 	End Method
 	
 	Method Destroy:Void()
@@ -67,35 +74,38 @@ Public
 		_maxSize = size		
 		
 		If (_marker >= _maxSize) _marker = 0			
-		If (_maxSize = 0 Or _members = Null Or _maxSize >= _members.Count()) Return
+		If (_maxSize = 0 Or _members = Null Or _maxSize >= members.Length) Return		
 		
-		Local basic:FlxBasic	
-		Local l:Int = _members.Count() - 1
-		
-		For Local i:Int = _maxSize To l		
-			basic = _members.Last()
+		Local basic:FlxBasic		
+		For Local i:Int = _memebers.Length - 1 To _maxSize Step -1		
+			basic = _members.Pop()
 			If (basic <> Null) basic.Destroy()
-			
-			_members.RemoveLast()
 		Next
-
-		length = _maxSize
 	End Method
 	
 	Method Add:FlxBasic(object:FlxBasic)
-		If (_members.Contains(object)) Return object	
+		If ((_maxSize > 0 And _length >= _maxSize) Or _members.Contains(object)) Return object
 		
-		If (_maxSize > 0) Then
-			If (_members.Count() < _maxSize) Then	
-				_members.AddLast(object)	
-				length+=1
+		If (_isFragmented) Then
+			If (_length < _members.Length) Then			
+				Local l:Int = _members.Length - 1
+				Local basic:FlxBasic = new FlxBasic()
+				
+				For Local i = 0 To l
+					basic = _members.Get(i)
+					If (basic = Null) Then
+						_members.Set(i, object)
+						_length+=1
+						Return object
+					End if
+				Next
 			End If
-			
-			Return object
-		End if
-		
-		_members.AddLast(object)	
-		length+=1
+
+			_isFragmented = False				
+		End If
+				
+		_members.Push(object)
+		_length+=1	
 		Return object
 	End Method
 	
@@ -103,9 +113,19 @@ Public
 					
 	End Method
 	
-	Method Remove:FlxBasic(object:FlxBasic)
-		_members.RemoveEach(object)
-		length-=1
+	Method Remove:FlxBasic(object:FlxBasic, splice:Bool = False)
+		Local index:Int = _members.IndexOf(object)
+		
+		If (index < 0) Return Null
+	
+		If (splice) Then
+			_members.Remove(index)
+		Else 
+			_members.Set(index, Null)
+			_isFragmented = True
+		End If
+		
+		_length-=1
 		Return object
 	End Method
 	
@@ -128,12 +148,21 @@ Interface FlxGroupComparator
 End Interface
 
 Private
-Class FlxBasicList Extends List<FlxBasic>
+Class FlxBasicStack Extends Stack<FlxBasic>
 	
 	Field comparator:FlxGroupComparator
 	
 	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
 		Return comparator.Compare(lhs, rhs)			
 	End Method
+	
+	Method IndexOf:Int(value:FlxBasic)
+		Local i
+		While i<length
+			If Equals(data[i], value) Return i
+		Wend
+		
+		Return -1
+	End
 		
 End Class
