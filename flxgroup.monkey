@@ -157,11 +157,12 @@ Class FlxBasicStack Extends Stack<FlxBasic>
 	End Method
 	
 	Method IndexOf:Int(value:FlxBasic)
-		Local i
-		While i<length
-			If Equals(data[i], value) Return i
-		Wend
-		
+		Local i:Int = 0
+		For Local basic:FlxBasic = EachIn Self
+			If Equals(Get(i), value) Return i
+			i+=1		
+		Next
+				
 		Return -1
 	End
 		
