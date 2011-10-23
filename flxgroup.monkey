@@ -156,10 +156,10 @@ Class FlxBasicStack Extends Stack<FlxBasic>
 		Return comparator.Compare(lhs, rhs)			
 	End Method
 	
-	Method IndexOf:Int(value:FlxBasic)
+	Method IndexOf:Int(object:FlxBasic)
 		Local i:Int = 0
 		For Local basic:FlxBasic = EachIn Self
-			If Equals(Get(i), value) Return i
+			If Equals(basic, object) Return i
 			i+=1		
 		Next
 				
