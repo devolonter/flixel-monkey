@@ -9,7 +9,7 @@ summary:This is a useful "generic" Flixel object.
 Both [a flxobject.monkey.html]FlxObject[/a] and [b]FlxGroup[/b] extend this class, 
 as do the plugins.  Has no size, position or graphical data.
 #End
-Class FlxBasic
+Class FlxBasic Implements FlxBasicClass
 
 Private
 	Global _ACTIVECOUNT:Int
@@ -66,6 +66,14 @@ Public
 		visible = True
 		alive = True
 		ignoreDrawDebug = False	
+	End Method
+	
+	Method Create:FlxBasic()
+		Return New FlxBasic()
+	End Method
+	
+	Method InstanceOf(obj:Object)
+		Return (FlxBasic(obj) <> Null)	
 	End Method
 	
 	#Rem
@@ -147,6 +155,14 @@ Public
 	End Method
 
 End Class
+
+Interface FlxBasicClass
+	
+	Method Create:FlxBasic()
+	
+	Method InstanceOf:Bool(obj:Object)
+
+End Interface
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.

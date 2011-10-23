@@ -23,7 +23,7 @@ Class FlxPoint
 	[*]y: The Y-coordinate of the point in space.
 	[/list]
 	#End
-	Method New(x:Float=0, y:Float=0)
+	Method New(x:Float = 0, y:Float = 0)
 		Self.x = x
 		Self.y = y	
 	End Method
@@ -36,7 +36,7 @@ Class FlxPoint
 	[*]y: The Y-coordinate of the point in space.
 	[/list]
 	#End
-	Function Make:FlxPoint(x:Float=0, y:Float=0)
+	Function Make:FlxPoint(x:Float = 0, y:Float = 0)
 		Return New FlxPoint(x, y)
 	End Function
 	

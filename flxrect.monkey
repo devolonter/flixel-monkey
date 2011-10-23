@@ -31,7 +31,7 @@ Class FlxRect
 	[*]height: Desired height of the rectangle.
 	[/list]
 	#End
-	Method New(x:Float=0, y:Float=0, width:Float=0, height:Float=0)
+	Method New(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0)
 		Self.x = x
 		Self.y = y
 		Self.width = width
@@ -68,7 +68,7 @@ Class FlxRect
 	[*]height: Desired height of the rectangle.
 	[/list]
 	#End
-	Function Make:FlxRect(x:Float=0, y:Float=0, width:Float=0, height:Float=0)
+	Function Make:FlxRect(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0)
 		Return New FlxRect(x ,y, width, height)
 	End Function
 	
