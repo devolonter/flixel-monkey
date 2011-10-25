@@ -9,6 +9,7 @@ It includes some basic attributes about game objects, including retro-style flic
 basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
+	Global CREATOR:FlxClassCreator = new FlxObjectCreator()
 	
 	'summary:Generic value for "left" Used by facing, allowCollisions, and touching.
 	Const LEFT:Int = 1
@@ -77,6 +78,20 @@ Class FlxObject Extends FlxBasic
 	Field immovable:Bool
 
 End Class
+
+Private
+	
+	Class FlxObjectCreator Implements FlxClassCreator
+	
+		Method CreateInstance:FlxBasic()
+			Return New FlxObject()
+		End Method
+		
+		Method InstanceOf:Bool(obj:FlxBasic)			
+			Return (FlxObject(obj) <> Null)
+		End Method	
+		
+	End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.

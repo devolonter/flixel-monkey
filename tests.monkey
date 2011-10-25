@@ -6,6 +6,7 @@ Import unittest
 Import flxbasic
 Import flxpoint
 Import flxrect
+Import flxobject
 Import flxgroup
 
 '#Region FlxPoint tests bundle
@@ -329,6 +330,40 @@ Class FlxGroupReplaceUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
+Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		Local i:Int = 0
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)			
+			If (i > 4 And i < 7) Then basic.Kill()		
+			i+=1
+		Next
+				
+		Local basic:FlxBasic = group.GetFirstAvailable(FlxBasic.CREATOR)
+		
+		If (UnitTest.AssertNotNull(basic) And UnitTest.AssertEqualsI(5, basic.ID)) Then
+			Local object:FlxObject = FlxObject(group.Add(new FlxObject()))	
+			object.ID = 10
+			
+			object = FlxObject(group.Add(new FlxObject()))	
+			object.ID = 11
+			object.Kill()
+			
+			object = FlxObject(group.GetFirstAvailable(FlxObject.CREATOR))
+			Return (UnitTest.AssertNotNull(object) And UnitTest.AssertEqualsI(11, object.ID))	
+		End If
+		
+		Return False
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.GetFirstAvailable"
+	End Method
+	
+End Class
+
 '#End Region
 
 Class FlixelUnitTest Extends UnitTestApp
@@ -361,6 +396,7 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGroupAddUnitTest())
 		AddTest(New FlxGroupRemoveUnitTest())
 		AddTest(New FlxGroupReplaceUnitTest())
+		AddTest(New FlxGroupGetFirstAvailableUnitTest())		
 		
 		'#End Region
 		

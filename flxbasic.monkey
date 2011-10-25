@@ -8,9 +8,9 @@ Import flxg
 
 Interface FlxClassCreator
 	
-	Method Create:FlxBasic()
+	Method CreateInstance:FlxBasic()
 	
-	Method InstanceOf:Bool(obj:Object)
+	Method InstanceOf:Bool(obj:FlxBasic)
 
 End Interface
 
@@ -170,12 +170,12 @@ Private
 	
 	Class FlxBasicCreator Implements FlxClassCreator
 	
-		Method Create:FlxBasic()
+		Method CreateInstance:FlxBasic()
 			Return New FlxBasic()
 		End Method
 		
-		Method InstanceOf:Bool(obj:Object)
-			Return (FlxBasic(obj) <> Null)	
+		Method InstanceOf:Bool(obj:FlxBasic)
+			Return True
 		End Method	
 		
 	End Class

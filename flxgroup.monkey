@@ -144,8 +144,14 @@ Public
 		Return newObject
 	End Method
 	
-	Method GetFirstAvailable:FlxBasic(objectClass:FlxBasicClass = null)
-	
+	Method GetFirstAvailable:FlxBasic(creator:FlxClassCreator = null)
+		If (creator = null) Return Null
+		
+		For Local basic:FlxBasic = EachIn _members
+			If (basic <> Null And Not basic.exists And creator.InstanceOf(basic)) Return basic		
+		Next
+		
+		Return Null
 	End Method
 	
 End Class
