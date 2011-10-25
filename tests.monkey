@@ -1,4 +1,5 @@
 'This is a not module
+Strict
 
 Import unittest
 

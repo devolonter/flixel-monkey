@@ -3,6 +3,7 @@
 	[b]IMPORTANT![/b] When porting the library were excluded following original Flixel library FlxPoint class methods:
 	[code]copyFromFlash, copyToFlash[/code]
 #end
+Strict
 
 #Rem
 summary:Stores a rectangle.

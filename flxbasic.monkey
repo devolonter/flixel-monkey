@@ -26,7 +26,7 @@ Private
 	Global _VISIBLECOUNT:Int	
 
 Public
-	Const CREATOR:FlxClassCreator = new FlxBasicCreator()
+	Global CREATOR:FlxClassCreator = new FlxBasicCreator()
 
 	#Rem
 	summary:IDs seem like they could be pretty useful, huh?

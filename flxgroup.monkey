@@ -1,6 +1,8 @@
 #rem
 	header:This module contains the FlxGroup class and next inerfaces: FlxGroupCaller, FlxGroupSetter, FlxGroupComparator.
 #end
+Strict
+
 
 Import flxbasic
 
@@ -41,7 +43,7 @@ Public
 	End Method
 	
 	Method Length:Int() Property
-		Return _members.Length	
+		Return _members.Length()	
 	End Method
 	
 	Method Destroy:Void()
@@ -92,11 +94,11 @@ Public
 		If ((_maxSize > 0 And _length >= _maxSize) Or _members.Contains(object)) Return object
 		
 		If (_isFragmented) Then
-			If (_length < _members.Length) Then			
-				Local l:Int = _members.Length - 1
+			If (_length < _members.Length()) Then			
+				Local l:Int = _members.Length() - 1
 				Local basic:FlxBasic = new FlxBasic()
 				
-				For Local i = 0 To l
+				For Local i:Int = 0 To l
 					basic = _members.Get(i)
 					If (basic = Null) Then
 						_members.Set(i, object)
@@ -114,7 +116,7 @@ Public
 		Return object
 	End Method
 	
-	Method Recycle(creator:FlxClassCreator = null)
+	Method Recycle:FlxBasic(creator:FlxClassCreator = null)
 					
 	End Method
 	
@@ -142,7 +144,7 @@ Public
 		Return newObject
 	End Method
 	
-	Method GetFirstAvailable(objectClass:FlxBasicClass = null)
+	Method GetFirstAvailable:FlxBasic(objectClass:FlxBasicClass = null)
 	
 	End Method
 	
@@ -156,7 +158,7 @@ End Interface
 
 Interface FlxGroupSetter
 	
-	Method Set(obj:FlxBasic, value:Object)
+	Method Set:Void(obj:FlxBasic, value:Object)
 
 End Interface
 
