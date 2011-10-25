@@ -1,11 +1,16 @@
 #rem
-	header:This module contains the FlxGroup class.
+	header:This module contains the FlxGroup class and next inerfaces: FlxGroupCaller, FlxGroupSetter, FlxGroupComparator.
 #end
 
 Import flxbasic
 
+#Rem
+summary:This is an organizational class that can update and render a bunch of FlxBasics.
+[i][b]NOTE:[/b] Although [a flxgroup.monkey.html]FlxGroup[/a] extends [a flxbasics.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its members.[/i]
+#End
 Class FlxGroup Extends FlxBasic
 
+	'summary:Use with [a #Sort]Sort()[/a] to sort in ascending order.	
 	Const ASCENDING:Bool = True
 	
 	Const DESCENDING:Bool = False	
@@ -109,7 +114,7 @@ Public
 		Return object
 	End Method
 	
-	Method Recycle(objectClass:FlxBasicClass = null)
+	Method Recycle(creator:FlxClassCreator = null)
 					
 	End Method
 	
@@ -145,7 +150,13 @@ End Class
 
 Interface FlxGroupCaller
 	
-	Method Call(obj:FlxBasic)
+	Method Call:Void(obj:FlxBasic)
+
+End Interface
+
+Interface FlxGroupSetter
+	
+	Method Set(obj:FlxBasic, value:Object)
 
 End Interface
 

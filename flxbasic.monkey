@@ -1,21 +1,33 @@
 #rem
-	header:This module contains the FlxBasic class.
+	header:This module contains the FlxBasic class and FlxClassCreator interface.
 #end
+Strict
+
 Import flxcamera
 Import flxg
 
+Interface FlxClassCreator
+	
+	Method Create:FlxBasic()
+	
+	Method InstanceOf:Bool(obj:Object)
+
+End Interface
+
 #Rem
 summary:This is a useful "generic" Flixel object.
-Both [a flxobject.monkey.html]FlxObject[/a] and [b]FlxGroup[/b] extend this class, 
+Both [a flxobject.monkey.html]FlxObject[/a] and [a flxgroup.monkey.html]FlxGroup[/a] extend this class, 
 as do the plugins.  Has no size, position or graphical data.
 #End
-Class FlxBasic Implements FlxBasicClass
+Class FlxBasic
 
 Private
 	Global _ACTIVECOUNT:Int
 	Global _VISIBLECOUNT:Int	
 
 Public
+	Const CREATOR:FlxClassCreator = new FlxBasicCreator()
+
 	#Rem
 	summary:IDs seem like they could be pretty useful, huh?
 	They're not actually used for anything yet though.
@@ -23,30 +35,33 @@ Public
 	Field ID:Int
 	
 	#Rem
-	summary:Controls whether Update() and Draw() are automatically called by FlxState/FlxGroup.
+	summary:See details.
+	Controls whether [a #Update]Update()[/a] and [a #Draw]Draw()[/a] are automatically called by [a flxstate.monkey.html]FlxState[/a]/[a flxgroup.monkey.html]FlxGroup[/a].
 	#End
 	Field exists:Bool
 	
 	#Rem
-	summary:Controls whether Update() is automatically called by FlxState/FlxGroup.
+	summary:See details.
+	Controls whether [a #Update]Update()[/a] is automatically called by [a flxstate.monkey.html]FlxState[/a]/[a flxgroup.monkey.html]FlxGroup[/a].
 	#End
 	Field active:Bool
 	
 	#Rem
-	summary:Controls whether Draw() is automatically called by FlxState/FlxGroup.
+	summary:See details.
+	Controls whether [a #Draw]Draw()[/a] is automatically called by[a flxstate.monkey.html]FlxState[/a]/[a flxgroup.monkey.html]FlxGroup[/a].
 	#End
 	Field visible:Bool
 	
 	#Rem
 	summary:Useful state for many game objects - "dead" (!alive) vs alive.
-	[b]kill()[/b] and [b]revive()[/b] both flip this switch (along with exists, but you can override that).
+	[a #Kill]Kill()[/a] and [a #Recive]Revive()[/a] both flip this switch (along with exists, but you can override that).
 	#End
 	Field alive:Bool
 	
 	#Rem
 	summary:An array of camera objects that this object will use during Draw().
 	This value will initialize itself during the first draw to automatically
-	point at the main camera list out in [b]FlxG[/b] unless you already set it.
+	point at the main camera list out in [a flxg.monkey.html]FlxG[/a] unless you already set it.
 	You can also change it afterward too, very flexible!
 	#End
 	Field cameras:Stack<FlxCamera>
@@ -66,25 +81,19 @@ Public
 		visible = True
 		alive = True
 		ignoreDrawDebug = False	
-	End Method
-	
-	Method Create:FlxBasic()
-		Return New FlxBasic()
-	End Method
-	
-	Method InstanceOf(obj:Object)
-		Return (FlxBasic(obj) <> Null)	
-	End Method
+	End Method	
 	
 	#Rem
-	summary:Override this function to null out variables or manually call Destroy() on class members if necessary.
+	summary:See details.
+	Override this function to null out variables or manually call [a #Destroy]Destroy()[/a] on class members if necessary.
 	Don't forget to call [b]super.Destroy()[/b]!
 	#End
 	Method Destroy:Void()		
 	End Method
 	
 	#Rem
-	summary:Pre-update is called right before [b]Update()[/b] on each object in the game loop.
+	summary:See details.
+	Pre-update is called right before [a #Update]Update()[/a] on each object in the game loop.
 	#End
 	Method PreUpdate:Void()
 		_ACTIVECOUNT+=1
@@ -98,14 +107,15 @@ Public
 	End Method
 	
 	#Rem
-	summary:Post-update is called right after Update() on each object in the game loop.
+	summary:See details.
+	Post-update is called right after [a #Update]Update()[/a] on each object in the game loop.
 	#End
 	Method PostUpdate:Void()
 	End Method
 	
 	#Rem
 	summary:Override this function to control how the object is drawn.
-	Overriding [b]Draw()[/b] is rarely necessary, but can be very useful.
+	Overriding [a #Draw]Draw()[/a] is rarely necessary, but can be very useful.
 	#End
 	Method Draw:Void()		
 		If (cameras = null) cameras = FlxG.cameras
@@ -120,7 +130,7 @@ Public
 	summary:Override this function to draw custom "debug mode" graphics to the specified camera while the debugger's visual mode is toggled on.
 	Params:
 	[list]
-	[*]camera: Which camera to draw the debug visuals to.
+	[*][a flxcamera.monkey.html]camera:FlxCamera[/a] - which camera to draw the debug visuals to.
 	[/list]
 	#End
 	Method DrawDebug:Void(camera:FlxCamera = null)
@@ -140,7 +150,7 @@ Public
 	
 	#Rem
 	summary:Handy function for bringing game objects "back to life". Just sets alive and exists back to true.
-	In practice, this function is most often called by [b]FlxObject.Reset()[/b].
+	In practice, this function is most often called by [a flxobject.monkey.html#Reset]FlxObject.Reset()[/a].
 	#End
 	Method Revive:Void()
 		alive = True
@@ -156,13 +166,19 @@ Public
 
 End Class
 
-Interface FlxBasicClass
+Private
 	
-	Method Create:FlxBasic()
+	Class FlxBasicCreator Implements FlxClassCreator
 	
-	Method InstanceOf:Bool(obj:Object)
-
-End Interface
+		Method Create:FlxBasic()
+			Return New FlxBasic()
+		End Method
+		
+		Method InstanceOf:Bool(obj:Object)
+			Return (FlxBasic(obj) <> Null)	
+		End Method	
+		
+	End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
