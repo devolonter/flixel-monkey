@@ -310,6 +310,24 @@ Class FlxGroupRemoveUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
+Class FlxGroupReplaceUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		group.Replace(objects[0], objects[countObjects - 1])		
+		Return UnitTest.AssertEqualsI(countObjects - 1, group.Members.Get(0).ID)
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Replace"
+	End Method
+	
+End Class
+
 '#End Region
 
 Class FlixelUnitTest Extends UnitTestApp
@@ -341,6 +359,7 @@ Class FlixelUnitTest Extends UnitTestApp
 		
 		AddTest(New FlxGroupAddUnitTest())
 		AddTest(New FlxGroupRemoveUnitTest())
+		AddTest(New FlxGroupReplaceUnitTest())
 		
 		'#End Region
 		

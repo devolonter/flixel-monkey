@@ -129,6 +129,14 @@ Public
 		Return object
 	End Method
 	
+	Method Replace:FlxBasic(oldObject:FlxBasic, newObject:FlxBasic)
+		Local index:Int  = _members.IndexOf(oldObject)
+		If (index < 0) Return Null
+		
+		_members.Set(index, newObject)
+		Return newObject
+	End Method
+	
 	Method GetFirstAvailable(objectClass:FlxBasicClass = null)
 	
 	End Method
