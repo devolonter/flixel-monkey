@@ -162,6 +162,22 @@ Public
 		Return newObject
 	End Method
 	
+	Method Sort:Void(comparator:FlxGroupComparator, order:Bool = ASCENDING)
+		'TODO complete this method
+	End Method
+	
+	Method SetAll:Void(setter:FlxGroupSetter, value:Object, recurse:Bool = True)
+		For Local basic:FlxBasic = EachIn _members
+			If (basic <> Null) Then
+				If (recurse And FlxGroup(basic) <> Null) Then
+					FlxGroup(basic).SetAll(setter, value, recurse)	
+				Else
+					setter.Set(basic, value)
+				End If
+			End If
+		Next
+	End Method
+	
 	Method GetFirstAvailable:FlxBasic(creator:FlxClassCreator = null)		
 		For Local basic:FlxBasic = EachIn _members
 			If (basic <> Null And Not basic.exists And 
@@ -179,13 +195,13 @@ End Class
 
 Interface FlxGroupCaller
 	
-	Method Call:Void(obj:FlxBasic)
+	Method Call:Void(object:FlxBasic)
 
 End Interface
 
 Interface FlxGroupSetter
 	
-	Method Set:Void(obj:FlxBasic, value:Object)
+	Method Set:Void(object:FlxBasic, value:Object)
 
 End Interface
 

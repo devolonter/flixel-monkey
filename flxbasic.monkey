@@ -10,7 +10,7 @@ Interface FlxClassCreator
 	
 	Method CreateInstance:FlxBasic()
 	
-	Method InstanceOf:Bool(obj:FlxBasic)
+	Method InstanceOf:Bool(object:FlxBasic)
 
 End Interface
 
@@ -174,7 +174,7 @@ Private
 			Return New FlxBasic()
 		End Method
 		
-		Method InstanceOf:Bool(obj:FlxBasic)
+		Method InstanceOf:Bool(basic:FlxBasic)
 			Return True
 		End Method	
 		

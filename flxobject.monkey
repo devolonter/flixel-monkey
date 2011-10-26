@@ -87,8 +87,8 @@ Private
 			Return New FlxObject()
 		End Method
 		
-		Method InstanceOf:Bool(obj:FlxBasic)			
-			Return (FlxObject(obj) <> Null)
+		Method InstanceOf:Bool(object:FlxBasic)			
+			Return (FlxObject(object) <> Null)
 		End Method	
 		
 	End Class

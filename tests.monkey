@@ -480,6 +480,52 @@ Class FlxGroupReplaceUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
+Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxGroupSetter
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		group.SetAll(Self, IntObject(100), False)
+		
+		For Local basic:FlxBasic = EachIn group.Members
+			If (Not UnitTest.AssertEqualsI(100, basic.ID)) Return False
+		Next
+		
+		Local group2:FlxGroup = New FlxGroup(5)
+		For Local basic:FlxBasic = EachIn objects
+			group2.Add(basic)
+		Next
+		
+		group.Add(group2)
+		
+		group.SetAll(Self, IntObject(50), False)
+		
+		For Local basic:FlxBasic = EachIn group.Members
+			If (FlxGroup(basic) <> Null) Then
+				For Local innerBasic:FlxBasic = EachIn FlxGroup(basic).Members
+					If (Not UnitTest.AssertEqualsI(50, innerBasic.ID)) Return False		
+				Next
+			Else
+				If (Not UnitTest.AssertEqualsI(50, basic.ID)) Return False				
+			End If			
+		Next
+		
+		Return True
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.SetAll"
+	End Method
+	
+	Method Set:Void(basic:FlxBasic, value:Object)
+		basic.ID = IntObject(value)	
+	End Method
+	
+End Class
+
 Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
 
 	Method Run:Bool()	
@@ -572,6 +618,7 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGroupAddRemoveUnitTest())
 		AddTest(New FlxGroupMaxSizeUnitTest())
 		AddTest(New FlxGroupReplaceUnitTest())
+		AddTest(New FlxGroupSetAllUnitTest())		
 		AddTest(New FlxGroupGetFirstAvailableUnitTest())
 		AddTest(New FlxGroupFinalUnitTest())		
 		
