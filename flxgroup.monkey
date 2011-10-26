@@ -151,10 +151,15 @@ Public
 		If (creator = null) Return Null
 		
 		For Local basic:FlxBasic = EachIn _members
-			If (basic <> Null And Not basic.exists And creator.InstanceOf(basic)) Return basic		
+			If (basic <> Null And Not basic.exists And 
+				creator.InstanceOf(basic)) Return basic		
 		Next
 		
 		Return Null
+	End Method
+	
+	Method ToString:String()
+		Return "FlxGroup"
 	End Method
 	
 End Class
