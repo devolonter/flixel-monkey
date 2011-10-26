@@ -257,7 +257,7 @@ Class FlxGroupAddUnitTest Extends FlxGroupUnitTestBase
 			i+=1
 		Next
 		
-		If (Not UnitTest.AssertEqualsI(countObjects, group.Length)) Return False		
+		If (Not UnitTest.AssertEqualsI(countObjects, group.length)) Return False		
 		
 		Local maxSize:Int = 5	
 		group = New FlxGroup(maxSize)		
@@ -336,7 +336,8 @@ Class FlxGroupRemoveUnitTest Extends FlxGroupUnitTestBase
 			If (Not UnitTest.AssertNotNull(group.Remove(basic))) Return False
 		Next
 		
-		If (Not UnitTest.AssertEqualsI(countObjects, group.Length)) Return False		
+		If (Not UnitTest.AssertEqualsI(0, group.length) And 
+			Not UnitTest.AssertEqualsI(countObjects, group.Members.Length())) Return False		
 		
 		group = New FlxGroup()
 		For Local basic:FlxBasic = EachIn objects
@@ -347,7 +348,7 @@ Class FlxGroupRemoveUnitTest Extends FlxGroupUnitTestBase
 			If (Not UnitTest.AssertNotNull(group.Remove(basic, True))) Return False
 		Next
 		
-		Return UnitTest.AssertEqualsI(0, group.Length)
+		Return UnitTest.AssertEqualsI(0, group.length)
 	End Method
 
 	Method GetName:String()
@@ -437,7 +438,7 @@ Class FlxGroupMaxSizeUnitTest Extends FlxGroupUnitTestBase
 		
 		group.MaxSize = 15
 		
-		If (Not UnitTest.AssertEqualsI(objects.Length, group.Length)) Return False
+		If (Not UnitTest.AssertEqualsI(objects.Length, group.length)) Return False
 		
 		Local i:Int = 0
 		For Local basic:FlxBasic = EachIn group.Members
@@ -446,7 +447,7 @@ Class FlxGroupMaxSizeUnitTest Extends FlxGroupUnitTestBase
 		Next
 		
 		group.MaxSize = 6
-		If (Not UnitTest.AssertEqualsI(group.MaxSize, group.Length)) Return False
+		If (Not UnitTest.AssertEqualsI(group.MaxSize, group.length)) Return False
 		i = 0
 		For Local basic:FlxBasic = EachIn group.Members
 			If (Not UnitTest.AssertEqualsI(basic.ID, objects[i].ID)) Return False

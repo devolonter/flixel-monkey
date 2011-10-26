@@ -15,18 +15,16 @@ Class FlxGroup Extends FlxBasic
 	'summary:Use with [a #Sort]Sort()[/a] to sort in ascending order.	
 	Const ASCENDING:Bool = True
 	
-	Const DESCENDING:Bool = False	
+	Const DESCENDING:Bool = False
+	
+	Field length:Int	
 	
 Private
 	Field _members:FlxBasicStack
 	
 	Field _maxSize:Int
 	
-	Field _marker:Int
-	
-	Field _isFragmented:Bool
-	
-	Field _length:Int
+	Field _marker:Int	
 	
 Public
 	Method New(maxSize:Int = 0)
@@ -34,18 +32,13 @@ Public
 		_members = New FlxBasicStack()
 		_maxSize = maxSize
 		_marker = 0
-		_isFragmented = False
-		_length = 0
+		length = 0
 	End Method
 	
 	Method Members:Stack<FlxBasic>() Property
 		Return _members
 	End Method
-	
-	Method Length:Int() Property
-		Return _members.Length()	
-	End Method
-	
+		
 	Method Destroy:Void()
 		If (_members <> Null) Then
 			For Local basic:FlxBasic = EachIn _members
@@ -88,34 +81,27 @@ Public
 			basic = _members.Pop()
 			If (basic <> Null) basic.Destroy()
 		Next
+		
+		length = _maxSize
 	End Method
 	
 	Method Add:FlxBasic(object:FlxBasic)
-		If ((_maxSize > 0 And _length >= _maxSize) Or 
-			_members.Contains(object)) Then
-			Return object
-		End If
+		If (_members.Contains(object)) Return object
 		
-		If (_isFragmented) Then
-			If (_length < _members.Length()) Then			
-				Local l:Int = _members.Length() - 1
-				Local basic:FlxBasic = new FlxBasic()
-				
-				For Local i:Int = 0 To l
-					basic = _members.Get(i)
-					If (basic = Null) Then
-						_members.Set(i, object)
-						_length+=1
-						Return object
-					End if
-				Next
+		Local l:Int = _members.Length() - 1
+		For Local i:Int = 0 To l
+			If (_members.Get(i) = Null) Then
+				_members.Set(i, object)
+				If (i > length)	length = i+1
+				Return object
 			End If
+		Next
+		
+		If (_maxSize > 0 And _members.Length() >= _maxSize) Return Object	
 
-			_isFragmented = False				
-		End If
-				
 		_members.Push(object)
-		_length+=1	
+		length+=1	
+			
 		Return object
 	End Method
 	
@@ -147,10 +133,9 @@ Public
 			_members.Remove(index)
 		Else 
 			_members.Set(index, Null)
-			_isFragmented = True
 		End If
 		
-		_length-=1
+		length-=1
 		Return object
 	End Method
 	
@@ -198,6 +183,20 @@ Public
 		
 		Return Null
 	End Method
+	
+	#Rem
+	Method GetFirstNull:Int()
+		Local l:Int = _members.Length() - 1
+		Local basic:FlxBasic
+		
+		For Local i:Int = 0 To l
+			basic = _members.Get(i)
+			If (basic = Null) Return i 
+		Next
+		
+		Return -1
+	End Method
+	#End
 	
 	Method ToString:String()
 		Return "FlxGroup"
