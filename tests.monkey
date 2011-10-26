@@ -253,7 +253,7 @@ Class FlxGroupAddUnitTest Extends FlxGroupUnitTestBase
 		
 		Local i:Int = 0
 		For Local basic:FlxBasic = EachIn group.Members
-			UnitTest.AssertEqualsI(basic.ID, objects[i].ID)
+			If (Not UnitTest.AssertEqualsI(basic.ID, objects[i].ID)) Return False
 			i+=1
 		Next
 		
@@ -267,7 +267,7 @@ Class FlxGroupAddUnitTest Extends FlxGroupUnitTestBase
 		
 		i = 0
 		For Local basic:FlxBasic = EachIn group.Members			
-			If (basic <> Null) UnitTest.AssertEqualsI(basic.ID, objects[i].ID)
+			If (Not UnitTest.AssertEqualsI(basic.ID, objects[i].ID)) Return False
 			i+=1
 		Next
 		
@@ -308,6 +308,112 @@ Class FlxGroupRemoveUnitTest Extends FlxGroupUnitTestBase
 
 	Method GetName:String()
 		Return "FlxGroup.Remove"
+	End Method
+	
+End Class
+
+Class FlxGroupAddRemoveUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		Local i:Int = 0
+		For Local basic:FlxBasic = EachIn objects
+			If (i > 4 And i < 7) group.Remove(basic)
+			i+=1
+		Next
+		
+		Local newBasic:FlxBasic = new FlxBasic()
+		newBasic.ID = 10
+		group.Add(newBasic)		
+		
+		If (Not UnitTest.AssertEqualsI(group.Members.Get(5).ID, newBasic.ID)) Return False
+		
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		i = 0
+		For Local basic:FlxBasic = EachIn objects
+			If (i > 4 And i < 7) group.Remove(basic, True)
+			i+=1
+		Next
+		
+		group.Add(newBasic)		
+		If (Not UnitTest.AssertEqualsI(group.Members.Get(8).ID, newBasic.ID)) Return False	
+		
+		group = New FlxGroup(6)
+		
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		i = 0
+		For Local basic:FlxBasic = EachIn objects
+			If (i > 4 And i < 7) group.Remove(basic)
+			i+=1
+		Next
+		
+		group.Add(newBasic)		
+		If (Not UnitTest.AssertEqualsI(group.Members.Get(5).ID, newBasic.ID)) Return False	
+		
+		group = New FlxGroup(6)
+		
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		i = 0
+		For Local basic:FlxBasic = EachIn objects
+			If (i > 4 And i < 7) group.Remove(basic, True)
+			i+=1
+		Next
+		
+		group.Add(newBasic)		
+		Return (UnitTest.AssertEqualsI(group.Members.Get(5).ID, newBasic.ID))		
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Add/Remove"
+	End Method
+	
+End Class
+
+Class FlxGroupMaxSizeUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		group.MaxSize = 15
+		
+		If (Not UnitTest.AssertEqualsI(objects.Length, group.Length)) Return False
+		
+		Local i:Int = 0
+		For Local basic:FlxBasic = EachIn group.Members
+			If (Not UnitTest.AssertEqualsI(basic.ID, objects[i].ID)) Return False
+			i+=1
+		Next
+		
+		group.MaxSize = 6
+		If (Not UnitTest.AssertEqualsI(group.MaxSize, group.Length)) Return False
+		i = 0
+		For Local basic:FlxBasic = EachIn group.Members
+			If (Not UnitTest.AssertEqualsI(basic.ID, objects[i].ID)) Return False
+			i+=1
+		Next		
+		
+		Return True
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.MaxSize"
 	End Method
 	
 End Class
@@ -395,6 +501,8 @@ Class FlixelUnitTest Extends UnitTestApp
 		
 		AddTest(New FlxGroupAddUnitTest())
 		AddTest(New FlxGroupRemoveUnitTest())
+		AddTest(New FlxGroupAddRemoveUnitTest())
+		AddTest(New FlxGroupMaxSizeUnitTest())
 		AddTest(New FlxGroupReplaceUnitTest())
 		AddTest(New FlxGroupGetFirstAvailableUnitTest())		
 		

@@ -81,17 +81,20 @@ Public
 		_maxSize = size		
 		
 		If (_marker >= _maxSize) _marker = 0			
-		If (_maxSize = 0 Or _members = Null Or _maxSize >= members.Length) Return		
+		If (_maxSize = 0 Or _members = Null Or _maxSize >= _members.Length()) Return		
 		
 		Local basic:FlxBasic		
-		For Local i:Int = _memebers.Length - 1 To _maxSize Step -1		
+		For Local i:Int = _members.Length() - 1 To _maxSize Step -1		
 			basic = _members.Pop()
 			If (basic <> Null) basic.Destroy()
 		Next
 	End Method
 	
 	Method Add:FlxBasic(object:FlxBasic)
-		If ((_maxSize > 0 And _length >= _maxSize) Or _members.Contains(object)) Return object
+		If ((_maxSize > 0 And _length >= _maxSize) Or 
+			_members.Contains(object)) Then
+			Return object
+		End If
 		
 		If (_isFragmented) Then
 			If (_length < _members.Length()) Then			
