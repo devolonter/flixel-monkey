@@ -120,7 +120,24 @@ Public
 	End Method
 	
 	Method Recycle:FlxBasic(creator:FlxClassCreator = null)
-					
+		If (_maxSize > 0) Then
+			If (_members.Length() < _maxSize) Then
+				If (creator = Null) Return Null				
+				Return Add(creator.CreateInstance())
+			Else				
+				Local basic:FlxBasic = _members.Get(_marker)
+				_marker+=1
+				If (_marker >= _maxSize) _marker = 0
+				Return basic		
+			End If
+		Else
+			If (creator = Null) Return Null
+			
+			Local basic:FlxBasic = GetFirstAvailable(creator)
+			If (basic <> Null) Return basic
+			
+				
+		End If
 	End Method
 	
 	Method Remove:FlxBasic(object:FlxBasic, splice:Bool = False)
@@ -148,11 +165,10 @@ Public
 	End Method
 	
 	Method GetFirstAvailable:FlxBasic(creator:FlxClassCreator = null)
-		If (creator = null) Return Null
 		
 		For Local basic:FlxBasic = EachIn _members
 			If (basic <> Null And Not basic.exists And 
-				creator.InstanceOf(basic)) Return basic		
+				(creator = Null Or creator.InstanceOf(basic))) Return basic		
 		Next
 		
 		Return Null

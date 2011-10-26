@@ -446,10 +446,14 @@ Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
 			If (i > 4 And i < 7) Then basic.Kill()		
 			i+=1
 		Next
-				
+		
 		Local basic:FlxBasic = group.GetFirstAvailable(FlxBasic.CREATOR)
 		
 		If (UnitTest.AssertNotNull(basic) And UnitTest.AssertEqualsI(5, basic.ID)) Then
+			basic = group.GetFirstAvailable()
+			
+			If (Not UnitTest.AssertNotNull(basic) Or Not UnitTest.AssertEqualsI(5, basic.ID)) Return False
+		
 			Local object:FlxObject = FlxObject(group.Add(new FlxObject()))	
 			object.ID = 10
 			
