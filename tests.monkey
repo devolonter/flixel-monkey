@@ -587,7 +587,8 @@ Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
 		If (UnitTest.AssertNotNull(basic) And UnitTest.AssertEqualsI(5, basic.ID)) Then
 			basic = group.GetFirstAvailable()
 			
-			If (Not UnitTest.AssertNotNull(basic) Or Not UnitTest.AssertEqualsI(5, basic.ID)) Return False
+			If (Not UnitTest.AssertNotNull(basic) Or 
+				Not UnitTest.AssertEqualsI(5, basic.ID)) Return False
 		
 			Local object:FlxObject = FlxObject(group.Add(new FlxObject()))	
 			object.ID = 10
@@ -605,6 +606,96 @@ Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
 
 	Method GetName:String()
 		Return "FlxGroup.GetFirstAvailable"
+	End Method
+	
+End Class
+
+
+Class FlxGroupGetFirstNullUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		If (Not UnitTest.AssertEqualsI(-1, group.GetFirstNull())) Return False
+		group.Remove(objects[5])		
+	
+		Return UnitTest.AssertEqualsI(5, group.GetFirstNull())
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.GetFirstNull"
+	End Method
+	
+End Class
+
+Class FlxGroupGetFirstExtantUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		If (Not UnitTest.AssertEqualsI(0, group.GetFirstExtant().ID)) Return False
+		group.Members[0].Kill()
+		group.Members[1].Kill()
+		group.Members[2].Kill()		
+	
+		Return UnitTest.AssertEqualsI(3, group.GetFirstExtant().ID)
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.GetFirstExtant"
+	End Method
+	
+End Class
+
+Class FlxGroupGetFirstAliveUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		If (Not UnitTest.AssertEqualsI(0, group.GetFirstAlive().ID)) Return False
+		group.Members[0].Kill()
+		group.Members[1].Kill()		
+		group.Members[2].Kill()
+		group.Members[2].exists = True		
+	
+		Return UnitTest.AssertEqualsI(3, group.GetFirstAlive().ID)
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.GetFirstAlive"
+	End Method
+	
+End Class
+
+Class FlxGroupGetFirstDeadUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		If (Not UnitTest.AssertNull(group.GetFirstDead())) Return False
+		group.Members[0].Kill()
+		group.Members[0].alive = True
+		group.Members[1].Kill()
+		group.Members[1].alive = True		
+		group.Members[2].Kill()	
+	
+		Return UnitTest.AssertEqualsI(2, group.GetFirstDead().ID)
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.GetFirstDead"
 	End Method
 	
 End Class
@@ -657,16 +748,20 @@ Class FlixelUnitTest Extends UnitTestApp
 		
 		'#Region add FlxGroup tests bundle
 		
-		'AddTest(New FlxGroupAddUnitTest())
-		'AddTest(New FlxGroupRecycleUnitTest())
-		'AddTest(New FlxGroupRemoveUnitTest())
+		AddTest(New FlxGroupAddUnitTest())
+		AddTest(New FlxGroupRecycleUnitTest())
+		AddTest(New FlxGroupRemoveUnitTest())
 		AddTest(New FlxGroupAddRemoveUnitTest())
 		AddTest(New FlxGroupMaxSizeUnitTest())
 		AddTest(New FlxGroupReplaceUnitTest())
 		AddTest(New FlxGroupSetAllUnitTest())
 		AddTest(New FlxGroupCallAllUnitTest())		
 		AddTest(New FlxGroupGetFirstAvailableUnitTest())
-		AddTest(New FlxGroupFinalUnitTest())		
+		AddTest(New FlxGroupGetFirstNullUnitTest())
+		AddTest(New FlxGroupGetFirstExtantUnitTest())
+		AddTest(New FlxGroupGetFirstAliveUnitTest())
+		AddTest(New FlxGroupGetFirstDeadUnitTest())
+		AddTest(New FlxGroupFinalUnitTest())			
 		
 		'#End Region
 		

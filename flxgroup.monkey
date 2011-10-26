@@ -174,14 +174,6 @@ Public
 				i+=1		
 			Wend			
 			
-			#Rem
-			i = _length - 1
-			While(i < l)
-				_members[i] = Null
-				i+=1		
-			Wend
-			#End
-			
 			_length-=1
 		Else 
 			_members[index] = Null
@@ -248,6 +240,56 @@ Public
 		Wend
 
 		Return Null
+	End Method
+	
+	Method GetFirstNull:Int()
+		Local i:Int = 0	
+			
+		While(i < _length)
+			If (_members[i] = Null) Return i
+			i+=1
+		Wend
+
+		Return -1	
+	End Method
+	
+	Method GetFirstExtant:FlxBasic()
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null And basic.exists) Return basic
+			i+=1
+		Wend
+
+		Return Null	
+	End Method
+	
+	Method GetFirstAlive:FlxBasic()
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null And basic.exists And basic.alive) Return basic
+			i+=1
+		Wend
+
+		Return Null	
+	End Method
+	
+	Method GetFirstDead:FlxBasic()
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null And Not basic.alive) Return basic
+			i+=1
+		Wend
+
+		Return Null	
 	End Method
 	
 	Method ObjectEnumerator:Enumerator()
