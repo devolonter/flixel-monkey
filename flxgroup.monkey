@@ -178,6 +178,18 @@ Public
 		Next
 	End Method
 	
+	Method CallAll:Void(caller:FlxGroupCaller, recurse:Bool = True)
+		For Local basic:FlxBasic = EachIn _members
+			If (basic <> Null) Then
+				If (recurse And FlxGroup(basic) <> Null) Then
+					FlxGroup(basic).CallAll(caller, recurse)	
+				Else
+					caller.Call(basic)
+				End If
+			End If
+		Next
+	End Method
+	
 	Method GetFirstAvailable:FlxBasic(creator:FlxClassCreator = null)		
 		For Local basic:FlxBasic = EachIn _members
 			If (basic <> Null And Not basic.exists And 

@@ -488,18 +488,17 @@ Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxGroupSet
 			group.Add(basic)
 		Next
 		
+		Local group2:FlxGroup = New FlxGroup(5)
+		For Local basic:FlxBasic = EachIn objects
+			group2.Add(basic)
+		Next		
+		group.Add(group2)
+		
 		group.SetAll(Self, IntObject(100), False)
 		
 		For Local basic:FlxBasic = EachIn group.Members
 			If (Not UnitTest.AssertEqualsI(100, basic.ID)) Return False
-		Next
-		
-		Local group2:FlxGroup = New FlxGroup(5)
-		For Local basic:FlxBasic = EachIn objects
-			group2.Add(basic)
-		Next
-		
-		group.Add(group2)
+		Next		
 		
 		group.SetAll(Self, IntObject(50), False)
 		
@@ -522,6 +521,52 @@ Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxGroupSet
 	
 	Method Set:Void(basic:FlxBasic, value:Object)
 		basic.ID = IntObject(value)	
+	End Method
+	
+End Class
+
+Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxGroupCaller
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		Local group2:FlxGroup = New FlxGroup(5)
+		For Local basic:FlxBasic = EachIn objects
+			group2.Add(basic)
+		Next		
+		group.Add(group2)
+		
+		group.CallAll(Self, False)
+		
+		For Local basic:FlxBasic = EachIn group.Members
+			If (Not UnitTest.AssertFalse(basic.exists)) Return False
+			basic.Revive()
+		Next		
+		
+		group.CallAll(Self)
+		
+		For Local basic:FlxBasic = EachIn group.Members
+			If (FlxGroup(basic) <> Null) Then
+				For Local innerBasic:FlxBasic = EachIn FlxGroup(basic).Members
+					If (Not UnitTest.AssertFalse(innerBasic.exists)) Return False		
+				Next
+			Else
+				If (Not UnitTest.AssertFalse(basic.exists)) Return False				
+			End If			
+		Next
+		
+		Return True
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.CallAll"
+	End Method
+	
+	Method Call:Void(basic:FlxBasic)
+		basic.Kill()
 	End Method
 	
 End Class
@@ -618,7 +663,8 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGroupAddRemoveUnitTest())
 		AddTest(New FlxGroupMaxSizeUnitTest())
 		AddTest(New FlxGroupReplaceUnitTest())
-		AddTest(New FlxGroupSetAllUnitTest())		
+		AddTest(New FlxGroupSetAllUnitTest())
+		AddTest(New FlxGroupCallAllUnitTest())		
 		AddTest(New FlxGroupGetFirstAvailableUnitTest())
 		AddTest(New FlxGroupFinalUnitTest())		
 		
