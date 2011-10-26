@@ -470,6 +470,25 @@ Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
+Class FlxGroupFinalUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		
+		group.Update()
+		group.Draw()
+		group.DrawDebug()
+		group.ToString()
+		
+		Return True
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup final"
+	End Method
+	
+End Class
+
 '#End Region
 
 Class FlixelUnitTest Extends UnitTestApp
@@ -504,7 +523,8 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGroupAddRemoveUnitTest())
 		AddTest(New FlxGroupMaxSizeUnitTest())
 		AddTest(New FlxGroupReplaceUnitTest())
-		AddTest(New FlxGroupGetFirstAvailableUnitTest())		
+		AddTest(New FlxGroupGetFirstAvailableUnitTest())
+		AddTest(New FlxGroupFinalUnitTest())		
 		
 		'#End Region
 		
