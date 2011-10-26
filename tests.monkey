@@ -280,6 +280,50 @@ Class FlxGroupAddUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
+Class FlxGroupRecycleUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup(10)
+		
+		Local recycled:FlxBasic 
+		For Local i:Int = 0 To group.MaxSize - 1
+			recycled = group.Recycle(FlxBasic.CREATOR)
+			If (Not UnitTest.AssertNotNull(recycled)) Return False
+			recycled.ID = i		
+		Next
+		
+		For Local basic:FlxBasic = EachIn objects
+			recycled = group.Recycle()	
+			If (Not UnitTest.AssertNotNull(recycled)) Return False		
+			If (Not UnitTest.AssertEqualsI(basic.ID, recycled.ID)) Return False
+		Next
+		
+		group = New FlxGroup()
+		
+		For Local i:Int = 0 To 9
+			recycled = group.Recycle(FlxBasic.CREATOR)
+			If (Not UnitTest.AssertNotNull(recycled)) Return False
+			recycled.ID = i		
+		Next
+		
+		recycled = group.Recycle(FlxBasic.CREATOR)
+		If (Not UnitTest.AssertNotNull(recycled)) Return False		
+		If (Not UnitTest.AssertEqualsI(-1, recycled.ID)) Return False
+		
+		group.Members.Get(5).Kill()
+		recycled = group.Recycle(FlxBasic.CREATOR)
+		If (Not UnitTest.AssertNotNull(recycled)) Return False		
+		If (Not UnitTest.AssertEqualsI(5, recycled.ID)) Return False
+						
+		Return True
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Recycle"
+	End Method
+	
+End Class
+
 Class FlxGroupRemoveUnitTest Extends FlxGroupUnitTestBase
 
 	Method Run:Bool()	
@@ -523,6 +567,7 @@ Class FlixelUnitTest Extends UnitTestApp
 		'#Region add FlxGroup tests bundle
 		
 		AddTest(New FlxGroupAddUnitTest())
+		AddTest(New FlxGroupRecycleUnitTest())
 		AddTest(New FlxGroupRemoveUnitTest())
 		AddTest(New FlxGroupAddRemoveUnitTest())
 		AddTest(New FlxGroupMaxSizeUnitTest())

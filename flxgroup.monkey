@@ -130,13 +130,11 @@ Public
 				If (_marker >= _maxSize) _marker = 0
 				Return basic		
 			End If
-		Else
-			If (creator = Null) Return Null
-			
+		Else						
 			Local basic:FlxBasic = GetFirstAvailable(creator)
 			If (basic <> Null) Return basic
-			
-				
+			If (creator = Null) Return Null
+			Return Add(creator.CreateInstance())				
 		End If
 	End Method
 	
@@ -164,8 +162,7 @@ Public
 		Return newObject
 	End Method
 	
-	Method GetFirstAvailable:FlxBasic(creator:FlxClassCreator = null)
-		
+	Method GetFirstAvailable:FlxBasic(creator:FlxClassCreator = null)		
 		For Local basic:FlxBasic = EachIn _members
 			If (basic <> Null And Not basic.exists And 
 				(creator = Null Or creator.InstanceOf(basic))) Return basic		
