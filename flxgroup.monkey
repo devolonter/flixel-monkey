@@ -8,51 +8,59 @@ Import flxbasic
 
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
-[i][b]NOTE:[/b] Although [a flxgroup.monkey.html]FlxGroup[/a] extends [a flxbasics.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its members.[/i]
+[i][b]NOTE:[/b] Although [a flxgroup.monkey.html]FlxGroup[/a] extends [a flxbasics.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its _members.[/i]
 #End
 Class FlxGroup Extends FlxBasic
 
 	'summary:Use with [a #Sort]Sort()[/a] to sort in ascending order.	
 	Const ASCENDING:Bool = True
 	
-	Const DESCENDING:Bool = False
-	
-	Field length:Int
-	
-	Field members:FlxBasic[]	
+	Const DESCENDING:Bool = False		
 	
 Private	
 	Field _maxSize:Int
 	
-	Field _marker:Int	
+	Field _marker:Int
+	
+	Field _length:Int
+	
+	Field _members:FlxBasic[]	
 	
 Public
 	Method New(maxSize:Int = 0)
 		Super.New()
 		_maxSize = maxSize
 		_marker = 0
-		length = 0
+		_length = 0
+	End Method
+	
+	Method Length:Int() Property
+		Return _length	
+	End Method
+	
+	Method Members:FlxBasic[]() Property
+		Return _members	
 	End Method
 			
 	Method Destroy:Void()
 		Local basic:FlxBasic
 		Local i:Int = 0		
 			
-		While(i < length)
-			basic = members[i]
+		While(i < _length)
+			basic = _members[i]
 			If (basic <> Null) basic.Destroy()
 			i+=1		
 		Wend
 		
-		length = 0
+		_length = 0
 	End Method
 	
 	Method Update:Void()
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
-		While(i < length)
-			basic = members[i]
+		While(i < _length)
+			basic = _members[i]
 			If (basic <> Null And basic.exists And basic.active) Then
 				basic.PreUpdate()
 				basic.Update()
@@ -66,8 +74,8 @@ Public
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
-		While(i < length)
-			basic = members[i]
+		While(i < _length)
+			basic = _members[i]
 			If (basic <> Null And basic.exists And basic.visible) basic.Draw()
 			i+=1		
 		Wend	
@@ -81,62 +89,65 @@ Public
 		_maxSize = size		
 		
 		If (_marker >= _maxSize) _marker = 0			
-		If (_maxSize = 0 Or _maxSize >= members.Length()) Return		
+		If (_maxSize = 0 Or _maxSize >= _length) Return		
 		
 		Local basic:FlxBasic
 		Local i:Int = _maxSize
-		Local l:Int = members.Length()
+		Local l:Int = _length
 		
 		While(i < l)
-			basic = members[i]
+			basic = _members[i]
 			If (basic <> Null) basic.Destroy()
 			i+=1		
 		Wend
 		
-		members = members.Resize(_maxSize)		
-		length = _maxSize
+		_members = _members.Resize(_maxSize)		
+		_length = _maxSize
 	End Method
 	
 	Method Add:FlxBasic(object:FlxBasic)		
 		If (_IndexOf(object) >= 0) Return object		
 		
 		Local i:Int = 0
-		Local l:Int = members.Length()		
-		
-		While (i < l)
-			If (members[i] = Null) Then
-				members[i] = object
-				If (i >= length) length = i+1
+
+		While (i < _length)
+			If (_members[i] = Null) Then
+				_members[i] = object
+				If (i >= _length) _length = i+1
 				Return object		
 			End If
 			i+=1
 		Wend			
 		
-		If (_maxSize > 0) Then			
-			If (members.Length() >= _maxSize) Then
-				Return object
-			ElseIf (members.Length()*2 + 10 <= _maxSize)
-				members = members.Resize(members.Length()*2 + 10)
-			Else
-				members = members.Resize(_maxSize)		 		
+		If (_maxSize > 0) Then
+			If (_length = _members.Length()) Then				
+				If (_length >= _maxSize) Then
+					Return object
+				ElseIf (_length*2 + 10 <= _maxSize)
+					_members = _members.Resize(_length*2 + 10)
+				Else
+					_members = _members.Resize(_maxSize)		 		
+				End If
+			End if
+		Else
+			If (_length = _members.Length()) Then			
+				_members = _members.Resize(_length*2 + 10)
 			End If
-		Else			
-			members = members.Resize(members.Length()*2 + 10)
 		End If
 
-		members[i] = object
-		length+=1	
+		_members[i] = object
+		_length+=1	
 			
 		Return object
 	End Method
 	
 	Method Recycle:FlxBasic(creator:FlxClassCreator = null)
 		If (_maxSize > 0) Then
-			If (length < _maxSize) Then
+			If (_length < _maxSize) Then
 				If (creator = Null) Return Null				
 				Return Add(creator.CreateInstance())
 			Else				
-				Local basic:FlxBasic = members[_marker]
+				Local basic:FlxBasic = _members[_marker]
 				_marker+=1
 				If (_marker >= _maxSize) _marker = 0
 				Return basic		
@@ -156,22 +167,24 @@ Public
 	
 		If (splice) Then
 			Local i:Int = index
-			Local l:Int = members.Length()
+			Local l:Int = _length
 			
-			While(i < length - 1)
-				members[i] = members[i+1]
+			While(i < _length - 1)
+				_members[i] = _members[i+1]
 				i+=1		
 			Wend			
 			
-			i = length - 1
+			#Rem
+			i = _length - 1
 			While(i < l)
-				members[i] = Null
+				_members[i] = Null
 				i+=1		
 			Wend
+			#End
 			
-			length-=1
+			_length-=1
 		Else 
-			members[index] = Null
+			_members[index] = Null
 		End If
 		
 		Return object
@@ -181,7 +194,7 @@ Public
 		Local index:Int  = _IndexOf(oldObject)
 		If (index < 0) Return Null
 		
-		members[index] = newObject
+		_members[index] = newObject
 		Return newObject
 	End Method
 	
@@ -193,8 +206,8 @@ Public
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
-		While(i < length)
-			basic = members[i]
+		While(i < _length)
+			basic = _members[i]
 			If (basic <> Null) Then
 				If (recurse And FlxGroup(basic) <> Null) Then
 					FlxGroup(basic).SetAll(setter, value, recurse)	
@@ -210,8 +223,8 @@ Public
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
-		While(i < length)
-			basic = members[i]
+		While(i < _length)
+			basic = _members[i]
 			If (basic <> Null) Then
 				If (recurse And FlxGroup(basic) <> Null) Then
 					FlxGroup(basic).CallAll(caller, recurse)	
@@ -227,8 +240,8 @@ Public
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
-		While(i < length)
-			basic = members[i]
+		While(i < _length)
+			basic = _members[i]
 			If (basic <> Null And Not basic.exists And 
 					(creator = Null Or creator.InstanceOf(basic))) Return basic
 			i+=1
@@ -236,20 +249,6 @@ Public
 
 		Return Null
 	End Method
-	
-	#Rem
-	Method GetFirstNull:Int()
-		Local l:Int = members.Length() - 1
-		Local basic:FlxBasic
-		
-		For Local i:Int = 0 To l
-			basic = members.Get(i)
-			If (basic = Null) Return i 
-		Next
-		
-		Return -1
-	End Method
-	#End
 	
 	Method ObjectEnumerator:Enumerator()
 		Return New Enumerator(Self)
@@ -264,8 +263,8 @@ Private
 	Method _IndexOf:Int(object:FlxBasic)
 		Local i:Int = 0		
 			
-		While(i < length)
-			If (members[i] = object) Return i
+		While(i < _length)
+			If (_members[i] = object) Return i
 			i+=1		
 		Wend
 		
@@ -295,21 +294,21 @@ End Interface
 Class Enumerator
 
 	Method New(group:FlxGroup)
-		Self.group = group
+		_group = group
 	End
 
 	Method HasNext:Bool()
-		Return index < group.length
+		Return _index < _group.Length
 	End
 
 	Method NextObject:FlxBasic()
-		index+=1
-		Return group.members[index-1]
+		_index+=1
+		Return _group.Members[_index-1]
 	End
 
 Private
 
-	Field group:FlxGroup
-	Field index:Int
+	Field _group:FlxGroup
+	Field _index:Int
 
 End
