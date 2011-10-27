@@ -58,6 +58,7 @@ Public
 		
 		_length = 0
 		_members = _members.Resize(_length)
+		_sortComparator = Null
 	End Method
 	
 	Method Update:Void()
@@ -298,6 +299,23 @@ Public
 		Wend
 
 		Return Null	
+	End Method
+	
+	Method CountLiving:Int()
+		Local count:Int = -1
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null) Then
+				If (count < 0) count = 0
+				If (basic.exists And basic.alive) count+=1	
+			End If
+			i+=1
+		Wend
+
+		Return count	
 	End Method
 	
 	Method ObjectEnumerator:Enumerator()
