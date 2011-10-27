@@ -764,6 +764,106 @@ Class FlxGroupCountLivingUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
+Class FlxGroupCountDeadUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		If (Not UnitTest.AssertEqualsI(0, group.CountDead())) Return False
+		group.Members[0].Kill()
+		group.Members[0].alive = True
+		group.Members[1].Kill()	
+		group.Members[2].Kill()	
+	
+		Return UnitTest.AssertEqualsI(2, group.CountDead())
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.CountDead"
+	End Method
+	
+End Class
+
+Class FlxGroupClearUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		group.Clear()		
+		
+		If (Not UnitTest.AssertEqualsI(-1, group.CountDead())) Return False
+		If (Not UnitTest.AssertEqualsI(-1, group.CountLiving())) Return False
+		
+		Local i:Int = 0
+		For Local basic:FlxBasic = EachIn group
+			i+=1
+		Next
+		
+		If (Not UnitTest.AssertEqualsI(0, i)) Return False
+	
+		Return UnitTest.AssertTrue(group.Members[0].alive)
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Clear"
+	End Method
+	
+End Class
+
+Class FlxGroupKillUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		group.Kill()		
+		
+		If (Not UnitTest.AssertEqualsI(countObjects, group.CountDead())) Return False
+		If (Not UnitTest.AssertEqualsI(0, group.CountLiving())) Return False
+	
+		Return UnitTest.AssertFalse(group.alive)
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Kill"
+	End Method
+	
+End Class
+
+Class FlxGroupDestroyUnitTest Extends FlxGroupUnitTestBase
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+		Next
+		
+		group.Destroy()		
+		
+		Local i:Int = 0
+		For Local basic:FlxBasic = EachIn group
+			i+=1
+		Next
+
+		If (Not UnitTest.AssertEqualsI(0, i)) Return False
+			
+		Return UnitTest.AssertEqualsI(0, group.Members.Length())
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Destroy"
+	End Method
+	
+End Class
+
 Class FlxGroupFinalUnitTest Extends FlxGroupUnitTestBase
 
 	Method Run:Bool()	
@@ -772,6 +872,7 @@ Class FlxGroupFinalUnitTest Extends FlxGroupUnitTestBase
 		group.Update()
 		group.Draw()
 		group.DrawDebug()
+		group.GetRandom()
 		group.ToString()
 		
 		Return True
@@ -827,6 +928,10 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGroupGetFirstAliveUnitTest())
 		AddTest(New FlxGroupGetFirstDeadUnitTest())
 		AddTest(New FlxGroupCountLivingUnitTest())
+		AddTest(New FlxGroupCountDeadUnitTest())
+		AddTest(New FlxGroupClearUnitTest())
+		AddTest(New FlxGroupKillUnitTest())	
+		AddTest(New FlxGroupDestroyUnitTest())				
 		AddTest(New FlxGroupFinalUnitTest())			
 		
 		'#End Region

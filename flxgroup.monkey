@@ -318,6 +318,45 @@ Public
 		Return count	
 	End Method
 	
+	Method CountDead:Int()
+		Local count:Int = -1
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null) Then
+				If (count < 0) count = 0
+				If (Not basic.alive) count+=1	
+			End If
+			i+=1
+		Wend
+
+		Return count	
+	End Method
+	
+	Method GetRandom:FlxBasic(startIndex:Int = 0, length:Int = 0)
+		If (length = 0) length = _length
+		Return FlxG.GetRandom(_members, startIndex, length)
+	End Method
+	
+	Method Clear:Void()
+		_length = 0
+	End Method
+	
+	Method Kill:Void()
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null And basic.exists) basic.Kill()
+			i+=1
+		Wend
+
+		Super.Kill()	
+	End Method
+	
 	Method ObjectEnumerator:Enumerator()
 		Return New Enumerator(Self)
 	End
