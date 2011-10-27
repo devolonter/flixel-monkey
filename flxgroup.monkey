@@ -8,13 +8,20 @@ Import flxobject
 
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
-[i][b]NOTE:[/b] Although [a flxgroup.monkey.html]FlxGroup[/a] extends [a flxbasics.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its _members.[/i]
+[i][b]NOTE:[/b] Although FlxGroup extends [a flxbasic.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its members.[/i]
 #End
 Class FlxGroup Extends FlxBasic
 
-	'summary:Use with [a #Sort]Sort()[/a] to sort in ascending order.	
+	#Rem
+	summary:See detail.
+	Use with [a #Sort]Sort()[/a] to sort in ascending order.
+	#End	
 	Const ASCENDING:Bool = False
 	
+	#Rem
+	summary:See detail.
+	Use with [a #Sort]Sort()[/a] to sort in descending order.
+	#End
 	Const DESCENDING:Bool = True		
 	
 Private	
@@ -31,6 +38,13 @@ Private
 	Field _sortDescending:Bool
 	
 Public
+	#Rem
+	summary:Constructor
+	Params:
+	[list]
+	[*]maxSize:Int - the maximum capacity of this group.
+	[/list]
+	#End
 	Method New(maxSize:Int = 0)
 		Super.New()
 		_maxSize = maxSize
@@ -38,14 +52,25 @@ Public
 		_length = 0
 	End Method
 	
+	#Rem
+	summary:The number of entries in the members array.
+	For performance and safety you should check this variable instead of members.length unless you really know what you're doing!
+	#End
 	Method Length:Int() Property
 		Return _length	
 	End Method
 	
+	#Rem
+	summary:See detail.
+	Array of all the [a flxbasic.monkey.html]FlxBasic[/a]s that exist in this group.
+	#End
 	Method Members:FlxBasic[]() Property
 		Return _members	
 	End Method
-			
+	
+	#Rem
+	summary:Override this function to handle any deleting or "shutdown" type operations you might need,such as removing traditional Monkey/Mojo children like Images objects.
+	#End		
 	Method Destroy:Void()
 		Local basic:FlxBasic
 		Local i:Int = 0		
@@ -61,6 +86,16 @@ Public
 		_sortComparator = Null
 	End Method
 	
+	#Rem
+	summary:Just making sure we don't increment the active objects count.
+	#End
+	Method PreUpdate:Void()
+	
+	End Method
+	
+	#Rem
+	summary:Automatically goes through and calls update on everything you added.
+	#End
 	Method Update:Void()
 		Local basic:FlxBasic
 		Local i:Int = 0	
@@ -76,6 +111,9 @@ Public
 		Wend
 	End Method
 	
+	#Rem
+	summary:Automatically goes through and calls render on everything you added.
+	#End
 	Method Draw:Void()
 		Local basic:FlxBasic
 		Local i:Int = 0	
@@ -87,6 +125,9 @@ Public
 		Wend	
 	End Method
 	
+	#Rem
+	summary:The maximum capacity of this group.  Default is 0, meaning no max capacity, and the group can just grow.
+	#End
 	Method MaxSize:Int() Property
 		Return _maxSize	
 	End Method
@@ -111,6 +152,18 @@ Public
 		_length = _maxSize
 	End Method
 	
+	#Rem
+	summary:See details.
+	Adds a new [a flxbasic.monkey.html]FlxBasic[/a] subclass ([a flxbasic.monkey.html]FlxBasic[/a], [a flxsprite.monkey.html]FlxSprite[/a], Enemy, etc) to the group. FlxGroup will try to replace a null member of the array first. Failing that, FlxGroup will add it to the end of the member array, assuming there is room for it, and doubling the size of the array if necessary.	
+	
+	[b]WARNING[/b]: If the group has a maxSize that has already been met, the object will NOT be added to the group!
+	
+	Params:
+	[list]
+	[*][a flxbasic.monkey.html]object:FlxBasic[/a] - the object you want to add to the group.	
+	[/list]
+	Return the same [a flxbasic.monkey.html]FlxBasic[/a] object that was passed in.
+	#End
 	Method Add:FlxBasic(object:FlxBasic)		
 		If (_IndexOf(object) >= 0) Return object		
 		
@@ -147,6 +200,20 @@ Public
 		Return object
 	End Method
 	
+	#Rem
+	summary:Recycling is designed to help you reuse game objects without always re-allocating or "newing" them.
+	If you specified a maximum size for this group (like in [a flxemitter.monkey.html]FlxEmitter[/a],then recycle will employ what we're calling "rotating" recycling. Recycle() will first check to see if the group is at capacity yet. If group is not yet at capacity, Recycle() returns a new object. If the group IS at capacity, then Recycle() just returns the next object in line
+	
+	If you did NOT specify a maximum size for this group, then Recycle() will employ what we're calling "grow-style" recycling. Recycle() will return either the first object with exists = false, or, finding none, add a new object to the array, doubling the size of the array if necessary.
+	
+	[b]WARNING:[/b] If this function needs to create a new object, and no object class was provided, it will return null instead of a valid object!
+	
+	Params:
+	[list]
+	[*]creator:FlxClassCreator - the type creator implements FlxClassCreator you want to recycle (e.g. FlxSpriteCreator, EvilRobotCreator, etc). Do NOT "new" the class in the parameter!	
+	[/list]
+	Return a reference to the object that was created. Don't forget to cast it back to the creator you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassCreator))).
+	#End
 	Method Recycle:FlxBasic(creator:FlxClassCreator = null)
 		If (_maxSize > 0) Then
 			If (_length < _maxSize) Then
@@ -166,6 +233,15 @@ Public
 		End If
 	End Method
 	
+	#Rem
+	summary:Removes an object from the group.
+	Params:
+	[list]
+	[*][a flxbasic.monkey.html]object:FlxBasic[/a] - The [a flxbasic.monkey.html]FlxBasic[/a] you want to remove.
+	[*]splice:Bool - whether the object should be cut from the array entirely or not.
+	[/list]	
+	Return the removed object.
+	#End
 	Method Remove:FlxBasic(object:FlxBasic, splice:Bool = False)
 		Local index:Int = _IndexOf(object)
 		
@@ -188,6 +264,15 @@ Public
 		Return object
 	End Method
 	
+	#Rem
+	summary:Replaces an existing [a flxbasic.monkey.html]FlxBasic[/a] with a new one.
+	Params:
+	[list]
+	[*][a flxbasic.monkey.html]oldObject:FlxBasic[/a] - the object you want to replace.
+	[*][a flxbasic.monkey.html]newObject:FlxBasic[/a] - the new object you want to use instead.
+	[/list]
+	Return the new object.
+	#End
 	Method Replace:FlxBasic(oldObject:FlxBasic, newObject:FlxBasic)
 		Local index:Int  = _IndexOf(oldObject)
 		If (index < 0) Return Null
@@ -196,12 +281,22 @@ Public
 		Return newObject
 	End Method
 	
-	Method Sort:Void(comparator:FlxBasicComparator = FlxObject.Y_COMPARATOR, 
-		order:Bool = ASCENDING)
+	#Rem
+	summary:Call this function to sort the group according to a particular value and order. 
+	For example, to sort game objects for Zelda-style overlaps you might call myGroup.Sort(FlxObject.Y_COMPARATOR, FlxGroup.ASCENDING) at the bottom of your [a flxstate.monkey.html]FlxState.Update()[/a] override. To sort all existing objects after a big explosion or bomb attack, you might call myGroup.Sort(FlxBasic.EXISTS_COMPARATOR, FlxGroup.DESCENDING)
+	Params:
+	[list]
+	[*]comparator:FlxBasicComparator - The FlxBasicComparator you want to sort on. Default value is FlxObject.Y_COMPARATOR.
+	[*]order:Bool - A FlxGroup constant that defines the sort order. Possible values are ASCENDING and DESCENDING. Default value is ASCENDING.
+	[/list]
+	Return the new object.
+	#End	
+	Method Sort:Void(comparator:FlxBasicComparator = FlxObject.Y_COMPARATOR, order:Bool = ASCENDING)
 		_sortComparator = comparator
 		_sortDescending = order
 		_QSort(0, _length - 1)
 	End Method
+	
 	
 	Method SetAll:Void(setter:FlxBasicSetter, value:Object, recurse:Bool = True)
 		Local basic:FlxBasic
@@ -447,3 +542,35 @@ Private
 	Field _index:Int
 
 End
+
+#Rem 
+footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
+[quote]Copyright: Flixel - 2009-2011 Adam 'Atomic' Saltsman
+Copyright: Monkey port - 2011 Arthur 'devolonter' Bikmullin
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+NOTE FROM THE AUTHOR: As far as I know, you only have to include
+this license if you are redistributing source code that includes
+the Flixel library.  There is no need (or way, afaik) to include
+it in your compiled flash games and apps![/quote]
+#End

@@ -11,6 +11,8 @@ basic state information, sizes, scrolling, and basic physics and motion.
 Class FlxObject Extends FlxBasic
 	Global CREATOR:FlxClassCreator = new FlxObjectCreator()
 	
+	Global X_COMPARATOR:FlxBasicComparator = new FlxObjectXComparator()
+	
 	Global Y_COMPARATOR:FlxBasicComparator = new FlxObjectYComparator()
 	
 	'summary:Generic value for "left" Used by facing, allowCollisions, and touching.
@@ -99,6 +101,14 @@ Private
 	
 		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
 			Return FlxObject(lhs).y - FlxObject(rhs).y		
+		End Method
+		
+	End Class
+	
+	Class FlxObjectXComparator Implements FlxBasicComparator
+	
+		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+			Return FlxObject(lhs).x - FlxObject(rhs).x		
 		End Method
 		
 	End Class

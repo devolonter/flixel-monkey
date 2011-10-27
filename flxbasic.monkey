@@ -45,6 +45,14 @@ Private
 
 Public
 	Global CREATOR:FlxClassCreator = new FlxBasicCreator()
+	
+	Global EXISTS_COMPARATOR:FlxBasicComparator = new FlxBasicExistsComparator()
+	
+	Global ACTIVE_COMPARATOR:FlxBasicComparator = new FlxBasicActiveComparator()
+	
+	Global VISIBLE_COMPARATOR:FlxBasicComparator = new FlxBasicVisibleComparator()
+	
+	Global ALIVE_COMPARATOR:FlxBasicComparator = new FlxBasicAliveComparator()
 
 	#Rem
 	summary:IDs seem like they could be pretty useful, huh?
@@ -195,6 +203,62 @@ Private
 		Method InstanceOf:Bool(basic:FlxBasic)
 			Return True
 		End Method	
+		
+	End Class
+	
+	Class FlxBasicExistsComparator Implements FlxBasicComparator
+	
+		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+			If (lhs.exists) Then
+				If (rhs.exists) Return 0
+				Return 1
+			Else
+				If (Not rhs.exists) Return 0
+				Return -1
+			End If
+		End Method
+		
+	End Class
+	
+	Class FlxBasicActiveComparator Implements FlxBasicComparator
+	
+		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+			If (lhs.active) Then
+				If (rhs.active) Return 0
+				Return 1
+			Else
+				If (Not rhs.active) Return 0
+				Return -1
+			End If
+		End Method
+		
+	End Class
+	
+	Class FlxBasicVisibleComparator Implements FlxBasicComparator
+	
+		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+			If (lhs.visible) Then
+				If (rhs.visible) Return 0
+				Return 1
+			Else
+				If (Not rhs.visible) Return 0
+				Return -1
+			End If
+		End Method
+		
+	End Class
+	
+	Class FlxBasicAliveComparator Implements FlxBasicComparator
+	
+		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+			If (lhs.alive) Then
+				If (rhs.alive) Return 0
+				Return 1
+			Else
+				If (Not rhs.alive) Return 0
+				Return -1
+			End If
+		End Method
 		
 	End Class
 
