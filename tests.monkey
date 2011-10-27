@@ -480,7 +480,47 @@ Class FlxGroupReplaceUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
-Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxGroupSetter
+Class FlxGroupSortUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicComparator
+
+	Method Run:Bool()	
+		group = New FlxGroup()
+		Local i:Int = countObjects - 1
+		For Local basic:FlxBasic = EachIn objects
+			group.Add(basic)
+			basic.ID = i
+			i-=1
+		Next
+		
+		group.Sort(Self)
+		
+		i = 0
+		For Local basic:FlxBasic = EachIn group
+			If (Not UnitTest.AssertEqualsI(i, basic.ID)) Return False
+			i+=1	
+		Next
+		
+		group.Sort(Self, FlxGroup.DESCENDING)
+		
+		i = countObjects - 1
+		For Local basic:FlxBasic = EachIn group
+			If (Not UnitTest.AssertEqualsI(i, basic.ID)) Return False
+			i-=1	
+		Next
+		
+		Return True
+	End Method
+
+	Method GetName:String()
+		Return "FlxGroup.Sort"
+	End Method
+	
+	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
+		Return lhs.ID - rhs.ID
+	End Method
+	
+End Class
+
+Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicSetter
 
 	Method Run:Bool()	
 		group = New FlxGroup()
@@ -525,7 +565,7 @@ Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxGroupSet
 	
 End Class
 
-Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxGroupCaller
+Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicCaller
 
 	Method Run:Bool()	
 		group = New FlxGroup()
@@ -754,6 +794,7 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGroupAddRemoveUnitTest())
 		AddTest(New FlxGroupMaxSizeUnitTest())
 		AddTest(New FlxGroupReplaceUnitTest())
+		AddTest(New FlxGroupSortUnitTest())		
 		AddTest(New FlxGroupSetAllUnitTest())
 		AddTest(New FlxGroupCallAllUnitTest())		
 		AddTest(New FlxGroupGetFirstAvailableUnitTest())

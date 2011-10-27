@@ -3,8 +3,8 @@
 #end
 Strict
 
-
 Import flxbasic
+Import flxobject
 
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
@@ -13,9 +13,9 @@ summary:This is an organizational class that can update and render a bunch of Fl
 Class FlxGroup Extends FlxBasic
 
 	'summary:Use with [a #Sort]Sort()[/a] to sort in ascending order.	
-	Const ASCENDING:Bool = True
+	Const ASCENDING:Bool = False
 	
-	Const DESCENDING:Bool = False		
+	Const DESCENDING:Bool = True		
 	
 Private	
 	Field _maxSize:Int
@@ -24,7 +24,11 @@ Private
 	
 	Field _length:Int
 	
-	Field _members:FlxBasic[]	
+	Field _members:FlxBasic[]
+	
+	Field _sortComparator:FlxBasicComparator
+	
+	Field _sortDescending:Bool
 	
 Public
 	Method New(maxSize:Int = 0)
@@ -53,6 +57,7 @@ Public
 		Wend
 		
 		_length = 0
+		_members = _members.Resize(_length)
 	End Method
 	
 	Method Update:Void()
@@ -190,11 +195,14 @@ Public
 		Return newObject
 	End Method
 	
-	Method Sort:Void(comparator:FlxGroupComparator, order:Bool = ASCENDING)
-		'TODO complete this method
+	Method Sort:Void(comparator:FlxBasicComparator = FlxObject.Y_COMPARATOR, 
+		order:Bool = ASCENDING)
+		_sortComparator = comparator
+		_sortDescending = order
+		_QSort(0, _length - 1)
 	End Method
 	
-	Method SetAll:Void(setter:FlxGroupSetter, value:Object, recurse:Bool = True)
+	Method SetAll:Void(setter:FlxBasicSetter, value:Object, recurse:Bool = True)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
@@ -211,7 +219,7 @@ Public
 		Wend
 	End Method
 	
-	Method CallAll:Void(caller:FlxGroupCaller, recurse:Bool = True)
+	Method CallAll:Void(caller:FlxBasicCaller, recurse:Bool = True)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
@@ -313,25 +321,53 @@ Private
 		Return -1
 	End Method
 	
+	Method _QSort:Void(left:Int, right:Int)
+		If (right > left) Then
+			Local pivot:Int = left + (right-left)/2
+			Local newPivot:Int = _DoSort(left, right, pivot)
+			
+			_QSort(left, newPivot - 1)
+			_QSort(newPivot + 1, right)		
+		End If	
+	End Method
+	
+	Method _DoSort:Int(left:Int, right:Int, pivot:Int)
+		Local basic:FlxBasic = _members[pivot]
+		
+		_members[pivot] = _members[right]
+		_members[right] = basic
+		
+		Local store:Int = left
+		Local basicToCompare:FlxBasic
+		Local i:Int = left
+		
+		While (i < right)
+			basicToCompare = _members[i]
+			
+			If (_sortDescending) Then
+				If (_sortComparator.Compare(basicToCompare, basic) >= 0) Then
+					_members[i] = _members[store]
+					_members[store] = basicToCompare
+					store+=1	
+				End If
+			Else
+				If (_sortComparator.Compare(basicToCompare, basic) <= 0) Then
+					_members[i] = _members[store]
+					_members[store] = basicToCompare
+					store+=1	
+				End If	
+			End If
+			
+			i+=1	
+		Wend
+		
+		basic = _members[store]
+		_members[store] = _members[right]
+		_members[right] = basic
+		Return store	
+	End Method
+	
 End Class
-
-Interface FlxGroupCaller
-	
-	Method Call:Void(object:FlxBasic)
-
-End Interface
-
-Interface FlxGroupSetter
-	
-	Method Set:Void(object:FlxBasic, value:Object)
-
-End Interface
-
-Interface FlxGroupComparator
-
-	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
-
-End Interface
 
 Class Enumerator
 

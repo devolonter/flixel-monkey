@@ -14,6 +14,24 @@ Interface FlxClassCreator
 
 End Interface
 
+Interface FlxBasicCaller
+	
+	Method Call:Void(object:FlxBasic)
+
+End Interface
+
+Interface FlxBasicSetter
+	
+	Method Set:Void(object:FlxBasic, value:Object)
+
+End Interface
+
+Interface FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
+
+End Interface
+
 #Rem
 summary:This is a useful "generic" Flixel object.
 Both [a flxobject.monkey.html]FlxObject[/a] and [a flxgroup.monkey.html]FlxGroup[/a] extend this class, 
