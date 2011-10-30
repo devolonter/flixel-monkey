@@ -3,11 +3,7 @@ Strict
 
 Import unittest
 
-Import flxbasic
-Import flxpoint
-Import flxrect
-Import flxobject
-Import flxgroup
+Import flixel
 
 '#Region FlxPoint tests bundle
 
