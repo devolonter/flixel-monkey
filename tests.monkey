@@ -882,9 +882,67 @@ End Class
 
 '#End Region
 
+'#Region FlxG tests bundle
+
+Class FlxGAddPluginUnitTest Implements IUnitTest
+	
+	Method Run:Bool()	
+		FlxG.AddPlugin(New TimerManager())
+		FlxG.AddPlugin(New TimerManager())
+		Return UnitTest.AssertEqualsI(1, FlxG.plugins.Length())			
+	End Method
+
+	Method GetName:String()
+		Return "FlxG.AddPlugin"
+	End Method
+
+End Class
+
+Class FlxGGetPluginUnitTest Implements IUnitTest
+	
+	Method Run:Bool()	
+		Return UnitTest.AssertNotNull(TimerManager(FlxG.GetPlugin(TimerManager.CREATOR)))			
+	End Method
+
+	Method GetName:String()
+		Return "FlxG.GetPlugin"
+	End Method
+
+End Class
+
+Class FlxGRemovePluginUnitTest Implements IUnitTest
+	
+	Method Run:Bool()	
+		FlxG.RemovePlugin(FlxG.GetPlugin(TimerManager.CREATOR))
+		Return UnitTest.AssertEqualsI(0, FlxG.plugins.Length())				
+	End Method
+
+	Method GetName:String()
+		Return "FlxG.RemovePlugin"
+	End Method
+
+End Class
+
+Class FlxGRemovePluginTypeUnitTest Implements IUnitTest
+	
+	Method Run:Bool()	
+		FlxG.RemovePluginType(TimerManager.CREATOR)
+		Return UnitTest.AssertEqualsI(0, FlxG.plugins.Length())				
+	End Method
+
+	Method GetName:String()
+		Return "FlxG.RemovePluginType"
+	End Method
+
+End Class
+
+'#End Region
+
 Class FlixelUnitTest Extends UnitTestApp
 
 	Method Setup:Void()
+		FlxG.Init(Null, 0, 0, 0)
+	
 		'#Region add FlxPoint tests bundle
 		
 		AddTest(New FlxPointNewUnitTest())
@@ -929,6 +987,15 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGroupKillUnitTest())	
 		AddTest(New FlxGroupDestroyUnitTest())				
 		AddTest(New FlxGroupFinalUnitTest())			
+		
+		'#End Region
+		
+		'#Region add FlxG tests bundle
+		
+		AddTest(New FlxGAddPluginUnitTest())
+		AddTest(New FlxGGetPluginUnitTest())
+		AddTest(New FlxGRemovePluginUnitTest())	
+		AddTest(New FlxGRemovePluginTypeUnitTest())		
 		
 		'#End Region
 		

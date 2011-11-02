@@ -15,7 +15,7 @@ Class FlxG
 	
 	Global visualDebug:Bool
 	
-	Function init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)
+	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)
 		
 		plugins = New Stack<FlxBasic>
 		AddPlugin(New TimerManager())	
@@ -69,7 +69,7 @@ Class FlxG
 		Local i:Int = plugins.Length() - 1	
 		
 		While(i >= 0)
-			If (creator.InstanceOf(creator)) Then
+			If (creator.InstanceOf(pluginList.Get(i))) Then
 				pluginList.Remove(i)
 				results = True	
 			End If
