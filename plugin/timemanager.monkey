@@ -8,6 +8,8 @@ Private
 	Field _timers:Stack<FlxTimer>
 
 Public	
+	Global CREATOR:FlxClassCreator = new TimerManagerCreator()
+
 	Method New()
 		_timers = New Stack<FlxTimer>()
 		visible = False
@@ -24,7 +26,7 @@ Public
 		
 		While (i >= 0)
 			timer = _timers.Get(i)
-			If (timer != Null And Not timer.paused And Not timer.finished And timer.time > 0) Then
+			If (timer <> Null And Not timer.paused And Not timer.finished And timer.time > 0) Then
 				timer.Update()
 			End If
 			i-=1		
@@ -45,11 +47,28 @@ Public
 		
 		While (i >= 0)
 			timer = _timers.Get(i)
-			If (timer != Null) timer.Destroy()	
+			If (timer <> Null) timer.Destroy()	
 			i-=1	
 		Wend
 		
 		_timers.Clear()		
 	End Method
+	
+	Method ToString:String()
+		Return "TimerManager"
+	End Method
+	
+End Class
+
+Private
+Class TimerManagerCreator Implements FlxClassCreator
+
+	Method CreateInstance:FlxBasic()
+		Return New TimerManager()
+	End Method
+	
+	Method InstanceOf:Bool(object:FlxBasic)
+		Return (TimerManager(object) <> Null)
+	End Method	
 	
 End Class

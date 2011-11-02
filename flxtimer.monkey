@@ -11,7 +11,7 @@ End Interface
 
 Class FlxTimer
 	
-	Field time:Float
+	Field time:Int
 	
 	Field loops:Int
 	
@@ -23,7 +23,7 @@ Private
 
 	Field _callback:FlxTimerCallback
 	
-	Field _timeCounter:Float
+	Field _timeCounter:Int
 	
 	Field _loopsCounter:Int
 	
@@ -46,31 +46,65 @@ Public
 	End Method
 	
 	Method Update:Void()
-		'_timeCounter +=
+		_timeCounter += FlxG.elapsed
+		
+		While (_timeCounter >= time And Not paused And Not finished)
+			_timeCounter -= time
+			
+			_loopsCounter += 1
+			If (loops > 0 And _loopsCounter >= loops) Stop()
+			
+			If (_callback <> Null) _callback.onTimer(Self)		
+		Wend
 	End Method
 	
 	Method Start:FlxTimer(time:Float = 1, loops:Int = 1, callback:FlxTimerCallback = Null)
-	
+		Local timerManager:TimerManager = Manager		
+		If (timerManager <> Null) timerManager.Add(Self)
+		
+		If (paused) Then
+			paused = False
+			Return Self						
+		End If
+		
+		paused = False
+		finished = False
+		Self.time = time
+		Self.loops = loops
+		_callback = callback
+		_timeCounter = 0
+		_loopsCounter = 0
+		
+		Return Self
 	End Method
 	
 	Method Stop:Void()
+		finished = True
 		
+		Local timerManger:TimerManager = Manager
+		If (timerManger <> Null) timerManger.Remove(Self)			
 	End Method
 	
-	Method TimeLeft:Float() Property
-	
+	Method TimeLeft:Int() Property
+		Return time - _timeCounter
 	End Method
 	
 	Method LoopsLeft:Int() Property
-		
+		Return loops - _loopsCounter
 	End Method
 	
 	Method Progress:Float() Property
+		If (time > 0) Return _timeCounter/Float(time)
 		
+		Return .0
 	End Method
 	
 	Method Manager:TimerManager() Property
-			
+		Return TimerManager(FlxG.GetPlugin(TimerManager.CREATOR))				
+	End Method
+	
+	Method ToString:String()
+		Return "FlxTimer"
 	End Method
 	
 End Class

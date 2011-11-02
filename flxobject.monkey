@@ -80,38 +80,41 @@ Class FlxObject Extends FlxBasic
 	
 	'summary:Whether an object will move/alter position after a collision.	
 	Field immovable:Bool
+	
+	Method ToString:String()
+		Return "FlxObject"	
+	End Method
 
 End Class
 
-Private
+Private	
+Class FlxObjectCreator Implements FlxClassCreator
+
+	Method CreateInstance:FlxBasic()
+		Return New FlxObject()
+	End Method
 	
-	Class FlxObjectCreator Implements FlxClassCreator
+	Method InstanceOf:Bool(object:FlxBasic)			
+		Return (FlxObject(object) <> Null)
+	End Method	
 	
-		Method CreateInstance:FlxBasic()
-			Return New FlxObject()
-		End Method
-		
-		Method InstanceOf:Bool(object:FlxBasic)			
-			Return (FlxObject(object) <> Null)
-		End Method	
-		
-	End Class
+End Class
+
+Class FlxObjectYComparator Implements FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+		Return FlxObject(lhs).y - FlxObject(rhs).y		
+	End Method
 	
-	Class FlxObjectYComparator Implements FlxBasicComparator
+End Class
+
+Class FlxObjectXComparator Implements FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+		Return FlxObject(lhs).x - FlxObject(rhs).x		
+	End Method
 	
-		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-			Return FlxObject(lhs).y - FlxObject(rhs).y		
-		End Method
-		
-	End Class
-	
-	Class FlxObjectXComparator Implements FlxBasicComparator
-	
-		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-			Return FlxObject(lhs).x - FlxObject(rhs).x		
-		End Method
-		
-	End Class
+End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.

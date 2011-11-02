@@ -103,7 +103,9 @@ Class FlxRect
 		return rect
 	End Method
 	
-		
+	Method ToString:String()
+		Return "FlxRect"	
+	End Method
 
 End Class
 

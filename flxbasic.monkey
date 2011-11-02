@@ -192,75 +192,74 @@ Public
 
 End Class
 
-Private
+Private	
+Class FlxBasicCreator Implements FlxClassCreator
+
+	Method CreateInstance:FlxBasic()
+		Return New FlxBasic()
+	End Method
 	
-	Class FlxBasicCreator Implements FlxClassCreator
+	Method InstanceOf:Bool(object:FlxBasic)
+		Return True
+	End Method	
 	
-		Method CreateInstance:FlxBasic()
-			Return New FlxBasic()
-		End Method
-		
-		Method InstanceOf:Bool(basic:FlxBasic)
-			Return True
-		End Method	
-		
-	End Class
+End Class
+
+Class FlxBasicExistsComparator Implements FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+		If (lhs.exists) Then
+			If (rhs.exists) Return 0
+			Return 1
+		Else
+			If (Not rhs.exists) Return 0
+			Return -1
+		End If
+	End Method
 	
-	Class FlxBasicExistsComparator Implements FlxBasicComparator
+End Class
+
+Class FlxBasicActiveComparator Implements FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+		If (lhs.active) Then
+			If (rhs.active) Return 0
+			Return 1
+		Else
+			If (Not rhs.active) Return 0
+			Return -1
+		End If
+	End Method
 	
-		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-			If (lhs.exists) Then
-				If (rhs.exists) Return 0
-				Return 1
-			Else
-				If (Not rhs.exists) Return 0
-				Return -1
-			End If
-		End Method
-		
-	End Class
+End Class
+
+Class FlxBasicVisibleComparator Implements FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+		If (lhs.visible) Then
+			If (rhs.visible) Return 0
+			Return 1
+		Else
+			If (Not rhs.visible) Return 0
+			Return -1
+		End If
+	End Method
 	
-	Class FlxBasicActiveComparator Implements FlxBasicComparator
+End Class
+
+Class FlxBasicAliveComparator Implements FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
+		If (lhs.alive) Then
+			If (rhs.alive) Return 0
+			Return 1
+		Else
+			If (Not rhs.alive) Return 0
+			Return -1
+		End If
+	End Method
 	
-		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-			If (lhs.active) Then
-				If (rhs.active) Return 0
-				Return 1
-			Else
-				If (Not rhs.active) Return 0
-				Return -1
-			End If
-		End Method
-		
-	End Class
-	
-	Class FlxBasicVisibleComparator Implements FlxBasicComparator
-	
-		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-			If (lhs.visible) Then
-				If (rhs.visible) Return 0
-				Return 1
-			Else
-				If (Not rhs.visible) Return 0
-				Return -1
-			End If
-		End Method
-		
-	End Class
-	
-	Class FlxBasicAliveComparator Implements FlxBasicComparator
-	
-		Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-			If (lhs.alive) Then
-				If (rhs.alive) Return 0
-				Return 1
-			Else
-				If (Not rhs.alive) Return 0
-				Return -1
-			End If
-		End Method
-		
-	End Class
+End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
