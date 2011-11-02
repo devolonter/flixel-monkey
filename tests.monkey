@@ -914,7 +914,9 @@ Class FlxGRemovePluginUnitTest Implements IUnitTest
 	
 	Method Run:Bool()	
 		FlxG.RemovePlugin(FlxG.GetPlugin(TimerManager.CREATOR))
-		Return UnitTest.AssertEqualsI(0, FlxG.plugins.Length())				
+		If (Not UnitTest.AssertEqualsI(0, FlxG.plugins.Length())) Return False
+		FlxG.Init(Null, 0, 0, 0)
+		Return True				
 	End Method
 
 	Method GetName:String()
@@ -927,7 +929,9 @@ Class FlxGRemovePluginTypeUnitTest Implements IUnitTest
 	
 	Method Run:Bool()	
 		FlxG.RemovePluginType(TimerManager.CREATOR)
-		Return UnitTest.AssertEqualsI(0, FlxG.plugins.Length())				
+		If (Not UnitTest.AssertEqualsI(0, FlxG.plugins.Length())) Return False
+		FlxG.Init(Null, 0, 0, 0)
+		Return True				
 	End Method
 
 	Method GetName:String()
@@ -937,6 +941,31 @@ Class FlxGRemovePluginTypeUnitTest Implements IUnitTest
 End Class
 
 '#End Region
+
+'#Region TimeManager tests bundle
+Class TimeManagerUnitTest Implements IUnitTest
+	
+	Method Run:Bool()	
+		Local timeManager:TimerManager = TimerManager(FlxG.GetPlugin(TimerManager.CREATOR))
+		Local timer:FlxTimer = New FlxTimer()
+		
+		timeManager.Add(New FlxTimer())
+		timeManager.Add(timer)		
+		timeManager.Update()		
+		timeManager.Remove(timer)
+		timeManager.Clear()
+		timeManager.Destroy()
+		timeManager = Null
+		timer = Null		
+		
+		Return True	
+	End Method
+
+	Method GetName:String()
+		Return "TimeManager full"
+	End Method
+
+End Class
 
 Class FlixelUnitTest Extends UnitTestApp
 
@@ -996,6 +1025,12 @@ Class FlixelUnitTest Extends UnitTestApp
 		AddTest(New FlxGGetPluginUnitTest())
 		AddTest(New FlxGRemovePluginUnitTest())	
 		AddTest(New FlxGRemovePluginTypeUnitTest())		
+		
+		'#End Region
+		
+		'#Region add TimeManager tests bundle
+		
+		AddTest(New TimeManagerUnitTest())	
 		
 		'#End Region
 		
