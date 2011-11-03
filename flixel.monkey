@@ -1,5 +1,7 @@
 Strict
 
+Import ext.color
+
 Import flxpoint
 Import flxrect
 Import flxbasic
