@@ -39,11 +39,10 @@ as do the plugins.  Has no size, position or graphical data.
 #End
 Class FlxBasic
 
-Private
 	Global _ACTIVECOUNT:Int
+	
 	Global _VISIBLECOUNT:Int	
-
-Public
+	
 	Global CREATOR:FlxClassCreator = new FlxBasicCreator()
 	
 	Global EXISTS_COMPARATOR:FlxBasicComparator = new FlxBasicExistsComparator()
@@ -144,12 +143,7 @@ Public
 	Overriding [a #Draw]Draw()[/a] is rarely necessary, but can be very useful.
 	#End
 	Method Draw:Void()		
-		If (cameras = null) cameras = FlxG.cameras
-		
-		For Local camera:FlxCamera = EachIn cameras
-			_VISIBLECOUNT+=1			
-			If (FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(camera)				
-		Next
+		_VISIBLECOUNT+=1
 	End Method
 	
 	#Rem

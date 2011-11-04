@@ -1,7 +1,7 @@
 Strict
 
 Import flxg
-Import flixel.plugin.timemanager
+Import plugin.timemanager
 
 Interface FlxTimerCallback
 	
@@ -20,7 +20,6 @@ Class FlxTimer
 	Field finished:Bool
 	
 Private
-
 	Field _callback:FlxTimerCallback
 	
 	Field _timeCounter:Int
@@ -28,7 +27,6 @@ Private
 	Field _loopsCounter:Int
 	
 Public
-
 	Method New()
 		time = 0
 		loops = 0
@@ -81,7 +79,7 @@ Public
 	Method Stop:Void()
 		finished = True
 		
-		Local timerManger:TimerManager = Manager
+		Local timerManger:TimerManager = FlxTimer.Manager()
 		If (timerManger <> Null) timerManger.Remove(Self)			
 	End Method
 	
@@ -99,9 +97,9 @@ Public
 		Return .0
 	End Method
 	
-	Method Manager:TimerManager() Property
+	Function Manager:TimerManager()
 		Return TimerManager(FlxG.GetPlugin(TimerManager.CREATOR))				
-	End Method
+	End Function
 	
 	Method ToString:String()
 		Return "FlxTimer"
