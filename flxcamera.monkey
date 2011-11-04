@@ -2,6 +2,7 @@ Strict
 
 Import ext.color
 
+Import flxg
 Import flxpoint
 Import flxrect
 Import flxbasic
@@ -23,11 +24,7 @@ Class FlxCamera Extends FlxBasic
 	
 	Const SHAKE_VERTICAL_ONLY:Int  = 2
 	
-	Global defaultZoom:Float
-	
-	Field x:Float
-	
-	Field y:Float	
+	Global defaultZoom:Float		
 	
 	Field target:FlxObject
 	
@@ -42,9 +39,21 @@ Class FlxCamera Extends FlxBasic
 	Field bgColor:Color
 	
 Private
+	Field _x:Float
+	
+	Field _y:Float
+	
+	Field _realX:Float
+	
+	Field _realY:Float
+
 	Field _width:Float
 	
 	Field _height:Float
+	
+	Field _realWidth:Float
+	
+	Field _realHeight:Float
 
 	Field _zoom:Float
 	
@@ -54,16 +63,12 @@ Private
 		
 	Field _scaleX:Float
 	
-	Field _scaleY:Float
-	
-	Field _realWidth:Float
-	
-	Field _realHeight:Float
+	Field _scaleY:Float	
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
-		Self.x = x
-		Self.y = y
+		X = x
+		Y = y
 		Width = width
 		Height = height
 		target = Null
@@ -77,11 +82,11 @@ Public
 	End Method
 	
 	Method Lock:Void()
-		SetScissor(x, y, _realWidth, _realHeight)
+		SetScissor(_realX, _realY, _realWidth, _realHeight)
 				
 		PushMatrix()
 				
-		Translate(x, y)		
+		Translate(_x, _y)		
 		Scale(_scaleX, _scaleY)
 		
 		SetAlpha(_color.a)
@@ -95,13 +100,31 @@ Public
 		PopMatrix()
 	End Method
 	
+	Method X:Float() Property
+		Return _x	
+	End Method
+	
+	Method X:Void(x:Float) Property
+		_x = x
+		_realX = _x * FlxG._deviceScaleFactorX
+	End Method
+	
+	Method Y:Float() Property
+		Return _y	
+	End Method
+	
+	Method Y:Void(y:Float) Property
+		_y = y
+		_realY = _y * FlxG._deviceScaleFactorY
+	End Method
+	
 	Method Width:Float() Property
 		Return _width	
 	End Method
 	
 	Method Width:Void(width:Float) Property
 		_width = width
-		_realWidth = _width*_scaleX
+		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
 	End Method
 	
 	Method Height:Float() Property
@@ -110,7 +133,7 @@ Public
 	
 	Method Height:Void(height:Float) Property
 		_height = height
-		_realHeight = _height*_scaleY
+		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
 	End Method
 	
 	Method Zoom:Float() Property
@@ -134,8 +157,8 @@ Public
 	Method SetScale:Void(x:Float, y:Float)
 		_scaleX = x
 		_scaleY = y
-		_realWidth = _width*_scaleX
-		_realHeight = _height*_scaleY
+		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
+		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
 	End Method
 	
 	Method Fill:Void(color:Color)

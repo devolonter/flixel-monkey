@@ -43,7 +43,13 @@ Public
 	End Method
 	
 	Method OnCreate:Int()
-		SetUpdateRate(FlxG.framerate)				
+		SetUpdateRate(FlxG.framerate)
+		
+		FlxG.deviceWidth = DeviceWidth()
+		FlxG.deviceHeight = DeviceHeight()
+		FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
+		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)	
+						
 		_Step()				
 		Return 0
 	End Method
@@ -55,7 +61,8 @@ Public
 	
 	Method OnRender:Int()
 		_clsColor = FlxG.BgColor()
-		Cls(_clsColor.r, _clsColor.g, _clsColor.b)
+		Cls(_clsColor.r, _clsColor.g, _clsColor.b)		
+		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)
 		
 		Local cam:FlxCamera
 		Local cams:Stack<FlxCamera> = FlxG.cameras

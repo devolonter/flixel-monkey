@@ -7,11 +7,11 @@ Import plugin.timemanager
 
 Class FlxG	
 
-	Global LIBRARY_NAME:String = "Monkey flixel"
+	Const LIBRARY_NAME:String = "Monkey flixel"
 	
-	Global LIBRARY_MAJOR_VERSION:Int = 1
+	Const LIBRARY_MAJOR_VERSION:Int = 1
 	
-	Global LIBRARY_MINOR_VERSION:Int = 0
+	Const LIBRARY_MINOR_VERSION:Int = 0
 	
 	Global RED:Color = New Color($FFFF0012)
 	
@@ -24,6 +24,10 @@ Class FlxG
 	Global WHITE:Color = New Color($FFFFFFFF)
 	
 	Global BLACK:Color = New Color($FF000000)
+	
+	Global deviceWidth:Int
+	
+	Global deviceHeight:Int
 	
 	Global width:Int
 	
@@ -41,10 +45,15 @@ Class FlxG
 	
 	Global framerate:Int
 	
+	Global _deviceScaleFactorX:Float = 1	
+	
+	Global _deviceScaleFactorY:Float = 1	
+	
 Private
 	Global _game:FlxGame
 	
-	Global _bgColor:Color = FlxG.BLACK
+	Global _bgColor:Color = FlxG.BLACK	
+	
 
 Public	
 	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)
