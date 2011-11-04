@@ -1,0 +1,3 @@
+Strict
+
+Import visual.cameras
