@@ -1,3 +1,3 @@
 Strict
 
-Import visual.cameras
+Import visual.cameras.cameras
