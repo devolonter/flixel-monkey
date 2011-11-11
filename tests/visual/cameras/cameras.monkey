@@ -27,9 +27,17 @@ Class CamerasTestState Extends FlxState
 	Global CREATOR:FlxClassCreator = new CamerasTestStateCreator()
 	
 	Method Create:Void()
-		Local camera:FlxCamera = new FlxCamera(10, 10, 100, 100)
-		camera.bgColor = FlxG.RED
-		FlxG.AddCamera(camera)		
+		Local camera_pink:FlxCamera = new FlxCamera(10, 10, 100, 100, .5)
+		camera_pink.bgColor = FlxG.PINK
+		FlxG.AddCamera(camera_pink)	
+	
+		Local camera_red:FlxCamera = new FlxCamera(70, 10, 100, 100)
+		camera_red.bgColor = FlxG.RED
+		FlxG.AddCamera(camera_red)
+		
+		Local camera_green:FlxCamera = new FlxCamera(180, 10, 100, 100, 2)
+		camera_green.bgColor = FlxG.GREEN
+		FlxG.AddCamera(camera_green)		
 	End Method
 	
 End Class
