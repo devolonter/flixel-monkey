@@ -13,6 +13,8 @@ Class FlxG
 	
 	Const LIBRARY_MINOR_VERSION:Int = 0
 	
+	Const DATA_PREFIX:String = "flx_"
+	
 	Global RED:Color = New Color($FFFF0012)
 	
 	Global GREEN:Color = New Color($FF00F225)

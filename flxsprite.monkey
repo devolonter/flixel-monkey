@@ -2,7 +2,7 @@ Strict
 
 Import flxobject
 
-Import "data/default.png"
+Import "data/flx_default.png"
 
 Class FlxSprite Extends FlxObject
 

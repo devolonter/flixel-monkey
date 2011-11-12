@@ -6,9 +6,7 @@ package cameras
 	{
 		
 		override public function create():void
-		{
-			FlxG.bgColor = 0x11FF0000;
-			
+		{			
 			var camera_pink:FlxCamera = new FlxCamera(10, 10, 100, 100, .5)
 			camera_pink.bgColor = FlxG.PINK
 			FlxG.addCamera(camera_pink)
