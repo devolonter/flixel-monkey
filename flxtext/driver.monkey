@@ -24,9 +24,7 @@ Public
 	Method SetFormat:Void(font:String, size:Int, color:Color, alignment:Int, shadowColor:Color)
 		SetFontName(font)
 		SetSize(size)
-		SetFontColor(color)
 		SetAlignment(alignment)
-		SetShadow(shadowColor)
 	End Method
 	
 	Method GetName:String() Abstract
@@ -43,17 +41,9 @@ Public
 	
 	Method GetText:String() Abstract
 	
-	Method SetFontColor:Void(color:Color) Abstract	
-	
-	Method GetFontColor:Color() Abstract
-	
 	Method SetAlignment:Void(alignment:Float) Abstract	
 	
-	Method GettAlignment:Float() Abstract
-	
-	Method SetShadow:Void(color:Color) Abstract	
-	
-	Method GetShadow:Color() Abstract		
+	Method GettAlignment:Float() Abstract	
 
 	Method Draw:Void(x:Float, y:Float) Abstract
 	

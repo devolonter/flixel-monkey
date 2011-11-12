@@ -27,7 +27,11 @@ Class TextTestState Extends FlxState
 	Global CREATOR:FlxClassCreator = new TextTestStateCreator()
 	
 	Method Create:Void()
-		Add(New FlxText(10, 10, "Hello World"))
+		Local leftAlign:FlxText = New FlxText(10, 10, "Left align text")
+		leftAlign.Size = 16
+		Add(leftAlign)
+		
+		FlxG.camera.Color = FlxG.GREEN
 	End Method
 	
 End Class

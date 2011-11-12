@@ -25,7 +25,7 @@ Class FlxG
 	
 	Global WHITE:Color = New Color($FFFFFFFF)
 	
-	Global BLACK:Color = New Color($FF000000)
+	Global BLACK:Color = New Color($FF000000)	
 	
 	Global deviceWidth:Int
 	
@@ -53,8 +53,11 @@ Class FlxG
 	
 	Global _bgColor:Color = FlxG.BLACK		
 	
-Private
-	Global _game:FlxGame	
+	Global _game:FlxGame
+	
+	Global _lastDrawingColor:Color
+	
+	Global _lastDrawingBlend:Int	
 
 Public	
 	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)

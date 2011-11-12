@@ -34,8 +34,6 @@ Private
 	
 	Field _fontName:String	
 	Field _size:Int = FlxText.MIN_SIZE
-	Field _color:Color
-	Field _shadow:Color
 	Field _alignment:Float
 
 Public
@@ -101,13 +99,19 @@ Public
 	End Method			
 	
 Private
-	Method _InitFont:Void(fontName:String, fontSize:Int)
-		_font = _fontManager.GetFont(fontName, fontSize)
+	Method _InitFont:Void(fontName:String, size:Int)
+		_font = _fontManager.GetFont(fontName, size)
 		If (_font = Null) Then
-			_font = New BitmapFont(Self.GetFileName(fontName) + fontSize + ".txt", False)
-			If (_font = Null And _defaultFont = Null) Error ("Font " + fontName +  " can't be loaded")
+			_font = New BitmapFont(Self.GetFileName(fontName) + size + ".txt", False)
 			
-			_fontManager.AddFont(_font, fontName, fontSize)
+			If (_font = Null And _defaultFont = Null) Then
+				Error ("Font " + fontName +  " can't be loaded")
+			ElseIf (_font = Null) Then
+				_font = _defaultFont
+				Return
+			End If
+			
+			_fontManager.AddFont(fontName, size, _font)
 			If (_defaultFont = Null) _defaultFont = _font
 		End If
 	End Method

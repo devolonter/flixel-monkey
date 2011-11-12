@@ -69,6 +69,9 @@ Public
 		Local i:Int = 0
 		Local l:Int = cams.Length()
 		
+		FlxG._lastDrawingColor = FlxG.camera.Color
+		FlxG._lastDrawingBlend = GetBlend()
+		
 		While(i < l)
 			cam = cams.Get(i)
 			If (cam = Null Or Not cam.exists Or Not cam.visible) Continue

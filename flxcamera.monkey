@@ -93,17 +93,24 @@ Public
 		Translate(_x, _y)		
 		Scale(_scaleX, _scaleY)		
 		
-		SetAlpha(_color.a)
+		If (_color.a <> FlxG._lastDrawingColor.a) Then
+			SetAlpha(_color.a)
+			FlxG._lastDrawingColor.a = _color.a
+		 End If
 		
-		If (_clipped Or bgColor.integer <> FlxG._bgColor.integer) 
+		If (_clipped Or bgColor.hex <> FlxG._bgColor.hex) 
 			SetColor(bgColor.r, bgColor.g, bgColor.b)
 			DrawRect(0, 0, _width, _height)
+			FlxG._lastDrawingColor = bgColor
 		End If
-					
-		SetColor(_color.r, _color.g, _color.b)			
+		
+		If (_color.hex <> FlxG._lastDrawingColor.hex) Then
+			SetColor(_color.r, _color.g, _color.b)
+			FlxG._lastDrawingColor = _color
+		End if		
 	End Method
 	
-	Method Unlock:Void()
+	Method Unlock:Void()		
 		PopMatrix()
 	End Method
 	
@@ -196,6 +203,14 @@ Public
 		SetColor(color.r, color.g, color.b)
 		DrawRect(x, y, width, height)
 		SetColor(255, 255, 255)
+	End Method
+	
+	Method Color:Color() Property
+		Return _color
+	End Method
+	
+	Method Color:Void(color:Color) Property
+		_color = color
 	End Method
 
 	Method ToString:String()

@@ -3,6 +3,7 @@ Strict
 Import flxsprite
 Import flxtext.driver
 Import flxtext.driver.fontmachine
+Import flxg
 
 Class FlxText Extends FlxSprite
 
@@ -20,7 +21,10 @@ Class FlxText Extends FlxSprite
 	Const DRIVER_ANGELFONT:Int = 2
 	
 Private
-	Field _driver:TextDriver	
+	Field _driver:TextDriver
+	
+	Field _color:Color
+	Field _shadow:Color	
 
 Public
 	Method New(x:Float, y:Float, text:String = "", driver:Int = DRIVER_FONTMACHINE)
@@ -43,6 +47,8 @@ Public
 	
 	Method SetFromat:Void(font:String = "", size:Int = 8, color:Color = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Color = Null)
 		_driver.SetFormat(font, size, color, alignment, shadowColor)
+		Color = color
+		Shadow = shadowColor
 	End Method
 	
 	Method Text:String() Property
@@ -62,11 +68,11 @@ Public
 	End Method
 	
 	Method Color:Color() Property
-		Return _driver.GetFontColor()
+		Return _color
 	End Method
 	
 	Method Color:Void(color:Color) Property
-		_driver.SetFontColor(color)
+		_color = color
 	End Method
 	
 	Method Font:String() Property
@@ -85,16 +91,35 @@ Public
 		_driver.SetAlignment(alignment)
 	End Method
 	
-	Method Shadow:Int() Property
-		Return _driver.GetShadow()
+	Method Shadow:Color() Property
+		Return _shadow
 	End Method
 	
-	Method Shadow:Void(shadow:Color) Property
-		_driver.SetShadow(shadow)
+	Method Shadow:Void(color:Color) Property
+		_shadow = color
 	End Method
 	
 	Method Draw:Void()
+		If (_shadow <> Null) Then
+			PushMatrix()			
+			Translate(1, 1)
+			SetColor(_shadow.r, _shadow.g, _shadow.b)
+			SetAlpha(_shadow.a)
+			FlxG._lastDrawingColor = _shadow
+			_driver.Draw(x, y)
+			PopMatrix()
+		End If
+	
+		If (_color.hex <> FlxG._lastDrawingColor.hex) Then
+			SetColor(_color.r, _color.g, _color.b)
+			SetAlpha(_color.a)
+			FlxG._lastDrawingColor = _color
+		End If
 		_driver.Draw(x, y)
+	End Method
+	
+	Method ToString:String()
+		Return "FlxText"	
 	End Method
 	
 End Class

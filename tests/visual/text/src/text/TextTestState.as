@@ -3,11 +3,12 @@ package text
 	import org.flixel.*;
 	
 	public class TextTestState extends FlxState 
-	{
-		
-		public function TextTestState() 
+	{			
+		override public function create():void 
 		{
-			add(new FlxText(10, 10, 100, "Hello, World!"));
+			var leftAlign:FlxText = new FlxText(10, 10, 200, "Left align text");
+			leftAlign.size = 16
+			add(leftAlign);
 		}
 		
 	}
