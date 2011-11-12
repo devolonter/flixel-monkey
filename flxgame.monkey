@@ -60,7 +60,7 @@ Public
 	End Method
 	
 	Method OnRender:Int()
-		_clsColor = FlxG.BgColor()
+		_clsColor = FlxG._bgColor
 		Cls(_clsColor.r, _clsColor.g, _clsColor.b)		
 		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)
 		

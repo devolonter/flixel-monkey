@@ -47,13 +47,12 @@ Class FlxG
 	
 	Global _deviceScaleFactorX:Float = 1	
 	
-	Global _deviceScaleFactorY:Float = 1	
+	Global _deviceScaleFactorY:Float = 1
+	
+	Global _bgColor:Color = FlxG.BLACK		
 	
 Private
-	Global _game:FlxGame
-	
-	Global _bgColor:Color = FlxG.BLACK	
-	
+	Global _game:FlxGame	
 
 Public	
 	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)

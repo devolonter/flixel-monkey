@@ -4,16 +4,18 @@ Import mojo
 
 Class Color	
 
-	Field r:Float = 255
-	Field g:Float = 255
-	Field b:Float = 255
-	Field a:Float = 1
+	Field r:Float
+	Field g:Float
+	Field b:Float
+	Field a:Float
+	Field integer:Int 
 	
 	Method New (color:Int)
 		r = (color Shr 16) & $FF
 		g = (color Shr 8) & $FF
 		b = color & $FF
 		a = Float((color Shr 24) & $FF) / 255
+		integer = color
 	End Method
 	
 	Function SetColor:Void(color:Color)

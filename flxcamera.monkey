@@ -63,10 +63,13 @@ Private
 		
 	Field _scaleX:Float
 	
-	Field _scaleY:Float	
+	Field _scaleY:Float
+	
+	Field _clipped:Bool	
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
+		Zoom = zoom
 		X = x
 		Y = y
 		Width = width
@@ -77,21 +80,25 @@ Public
 		_point = New FlxPoint()
 		bounds = Null
 		bgColor = FlxG.BgColor()
-		_color = FlxG.WHITE		
-		Zoom = zoom				
+		_color = FlxG.WHITE			
 	End Method
 	
 	Method Lock:Void()
-		SetScissor(_realX, _realY, _realWidth, _realHeight)
+		If (_clipped) Then
+			SetScissor(_realX, _realY, _realWidth, _realHeight)			
+		End If
 				
 		PushMatrix()
 				
 		Translate(_x, _y)		
-		Scale(_scaleX, _scaleY)
+		Scale(_scaleX, _scaleY)		
 		
 		SetAlpha(_color.a)
-		SetColor(bgColor.r, bgColor.g, bgColor.b)
-		DrawRect(0, 0, _width, _height)
+		
+		If (_clipped Or bgColor.integer <> FlxG._bgColor.integer) 
+			SetColor(bgColor.r, bgColor.g, bgColor.b)
+			DrawRect(0, 0, _width, _height)
+		End If
 					
 		SetColor(_color.r, _color.g, _color.b)			
 	End Method
@@ -107,6 +114,12 @@ Public
 	Method X:Void(x:Float) Property
 		_x = x
 		_realX = _x * FlxG._deviceScaleFactorX
+		
+		If (x <> 0) Then
+			_clipped = True			
+		Else
+			_clipped = False	
+		End If
 	End Method
 	
 	Method Y:Float() Property
@@ -116,6 +129,12 @@ Public
 	Method Y:Void(y:Float) Property
 		_y = y
 		_realY = _y * FlxG._deviceScaleFactorY
+		
+		If (y <> 0) Then
+			_clipped = True
+		Else
+			_clipped = False	
+		End If
 	End Method
 	
 	Method Width:Float() Property
@@ -125,6 +144,12 @@ Public
 	Method Width:Void(width:Float) Property
 		_width = width
 		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
+		
+		If (_realWidth <> FlxG.deviceWidth) Then
+			_clipped = True
+		Else
+			_clipped = False
+		End If
 	End Method
 	
 	Method Height:Float() Property
@@ -134,6 +159,12 @@ Public
 	Method Height:Void(height:Float) Property
 		_height = height
 		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
+		
+		If (_realHeight <> FlxG.deviceHeight) Then
+			_clipped = True
+		Else
+			_clipped = False
+		End If
 	End Method
 	
 	Method Zoom:Float() Property
