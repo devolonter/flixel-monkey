@@ -82,6 +82,13 @@ Class FlxObject Extends FlxBasic
 	'summary:Whether an object will move/alter position after a collision.	
 	Field immovable:Bool
 	
+	Method New(x:Float, y:Float, width:Float = 0, height:Float = 0)
+		Self.x = x
+		Self.y = y
+		Self.width = width
+		Self.height = height	
+	End Method
+	
 	Method ToString:String()
 		Return "FlxObject"	
 	End Method

@@ -11,39 +11,37 @@ Class FlxText Extends FlxSprite
 	Const MIN_SIZE:Int = 8
 	Const MAX_SIZE:Int = 16
 	
-	Const ALIGN_LEFT:Int = 0
-	Const ALIGN_RIGHT:Int = 1
-	Const ALIGN_CENTER:Int = 2
+	Const ALIGN_LEFT:Float = 0
+	Const ALIGN_RIGHT:Float = 1
+	Const ALIGN_CENTER:Float = .5
 	
 	Const DRIVER_NATIVE:Int = 0
 	Const DRIVER_FONTMACHINE:Int = 1
 	Const DRIVER_ANGELFONT:Int = 2
 	
 Private
-	Field _driverType:Int	
 	Field _driver:TextDriver	
 
 Public
-	Method New(x:Float, y:Float, text:String = Null)
-		Super.New(x, y)		
+	Method New(x:Float, y:Float, text:String = "", driver:Int = DRIVER_FONTMACHINE)
+		Super.New(x, y)
+		SetDriver(driver)
+		SetFromat(FlxG.DATA_PREFIX + "system")
+		Text = text				
 	End Method
 	
 	Method SetDriver:Void(driver:Int)
-		If (_driverType = driver) Return
-		
-		Select (driver)				
-			Case DRIVER_FONTMACHINE				
-				If (_fontMachineDriver = Null) _fontMachineDriver = New FontMachineDriver()
-				_driver = _fontMachineDriver
-				_driverType = driver
+		Select (driver)
+			Case DRIVER_FONTMACHINE
+				_driver = New FontMachineDriver()	
 		End Select
 	End Method
 	
-	Method GetDriver:Int()
-		Return _driverType
+	Method GetDriver:TextDriver()
+		Return _driver
 	End Method
 	
-	Method SetFromat:Void(font:String = Null, size:Int = 8, color:Color = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Color = Null)
+	Method SetFromat:Void(font:String = "", size:Int = 8, color:Color = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Color = Null)
 		_driver.SetFormat(font, size, color, alignment, shadowColor)
 	End Method
 	
@@ -55,20 +53,12 @@ Public
 		_driver.SetText(text)
 	End Method
 	
-	Method Size:Int() Property
-		Return _driver.GetSize()
-	End Method
-	
-	Method Size:Void(size:String) Property
+	Method Size:Void(size:Int) Property
 		_driver.SetSize(size)
 	End Method
 	
 	Method Size:Int() Property
 		Return _driver.GetSize()
-	End Method
-	
-	Method Size:Void(size:String) Property
-		_driver.SetSize(size)
 	End Method
 	
 	Method Color:Color() Property
@@ -87,12 +77,12 @@ Public
 		_driver.SetFontName(font)
 	End Method
 	
-	Method Alignment:Int() Property
+	Method Alignment:Float() Property
 		Return _driver.GetAligment()
 	End Method
 	
-	Method Alignment:Void(alignment:Int) Property
-		_driver.SetAlignment(font)
+	Method Alignment:Void(alignment:Float) Property
+		_driver.SetAlignment(alignment)
 	End Method
 	
 	Method Shadow:Int() Property
@@ -103,11 +93,13 @@ Public
 		_driver.SetShadow(shadow)
 	End Method
 	
+	Method Draw:Void()
+		_driver.Draw(x, y)
+	End Method
+	
 End Class
 
-Private
-Global _fontMachineDriver:FontMachineDriver
-	
+Private	
 Class FlxTextCreator Implements FlxClassCreator
 
 	Method CreateInstance:FlxBasic()

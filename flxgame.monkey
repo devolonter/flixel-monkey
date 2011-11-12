@@ -8,7 +8,7 @@ Import flxstate
 Import flxcamera
 Import flxtimer
 
-Import plugin.timemanager
+Import plugin.timermanager
 
 Class FlxGame extends App
 

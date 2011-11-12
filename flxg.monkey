@@ -3,7 +3,7 @@ Strict
 Import flxcamera
 Import flxgame
 
-Import plugin.timemanager
+Import plugin.timermanager
 
 Class FlxG	
 

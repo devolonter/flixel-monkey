@@ -2,23 +2,23 @@ Strict
 
 Import flixel.flxg
 
-Class TextDriver<T>
+Class TextDriver
 
 	Field name:String
+	
+	Field _system:Bool	
 
 Private
-	Field _filename:String = Null	
+	Field _filename:String = ""		
 
 Public
-	Method GetFileName:String(fontName:String, fontSize:Int, system:Bool = False)	
-		If (_filename <> Null) Then
-			If (Not system) Return _filename
-			Return FlxG.DATA_PREFIX + _filename
+	Method GetFileName:String(fontName:String)	
+		If (_filename.Length <> 0) Then
+			Return _filename
 		End If		
 		
-		_filename = fontName + "_" + name + "_" + fontSize
-		If (Not system) Return _filename
-		Return FlxG.DATA_PREFIX + _filename
+		_filename = fontName + "_" + GetName() + "_font_"
+		Return _filename
 	End Method
 	
 	Method SetFormat:Void(font:String, size:Int, color:Color, alignment:Int, shadowColor:Color)
@@ -28,6 +28,8 @@ Public
 		SetAlignment(alignment)
 		SetShadow(shadowColor)
 	End Method
+	
+	Method GetName:String() Abstract
 	
 	Method SetFontName:Void(font:String) Abstract
 	
@@ -45,16 +47,16 @@ Public
 	
 	Method GetFontColor:Color() Abstract
 	
-	Method SetAlignment:Void(alignment:Int) Abstract	
+	Method SetAlignment:Void(alignment:Float) Abstract	
 	
-	Method GettAlignment:Int() Abstract
+	Method GettAlignment:Float() Abstract
 	
 	Method SetShadow:Void(color:Color) Abstract	
 	
 	Method GetShadow:Color() Abstract		
 
-	Method Draw:Void() Abstract
+	Method Draw:Void(x:Float, y:Float) Abstract
 	
-	Method Destroy:Void()
+	Method Destroy:Void() Abstract
 	
 End Class

@@ -1,7 +1,7 @@
 Strict
 
 Import flxg
-Import plugin.timemanager
+Import plugin.timermanager
 
 Interface FlxTimerCallback
 	

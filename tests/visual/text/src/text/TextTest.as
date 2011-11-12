@@ -8,7 +8,7 @@ package text
 		
 		public function TextTest():void 
 		{
-			super(640, 480, TextTestState, 3);
+			super(640, 480, TextTestState);
 		}
 		
 	}

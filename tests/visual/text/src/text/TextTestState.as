@@ -7,9 +7,7 @@ package text
 		
 		public function TextTestState() 
 		{
-			var text:FlxText = new FlxText(0, 0, 100, "Hello, World!");
-			text.shadow = FlxG.RED;
-			add(text);
+			add(new FlxText(10, 10, 100, "Hello, World!"));
 		}
 		
 	}
