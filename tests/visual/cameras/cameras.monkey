@@ -5,7 +5,7 @@ Import flixel
 Class CamerasTest Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, CamerasTestState.CREATOR)	
+		Super.New(560, 420, CamerasTestState.CREATOR)	
 	End Method
 
 End Class

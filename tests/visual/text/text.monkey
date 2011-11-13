@@ -5,7 +5,7 @@ Import flixel
 Class TextTest Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, TextTestState.CREATOR)	
+		Super.New(560, 420, TextTestState.CREATOR)	
 	End Method
 
 End Class
