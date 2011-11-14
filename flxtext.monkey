@@ -1,5 +1,7 @@
 Strict
 
+Import ext.color
+
 Import flxsprite
 Import flxtext.driver
 Import flxtext.driver.fontmachine
@@ -29,9 +31,13 @@ Private
 Public
 	Method New(x:Float, y:Float, text:String = "", driver:Int = DRIVER_FONTMACHINE)
 		Super.New(x, y)
+		
+		_color = New Color()
+		_shadow = New Color(0)	
+		
 		SetDriver(driver)
 		SetFromat(FlxG.DATA_PREFIX + "system")
-		Text = text				
+		Text = text			
 	End Method
 	
 	Method SetDriver:Void(driver:Int)
@@ -45,9 +51,9 @@ Public
 		Return _driver
 	End Method
 	
-	Method SetFromat:Void(font:String = "", size:Int = 8, color:Color = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Color = Null)
-		_driver.SetFormat(font, size, color, alignment, shadowColor)
-		Color = color
+	Method SetFromat:Void(font:String = "", size:Int = 8, color:Int = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Int = 0)
+		_driver.SetFormat(font, size, alignment)
+		Self.Color = color
 		Shadow = shadowColor
 	End Method
 	
@@ -67,12 +73,12 @@ Public
 		Return _driver.GetSize()
 	End Method
 	
-	Method Color:Color() Property
-		Return _color
+	Method Color:Int() Property
+		Return _color.argb
 	End Method
 	
-	Method Color:Void(color:Color) Property
-		_color = color
+	Method Color:Void(color:Int) Property
+		_color.SetARGB(color)
 	End Method
 	
 	Method Font:String() Property
@@ -91,29 +97,29 @@ Public
 		_driver.SetAlignment(alignment)
 	End Method
 	
-	Method Shadow:Color() Property
-		Return _shadow
+	Method Shadow:Int() Property
+		Return _shadow.argb
 	End Method
 	
-	Method Shadow:Void(color:Color) Property
-		_shadow = color
+	Method Shadow:Void(color:Int) Property
+		_shadow.SetARGB(color)
 	End Method
 	
 	Method Draw:Void()
-		If (_shadow <> Null) Then
+		If (_shadow.argb <> 0) Then
 			PushMatrix()			
 			Translate(1, 1)
 			SetColor(_shadow.r, _shadow.g, _shadow.b)
 			SetAlpha(_shadow.a)
-			FlxG._lastDrawingColor = _shadow
+			FlxG._lastDrawingColor = _shadow.argb
 			_driver.Draw(x, y)
 			PopMatrix()
 		End If
 	
-		If (_color.hex <> FlxG._lastDrawingColor.hex) Then
+		If (_color.argb <> FlxG._lastDrawingColor) Then
 			SetColor(_color.r, _color.g, _color.b)
 			SetAlpha(_color.a)
-			FlxG._lastDrawingColor = _color
+			FlxG._lastDrawingColor = _color.argb
 		End If
 		_driver.Draw(x, y)
 	End Method

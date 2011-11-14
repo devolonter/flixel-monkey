@@ -21,7 +21,7 @@ Public
 		Return _filename
 	End Method
 	
-	Method SetFormat:Void(font:String, size:Int, color:Color, alignment:Int, shadowColor:Color)
+	Method SetFormat:Void(font:String, size:Int, alignment:Int)
 		SetFontName(font)
 		SetSize(size)
 		SetAlignment(alignment)

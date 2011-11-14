@@ -28,15 +28,15 @@ Class CamerasTestState Extends FlxState
 	
 	Method Create:Void()
 		Local camera_pink:FlxCamera = new FlxCamera(10, 10, 100, 100, .5)
-		camera_pink.bgColor = FlxG.PINK
+		camera_pink.BgColor = FlxG.PINK
 		FlxG.AddCamera(camera_pink)	
 	
 		Local camera_red:FlxCamera = new FlxCamera(70, 10, 100, 100)
-		camera_red.bgColor = FlxG.RED
+		camera_red.BgColor = FlxG.RED
 		FlxG.AddCamera(camera_red)
 		
 		Local camera_green:FlxCamera = new FlxCamera(180, 10, 100, 100, 2)
-		camera_green.bgColor = FlxG.GREEN
+		camera_green.BgColor = FlxG.GREEN
 		FlxG.AddCamera(camera_green)		
 	End Method
 	

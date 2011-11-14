@@ -25,11 +25,9 @@ Private
 	
 	Field _requestedReset:Bool
 	
-	Field _clsColor:Color	
-	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClassCreator, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
-		_lostFocus = False
+		_lostFocus = False		
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
 		FlxG.framerate = framerate
@@ -39,7 +37,7 @@ Public
 		_iState = initialState
 		_requestedState = Null
 		_requestedReset = True
-		_created = False  		
+		_created = False 				
 	End Method
 	
 	Method OnCreate:Int()
@@ -59,9 +57,8 @@ Public
 		Return 0
 	End Method
 	
-	Method OnRender:Int()
-		_clsColor = FlxG._bgColor
-		Cls(_clsColor.r, _clsColor.g, _clsColor.b)		
+	Method OnRender:Int()	
+		Cls(FlxG._bgColor.r, FlxG._bgColor.g, FlxG._bgColor.b)		
 		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)
 		
 		Local cam:FlxCamera
@@ -69,8 +66,8 @@ Public
 		Local i:Int = 0
 		Local l:Int = cams.Length()
 		
-		FlxG._lastDrawingColor = FlxG.camera.Color
-		FlxG._lastDrawingBlend = GetBlend()
+		FlxG._lastDrawingColor = FlxG.WHITE
+		FlxG._lastDrawingBlend = GetBlend()		
 		
 		While(i < l)
 			cam = cams.Get(i)
@@ -98,7 +95,7 @@ Private
 		Local timeManager:TimerManager = FlxTimer.Manager()
 		If (timeManager <> Null) timeManager.Clear()
 		
-		If (_state <> Null) _state.Destroy()
+		If (_state <> Null) _state.Destroy()		
 		
 		_state = _requestedState
 		_state.Create()	
@@ -109,9 +106,9 @@ Private
 			_requestedReset = False
 			_requestedState = FlxState(_iState.CreateInstance())
 			FlxG.Reset()			
-		End If
+		End If		
 		
-		If (_state <> _requestedState) _SwitchState()
+		If (_state <> _requestedState) _SwitchState()		
 		
 		_Update()
 	End Method

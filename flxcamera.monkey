@@ -34,9 +34,7 @@ Class FlxCamera Extends FlxBasic
 	
 	Field scroll:FlxPoint
 	
-	Field point:FlxPoint
-	
-	Field bgColor:Color
+	Field point:FlxPoint	
 	
 Private
 	Field _x:Float
@@ -65,7 +63,9 @@ Private
 	
 	Field _scaleY:Float
 	
-	Field _clipped:Bool	
+	Field _clipped:Bool
+	
+	Field _bgColor:Color	
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
@@ -79,8 +79,8 @@ Public
 		scroll = New FlxPoint()
 		_point = New FlxPoint()
 		bounds = Null
-		bgColor = FlxG.BgColor()
-		_color = FlxG.WHITE			
+		_bgColor = New Color(FlxG.BgColor())
+		_color = New Color()			
 	End Method
 	
 	Method Lock:Void()
@@ -93,20 +93,17 @@ Public
 		Translate(_x, _y)		
 		Scale(_scaleX, _scaleY)		
 		
-		If (_color.a <> FlxG._lastDrawingColor.a) Then
-			SetAlpha(_color.a)
-			FlxG._lastDrawingColor.a = _color.a
-		 End If
+		SetAlpha(_color.a)
 		
-		If (_clipped Or bgColor.hex <> FlxG._bgColor.hex) 
-			SetColor(bgColor.r, bgColor.g, bgColor.b)
+		If (_clipped Or _bgColor.argb <> FlxG._bgColor.argb) 
+			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
 			DrawRect(0, 0, _width, _height)
-			FlxG._lastDrawingColor = bgColor
+			FlxG._lastDrawingColor = _bgColor.argb
 		End If
 		
-		If (_color.hex <> FlxG._lastDrawingColor.hex) Then
+		If (_color.argb <> FlxG._lastDrawingColor) Then
 			SetColor(_color.r, _color.g, _color.b)
-			FlxG._lastDrawingColor = _color
+			FlxG._lastDrawingColor = _color.argb
 		End if		
 	End Method
 	
@@ -205,12 +202,20 @@ Public
 		SetColor(255, 255, 255)
 	End Method
 	
-	Method Color:Color() Property
-		Return _color
+	Method Color:Int() Property
+		Return _color.argb
 	End Method
 	
-	Method Color:Void(color:Color) Property
-		_color = color
+	Method Color:Void(color:Int) Property
+		_color.SetARGB(color)
+	End Method
+	
+	Method BgColor:Int() Property
+		Return _bgColor.argb
+	End Method
+	
+	Method BgColor:Void(color:Int) Property
+		_bgColor.SetARGB(color)
 	End Method
 
 	Method ToString:String()

@@ -15,17 +15,17 @@ Class FlxG
 	
 	Const DATA_PREFIX:String = "flx_"
 	
-	Global RED:Color = New Color($FFFF0012)
+	Global RED:Int = $FFFF0012
 	
-	Global GREEN:Color = New Color($FF00F225)
+	Global GREEN:Int = $FF00F225
 	
-	Global BLUE:Color = New Color($FF0090E9)
+	Global BLUE:Int = $FF0090E9
 	
-	Global PINK:Color = New Color($FFF01EFF)
+	Global PINK:Int = $FFF01EFF
 	
-	Global WHITE:Color = New Color($FFFFFFFF)
+	Global WHITE:Int = $FFFFFFFF
 	
-	Global BLACK:Color = New Color($FF000000)	
+	Global BLACK:Int = $FF000000	
 	
 	Global deviceWidth:Int
 	
@@ -51,11 +51,11 @@ Class FlxG
 	
 	Global _deviceScaleFactorY:Float = 1
 	
-	Global _bgColor:Color = FlxG.BLACK		
+	Global _bgColor:Color = Color.ARGB(FlxG.BLACK)		
 	
 	Global _game:FlxGame
 	
-	Global _lastDrawingColor:Color
+	Global _lastDrawingColor:Int
 	
 	Global _lastDrawingBlend:Int	
 
@@ -108,21 +108,21 @@ Public
 		FlxG.elapsed = 0	
 	End Function	
 	
-	Function BgColor:Color()
-		If (FlxG.camera = Null) Return FlxG._bgColor	
-		Return FlxG.camera.bgColor
+	Function BgColor:Int()
+		If (FlxG.camera = Null) Return FlxG._bgColor.argb	
+		Return FlxG.camera.BgColor
 	End Function
 	
-	Function BgColor:Void(color:Color)
+	Function BgColor:Void(color:Int)
 		Local i:Int = 0
 		Local l:Int = FlxG.cameras.Length()
 		
 		While(i < l)
-			cameras.Get(i).bgColor = color
+			cameras.Get(i).BgColor = color
 			i+=1
 		Wend
 		
-		FlxG._bgColor = color
+		FlxG._bgColor.SetARGB(color)
 	End Function
 	
 	Function AddPlugin:FlxBasic(plugin:FlxBasic)

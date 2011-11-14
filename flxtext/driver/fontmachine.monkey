@@ -67,28 +67,12 @@ Public
 		Return _text
 	End Method
 	
-	Method SetFontColor:Void(color:Color)
-		_color = color
-	End Method	
-	
-	Method GetFontColor:Color()
-		Return _color
-	End Method
-	
 	Method SetAlignment:Void(alignment:Float)
 		_alignment = alignment
 	End Method	
 	
 	Method GettAlignment:Float()
 		Return _alignment
-	End Method
-	
-	Method SetShadow:Void(color:Color)
-		_shadow = color	
-	End Method	
-	
-	Method GetShadow:Color()
-		Return _shadow
 	End Method
 	
 	Method Draw:Void(x:Float, y:Float)
