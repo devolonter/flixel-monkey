@@ -15,17 +15,17 @@ Class FlxG
 	
 	Const DATA_PREFIX:String = "flx_"
 	
-	Global RED:Int = $FFFF0012
+	Const RED:Int = $FFFF0012
 	
-	Global GREEN:Int = $FF00F225
+	Const GREEN:Int = $FF00F225
 	
-	Global BLUE:Int = $FF0090E9
+	Const BLUE:Int = $FF0090E9
 	
-	Global PINK:Int = $FFF01EFF
+	Const PINK:Int = $FFF01EFF
 	
-	Global WHITE:Int = $FFFFFFFF
+	Const WHITE:Int = $FFFFFFFF
 	
-	Global BLACK:Int = $FF000000	
+	Const BLACK:Int = $FF000000	
 	
 	Global deviceWidth:Int
 	

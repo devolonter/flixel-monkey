@@ -107,13 +107,13 @@ Public
 	
 	Method Draw:Void()
 		If (_shadow.argb <> 0) Then
-			PushMatrix()			
-			Translate(1, 1)
-			SetColor(_shadow.r, _shadow.g, _shadow.b)
-			SetAlpha(_shadow.a)
-			FlxG._lastDrawingColor = _shadow.argb
-			_driver.Draw(x, y)
-			PopMatrix()
+			If (_shadow.argb <> FlxG._lastDrawingColor) Then
+				SetColor(_shadow.r, _shadow.g, _shadow.b)
+				SetAlpha(_shadow.a)
+				FlxG._lastDrawingColor = _shadow.argb
+			End if
+			
+			_driver.Draw(x+1, y+1)
 		End If
 	
 		If (_color.argb <> FlxG._lastDrawingColor) Then

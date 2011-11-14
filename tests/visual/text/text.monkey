@@ -29,6 +29,7 @@ Class TextTestState Extends FlxState
 	Method Create:Void()		
 		Local leftAlign:FlxText = New FlxText(10, 10, "Left align text")		
 		leftAlign.Size = 16
+		leftAlign.Shadow = FlxG.PINK
 		Add(leftAlign)
 	End Method
 	

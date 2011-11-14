@@ -6,7 +6,7 @@ package text
 	{			
 		override public function create():void 
 		{
-			var leftAlign:FlxText = new FlxText(10, 10, 200, "Left align text");
+			var leftAlign:FlxText = new FlxText(10, 10, 100, "Left align text");
 			leftAlign.size = 16
 			add(leftAlign);
 		}
