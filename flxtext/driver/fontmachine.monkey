@@ -150,8 +150,6 @@ Private
 			offset = Max(offsetN, offsetR)
 		End if
 		
-		If (offset < 0) offset = _text.Find("~r", 0)
-		
 		If (offset >= 0) Then
 			While (offset >= 0)			
 				_BuildLines(_text[prevOffset..offset])
