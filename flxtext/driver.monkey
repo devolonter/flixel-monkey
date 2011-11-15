@@ -21,13 +21,11 @@ Public
 		Return _filename
 	End Method
 	
-	Method SetFormat:Void(font:String, size:Int, alignment:Int)
-		SetFontName(font)
-		SetSize(size)
-		SetAlignment(alignment)
-	End Method
+	Method SetFormat:Void(fontName:String, size:Int, alignment:Int) Abstract
 	
 	Method GetName:String() Abstract
+	
+	Method SetWidth:Void(width:Int) Abstract
 	
 	Method SetFontName:Void(font:String) Abstract
 	

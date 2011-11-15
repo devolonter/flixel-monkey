@@ -29,27 +29,18 @@ Private
 	Field _shadow:Color	
 
 Public
-	Method New(x:Float, y:Float, text:String = "", driver:Int = DRIVER_FONTMACHINE)
+	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:Int = DRIVER_FONTMACHINE)
 		Super.New(x, y)
 		
 		_color = New Color()
 		_shadow = New Color(0)	
 		
-		SetDriver(driver)
+		_SetDriver(driver)
 		SetFromat(FlxG.DATA_PREFIX + "system")
-		Text = text			
-	End Method
-	
-	Method SetDriver:Void(driver:Int)
-		Select (driver)
-			Case DRIVER_FONTMACHINE
-				_driver = New FontMachineDriver()	
-		End Select
-	End Method
-	
-	Method GetDriver:TextDriver()
-		Return _driver
-	End Method
+		Text = text
+		
+		_driver.SetWidth(width)	
+	End Method	
 	
 	Method SetFromat:Void(font:String = "", size:Int = 8, color:Int = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Int = 0)
 		_driver.SetFormat(font, size, alignment)
@@ -126,6 +117,14 @@ Public
 	
 	Method ToString:String()
 		Return "FlxText"	
+	End Method
+	
+Private
+	Method _SetDriver:Void(driver:Int)
+		Select (driver)
+			Case DRIVER_FONTMACHINE
+				_driver = New FontMachineDriver()	
+		End Select
 	End Method
 	
 End Class
