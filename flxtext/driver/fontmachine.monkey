@@ -105,7 +105,7 @@ Public
 			_font.DrawText(_text, x, y)
 		Else		
 			For Local line:Int = 0 Until _countLines
-				_font.DrawText(_textLines.Get(line), x, y + line*_fontHeight)
+				_font.DrawText(_textLines.Get(line), x, y + line * _fontHeight)
 			Next
 		End If	
 	End Method
@@ -134,7 +134,7 @@ Private
 		_fontHeight = _font.GetFontHeight()
 	End Method
 	
-	Method _ParseText:Void()
+	Method _ParseText:Void()	
 		_multiline = False
 		_countLines = 0
 		_textLines.Clear()
@@ -182,7 +182,12 @@ Private
 
 		If (_width < textWidth) Then		
 			Local textLength:Int = text.Length
-			Local range:Int = Ceil(textLength/Float(Floor(textWidth/Float(_width))+1))+1
+			
+			Local range:Int = Ceil(textLength / Float(Floor(textWidth / Float(_width)) + 1))
+			Repeat
+				range+=1
+			Until(_font.GetTxtWidth(text[0..range]) >= _width)
+
 			Local maxOffset:Int = range
 			Local minOffset:Int = 0
 			Local offset:Int = maxOffset

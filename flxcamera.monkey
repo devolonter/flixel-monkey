@@ -147,9 +147,9 @@ Public
 	
 	Method Width:Void(width:Float) Property
 		_width = width
-		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
+		_realWidth = Min(Float(FlxG.DEVICE_WIDTH), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
 		
-		If (_realWidth <> FlxG.deviceWidth) Then
+		If (_realWidth <> FlxG.DEVICE_WIDTH) Then
 			_clipped = True
 		Else
 			_clipped = False
@@ -162,9 +162,9 @@ Public
 	
 	Method Height:Void(height:Float) Property
 		_height = height
-		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
+		_realHeight = Min(Float(FlxG.DEVICE_HEIGHT), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
 		
-		If (_realHeight <> FlxG.deviceHeight) Then
+		If (_realHeight <> FlxG.DEVICE_HEIGHT) Then
 			_clipped = True
 		Else
 			_clipped = False
@@ -192,8 +192,8 @@ Public
 	Method SetScale:Void(x:Float, y:Float)
 		_scaleX = x
 		_scaleY = y
-		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
-		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
+		_realWidth = Min(Float(FlxG.DEVICE_WIDTH), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
+		_realHeight = Min(Float(FlxG.DEVICE_HEIGHT), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
 	End Method
 	
 	Method Fill:Void(color:Color)

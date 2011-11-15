@@ -27,9 +27,9 @@ Class FlxG
 	
 	Const BLACK:Int = $FF000000	
 	
-	Global deviceWidth:Int
+	Global DEVICE_WIDTH:Int
 	
-	Global deviceHeight:Int
+	Global DEVICE_HEIGHT:Int
 	
 	Global width:Int
 	

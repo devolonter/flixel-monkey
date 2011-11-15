@@ -43,10 +43,10 @@ Public
 	Method OnCreate:Int()
 		SetUpdateRate(FlxG.framerate)
 		
-		FlxG.deviceWidth = DeviceWidth()
-		FlxG.deviceHeight = DeviceHeight()
-		FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
-		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)	
+		FlxG.DEVICE_WIDTH = DeviceWidth()
+		FlxG.DEVICE_HEIGHT = DeviceHeight()
+		FlxG._deviceScaleFactorX = FlxG.DEVICE_WIDTH / Float(FlxG.width)
+		FlxG._deviceScaleFactorY = FlxG.DEVICE_HEIGHT / Float(FlxG.height)	
 						
 		_Step()				
 		Return 0
