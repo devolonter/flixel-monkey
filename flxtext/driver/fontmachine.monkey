@@ -135,11 +135,14 @@ Private
 	End Method
 	
 	Method _BuildLines:Void()
-		Local textWidth:Int = _font.GetTxtWidth(_text)
+		_multiline = False
+		_countLines = 0
+		_textLines.Clear()
+		
+		Local textWidth:Int = _font.GetTxtWidth(_text)		
 
 		If (_width < textWidth) Then
 			_multiline = True
-			_textLines.Clear()
 		
 			Local textLength:Int = _text.Length
 			Local range:Int = Ceil(textLength/Float(Floor(textWidth/Float(_width))+1))+1
@@ -175,12 +178,8 @@ Private
 				End If 	
 			Forever
 			
-			_countLines = _textLines.Length()			
-			Return	
-		End If		
-		_multiline = False
-		_countLines = 0
-		_textLines.Clear()
+			_countLines = _textLines.Length()							
+		End If	
 	End Method
 	
 Public
