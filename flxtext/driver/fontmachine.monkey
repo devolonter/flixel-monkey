@@ -145,12 +145,16 @@ Private
 			Local range:Int = Ceil(textLength/Float(Floor(textWidth/Float(_width))+1))+1
 			Local maxOffset:Int = range
 			Local minOffset:Int = 0
-			Local offset:Int = maxOffset - 1
+			Local offset:Int = maxOffset
 			
 			Repeat
-				While (_text[offset] <> KEY_SPACE And offset > minOffset)						
+				Repeat
 					offset-=1
-				Wend
+					While (_text[offset] <> KEY_SPACE And offset > minOffset)						
+						offset-=1
+					Wend
+					If (offset <= minOffset) Exit
+				Until(_font.GetTxtWidth(_text[minOffset..offset]) <= _width)
 				
 				If (offset <= minOffset) Then
 					While(_font.GetTxtWidth(_text[minOffset..offset+1]) < _width And offset < textLength)
@@ -164,43 +168,19 @@ Private
 					minOffset = offset
 					
 					maxOffset = minOffset + range
-					offset = maxOffset - 1
+					offset = maxOffset
 				Else
 					_textLines.Push(_text[minOffset..])
 					Exit
 				End If 	
 			Forever
 			
-			_countLines = _textLines.Length()
-			
-			#rem
-			For Local line:Int = 0 Until _countLines
-				While (_text[offset] <> KEY_SPACE And offset > minOffset)						
-					offset-=1
-				Wend
-				
-				If (offset <= minOffset) Then
-					While(_font.GetTxtWidth(_text[minOffset..offset+1]) < _width And offset < textLength)
-						offset+=1
-					Wend	
-				End If
-				
-				If (line < _countLines - 1) Then
-					offset+=1
-					_textLines[line] = _text[minOffset..offset]					
-					minOffset = offset
-					
-					maxOffset = minOffset + range
-					offset = maxOffset - 1
-				Else
-					_textLines[line] = _text[minOffset..]
-				End If 
-			Next
-			#end
-			
+			_countLines = _textLines.Length()			
 			Return	
 		End If		
 		_multiline = False
+		_countLines = 0
+		_textLines.Clear()
 	End Method
 	
 Public
