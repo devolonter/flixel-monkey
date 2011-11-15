@@ -27,7 +27,7 @@ Class TextTestState Extends FlxState
 	Global CREATOR:FlxClassCreator = new TextTestStateCreator()
 	
 	Method Create:Void()		
-		Local leftAlign:FlxText = New FlxText(10, 10, 100, "Text align left")		
+		Local leftAlign:FlxText = New FlxText(10, 10, 130, "Text align left")		
 		leftAlign.Size = 16
 		leftAlign.Shadow = FlxG.PINK
 		Add(leftAlign)

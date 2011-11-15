@@ -208,9 +208,15 @@ Private
 				End If
 				
 				If (_font.GetTxtWidth(text[minOffset..]) > _width And textLength - minOffset > 1) Then
-					offset+=1
-					_textLines.Push(text[minOffset..offset])				
-					minOffset = offset
+					If (text[offset] <> KEY_SPACE) offset+=1
+					
+					_textLines.Push(text[minOffset..offset])
+					
+					If (text[offset] = KEY_SPACE) Then
+						minOffset = offset + 1	
+					Else
+						minOffset = offset
+					End If
 					
 					maxOffset = minOffset + range
 					offset = maxOffset
