@@ -2,7 +2,7 @@ Strict
 
 Import flixel.flxtext
 
-Class FontManager<T>
+Class FlxFontManager<T>
 
 Private	
 	Field _fonts:StringMap<T[]>

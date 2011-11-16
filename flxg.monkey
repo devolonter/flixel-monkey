@@ -51,7 +51,7 @@ Class FlxG
 	
 	Global _deviceScaleFactorY:Float = 1
 	
-	Global _bgColor:Color = Color.ARGB(FlxG.BLACK)		
+	Global _bgColor:FlxColor = FlxColor.ARGB(FlxG.BLACK)		
 	
 	Global _game:FlxGame
 	

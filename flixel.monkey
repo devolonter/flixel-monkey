@@ -1,6 +1,6 @@
 Strict
 
-Import ext.color
+Import plugin.monkey.flxcolor
 
 Import flxpoint
 Import flxrect

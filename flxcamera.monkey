@@ -1,6 +1,6 @@
 Strict
 
-Import ext.color
+Import plugin.monkey.flxcolor
 
 Import flxg
 Import flxpoint
@@ -57,7 +57,7 @@ Private
 	
 	Field _point:FlxPoint
 	
-	Field _color:Color
+	Field _color:FlxColor
 		
 	Field _scaleX:Float
 	
@@ -65,7 +65,7 @@ Private
 	
 	Field _clipped:Bool
 	
-	Field _bgColor:Color	
+	Field _bgColor:FlxColor	
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
@@ -79,8 +79,8 @@ Public
 		scroll = New FlxPoint()
 		_point = New FlxPoint()
 		bounds = Null
-		_bgColor = New Color(FlxG.BgColor())
-		_color = New Color()			
+		_bgColor = New FlxColor(FlxG.BgColor())
+		_color = New FlxColor()			
 	End Method
 	
 	Method Lock:Void()
@@ -197,7 +197,7 @@ Public
 	End Method
 	
 	Method Fill:Void(color:Color)
-		SetColor(color.r, color.g, color.b)
+		SetColor(FlxColor.r, FlxColor.g, FlxColor.b)
 		DrawRect(x, y, width, height)
 		SetColor(255, 255, 255)
 	End Method

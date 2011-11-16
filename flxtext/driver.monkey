@@ -2,7 +2,7 @@ Strict
 
 Import flixel.flxg
 
-Class TextDriver
+Class FlxTextDriver
 
 	Field name:String
 	

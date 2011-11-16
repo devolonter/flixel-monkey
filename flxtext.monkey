@@ -1,6 +1,6 @@
 Strict
 
-Import ext.color
+Import plugin.monkey.flxcolor
 
 Import flxsprite
 Import flxtext.driver
@@ -23,23 +23,23 @@ Class FlxText Extends FlxSprite
 	Const DRIVER_ANGELFONT:Int = 2
 	
 Private
-	Field _driver:TextDriver
+	Field _driver:FlxTextDriver
 	
-	Field _color:Color
-	Field _shadow:Color	
+	Field _color:FlxColor
+	Field _shadow:FlxColor	
 
 Public
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:Int = DRIVER_FONTMACHINE)
 		Super.New(x, y)
 		
-		_color = New Color()
-		_shadow = New Color(0)	
-		
+		_color = New FlxColor()
+		_shadow = New FlxColor(0)	
+			
 		_SetDriver(driver)
-		SetFromat(FlxG.DATA_PREFIX + "system")
-		Text = text
 		
-		_driver.SetWidth(width)	
+		_driver.SetWidth(width)
+		SetFromat(FlxG.DATA_PREFIX + "system")
+		Text = text		
 	End Method	
 	
 	Method SetFromat:Void(font:String = "", size:Int = 8, color:Int = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Int = 0)
@@ -112,6 +112,7 @@ Public
 			SetAlpha(_color.a)
 			FlxG._lastDrawingColor = _color.argb
 		End If
+		
 		_driver.Draw(x, y)
 	End Method
 	
@@ -123,7 +124,7 @@ Private
 	Method _SetDriver:Void(driver:Int)
 		Select (driver)
 			Case DRIVER_FONTMACHINE
-				_driver = New FontMachineDriver()	
+				_driver = New FlxTextFontMachineDriver()	
 		End Select
 	End Method
 	

@@ -2,7 +2,7 @@ Strict
 
 Import mojo
 
-Class Color	
+Class FlxColor	
 
 Public
 	Field r:Float
@@ -19,17 +19,17 @@ Public
 		_parseARGB(argb)		
 	End Method
 	
-	Function ARGB:Color(argb:Int = $FFFFFFFF)
-		Return New Color(argb)
+	Function ARGB:FlxColor(argb:Int = $FFFFFFFF)
+		Return New FlxColor(argb)
 	End Function
 	
-	Function SetColor:Void(color:Color)
-		graphics.SetColor(color.r, color.g, color.b)
-		graphics.SetAlpha(color.a)
+	Function SetColor:Void(color:FlxColor)
+		graphics.SetColor(FlxColor.r, FlxColor.g, FlxColor.b)
+		graphics.SetAlpha(FlxColor.a)
 	End Function
 	
-	Function Cls:Void(color:Color)
-		graphics.Cls(color.r, color.g, color.b)
+	Function Cls:Void(color:FlxColor)
+		graphics.Cls(FlxColor.r, FlxColor.g, FlxColor.b)
 	End Function
 	
 Private

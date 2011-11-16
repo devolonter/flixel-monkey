@@ -26,7 +26,7 @@ Import "../../data/flx_system_fm_font_15_P_1.png"
 Import "../../data/flx_system_fm_font_16.txt"
 Import "../../data/flx_system_fm_font_16_P_1.png"
 
-Class FontMachineDriver Extends TextDriver	
+Class FlxTextFontMachineDriver Extends FlxTextDriver	
 
 Private	
 	Field _width:Int
@@ -238,5 +238,5 @@ Public
 End Class
 
 Private
-	Global _fontManager:FontManager<BitmapFont> = New FontManager<BitmapFont>()
+	Global _fontManager:FlxFontManager<BitmapFont> = New FlxFontManager<BitmapFont>()
 	Global _defaultFont:BitmapFont
