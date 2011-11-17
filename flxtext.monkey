@@ -1,26 +1,27 @@
 Strict
 
-Import plugin.monkey.flxcolor
-
 Import flxsprite
 Import flxtext.driver
 Import flxtext.driver.fontmachine
 Import flxg
 
+Import plugin.monkey.flxcolor
+Import plugin.monkey.flxassetsmanager
+
 Class FlxText Extends FlxSprite
 
 	Global CREATOR:FlxClassCreator = new FlxTextCreator()
-	
-	Const MIN_SIZE:Int = 8
-	Const MAX_SIZE:Int = 16
 	
 	Const ALIGN_LEFT:Float = 0
 	Const ALIGN_RIGHT:Float = 1
 	Const ALIGN_CENTER:Float = .5
 	
 	Const DRIVER_NATIVE:Int = 0
-	Const DRIVER_FONTMACHINE:Int = 1
+	Const DRIVER_FONTMACHINE:Int = 1	
+	'ANGELFONT must be last
 	Const DRIVER_ANGELFONT:Int = 2
+	
+	Const SYSTEM_FONT:String = "system"
 	
 Private
 	Field _driver:FlxTextDriver
@@ -38,12 +39,12 @@ Public
 		_SetDriver(driver)
 		
 		_driver.SetWidth(width)
-		SetFromat(FlxG.DATA_PREFIX + "system")
+		SetFromat(SYSTEM_FONT)
 		Text = text		
 	End Method	
 	
-	Method SetFromat:Void(font:String = "", size:Int = 8, color:Int = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Int = 0)
-		_driver.SetFormat(font, size, alignment)
+	Method SetFromat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Int = 0)
+		_driver.SetFormat(font, FlxAssetsManager.ClampFontSize(font, size), alignment)
 		Self.Color = color
 		Shadow = shadowColor
 	End Method
@@ -57,7 +58,7 @@ Public
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.SetSize(size)
+		_driver.SetSize(FlxAssetsManager.ClampFontSize(_driver.GetFontName(), size))
 	End Method
 	
 	Method Size:Int() Property

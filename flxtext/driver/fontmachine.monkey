@@ -7,24 +7,24 @@ Import flixel.flxtext.fontmanager
 Import mojo
 Import fontmachine.fontmachine
 
-Import "../../data/flx_system_fm_font_8.txt"
-Import "../../data/flx_system_fm_font_8_P_1.png"
-Import "../../data/flx_system_fm_font_9.txt"
-Import "../../data/flx_system_fm_font_9_P_1.png"
-Import "../../data/flx_system_fm_font_10.txt"
-Import "../../data/flx_system_fm_font_10_P_1.png"
-Import "../../data/flx_system_fm_font_11.txt"
-Import "../../data/flx_system_fm_font_11_P_1.png"
-Import "../../data/flx_system_fm_font_12.txt"
-Import "../../data/flx_system_fm_font_12_P_1.png"
-Import "../../data/flx_system_fm_font_13.txt"
-Import "../../data/flx_system_fm_font_13_P_1.png"
-Import "../../data/flx_system_fm_font_14.txt"
-Import "../../data/flx_system_fm_font_14_P_1.png"
-Import "../../data/flx_system_fm_font_15.txt"
-Import "../../data/flx_system_fm_font_15_P_1.png"
-Import "../../data/flx_system_fm_font_16.txt"
-Import "../../data/flx_system_fm_font_16_P_1.png"
+Import "../../data/flx_system_font_fontmachine_8.txt"
+Import "../../data/flx_system_font_fontmachine_8_P_1.png"
+Import "../../data/flx_system_font_fontmachine_9.txt"
+Import "../../data/flx_system_font_fontmachine_9_P_1.png"
+Import "../../data/flx_system_font_fontmachine_10.txt"
+Import "../../data/flx_system_font_fontmachine_10_P_1.png"
+Import "../../data/flx_system_font_fontmachine_11.txt"
+Import "../../data/flx_system_font_fontmachine_11_P_1.png"
+Import "../../data/flx_system_font_fontmachine_12.txt"
+Import "../../data/flx_system_font_fontmachine_12_P_1.png"
+Import "../../data/flx_system_font_fontmachine_13.txt"
+Import "../../data/flx_system_font_fontmachine_13_P_1.png"
+Import "../../data/flx_system_font_fontmachine_14.txt"
+Import "../../data/flx_system_font_fontmachine_14_P_1.png"
+Import "../../data/flx_system_font_fontmachine_15.txt"
+Import "../../data/flx_system_font_fontmachine_15_P_1.png"
+Import "../../data/flx_system_font_fontmachine_16.txt"
+Import "../../data/flx_system_font_fontmachine_16_P_1.png"
 
 Class FlxTextFontMachineDriver Extends FlxTextDriver	
 
@@ -37,8 +37,8 @@ Private
 	Field _font:BitmapFont
 	
 	Field _fontName:String
-	Field _fontHeight:Int = 0	
-	Field _size:Int = FlxText.MIN_SIZE
+	Field _fontHeight:Int	
+	Field _size:Int
 	Field _alignment:Float
 
 Public

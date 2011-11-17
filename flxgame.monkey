@@ -7,8 +7,10 @@ Import flxbasic
 Import flxstate
 Import flxcamera
 Import flxtimer
+Import flxtext
 
 Import plugin.timermanager
+Import plugin.monkey.flxassetsmanager
 
 Class FlxGame extends App
 
@@ -46,8 +48,9 @@ Public
 		FlxG.DEVICE_WIDTH = DeviceWidth()
 		FlxG.DEVICE_HEIGHT = DeviceHeight()
 		FlxG._deviceScaleFactorX = FlxG.DEVICE_WIDTH / Float(FlxG.width)
-		FlxG._deviceScaleFactorY = FlxG.DEVICE_HEIGHT / Float(FlxG.height)	
-						
+		FlxG._deviceScaleFactorY = FlxG.DEVICE_HEIGHT / Float(FlxG.height)		
+		
+		_InitData()				
 		_Step()				
 		Return 0
 	End Method
@@ -117,5 +120,17 @@ Private
 		FlxG.UpdatePlugins()		
 		_state.Update()
 		FlxG.UpdateCameras()
+	End Method
+	
+	Method _InitData:Void()
+		FlxAssetsManager.Init()
+		
+		Local minSystemFontSize:Int = 8
+		Local maxSystemFontSize:Int = 16
+		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_font"
+		
+		For Local size:Int = minSystemFontSize To maxSystemFontSize
+			FlxAssetsManager.RegisterFont(FlxText.SYSTEM_FONT, size, fontPathPrefix + "_fontmachine_" + size + ".txt")
+		Next	
 	End Method
 End Class
