@@ -5,9 +5,9 @@ Import fontmachine.fontmachine
 
 Import flixel.flxtext
 Import flixel.flxtext.driver
-Import flixel.flxtext.fontmanager
 
 Import flixel.plugin.monkey.flxassetsmanager
+Import flixel.plugin.monkey.flxresourcesmanager
 
 Import "../../data/flx_system_font_fontmachine_8.txt"
 Import "../../data/flx_system_font_fontmachine_8_P_1.png"
@@ -28,7 +28,9 @@ Import "../../data/flx_system_font_fontmachine_15_P_1.png"
 Import "../../data/flx_system_font_fontmachine_16.txt"
 Import "../../data/flx_system_font_fontmachine_16_P_1.png"
 
-Class FlxTextFontMachineDriver Extends FlxTextDriver	
+Class FlxTextFontMachineDriver Extends FlxTextDriver
+
+	Global LOADER:FlxFMDriverLoader = New FlxFMDriverLoader()
 
 Private	
 	Field _font:BitmapFont	
@@ -99,24 +101,11 @@ Public
 	End Method			
 	
 Private
-	Method _InitFont:Void(fontFamily:String, size:Int)
-		_font = _fontManager.GetFont(fontFamily, size)		
+	Method _InitFont:Void(fontFamily:String, fontSize:Int)
+		LOADER.fontFamily = fontFamily
+		LOADER.fontSize = fontSize
 		
-		If (_font = Null) Then
-			_font = New BitmapFont(FlxAssetsManager.GetFontPath(fontFamily, size), False)
-			
-			If (_font = Null And _defaultFont = Null) Then
-				Error ("Font " + fontFamily +  " can't be loaded")
-			ElseIf (_font = Null) Then
-				_font = _defaultFont
-				_fontHeight = _font.GetFontHeight()
-				Return
-			End If
-			
-			_fontManager.AddFont(fontFamily, size, _font)
-			If (_defaultFont = Null) _defaultFont = _font			
-		End If
-		
+		_font = _fontsManager.GetResource(fontFamily + fontSize, LOADER)		
 		_fontHeight = _font.GetFontHeight()
 	End Method	
 	
@@ -126,5 +115,15 @@ Public
 End Class
 
 Private
-	Global _fontManager:FlxFontManager<BitmapFont> = New FlxFontManager<BitmapFont>()
-	Global _defaultFont:BitmapFont
+Class FlxFMDriverLoader Extends FlxResourceLoader<BitmapFont>
+	
+	Field fontFamily:String = FlxText.SYSTEM_FONT
+	Field fontSize:Int
+	
+	Method Load:T(name:String)
+		Return New BitmapFont(FlxAssetsManager.GetFontPath(fontFamily, fontSize), False)			
+	End Method
+
+End Class
+
+Global _fontsManager:FlxResourcesManager<BitmapFont> = New FlxResourcesManager<BitmapFont>()

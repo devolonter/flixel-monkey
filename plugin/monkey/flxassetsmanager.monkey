@@ -4,12 +4,12 @@ Import flixel.flxtext
 
 Class FlxAssetsManager
 
-	Global _fonts:FlxFontsList[] = New FlxFontsList[FlxText.DRIVER_ANGELFONT+1]
+	Global _fonts:FlxAssetsFontsList[] = New FlxAssetsFontsList[FlxText.DRIVER_ANGELFONT+1]
 	
 	Function Init:Void()
 		Local l:Int = _fonts.Length()
 		For Local i:Int = 0 Until l
-			_fonts[i] = New FlxFontsList()
+			_fonts[i] = New FlxAssetsFontsList()
 		Next
 	End Function
 	
@@ -32,7 +32,7 @@ Class FlxAssetsManager
 End Class
 
 Private
-Class FlxFontsList Extends StringMap<String>
+Class FlxAssetsFontsList Extends StringMap<String>
 
 	Method New()
 		_fontSizes = New StringMap<FlxFontSizes>()
