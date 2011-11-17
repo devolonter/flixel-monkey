@@ -38,7 +38,7 @@ Public
 			
 		_SetDriver(driver)
 		
-		_driver.SetWidth(width)
+		_driver.Width = width
 		SetFromat(SYSTEM_FONT)
 		Text = text		
 	End Method	
@@ -50,19 +50,19 @@ Public
 	End Method
 	
 	Method Text:String() Property
-		Return _driver.GetText()
+		Return _driver.Text
 	End Method
 	
 	Method Text:Void(text:String) Property
-		_driver.SetText(text)
+		_driver.Text = text
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.SetSize(FlxAssetsManager.GetValidFontSize(_driver.GetFontName(), size))
+		_driver.SetFontSize(FlxAssetsManager.GetValidFontSize(_driver.GetFontFamily(), size))
 	End Method
 	
 	Method Size:Int() Property
-		Return _driver.GetSize()
+		Return _driver.GetFontSize()
 	End Method
 	
 	Method Color:Int() Property
@@ -74,19 +74,19 @@ Public
 	End Method
 	
 	Method Font:String() Property
-		Return _driver.GetFontName()
+		Return _driver.GetFontFamily()
 	End Method
 	
 	Method Font:Void(font:String) Property
-		_driver.SetFontName(font)
+		_driver.SetFontFamily(font)
 	End Method
 	
 	Method Alignment:Float() Property
-		Return _driver.GetAligment()
+		Return _driver.GetTextAligment()
 	End Method
 	
 	Method Alignment:Void(alignment:Float) Property
-		_driver.SetAlignment(alignment)
+		_driver.SetTextAlignment(alignment)
 	End Method
 	
 	Method Shadow:Int() Property

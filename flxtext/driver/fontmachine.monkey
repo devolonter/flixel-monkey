@@ -31,14 +31,8 @@ Import "../../data/flx_system_font_fontmachine_16_P_1.png"
 Class FlxTextFontMachineDriver Extends FlxTextDriver	
 
 Private	
-	Field _width:Int
-	Field _text:String
-	Field _textLines:StringStack
-	Field _multiline:Bool
-	Field _countLines:Int
-	Field _font:BitmapFont
-	
-	Field _fontName:String
+	Field _font:BitmapFont	
+	Field _fontFamily:String
 	Field _fontHeight:Int	
 	Field _size:Int
 	Field _alignment:Float
@@ -48,58 +42,47 @@ Public
 		_textLines = New StringStack();
 	End Method
 	
-	Method SetFormat:Void(fontName:String, size:Int, alignment:Int)		
-		SetAlignment(alignment)
-		_fontName = fontName
+	Method SetFormat:Void(fontFamily:String, size:Int, alignment:Int)		
+		SetTextAlignment(alignment)
+		_fontFamily = fontFamily
 		_size = size
-		_InitFont(fontName, size)
-		If (_text.Length > 0) _ParseText()
-	End Method	
-
-	Method GetName:String()
-		Return "fm"
+		_InitFont(fontFamily, size)
+		
+		Super.SetFormat(fontFamily, size, alignment)
 	End Method
 	
-	Method SetWidth:Void(width:Int)
-		_width = width
-		If (_text.Length > 0) _ParseText()
+	Method SetFontFamily:Void(fontFamily:String)
+		_fontFamily = fontFamily
+		_InitFont(fontFamily, _size)
+		
+		Super.SetFontFamily(fontFamily)			
 	End Method
 	
-	Method SetFontName:Void(fontName:String)
-		_fontName = fontName
-		_InitFont(fontName, _size)
-		If (_text.Length > 0) _ParseText()			
+	Method GetFontFamily:String()
+		Return _fontFamily
 	End Method
 	
-	Method GetFontName:String()
-		Return _fontName
-	End Method
-	
-	Method SetSize:Void(size:Int)
+	Method SetFontSize:Void(size:Int)
 		_size = size
-		_InitFont(_fontName, size)
-		If (_text.Length > 0) _ParseText()	
+		_InitFont(_fontFamily, size)
+		
+		Super.SetFontSize(size)
 	End Method
 	
-	Method GetSize:Int()
+	Method GetFontSize:Int()
 		Return _size
 	End Method
 	
-	Method SetText:Void(text:String)
-		_text = text
-		If (_width <> 0) _ParseText()
-	End Method	
-	
-	Method GetText:String()
-		Return _text
-	End Method
-	
-	Method SetAlignment:Void(alignment:Float)
+	Method SetTextAlignment:Void(alignment:Float)
 		_alignment = alignment
 	End Method	
 	
-	Method GettAlignment:Float()
+	Method GetTextAlignment:Float()
 		Return _alignment
+	End Method
+	
+	Method GetTextWidth:Int(text:String)
+		Return _font.GetTxtWidth(text)
 	End Method
 	
 	Method Draw:Void(x:Float, y:Float)
@@ -116,124 +99,26 @@ Public
 	End Method			
 	
 Private
-	Method _InitFont:Void(fontName:String, size:Int)
-		_font = _fontManager.GetFont(fontName, size)		
+	Method _InitFont:Void(fontFamily:String, size:Int)
+		_font = _fontManager.GetFont(fontFamily, size)		
 		
 		If (_font = Null) Then
-			_font = New BitmapFont(FlxAssetsManager.GetFontPath(fontName, size), False)
+			_font = New BitmapFont(FlxAssetsManager.GetFontPath(fontFamily, size), False)
 			
 			If (_font = Null And _defaultFont = Null) Then
-				Error ("Font " + fontName +  " can't be loaded")
+				Error ("Font " + fontFamily +  " can't be loaded")
 			ElseIf (_font = Null) Then
 				_font = _defaultFont
 				_fontHeight = _font.GetFontHeight()
 				Return
 			End If
 			
-			_fontManager.AddFont(fontName, size, _font)
+			_fontManager.AddFont(fontFamily, size, _font)
 			If (_defaultFont = Null) _defaultFont = _font			
 		End If
 		
 		_fontHeight = _font.GetFontHeight()
-	End Method
-	
-	Method _ParseText:Void()	
-		_multiline = False
-		_countLines = 0
-		_textLines.Clear()
-		
-		Local prevOffset:Int = 0
-		Local offsetN:Int = _text.Find("~n", 0)
-		Local offsetR:Int = _text.Find("~r", 0)
-		Local offset:Int = 0
-		
-		If (offsetN >= 0 And offsetR >= 0) Then
-			offset = Min(offsetN, offsetR)
-		Else
-			offset = Max(offsetN, offsetR)
-		End if
-		
-		If (offset >= 0) Then
-			While (offset >= 0)			
-				_BuildLines(_text[prevOffset..offset])
-				
-				prevOffset = offset+1
-				
-				offsetN = _text.Find("~n", prevOffset)
-				offsetR = _text.Find("~r", prevOffset)
-								
-				If (offsetN >= 0 And offsetR >= 0) Then
-					offset = Min(offsetN, offsetR)
-				Else
-					offset = Max(offsetN, offsetR)
-				End if
-			Wend
-			
-			_BuildLines(_text[prevOffset..])
-		Else
-			_BuildLines(_text)	
-		End If		 
-		
-		If (_textLines.Length() > 0) Then
-			_multiline = True
-			_countLines = _textLines.Length()		
-		End If
-	End Method
-	
-	Method _BuildLines:Void(text:String)		
-		Local textWidth:Int = _font.GetTxtWidth(text)		
-
-		If (_width < textWidth) Then		
-			Local textLength:Int = text.Length
-			
-			Local range:Int = Ceil(textLength / Float(Floor(textWidth / Float(_width)) + 1))
-			Repeat
-				range+=1
-			Until(_font.GetTxtWidth(text[0..range]) >= _width)
-
-			Local maxOffset:Int = range
-			Local minOffset:Int = 0
-			Local offset:Int = maxOffset
-			
-			Repeat
-				Repeat
-					offset-=1
-					While (text[offset] <> KEY_SPACE And offset > minOffset)						
-						offset-=1
-					Wend
-					If (offset <= minOffset) Exit
-				Until(_font.GetTxtWidth(text[minOffset..offset]) <= _width)
-				
-				If (offset <= minOffset) Then
-					While(_font.GetTxtWidth(text[minOffset..offset+1]) < _width And offset < textLength)
-						offset+=1
-					Wend	
-				End If
-				
-				If (_font.GetTxtWidth(text[minOffset..]) > _width And textLength - minOffset > 1) Then
-					If (text[offset] <> KEY_SPACE) offset+=1
-					
-					_textLines.Push(text[minOffset..offset])
-					
-					If (text[offset] = KEY_SPACE) Then
-						minOffset = offset + 1	
-					Else
-						minOffset = offset
-					End If
-					
-					maxOffset = minOffset + range
-					offset = maxOffset
-				Else
-					_textLines.Push(text[minOffset..])
-					Exit
-				End If 	
-			Forever
-			
-			_countLines = _textLines.Length()
-		Else
-			_textLines.Push(text)							
-		End If	
-	End Method
+	End Method	
 	
 Public
 		
