@@ -33,48 +33,10 @@ Class FlxTextFontMachineDriver Extends FlxTextDriver
 	Global LOADER:FlxFMDriverLoader = New FlxFMDriverLoader()
 
 Private	
-	Field _font:BitmapFont	
-	Field _fontFamily:String
-	Field _fontHeight:Int	
-	Field _size:Int
-	Field _alignment:Float
+	Field _font:BitmapFont
+	Field _fontHeight:Int
 
-Public
-	Method New()
-		_textLines = New StringStack();
-	End Method
-	
-	Method SetFormat:Void(fontFamily:String, size:Int, alignment:Int)		
-		SetTextAlignment(alignment)
-		_fontFamily = fontFamily
-		_size = size
-		_InitFont(fontFamily, size)
-		
-		Super.SetFormat(fontFamily, size, alignment)
-	End Method
-	
-	Method SetFontFamily:Void(fontFamily:String)
-		_fontFamily = fontFamily
-		_InitFont(fontFamily, _size)
-		
-		Super.SetFontFamily(fontFamily)			
-	End Method
-	
-	Method GetFontFamily:String()
-		Return _fontFamily
-	End Method
-	
-	Method SetFontSize:Void(size:Int)
-		_size = size
-		_InitFont(_fontFamily, size)
-		
-		Super.SetFontSize(size)
-	End Method
-	
-	Method GetFontSize:Int()
-		Return _size
-	End Method
-	
+Public	
 	Method SetTextAlignment:Void(alignment:Float)
 		_alignment = alignment
 	End Method	
@@ -88,29 +50,25 @@ Public
 	End Method
 	
 	Method Draw:Void(x:Float, y:Float)
-		If (Not _multiline) Then
+		If (_countLines = 1) Then
 			_font.DrawText(_text, x, y)
 		Else		
 			For Local line:Int = 0 Until _countLines
-				_font.DrawText(_textLines.Get(line), x, y + line * _fontHeight)
+				_font.DrawText(_textLines.Get(line).text, x, y + line * _fontHeight)
 			Next
 		End If	
 	End Method
 	
 	Method Destroy:Void()
 	End Method			
-	
-Private
-	Method _InitFont:Void(fontFamily:String, fontSize:Int)
-		LOADER.fontFamily = fontFamily
-		LOADER.fontSize = fontSize
+
+	Method Reset:Void()
+		LOADER.fontFamily = _fontFamily
+		LOADER.fontSize = _size
 		
-		_font = _fontsManager.GetResource(fontFamily + fontSize, LOADER)		
+		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)		
 		_fontHeight = _font.GetFontHeight()
 	End Method	
-	
-Public
-		
 
 End Class
 

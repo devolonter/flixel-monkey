@@ -58,11 +58,11 @@ Public
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.SetFontSize(FlxAssetsManager.GetValidFontSize(_driver.GetFontFamily(), size))
+		_driver.Size = FlxAssetsManager.GetValidFontSize(_driver.Font, size)
 	End Method
 	
 	Method Size:Int() Property
-		Return _driver.GetFontSize()
+		Return _driver.Size
 	End Method
 	
 	Method Color:Int() Property
@@ -74,19 +74,19 @@ Public
 	End Method
 	
 	Method Font:String() Property
-		Return _driver.GetFontFamily()
+		Return _driver.Font
 	End Method
 	
 	Method Font:Void(font:String) Property
-		_driver.SetFontFamily(font)
+		_driver.Font = font
 	End Method
 	
 	Method Alignment:Float() Property
-		Return _driver.GetTextAligment()
+		Return _driver.Alignment
 	End Method
 	
 	Method Alignment:Void(alignment:Float) Property
-		_driver.SetTextAlignment(alignment)
+		_driver.Alignment = alignment
 	End Method
 	
 	Method Shadow:Int() Property

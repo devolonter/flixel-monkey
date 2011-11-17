@@ -3,17 +3,22 @@ Strict
 Import flixel.flxg
 
 Class FlxTextDriver
-
-	Field name:String	
 	
-	'private
+'private
 	Field _width:Int
 	Field _text:String
-	Field _textLines:StringStack
-	Field _multiline:Bool
+	Field _textLines:Stack<FlxTextDriverTextLine>
 	Field _countLines:Int
+	
+	Field _fontFamily:String		
+	Field _size:Int
+	Field _alignment:Float
 
 Public
+	Method New()
+		_textLines = New Stack<FlxTextDriverTextLine>();
+	End Method
+
 	Method Width:Void(width:Int) Property
 		_width = width
 		If (_text.Length > 0) _ParseText()
@@ -29,36 +34,55 @@ Public
 	End Method
 	
 	Method SetFormat:Void(fontFamily:String, size:Int, alignment:Int)
+		_alignment = alignment
+		_fontFamily = fontFamily
+		_size = size
+		Reset()	
+			
 		If (_text.Length > 0) _ParseText()
 	End Method
 	
-	Method SetFontFamily:Void(fontFamily:String)
+	Method Font:Void(fontFamily:String) Property
+		_fontFamily = fontFamily	
+		Reset()
+		
+		If (_text.Length > 0) _ParseText()
+	End Method
+	
+	Method Font:String() Property
+		Return _fontFamily
+	End Method	
+	
+	Method Size:Void(size:Int) Property
+		_size = size
+		Reset()
+		
 		If (_text.Length > 0) _ParseText()
 	End Method	
 	
-	Method SetFontSize:Void(size:Int)
-		If (_text.Length > 0) _ParseText()
+	Method Size:Int() Property
+		Return _size
 	End Method
 	
-	Method GetFontFamily:String() Abstract
+	Method Alignment:Void() Property
+		_alignment = aligment
+	End Method
 	
-	Method GetFontSize:Int() Abstract
-	
-	Method SetTextAlignment:Void(alignment:Float) Abstract	
-	
-	Method GettTextAlignment:Float() Abstract
+	Method Alignment:Float() Property
+		Return _alignment
+	End Method	
 	
 	Method GetTextWidth:Int(text:String) Abstract
+	
+	Method Reset:Void() Abstract
 
 	Method Draw:Void(x:Float, y:Float) Abstract
 	
 	Method Destroy:Void() Abstract	
 	
 Private
-	Method _ParseText:Void()	
-		_multiline = False
-		_countLines = 0
-		_textLines.Clear()
+	Method _ParseText:Void()
+		_countLines = 1
 		
 		Local prevOffset:Int = 0
 		Local offsetN:Int = _text.Find("~n", 0)
@@ -88,13 +112,8 @@ Private
 			Wend
 			
 			_BuildLines(_text[prevOffset..])
-		Else
+		Else			
 			_BuildLines(_text)	
-		End If		 
-		
-		If (_textLines.Length() > 0) Then
-			_multiline = True
-			_countLines = _textLines.Length()		
 		End If
 	End Method
 	
@@ -112,6 +131,7 @@ Private
 			Local maxOffset:Int = range
 			Local minOffset:Int = 0
 			Local offset:Int = maxOffset
+			Local linesCapacity:Int = _textLines.Length()
 			
 			Repeat
 				Repeat
@@ -126,12 +146,16 @@ Private
 					While(GetTextWidth(text[minOffset..offset+1]) < _width And offset < textLength)
 						offset+=1
 					Wend	
-				End If
+				End If								
 				
 				If (GetTextWidth(text[minOffset..]) > _width And textLength - minOffset > 1) Then
 					If (text[offset] <> KEY_SPACE) offset+=1
 					
-					_textLines.Push(text[minOffset..offset])
+					If (_countLines > linesCapacity) Then
+						_textLines.Push(New FlxTextDriverTextLine(text[minOffset..offset]))						
+					Else
+						_textLines.Get(_countLines - 1).text = text[minOffset..offset]
+					End If
 					
 					If (text[offset] = KEY_SPACE) Then
 						minOffset = offset + 1	
@@ -141,16 +165,29 @@ Private
 					
 					maxOffset = minOffset + range
 					offset = maxOffset
+					_countLines+=1
 				Else
-					_textLines.Push(text[minOffset..])
+					If (_countLines > linesCapacity) Then
+						_textLines.Push(New FlxTextDriverTextLine(text[minOffset..]))
+					Else
+						_textLines.Get(_countLines).text = text[minOffset..]
+					End If			
 					Exit
-				End If 	
-			Forever
-			
-			_countLines = _textLines.Length()
-		Else
-			_textLines.Push(text)							
+				End If
+			Forever						
 		End If	
+	End Method
+	
+End Class
+
+Private
+Class FlxTextDriverTextLine
+
+	Field text:String
+	Field offsetX:Float
+	
+	Method New(text:String)
+		Self.text = text
 	End Method
 	
 End Class
