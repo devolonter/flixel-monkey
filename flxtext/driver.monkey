@@ -6,6 +6,7 @@ Class FlxTextDriver
 	
 'private
 	Field _width:Int
+	Field _offsetX:Float
 	Field _text:String
 	Field _textLines:Stack<FlxTextDriverTextLine>
 	Field _countLines:Int
@@ -33,7 +34,7 @@ Public
 		Return _text
 	End Method
 	
-	Method SetFormat:Void(fontFamily:String, size:Int, alignment:Int)
+	Method SetFormat:Void(fontFamily:String, size:Int, alignment:Float)
 		_alignment = alignment
 		_fontFamily = fontFamily
 		_size = size
@@ -64,8 +65,18 @@ Public
 		Return _size
 	End Method
 	
-	Method Alignment:Void() Property
+	Method Alignment:Void(aligment:Float) Property
 		_alignment = aligment
+		
+		If (_text.Length > 0) Then
+			If (_countLines <= 1) Then
+				_offsetX = (_width - GetTextWidth(_text)) * _alignment
+			Else		
+				For Local line:Int = 0 Until _countLines
+					_textLines.Get(line).offsetX = (_width - GetTextWidth(_textLines.Get(line).text)) * _alignment
+				Next
+			End If	
+		End If
 	End Method
 	
 	Method Alignment:Float() Property
@@ -115,6 +126,8 @@ Private
 		Else			
 			_BuildLines(_text)	
 		End If
+		
+		Alignment = _alignment 'recalc alignment
 	End Method
 	
 	Method _BuildLines:Void(text:String)		

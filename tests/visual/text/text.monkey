@@ -1,4 +1,4 @@
-Strict
+﻿Strict
 
 Import flixel
 
@@ -27,9 +27,8 @@ Class TextTestState Extends FlxState
 	Global CREATOR:FlxClassCreator = new TextTestStateCreator()
 	
 	Method Create:Void()		
-		Local leftAlign:FlxText = New FlxText(10, 10, 540, "Text align left")		
-		leftAlign.Size = 16
-		leftAlign.Shadow = FlxG.PINK
+		Local leftAlign:FlxText = New FlxText(10, 10, 540, "Flixel is an open source game-making library that is completely free for personal or commercial use. Written entirely in ActionScript 3 by Adam “Atomic” Saltsman, and designed to be used with free development tools, Flixel is easy to learn, extend and customize. Flixel has been used in hundreds of games, including IGF nominees, Adult Swim games, and avant-garde experiments. Many Flixel users make their first game ever in Flixel.")	
+		leftAlign.SetFromat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER, FlxG.PINK)	
 		Add(leftAlign)
 	End Method
 	

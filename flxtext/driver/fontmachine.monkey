@@ -37,24 +37,16 @@ Private
 	Field _fontHeight:Int
 
 Public	
-	Method SetTextAlignment:Void(alignment:Float)
-		_alignment = alignment
-	End Method	
-	
-	Method GetTextAlignment:Float()
-		Return _alignment
-	End Method
-	
 	Method GetTextWidth:Int(text:String)
 		Return _font.GetTxtWidth(text)
 	End Method
 	
 	Method Draw:Void(x:Float, y:Float)
-		If (_countLines = 1) Then
-			_font.DrawText(_text, x, y)
-		Else		
+		If (_countLines <= 1) Then
+			_font.DrawText(_text, x + _offsetX, y)
+		Else			
 			For Local line:Int = 0 Until _countLines
-				_font.DrawText(_textLines.Get(line).text, x, y + line * _fontHeight)
+				_font.DrawText(_textLines.Get(line).text, x + _textLines.Get(line).offsetX, y + line * _fontHeight)
 			Next
 		End If	
 	End Method
@@ -67,8 +59,8 @@ Public
 		LOADER.fontSize = _size
 		
 		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)		
-		_fontHeight = _font.GetFontHeight()
-	End Method	
+		_fontHeight = _font.GetFontHeight()	
+	End Method
 
 End Class
 
