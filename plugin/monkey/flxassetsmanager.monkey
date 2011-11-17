@@ -22,17 +22,21 @@ Class FlxAssetsManager
 	End Function
 	
 	Function GetFontPath:String(name:String, size:Int, driver:Int = FlxText.DRIVER_FONTMACHINE)
-		_fonts[driver].GetFontPath(name, size)	
+		Return _fonts[driver].GetFontPath(name, size)	
 	End Function
 	
-	Function ClampFontSize:Int(name:String, size:Int, driver:Int = FlxText.DRIVER_FONTMACHINE)
-		Return _fonts[driver].ClampFontSize(name, size)
+	Function GetValidFontSize:Int(name:String, size:Int, driver:Int = FlxText.DRIVER_FONTMACHINE)
+		Return _fonts[driver].GetValidFontSize(name, size)
 	End Function
 
 End Class
 
 Private
-Class FlxFontsList Extends StringMap<String>	
+Class FlxFontsList Extends StringMap<String>
+
+	Method New()
+		_fontSizes = New StringMap<FlxFontSizes>()
+	End Method
 
 	Method GetFontPath:String(name:String, size:Int)
 		Return Get(name+"/"+size)
@@ -45,7 +49,7 @@ Class FlxFontsList Extends StringMap<String>
 		
 		Local fontSize:FlxFontSizes = _fontSizes.Get(name)
 	
-		fontSize.min = Min(fontSize.min , size)
+		fontSize.min = Min(fontSize.min, size)
 		fontSize.max = Max(fontSize.max, size)		
 		
 		Set(name+"/"+size, path)
@@ -65,8 +69,8 @@ Class FlxFontsList Extends StringMap<String>
 		Return Remove(name+"/"+size)
 	End Method
 	
-	Method ClampFontSize:Int(name:String, size:Int)
-		Local fontSize:FlxFontSizes = _fontSizes.Get(name)		
+	Method GetValidFontSize:Int(name:String, size:Int)
+		Local fontSize:FlxFontSizes = _fontSizes.Get(name)	
 		Return Clamp(size, fontSize.min, fontSize.max)		
 	End Method
 
@@ -75,7 +79,8 @@ Private
 
 End Class
 
+Private
 Class FlxFontSizes
-	Field min:Int = 0
-	Field max:Int = 0		
+	Field min:Int = 65536
+	Field max:Int = -1		
 End Class

@@ -127,7 +127,7 @@ Private
 		
 		Local minSystemFontSize:Int = 8
 		Local maxSystemFontSize:Int = 16
-		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_font"
+		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_font"		
 		
 		For Local size:Int = minSystemFontSize To maxSystemFontSize
 			FlxAssetsManager.RegisterFont(FlxText.SYSTEM_FONT, size, fontPathPrefix + "_fontmachine_" + size + ".txt")

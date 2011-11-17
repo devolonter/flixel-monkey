@@ -5,23 +5,21 @@ Import flixel.flxtext
 Class FlxFontManager<T>
 
 Private	
-	Field _fonts:StringMap<T[]>
+	Field _fonts:StringMap<IntMap<T>>
 
 Public
 	Method New()
-		_fonts = New StringMap<T[]>()
+		_fonts = New StringMap<IntMap<T>>()
 	End Method
 	
 	Method GetFont:T(font:String, size:Int)
 		If (Not _fonts.Contains(font)) Return Null
-		Return 	_fonts.Get(font)[size - FlxText.MIN_SIZE]		
+		Return 	_fonts.Get(font).Get(size)		
 	End Method
 	
 	Method AddFont:Void(font:String, size:Int, value:T)
-		Local fontArray:T[]
-		fontArray = fontArray.Resize(FlxText.MAX_SIZE - FlxText.MIN_SIZE + 1) 
-		_fonts.Set(font, fontArray)		
-		_fonts.Get(font)[size - FlxText.MIN_SIZE] = value
+		If (Not _fonts.Contains(font)) _fonts.Set(font, New IntMap<T>())
+		_fonts.Get(font).Set(size, value)
 	End Method 
 
 End Class

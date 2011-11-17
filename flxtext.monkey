@@ -44,7 +44,7 @@ Public
 	End Method	
 	
 	Method SetFromat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Int = ALIGN_LEFT, shadowColor:Int = 0)
-		_driver.SetFormat(font, FlxAssetsManager.ClampFontSize(font, size), alignment)
+		_driver.SetFormat(font, FlxAssetsManager.GetValidFontSize(font, size), alignment)
 		Self.Color = color
 		Shadow = shadowColor
 	End Method
@@ -58,7 +58,7 @@ Public
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.SetSize(FlxAssetsManager.ClampFontSize(_driver.GetFontName(), size))
+		_driver.SetSize(FlxAssetsManager.GetValidFontSize(_driver.GetFontName(), size))
 	End Method
 	
 	Method Size:Int() Property

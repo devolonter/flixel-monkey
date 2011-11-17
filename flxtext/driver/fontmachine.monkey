@@ -1,11 +1,13 @@
 Strict
 
+Import mojo
+Import fontmachine.fontmachine
+
 Import flixel.flxtext
 Import flixel.flxtext.driver
 Import flixel.flxtext.fontmanager
 
-Import mojo
-Import fontmachine.fontmachine
+Import flixel.plugin.monkey.flxassetsmanager
 
 Import "../../data/flx_system_font_fontmachine_8.txt"
 Import "../../data/flx_system_font_fontmachine_8_P_1.png"
@@ -115,9 +117,10 @@ Public
 	
 Private
 	Method _InitFont:Void(fontName:String, size:Int)
-		_font = _fontManager.GetFont(fontName, size)
+		_font = _fontManager.GetFont(fontName, size)		
+		
 		If (_font = Null) Then
-			_font = New BitmapFont(Self.GetFileName(fontName) + size + ".txt", False)
+			_font = New BitmapFont(FlxAssetsManager.GetFontPath(fontName, size), False)
 			
 			If (_font = Null And _defaultFont = Null) Then
 				Error ("Font " + fontName +  " can't be loaded")
