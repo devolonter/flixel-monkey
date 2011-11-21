@@ -39,11 +39,11 @@ Public
 		_SetDriver(driver)
 		
 		_driver.Width = width
-		SetFromat(SYSTEM_FONT)
+		SetFormat(SYSTEM_FONT)
 		Text = text		
 	End Method	
 	
-	Method SetFromat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
+	Method SetFormat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
 		_driver.SetFormat(font, FlxAssetsManager.GetValidFontSize(font, size), alignment)
 		Self.Color = color
 		Shadow = shadowColor

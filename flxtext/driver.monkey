@@ -180,7 +180,7 @@ Private
 					offset = maxOffset
 					_countLines+=1
 				Else
-					If (_countLines > linesCapacity) Then
+					If (_countLines >= linesCapacity) Then
 						_textLines.Push(New FlxTextDriverTextLine(text[minOffset..]))
 					Else
 						_textLines.Get(_countLines).text = text[minOffset..]
