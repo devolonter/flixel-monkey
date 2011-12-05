@@ -25,7 +25,7 @@ Class FlxG
 	
 	Const WHITE:Int = $FFFFFFFF
 	
-	Const BLACK:Int = $FF000000	
+	Const BLACK:Int = $FF000000
 	
 	Global DEVICE_WIDTH:Int
 	

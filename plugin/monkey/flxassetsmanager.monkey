@@ -32,14 +32,15 @@ Class FlxAssetsManager
 End Class
 
 Private
-Class FlxAssetsFontsList Extends StringMap<String>
+Class FlxAssetsFontsList
 
 	Method New()
+		_fonts = New StringMap<String>()
 		_fontSizes = New StringMap<FlxFontSizes>()
 	End Method
 
 	Method GetFontPath:String(name:String, size:Int)
-		Return Get(name+"/"+size)
+		Return _fonts.Get(name+"/"+size)
 	End Method
 
 	Method AddFontPath:Void(name:String, size:Int, path:String)
@@ -52,7 +53,7 @@ Class FlxAssetsFontsList Extends StringMap<String>
 		fontSize.min = Min(fontSize.min, size)
 		fontSize.max = Max(fontSize.max, size)		
 		
-		Set(name+"/"+size, path)
+		_fonts.Set(name+"/"+size, path)
 	End Method
 	
 	Method RemoveFontPath:Int(name:String, size:Int)
@@ -66,7 +67,7 @@ Class FlxAssetsFontsList Extends StringMap<String>
 			End If
 		End If
 		
-		Return Remove(name+"/"+size)
+		Return _fonts.Remove(name+"/"+size)
 	End Method
 	
 	Method GetValidFontSize:Int(name:String, size:Int)
@@ -75,11 +76,11 @@ Class FlxAssetsFontsList Extends StringMap<String>
 	End Method
 
 Private	
+	Field _fonts:StringMap<String>
 	Field _fontSizes:StringMap<FlxFontSizes>	
 
 End Class
 
-Private
 Class FlxFontSizes
 	Field min:Int = 65536
 	Field max:Int = -1		
