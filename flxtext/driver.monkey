@@ -81,15 +81,22 @@ Public
 	
 	Method Alignment:Float() Property
 		Return _alignment
+	End Method
+	
+	Method Destroy:Void()
+		Local l:Int = _textLines.Length()			
+		For Local i:Int = 0 Until l
+			_textLines.Set(i, Null)
+		Next
+		
+		_textLines.Clear()	
 	End Method	
 	
 	Method GetTextWidth:Int(text:String) Abstract
 	
 	Method Reset:Void() Abstract
 
-	Method Draw:Void(x:Float, y:Float) Abstract
-	
-	Method Destroy:Void() Abstract	
+	Method Draw:Void(x:Float, y:Float) Abstract	
 	
 Private
 	Method _ParseText:Void()
