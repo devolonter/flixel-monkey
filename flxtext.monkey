@@ -3,6 +3,7 @@ Strict
 Import flxsprite
 Import flxtext.driver
 Import flxtext.driver.fontmachine
+Import flxtext.driver.angelfont
 Import flxg
 
 Import plugin.monkey.flxcolor
