@@ -13,19 +13,19 @@ Class FlxAssetsManager
 		Next
 	End Function
 	
-	Function RegisterFont:Void(name:String, size:Int, path:String, driver:Int = FlxText.DRIVER_FONTMACHINE)
+	Function RegisterFont:Void(name:String, size:Int, path:String, driver:Int = FlxText.DRIVER_NATIVE)
 		_fonts[driver].AddFontPath(name, size, path)	
 	End Function
 	
-	Function UnregisterFont:Void(name:String, size:Int, driver:Int = FlxText.DRIVER_FONTMACHINE)
+	Function UnregisterFont:Void(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
 		_fonts[driver].RemoveFontPath(name, size)	
 	End Function
 	
-	Function GetFontPath:String(name:String, size:Int, driver:Int = FlxText.DRIVER_FONTMACHINE)
+	Function GetFontPath:String(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
 		Return _fonts[driver].GetFontPath(name, size)	
 	End Function
 	
-	Function GetValidFontSize:Int(name:String, size:Int, driver:Int = FlxText.DRIVER_FONTMACHINE)
+	Function GetValidFontSize:Int(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
 		Return _fonts[driver].GetValidFontSize(name, size)
 	End Function
 

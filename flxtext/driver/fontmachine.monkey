@@ -91,7 +91,7 @@ Class FlxFMDriverLoader Extends FlxResourceLoader<BitmapFont>
 	Field fontSize:Int
 	
 	Method Load:T(name:String)
-		Return New BitmapFont(FlxAssetsManager.GetFontPath(fontFamily, fontSize), False)			
+		Return New BitmapFont(FlxAssetsManager.GetFontPath(fontFamily, fontSize, FlxText.DRIVER_FONTMACHINE), False)			
 	End Method
 
 End Class

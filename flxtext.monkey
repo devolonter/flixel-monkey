@@ -26,12 +26,13 @@ Class FlxText Extends FlxSprite
 	
 Private
 	Field _driver:FlxTextDriver
+	Field _driverID:Int
 	
 	Field _color:FlxColor
 	Field _shadow:FlxColor	
 
 Public
-	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:Int = DRIVER_FONTMACHINE)
+	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:Int = DRIVER_NATIVE)
 		Super.New(x, y)
 		
 		_color = New FlxColor()
@@ -45,7 +46,7 @@ Public
 	End Method	
 	
 	Method SetFormat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
-		_driver.SetFormat(font, FlxAssetsManager.GetValidFontSize(font, size), alignment)
+		_driver.SetFormat(font, FlxAssetsManager.GetValidFontSize(font, size, _driverID), alignment)
 		Self.Color = color
 		Shadow = shadowColor
 	End Method
@@ -59,7 +60,7 @@ Public
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.Size = FlxAssetsManager.GetValidFontSize(_driver.Font, size)
+		_driver.Size = FlxAssetsManager.GetValidFontSize(_driver.Font, size, _driverID)
 	End Method
 	
 	Method Size:Int() Property
@@ -126,8 +127,12 @@ Private
 	Method _SetDriver:Void(driver:Int)
 		Select (driver)
 			Case DRIVER_FONTMACHINE
-				_driver = New FlxTextFontMachineDriver()	
+				_driver = New FlxTextFontMachineDriver()
+			Case DRIVER_ANGELFONT
+				_driver = New FlxTextAngelFontDriver()	
 		End Select
+		
+		_driverID = driver
 	End Method
 	
 End Class
