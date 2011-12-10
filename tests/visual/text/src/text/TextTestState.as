@@ -19,7 +19,7 @@ package text
 			add(rightAlignedText)
 			
 			var abouFlixel:FlxText = new FlxText(10, 140, 540, "Flixel is an open source game-making library that is completely free for personal or commercial use. Written entirely in ActionScript 3 by Adam “Atomic” Saltsman, and designed to be used with free development tools, Flixel is easy to learn, extend and customize.")
-			abouFlixel.setFormat("system", 14, FlxG.BLUE, "left")
+			abouFlixel.setFormat("system", 15, FlxG.BLUE, "left")
 			add(abouFlixel)
 		}
 	
