@@ -2,6 +2,7 @@ Strict
 
 Import flxsprite
 Import flxtext.driver
+Import flxtext.driver.native
 Import flxtext.driver.fontmachine
 Import flxtext.driver.angelfont
 Import flxg
@@ -126,6 +127,8 @@ Public
 Private
 	Method _SetDriver:Void(driver:Int)
 		Select (driver)
+			Case DRIVER_NATIVE
+				_driver = New FlxTextNativeDriver()
 			Case DRIVER_FONTMACHINE
 				_driver = New FlxTextFontMachineDriver()
 			Case DRIVER_ANGELFONT
