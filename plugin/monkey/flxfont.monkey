@@ -47,5 +47,9 @@ Public
 	Method GetPath:String(size:Int)
 		Return _paths.Get(size)
 	End Method
+	
+	Method Name:String() Property
+		Return _name
+	End Method
 			
 End Class
