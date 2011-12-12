@@ -8,41 +8,6 @@ Import flixel.flxtext.driver
 Import flixel.plugin.monkey.flxassetsmanager
 Import flixel.plugin.monkey.flxresourcesmanager
 
-Import "../../data/flx_system_font_angelfont_8.txt"
-Import "../../data/flx_system_font_angelfont_8.png"
-Import "../../data/flx_system_font_angelfont_9.txt"
-Import "../../data/flx_system_font_angelfont_9.png"
-Import "../../data/flx_system_font_angelfont_10.txt"
-Import "../../data/flx_system_font_angelfont_10.png"
-Import "../../data/flx_system_font_angelfont_11.txt"
-Import "../../data/flx_system_font_angelfont_11.png"
-Import "../../data/flx_system_font_angelfont_12.txt"
-Import "../../data/flx_system_font_angelfont_12.png"
-Import "../../data/flx_system_font_angelfont_13.txt"
-Import "../../data/flx_system_font_angelfont_13.png"
-Import "../../data/flx_system_font_angelfont_14.txt"
-Import "../../data/flx_system_font_angelfont_14.png"
-Import "../../data/flx_system_font_angelfont_15.txt"
-Import "../../data/flx_system_font_angelfont_15.png"
-Import "../../data/flx_system_font_angelfont_16.txt"
-Import "../../data/flx_system_font_angelfont_16.png"
-Import "../../data/flx_system_font_angelfont_17.txt"
-Import "../../data/flx_system_font_angelfont_17.png"
-Import "../../data/flx_system_font_angelfont_18.txt"
-Import "../../data/flx_system_font_angelfont_18.png"
-Import "../../data/flx_system_font_angelfont_19.txt"
-Import "../../data/flx_system_font_angelfont_19.png"
-Import "../../data/flx_system_font_angelfont_20.txt"
-Import "../../data/flx_system_font_angelfont_20.png"
-Import "../../data/flx_system_font_angelfont_21.txt"
-Import "../../data/flx_system_font_angelfont_21.png"
-Import "../../data/flx_system_font_angelfont_22.txt"
-Import "../../data/flx_system_font_angelfont_22.png"
-Import "../../data/flx_system_font_angelfont_23.txt"
-Import "../../data/flx_system_font_angelfont_23.png"
-Import "../../data/flx_system_font_angelfont_24.txt"
-Import "../../data/flx_system_font_angelfont_24.png"
-
 Class FlxTextAngelFontDriver Extends FlxTextDriver
 
 	Global LOADER:FlxAFDriverLoader = New FlxAFDriverLoader()
@@ -89,7 +54,7 @@ Class FlxAFDriverLoader Extends FlxResourceLoader<AngelFont>
 	Field fontSize:Int
 	
 	Method Load:T(name:String)
-		Return New AngelFont(FlxAssetsManager.GetFontPath(fontFamily, fontSize, FlxText.DRIVER_ANGELFONT))			
+		Return New AngelFont(FlxAssetsManager.GetFont(fontFamily, FlxText.DRIVER_ANGELFONT).GetPath(fontSize))			
 	End Method
 
 End Class

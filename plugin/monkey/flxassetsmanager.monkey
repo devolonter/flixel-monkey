@@ -2,86 +2,41 @@ Strict
 
 Import flixel.flxtext
 
+Import flixel.plugin.monkey.flxfont
+
 Class FlxAssetsManager
 
-	Global _fonts:FlxAssetsFontsList[] = New FlxAssetsFontsList[FlxText.DRIVER_ANGELFONT+1]
+Private
+	Global _fonts:StringMap<FlxFont>[] = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
 	
+Public	
 	Function Init:Void()
 		Local l:Int = _fonts.Length()
 		For Local i:Int = 0 Until l
-			_fonts[i] = New FlxAssetsFontsList()
+			_fonts[i] = New StringMap<FlxFont>()
 		Next
 	End Function
 	
-	Function RegisterFont:Void(name:String, size:Int, path:String, driver:Int = FlxText.DRIVER_NATIVE)
-		_fonts[driver].AddFontPath(name, size, path)	
+	Function AddFont:FlxFont(name:String, driver:Int = FlxText.DRIVER_NATIVE)
+		Local font:FlxFont = _fonts[driver].Get(name)
+		If (font <> Null) Return font
+		
+		font = New FlxFont(name)
+		_fonts[driver].Set(name, font)
+		
+		Return font	
 	End Function
 	
-	Function UnregisterFont:Void(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
+	Function RemoveFont:Void(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
 		_fonts[driver].RemoveFontPath(name, size)	
 	End Function
 	
-	Function GetFontPath:String(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
-		Return _fonts[driver].GetFontPath(name, size)	
+	Function GetFonts:StringMap<FlxFont>(driver:Int = FlxText.DRIVER_NATIVE)
+		Return _fonts[driver]
 	End Function
 	
-	Function GetValidFontSize:Int(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
-		Return _fonts[driver].GetValidFontSize(name, size)
+	Function GetFont:FlxFont(name:String, driver:Int = FlxText.DRIVER_NATIVE)
+		Return _fonts[driver].Get(name)
 	End Function
 
-End Class
-
-Private
-Class FlxAssetsFontsList
-
-	Method New()
-		_fonts = New StringMap<String>()
-		_fontSizes = New StringMap<FlxFontSizes>()
-	End Method
-
-	Method GetFontPath:String(name:String, size:Int)
-		Return _fonts.Get(name+"/"+size)
-	End Method
-
-	Method AddFontPath:Void(name:String, size:Int, path:String)
-		If (Not _fontSizes.Contains(name)) Then
-			_fontSizes.Set(name, New FlxFontSizes())	
-		End If
-		
-		Local fontSize:FlxFontSizes = _fontSizes.Get(name)
-	
-		fontSize.min = Min(fontSize.min, size)
-		fontSize.max = Max(fontSize.max, size)		
-		
-		_fonts.Set(name+"/"+size, path)
-	End Method
-	
-	Method RemoveFontPath:Int(name:String, size:Int)
-		Local fontSize:FlxFontSizes = _fontSizes.Get(name)
-	
-		If (size = fontSize.min) Then
-			If (fontSize.min <> fontSize.max) Then
-				fontSize.min+=1
-			Else
-				_fontSizes.Remove(name)
-			End If
-		End If
-		
-		Return _fonts.Remove(name+"/"+size)
-	End Method
-	
-	Method GetValidFontSize:Int(name:String, size:Int)
-		Local fontSize:FlxFontSizes = _fontSizes.Get(name)	
-		Return Clamp(size, fontSize.min, fontSize.max)		
-	End Method
-
-Private	
-	Field _fonts:StringMap<String>
-	Field _fontSizes:StringMap<FlxFontSizes>	
-
-End Class
-
-Class FlxFontSizes
-	Field min:Int = 65536
-	Field max:Int = -1		
 End Class

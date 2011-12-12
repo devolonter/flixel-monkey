@@ -76,7 +76,7 @@ Class FlxNFDriverLoader Extends FlxResourceLoader<Image>
 	Field fontSize:Int
 	
 	Method Load:T(name:String)
-		Return LoadImage(FlxAssetsManager.GetFontPath(fontFamily, fontSize, FlxText.DRIVER_NATIVE), 96, Image.XPadding)			
+		Return LoadImage(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize), 96, Image.XPadding)			
 	End Method
 
 End Class

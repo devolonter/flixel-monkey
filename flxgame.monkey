@@ -11,6 +11,7 @@ Import flxtext
 
 Import plugin.timermanager
 Import plugin.monkey.flxassetsmanager
+Import plugin.monkey.flxfont
 
 Class FlxGame extends App
 
@@ -87,6 +88,10 @@ Public
 		Return 0	
 	End Method
 	
+	Method OnContentInit:Void()
+		
+	End Method
+	
 	Method ToString:String()
 		Return "FlxGame"	
 	End Method
@@ -127,12 +132,14 @@ Private
 		
 		Local minSystemFontSize:Int = 8
 		Local maxSystemFontSize:Int = 24
-		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_font"		
+		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_font"
+		
+		Local system:FlxFont = 	FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT)	
 		
 		For Local size:Int = minSystemFontSize To maxSystemFontSize
-			FlxAssetsManager.RegisterFont(FlxText.SYSTEM_FONT, size, fontPathPrefix + "_" + size + ".png", FlxText.DRIVER_NATIVE)
-			FlxAssetsManager.RegisterFont(FlxText.SYSTEM_FONT, size, fontPathPrefix + "_fontmachine_" + size + ".txt", FlxText.DRIVER_FONTMACHINE)
-			FlxAssetsManager.RegisterFont(FlxText.SYSTEM_FONT, size, fontPathPrefix + "_angelfont_" + size + ".txt", FlxText.DRIVER_ANGELFONT)
-		Next	
+			system.SetPath(size, fontPathPrefix + "_" + size + ".png")
+		Next
+		
+		Self.OnContentInit()
 	End Method
 End Class
