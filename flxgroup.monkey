@@ -210,11 +210,11 @@ Public
 	
 	Params:
 	[list]
-	[*]creator:FlxClassCreator - the type creator implements FlxClassCreator you want to recycle (e.g. FlxSpriteCreator, EvilRobotCreator, etc). Do NOT "new" the class in the parameter!	
+	[*]creator:FlxClass - the type creator implements FlxClass you want to recycle (e.g. FlxSpriteClass, EvilRobotClass, etc). Do NOT "new" the class in the parameter!	
 	[/list]
-	Return a reference to the object that was created. Don't forget to cast it back to the creator you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassCreator))).
+	Return a reference to the object that was created. Don't forget to cast it back to the creator you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassClass))).
 	#End
-	Method Recycle:FlxBasic(creator:FlxClassCreator = null)
+	Method Recycle:FlxBasic(creator:FlxClass = null)
 		If (_maxSize > 0) Then
 			If (_length < _maxSize) Then
 				If (creator = Null) Return Null				
@@ -332,7 +332,7 @@ Public
 		Wend
 	End Method
 	
-	Method GetFirstAvailable:FlxBasic(creator:FlxClassCreator = null)
+	Method GetFirstAvailable:FlxBasic(creator:FlxClass = null)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			

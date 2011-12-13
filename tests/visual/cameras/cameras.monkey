@@ -10,12 +10,12 @@ End Function
 Class CamerasTest Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, CamerasTestState.CREATOR)	
+		Super.New(640, 480, CamerasTestState.CLASS_OBJECT)	
 	End Method
 
 End Class
 
-Class CamerasTestStateCreator Implements FlxClassCreator
+Class CamerasTestStateClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
 		Return New CamerasTestState()
@@ -29,7 +29,7 @@ End Class
 
 Class CamerasTestState Extends FlxState
 
-	Global CREATOR:FlxClassCreator = new CamerasTestStateCreator()
+	Global CLASS_OBJECT:FlxClass = new CamerasTestStateClass()
 	
 	Method Create:Void()
 		Local camera_pink:FlxCamera = new FlxCamera(10, 10, 100, 100, .5)

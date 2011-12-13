@@ -8,7 +8,7 @@ Private
 	Field _timers:Stack<FlxTimer>
 
 Public	
-	Global CREATOR:FlxClassCreator = new TimerManagerCreator()
+	Global CLASS_OBJECT:FlxClass = new TimerManagerClass()
 
 	Method New()
 		_timers = New Stack<FlxTimer>()
@@ -61,7 +61,7 @@ Public
 End Class
 
 Private
-Class TimerManagerCreator Implements FlxClassCreator
+Class TimerManagerClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
 		Return New TimerManager()

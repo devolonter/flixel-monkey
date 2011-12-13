@@ -18,7 +18,7 @@ Class FlxGame extends App
 Private
 	Field _state:FlxState
 	
-	Field _iState:FlxClassCreator
+	Field _iState:FlxClass
 	
 	Field _created:Bool
 
@@ -29,7 +29,7 @@ Private
 	Field _requestedReset:Bool
 	
 Public
-	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClassCreator, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
+	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
 		_lostFocus = False		
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)

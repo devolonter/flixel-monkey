@@ -6,7 +6,7 @@ Import "data/flx_default.png"
 
 Class FlxSprite Extends FlxObject
 
-	Global CREATOR:FlxClassCreator = new FlxSpriteCreator()
+	Global CLASS_OBJECT:FlxClass = new FlxSpriteClass()
 
 	Method New(x:Float = 0, y:Float = 0)
 		Super.New(x, y)
@@ -15,7 +15,7 @@ Class FlxSprite Extends FlxObject
 End Class
 
 Private	
-Class FlxSpriteCreator Implements FlxClassCreator
+Class FlxSpriteClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
 		Return New FlxSprite()

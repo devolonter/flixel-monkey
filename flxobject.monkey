@@ -10,7 +10,7 @@ basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
 
-	Global CREATOR:FlxClassCreator = new FlxObjectCreator()
+	Global CLASS_OBJECT:FlxClass = new FlxObjectClass()
 	
 	Global X_COMPARATOR:FlxBasicComparator = new FlxObjectXComparator()
 	
@@ -96,7 +96,7 @@ Class FlxObject Extends FlxBasic
 End Class
 
 Private	
-Class FlxObjectCreator Implements FlxClassCreator
+Class FlxObjectClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
 		Return New FlxObject()

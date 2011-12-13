@@ -142,7 +142,7 @@ Public
 		Return plugin
 	End Function
 	
-	Function GetPlugin:FlxBasic(creator:FlxClassCreator)
+	Function GetPlugin:FlxBasic(creator:FlxClass)
 		Local pluginList:Stack<FlxBasic> = FlxG.plugins
 		Local plugin:FlxBasic
 		Local i:Int = 0
@@ -163,7 +163,7 @@ Public
 		Return plugin
 	End Function
 	
-	Function RemovePluginType:Bool(creator:FlxClassCreator)
+	Function RemovePluginType:Bool(creator:FlxClass)
 		Local results:Bool = False
 		Local pluginList:Stack<FlxBasic> = FlxG.plugins
 		Local i:Int = pluginList.Length() - 1	

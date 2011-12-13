@@ -1,12 +1,12 @@
 #rem
-	header:This module contains the FlxBasic class and FlxClassCreator interface.
+	header:This module contains the FlxBasic class and FlxClass interface.
 #end
 Strict
 
 Import flxcamera
 Import flxg
 
-Interface FlxClassCreator
+Interface FlxClass
 	
 	Method CreateInstance:FlxBasic()
 	
@@ -43,7 +43,7 @@ Class FlxBasic
 	
 	Global _VISIBLECOUNT:Int	
 	
-	Global CREATOR:FlxClassCreator = new FlxBasicCreator()
+	Global CLASS_OBJECT:FlxClass = new FlxBasicClass()
 	
 	Global EXISTS_COMPARATOR:FlxBasicComparator = new FlxBasicExistsComparator()
 	
@@ -187,7 +187,7 @@ Class FlxBasic
 End Class
 
 Private	
-Class FlxBasicCreator Implements FlxClassCreator
+Class FlxBasicClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
 		Return New FlxBasic()
