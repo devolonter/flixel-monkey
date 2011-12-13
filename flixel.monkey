@@ -13,3 +13,6 @@ Import flxg
 Import flxgame
 
 Import plugin.monkey.flxcolor
+Import plugin.monkey.flxassetsmanager
+Import plugin.monkey.flxresourcesmanager
+Import plugin.monkey.flxfont

@@ -2,10 +2,15 @@ Strict
 
 Import flixel
 
+Function Main:Int()
+	New CamerasTest()
+	Return 0
+End Function
+
 Class CamerasTest Extends FlxGame
 	
 	Method New()
-		Super.New(560, 420, CamerasTestState.CREATOR)	
+		Super.New(640, 480, CamerasTestState.CREATOR)	
 	End Method
 
 End Class

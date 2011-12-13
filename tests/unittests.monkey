@@ -4,6 +4,11 @@ Strict
 Import unittest
 Import flixel
 
+Function Main:Int()
+	New FlixelUnitTest()
+	Return 0
+End Function
+
 '#Region FlxPoint tests bundle
 
 Class FlxPointUnitTestBase Implements IUnitTest Abstract
