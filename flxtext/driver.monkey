@@ -152,50 +152,72 @@ Private
 			Local minOffset:Int = 0
 			Local offset:Int = maxOffset
 			Local linesCapacity:Int = _textLines.Length()
+			Local tmpOffset:Int = 0
+			Local tmpString:String = ""
 			
 			Repeat
 				Repeat
-					offset-=1
-					While (text[offset] <> KEY_SPACE And offset > minOffset)						
-						offset-=1
-					Wend
-					If (offset <= minOffset) Exit
+					offset -= 1
+					If (offset - minOffset <= 1) Then
+						offset = minOffset + 1
+						Exit
+					End if
+				
+					tmpString = text[minOffset..offset]
+					tmpOffset = tmpString.FindLast(String.FromChar(KEY_SPACE))
+					
+					If (tmpOffset < 0) Then
+						tmpOffset = _GetMinOffset(tmpString)
+					Else
+						If (tmpString.Length() > 1 And tmpString.StartsWith(String.FromChar(KEY_SPACE))) Then
+							minOffset += 1
+							offset +=  Min(offset + 2, maxOffset)
+							Continue	
+						EndIf		
+					End If
+					
+					offset = tmpOffset + minOffset
 				Until(GetTextWidth(text[minOffset..offset]) <= _width)
+			
 				
-				If (offset <= minOffset) Then
-					While(GetTextWidth(text[minOffset..offset+1]) < _width And offset < textLength)
-						offset+=1
-					Wend	
-				End If								
-				
-				If (GetTextWidth(text[minOffset..]) > _width And textLength - minOffset > 1) Then
-					If (text[offset] <> KEY_SPACE) offset+=1
+				If (GetTextWidth(text[minOffset..]) > _width And textLength - minOffset > 1) Then					
+					tmpString = text[minOffset..offset].Trim()
+					If (tmpString.Length() = 0) Continue
 					
 					If (_countLines > linesCapacity) Then
-						_textLines.Push(New FlxTextDriverTextLine(text[minOffset..offset]))						
+						_textLines.Push(New FlxTextDriverTextLine(tmpString))						
 					Else
-						_textLines.Get(_countLines - 1).text = text[minOffset..offset]
+						_textLines.Get(_countLines - 1).text = tmpString
 					End If
-					
-					If (text[offset] = KEY_SPACE) Then
-						minOffset = offset + 1	
-					Else
-						minOffset = offset
-					End If
-					
+
+					minOffset = offset
 					maxOffset = minOffset + range
 					offset = maxOffset
 					_countLines+=1
 				Else
+					tmpString = text[minOffset..].Trim()
+					If (tmpString.Length() = 0) Continue
+				
 					If (_countLines >= linesCapacity) Then
-						_textLines.Push(New FlxTextDriverTextLine(text[minOffset..]))
+						_textLines.Push(New FlxTextDriverTextLine(tmpString))
 					Else
-						_textLines.Get(_countLines).text = text[minOffset..]
+						_textLines.Get(_countLines).text = tmpString
 					End If			
 					Exit
 				End If
 			Forever						
 		End If	
+	End Method
+	
+	Method _GetMinOffset:Int(text:String)
+		Local offset:Int = text.Length()
+		
+		While(GetTextWidth(text[0..offset]) > _width)
+			offset -= 1			
+			If (offset = 0) Return offset		
+		Wend
+
+		Return offset		
 	End Method
 	
 End Class
