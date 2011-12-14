@@ -63,18 +63,6 @@ Class FlxG
 	Global _lastDrawingBlend:Int	
 
 Public	
-	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)
-		FlxG._game = game
-		FlxG.width = width
-		FlxG.height = height
-		
-		FlxCamera.defaultZoom = zoom
-		FlxG.cameras = New Stack<FlxCamera>()		
-		
-		plugins = New Stack<FlxBasic>
-		AddPlugin(New TimerManager())	
-	End Function
-	
 	Function random:Float()
 		Return Rnd()
 	End Function
@@ -95,26 +83,50 @@ Public
 	
 	Function ResetCameras:Void(newCamera:FlxCamera = Null)
 		Local cam:FlxCamera
-		Local cams:Stack<FlxCamera> = FlxG.cameras
 		Local i:Int = 0
-		Local l:Int = cams.Length()
+		Local l:Int = FlxG.cameras.Length()
 		
 		While(i < l)
-			cam = cams.Get(i)
+			cam = FlxG.cameras.Get(i)
 			cam.Destroy()
 			i+=1
 		Wend
 		
-		cams.Clear()
+		FlxG.cameras.Clear()
 		If (newCamera = Null) newCamera = New FlxCamera(0, 0, FlxG.width, FlxG.height)
 		
 		FlxG.camera = FlxG.AddCamera(newCamera)	
 	End Function
 	
-	Function Reset:Void()
-		FlxG.elapsed = 0
-		FlxG.timeScale = 1.0	
-	End Function	
+	Function Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)
+		Local i:Int = 0
+		Local l:Int = FlxG.cameras.Length()
+				
+		While(i < l)
+			FlxG.cameras.Get(i).Flash(color, duration, onComplete, force)
+			i+=1
+		Wend
+	End Function
+	
+	Function Fade:Void(color:Int = FlxG.BLACK, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)
+		Local i:Int = 0
+		Local l:Int = FlxG.cameras.Length()
+				
+		While(i < l)
+			FlxG.cameras.Get(i).Fade(color, duration, onComplete, force)
+			i+=1
+		Wend
+	End Function
+	
+	Function Shake:Void(intensity:Float = 0.05, duration:Float = 0.5, onComplete:FlxFunction = Null, force:Bool = True, direction:Int = FlxCamera.SHAKE_BOTH_AXES)
+		Local i:Int = 0
+		Local l:Int = FlxG.cameras.Length()
+				
+		While(i < l)
+			FlxG.cameras.Get(i).Shake(intensity, duration, onComplete, force, direction)
+			i+=1
+		Wend
+	End Function		
 	
 	Function BgColor:Int()
 		If (FlxG.camera = Null) Return FlxG._bgColor.argb	
@@ -126,7 +138,7 @@ Public
 		Local l:Int = FlxG.cameras.Length()
 		
 		While(i < l)
-			cameras.Get(i).BgColor = color
+			FlxG.cameras.Get(i).BgColor = color
 			i+=1
 		Wend
 		
@@ -186,6 +198,23 @@ Public
 		Wend
 	
 		Return results
+	End Function
+	
+	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)
+		FlxG._game = game
+		FlxG.width = width
+		FlxG.height = height
+		
+		FlxCamera.defaultZoom = zoom
+		FlxG.cameras = New Stack<FlxCamera>()		
+		
+		plugins = New Stack<FlxBasic>
+		AddPlugin(New TimerManager())	
+	End Function
+	
+	Function Reset:Void()
+		FlxG.elapsed = 0
+		FlxG.timeScale = 1.0	
 	End Function
 	
 	Function UpdateCameras:Void()
