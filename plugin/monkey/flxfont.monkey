@@ -4,13 +4,13 @@ Class FlxFont
 Private
 	Field _minSize:Int = 65536
 	Field _maxSize:Int = -1
-	Field _paths:Stack<String>
+	Field _paths:IntMap<String>
 	Field _name:String
 	
 Public
 	Method New(name:String)
 		_name = name
-		_paths = New Stack<String>()
+		_paths = New IntMap<String>()
 	End Method
 
 	Method GetValidSize:Int(size:Int)
@@ -33,12 +33,8 @@ Public
 		_maxSize = Max(_maxSize, size)
 	End Method
 	
-	Method SetPath:Void(size:Int, path:String)
-		If (_paths.Length() <= size) Then
-			_paths.Insert(size, path)
-		Else
-			_paths.Set(size, path)	
-		End If
+	Method SetPath:Void(size:Int, path:String)		
+		_paths.Set(size, path)
 		
 		MinSize = size
 		MaxSize = size

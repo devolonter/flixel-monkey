@@ -1,7 +1,8 @@
 Strict
 
-Import flxcamera
 Import flxgame
+Import flxcamera
+Import flxu
 
 Import plugin.timermanager
 
@@ -72,6 +73,10 @@ Public
 		
 		plugins = New Stack<FlxBasic>
 		AddPlugin(New TimerManager())	
+	End Function
+	
+	Function random:Float()
+		Return Rnd()
 	End Function
 	
 	Function GetRandom:FlxBasic(objects:FlxBasic[], startIndex:Int = 0, length:Int = 0)

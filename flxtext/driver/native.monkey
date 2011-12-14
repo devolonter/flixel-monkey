@@ -18,13 +18,6 @@ Import "../../data/flx_system_font_14.png"
 Import "../../data/flx_system_font_15.png"
 Import "../../data/flx_system_font_16.png"
 Import "../../data/flx_system_font_17.png"
-Import "../../data/flx_system_font_18.png"
-Import "../../data/flx_system_font_19.png"
-Import "../../data/flx_system_font_20.png"
-Import "../../data/flx_system_font_21.png"
-Import "../../data/flx_system_font_22.png"
-Import "../../data/flx_system_font_23.png"
-Import "../../data/flx_system_font_24.png"
 
 Class FlxTextNativeDriver Extends FlxTextDriver
 

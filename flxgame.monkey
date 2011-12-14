@@ -151,7 +151,7 @@ Private
 		Local system:FlxFont = 	FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT)	
 		
 		For Local size:Int = minSystemFontSize To maxSystemFontSize
-			system.SetPath(size, fontPathPrefix + "_" + size + ".png")
+			system.SetPath(size, fontPathPrefix + "_" + Min(size, 17) + ".png")
 		Next
 		
 		Self.OnContentInit()

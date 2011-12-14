@@ -11,6 +11,7 @@ Import flxstate
 Import flxtimer
 Import flxg
 Import flxgame
+Import flxu
 
 Import plugin.monkey.flxcolor
 Import plugin.monkey.flxassetsmanager

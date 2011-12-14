@@ -85,13 +85,21 @@ Private
 	
 	Field _fxFadeAlpha:Float
 	
+	Field _fxShakeIntensity:Float
 	
+	Field _fxShakeDuration:Float
+	
+	Field _fxShakeComplete:FlxFunction
+	
+	Field _fxShakeOffset:FlxPoint
+	
+	Field _fxShakeDirection:Int
 	
 	Field _fill:FlxColor
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
-		Zoom = zoom
+		Zoom = zoom 'must be first for init
 		X = x
 		Y = y
 		Width = width
@@ -114,6 +122,12 @@ Public
 		_fxFadeComplete = Null
 		_fxFadeAlpha = 0
 		
+		_fxShakeIntensity = 0
+		_fxShakeDuration = 0
+		_fxShakeComplete = Null
+		_fxShakeOffset = New FlxPoint()
+		_fxShakeDirection = 0
+		
 		_fill = New FlxColor(0)			
 	End Method
 	
@@ -126,6 +140,8 @@ Public
 		_bgColor = Null				
 		_fxFlashComplete = Null
 		_fxFadeComplete = Null
+		_fxShakeComplete = Null
+		_fxShakeOffset = Null
 		_fill = Null
 	End Method
 	
@@ -144,6 +160,20 @@ Public
 			If (_fxFadeAlpha >= 1) Then
 				_fxFadeAlpha = 1
 				If (_fxFadeComplete <> Null) _fxFadeComplete.Call()				
+			End If
+		End If
+		
+		If (_fxShakeDuration > 0) Then
+			_fxShakeDuration -= FlxG.elapsed
+			If (_fxShakeDuration <= 0) Then
+				_fxShakeOffset.x = 0
+				_fxShakeOffset.y = 0
+				
+				If (_fxShakeComplete <> Null) _fxShakeComplete.Call()
+			Else
+				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_HORIZONTAL_ONLY) Then
+					_fxShakeOffset.x = Rnd() * _fxShakeIntensity * _width * 2 - _fxShakeIntensity * _width		
+				End If
 			End If
 		End If
 	End Method
