@@ -158,7 +158,7 @@ Public
 			_fxFadeAlpha += FlxG.elapsed / _fxFadeDuration
 						
 			If (_fxFadeAlpha >= 1) Then
-				_fxFadeAlpha = 1
+				_fxFadeAlpha = 1				
 				If (_fxFadeComplete <> Null) _fxFadeComplete.Call()				
 			End If
 		End If
@@ -172,7 +172,11 @@ Public
 				If (_fxShakeComplete <> Null) _fxShakeComplete.Call()
 			Else
 				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_HORIZONTAL_ONLY) Then
-					_fxShakeOffset.x = Rnd() * _fxShakeIntensity * _width * 2 - _fxShakeIntensity * _width		
+					_fxShakeOffset.x = (Rnd() * _fxShakeIntensity * _width * 2 - _fxShakeIntensity * _width) * _zoom		
+				End If
+				
+				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_VERTICAL_ONLY) Then
+					_fxShakeOffset.y = Rnd() * _fxShakeIntensity * _height * 2 - _fxShakeIntensity * _height * _zoom
 				End If
 			End If
 		End If
@@ -180,12 +184,16 @@ Public
 	
 	Method Lock:Void()
 		If (_clipped) Then
-			SetScissor(_realX, _realY, _realWidth, _realHeight)			
+			If (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0) Then
+				SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)				
+			Else
+				SetScissor(_realX, _realY, _realWidth, _realHeight)
+			End If			
 		End If
 				
 		PushMatrix()
 				
-		Translate(_x, _y)		
+		Translate(_x + _fxShakeOffset.x, _y + _fxShakeOffset.y)		
 		Scale(_scaleX, _scaleY)		
 		
 		SetAlpha(_color.a)
@@ -237,9 +245,23 @@ Public
 		_fxFadeAlpha = _MIN_FLOAT_VALUE
 	End Method
 	
+	Method Shake:Void(intensity:Float = 0.05, duration:Float = 0.5, onComplete:FlxFunction = Null, force:Bool = True, direction:Int = SHAKE_BOTH_AXES)
+		If (Not force And (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0)) Return
+		
+		_fxShakeIntensity = intensity
+		_fxShakeDuration = duration
+		_fxShakeComplete = onComplete
+		_fxShakeDirection = direction
+		_fxShakeOffset.x = 0
+		_fxShakeOffset.y = 0
+	End Method
+	
 	Method StopFX:Void()
 		_fxFlashAlpha = 0
-		_fxFadeAlpha = 0
+		_fxFadeAlpha = 0		
+		_fxShakeDuration = 0
+		_fxShakeOffset.x = 0
+		_fxShakeOffset.y = 0
 	End Method
 	
 	Method X:Float() Property
