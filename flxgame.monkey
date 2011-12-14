@@ -28,16 +28,14 @@ Private
 	
 	Field _requestedReset:Bool
 	
-	Field _step:Float
+	Field _lastMillisecs:Float
 	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
 		_lostFocus = False		
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
-		FlxG.framerate = framerate
-		
-		_step = 1000 / Float(framerate)
+		FlxG.framerate = framerate		
 		
 		_state = Null
 		
@@ -55,7 +53,8 @@ Public
 		FlxG._deviceScaleFactorX = FlxG.DEVICE_WIDTH / Float(FlxG.width)
 		FlxG._deviceScaleFactorY = FlxG.DEVICE_HEIGHT / Float(FlxG.height)		
 		
-		_InitData()				
+		_InitData()		
+		_lastMillisecs = Millisecs() - (1000 / Float(FlxG.framerate))						
 		_Step()				
 		Return 0
 	End Method
@@ -127,7 +126,8 @@ Private
 	End Method
 	
 	Method _Update:Void()
-		FlxG.elapsed = FlxG.timeScale * (_step / 1000.0)
+		FlxG.elapsed = FlxG.timeScale * ((Millisecs() - _lastMillisecs) / 1000.0)
+		_lastMillisecs = Millisecs()
 			
 		FlxG.UpdatePlugins()		
 		_state.Update()

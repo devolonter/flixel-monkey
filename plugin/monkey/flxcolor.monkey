@@ -32,6 +32,12 @@ Public
 		Return New FlxColor(argb)
 	End Function
 	
+	Function RGB:FlxColor(rgb:Int = $FFFFFF)
+		Local color:FlxColor = New FlxColor()
+		color.SetRGB(rgb)
+		Return color
+	End Function
+	
 	Function SetColor:Void(color:FlxColor)
 		graphics.SetColor(FlxColor.r, FlxColor.g, FlxColor.b)
 		graphics.SetAlpha(FlxColor.a)
