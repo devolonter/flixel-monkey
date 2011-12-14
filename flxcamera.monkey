@@ -67,9 +67,7 @@ Private
 	
 	Field _clipped:Bool
 	
-	Field _bgColor:FlxColor
-	
-	Field _fillColor:FlxColor
+	Field _bgColor:FlxColor	
 	
 	Field _fxFlashColor:Int
 	
@@ -77,7 +75,17 @@ Private
 	
 	Field _fxFlashComplete:FlxFunction
 	
-	Field _fxFlashAlpha:Float	
+	Field _fxFlashAlpha:Float
+	
+	Field _fxFadeColor:Int
+	
+	Field _fxFadeDuration:Float
+	
+	Field _fxFadeComplete:FlxFunction
+	
+	Field _fxFadeAlpha:Float
+	
+	Field _fill:FlxColor
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
@@ -92,13 +100,19 @@ Public
 		_point = New FlxPoint()
 		bounds = Null
 		_bgColor = New FlxColor(FlxG.BgColor())
-		_color = New FlxColor()
-		_fillColor = New FlxColor(0)
+		_color = New FlxColor()		
 		
 		_fxFlashColor = 0
 		_fxFlashDuration = 0
 		_fxFlashComplete = null
-		_fxFlashAlpha = 0			
+		_fxFlashAlpha = 0
+		
+		_fxFadeColor = 0
+		_fxFadeDuration = 0
+		_fxFadeComplete = Null
+		_fxFadeAlpha = 0
+		
+		_fill = New FlxColor(0)			
 	End Method
 	
 	Method Destroy:Void()
@@ -107,16 +121,27 @@ Public
 		deadzone = Null
 		bounds = Null
 		_color = Null
-		_bgColor = Null
-		_fillColor = Null		
+		_bgColor = Null				
 		_fxFlashComplete = Null
+		_fxFadeComplete = Null
+		_fill = Null
 	End Method
 	
 	Method Update:Void()	
 		If (_fxFlashAlpha > 0) Then			
-			_fxFlashAlpha-= FlxG.elapsed / _fxFlashDuration
+			_fxFlashAlpha -= FlxG.elapsed / _fxFlashDuration
+			
 			If (_fxFlashAlpha <= 0 And _fxFlashComplete <> Null) Then
 				_fxFlashComplete.Call()
+			End If
+		End If
+		
+		If (_fxFadeAlpha > 0 And _fxFadeAlpha < 1) Then
+			_fxFadeAlpha += FlxG.elapsed / _fxFadeDuration
+						
+			If (_fxFadeAlpha >= 1) Then
+				_fxFadeAlpha = 1
+				If (_fxFadeComplete <> Null) _fxFadeComplete.Call()				
 			End If
 		End If
 	End Method
@@ -152,7 +177,8 @@ Public
 				SetColor(_fillColor.r, _fillColor.g, _fillColor.b)
 			End if
 			
-			DrawRect(0, 0, _width, _height)		
+			DrawRect(0, 0, _width, _height)
+			FlxG._lastDrawingColor = _fillColor.argb		
 		End If
 		
 		PopMatrix()
@@ -169,8 +195,19 @@ Public
 		_fxFlashAlpha = 1				
 	End Method
 	
+	Method Fade:Void(color:Int = FlxG.BLACK, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)
+		If (Not force And _fxFadeAlpha > 0)	Return
+		
+		_fxFadeColor = color
+		If (duration <= 0) duration = _MIN_FLOAT_VALUE
+		_fxFadeDuration = duration
+		_fxFadeComplete = onComplete
+		_fxFadeAlpha = _MIN_FLOAT_VALUE
+	End Method
+	
 	Method StopFX:Void()
 		_fxFlashAlpha = 0
+		_fxFadeAlpha = 0
 	End Method
 	
 	Method X:Float() Property
@@ -258,15 +295,11 @@ Public
 		_realHeight = Min(Float(FlxG.DEVICE_HEIGHT), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
 	End Method
 	
-	Method Fill:Void(color:Int, blendAlpha:Bool = True)
-		Local alphaComponent:Float
-	
+	Method Fill:Void(color:Int, blendAlpha:Bool = True)	
 		If (blendAlpha) Then
-			alphaComponent = _fxFlashColor Shr 24
-			If (alphaComponent <= 0) alphaComponent = $FF 
-			_fillColor.SetARGB(((alphaComponent * _fxFlashAlpha) Shl 24) + (_fxFlashColor & $00ffffff))
-		Else
-			_fillColor.SetARGB(color)	
+			_fill.SetARGB(color)
+		Else			
+			_fillColor.SetRGB(color)	
 		End If
 	End Method
 	
@@ -286,8 +319,22 @@ Public
 		_bgColor.SetARGB(color)
 	End Method
 	
-	Method DrawFX:Void()
-		If (_fxFlashAlpha > 0) Fill(_fxFlashColor)
+	Method DrawFX:Void()	
+		If (_fxFlashAlpha > 0) Then
+			Local alphaComponent:Float
+			
+			alphaComponent = _fxFlashColor Shr 24
+			If (alphaComponent <= 0) alphaComponent = $FF 
+			Fill(((alphaComponent * _fxFlashAlpha) Shl 24) + (_fxFlashColor & $00FFFFFF))
+		End If
+		
+		If (_fxFadeAlpha > 0) Then
+			Local alphaComponent:Float
+			
+			alphaComponent = _fxFadeColor Shr 24
+			If (alphaComponent <= 0) alphaComponent = $FF 
+			Fill(((alphaComponent * _fxFadeAlpha) Shl 24) + (_fxFadeColor & $00FFFFFF))	
+		End If
 	End Method
 
 	Method ToString:String()
