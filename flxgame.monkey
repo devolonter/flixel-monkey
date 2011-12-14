@@ -28,12 +28,16 @@ Private
 	
 	Field _requestedReset:Bool
 	
+	Field _step:Float
+	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
 		_lostFocus = False		
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
 		FlxG.framerate = framerate
+		
+		_step = 1000 / Float(framerate)
 		
 		_state = Null
 		
@@ -56,8 +60,8 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()
-		_Step()
+	Method OnUpdate:Int()		
+		_Step()		
 		Return 0
 	End Method
 	
@@ -77,9 +81,10 @@ Public
 			cam = cams.Get(i)
 			If (cam = Null Or Not cam.exists Or Not cam.visible) Continue
 			
-			cam.Lock()
-			FlxG.DrawPlugins()
+			cam.Lock()			
 			_state.Draw()
+			FlxG.DrawPlugins()
+			cam.DrawFX()
 			cam.Unlock()
 									
 			i+=1
@@ -122,6 +127,8 @@ Private
 	End Method
 	
 	Method _Update:Void()
+		FlxG.elapsed = FlxG.timeScale * (_step / 1000.0)
+			
 		FlxG.UpdatePlugins()		
 		_state.Update()
 		FlxG.UpdateCameras()

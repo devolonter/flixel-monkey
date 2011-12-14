@@ -15,11 +15,11 @@ package cameras
 			pink_camera.bgColor = FlxG.PINK;
 			FlxG.addCamera(pink_camera);
 			
-			var red_camera:FlxCamera = new FlxCamera(70, 10, 100, 100);
+			red_camera = new FlxCamera(70, 10, 100, 100);
 			red_camera.bgColor = FlxG.RED;
 			FlxG.addCamera(red_camera);
 			
-			var green_camera:FlxCamera = new FlxCamera(180, 10, 100, 100, 2);
+			green_camera = new FlxCamera(180, 10, 100, 100, 2);
 			green_camera.bgColor = FlxG.GREEN;
 			FlxG.addCamera(green_camera);
 		}
@@ -29,6 +29,16 @@ package cameras
 			if (FlxG.keys.justPressed("S"))
 			{
 				pink_camera.shake();
+			}
+			
+			if (FlxG.keys.justPressed("L"))
+			{
+				red_camera.flash();
+			}
+			
+			if (FlxG.keys.justPressed("F"))
+			{
+				green_camera.fade();
 			}
 		}
 	

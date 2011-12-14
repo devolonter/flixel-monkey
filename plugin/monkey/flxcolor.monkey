@@ -19,6 +19,15 @@ Public
 		_parseARGB(argb)		
 	End Method
 	
+	Method SetRGB:Void(rgb:Int)
+		r = (argb Shr 16) & $FF
+		g = (argb Shr 8) & $FF
+		b = argb & $FF		
+		a = 1
+		
+		Self.argb = ((255 & $FF) Shl 24) + rgb		
+	End Method
+	
 	Function ARGB:FlxColor(argb:Int = $FFFFFFFF)
 		Return New FlxColor(argb)
 	End Function

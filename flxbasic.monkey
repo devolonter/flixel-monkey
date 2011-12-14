@@ -14,6 +14,12 @@ Interface FlxClass
 
 End Interface
 
+Interface FlxFunction
+	
+	Method Call:Void()
+
+End Interface
+
 Interface FlxBasicCaller
 	
 	Method Call:Void(object:FlxBasic)

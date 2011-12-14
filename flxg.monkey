@@ -41,7 +41,9 @@ Class FlxG
 	
 	Global plugins:Stack<FlxBasic>
 	
-	Global elapsed:Int
+	Global elapsed:Float
+	
+	Global timeScale:Float
 	
 	Global visualDebug:Bool
 	
@@ -105,7 +107,8 @@ Public
 	End Function
 	
 	Function Reset:Void()
-		FlxG.elapsed = 0	
+		FlxG.elapsed = 0
+		FlxG.timeScale = 1.0	
 	End Function	
 	
 	Function BgColor:Int()

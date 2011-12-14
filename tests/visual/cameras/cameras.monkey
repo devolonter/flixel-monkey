@@ -31,18 +31,22 @@ Class CamerasTestState Extends FlxState
 
 	Global CLASS_OBJECT:FlxClass = new CamerasTestStateClass()
 	
-	Method Create:Void()
-		Local camera_pink:FlxCamera = new FlxCamera(10, 10, 100, 100, .5)
-		camera_pink.BgColor = FlxG.PINK
-		FlxG.AddCamera(camera_pink)	
+	Field pink_camera:FlxCamera
+	Field red_camera:FlxCamera
+	Field green_camera:FlxCamera
 	
-		Local camera_red:FlxCamera = new FlxCamera(70, 10, 100, 100)
-		camera_red.BgColor = FlxG.RED
-		FlxG.AddCamera(camera_red)
+	Method Create:Void()
+		Local pink_camera:FlxCamera = new FlxCamera(10, 10, 100, 100, .5)
+		pink_camera.BgColor = FlxG.PINK
+		FlxG.AddCamera(pink_camera)	
+	
+		Local red_camera:FlxCamera = new FlxCamera(70, 10, 100, 100)
+		red_camera.BgColor = FlxG.RED
+		FlxG.AddCamera(red_camera)
 		
-		Local camera_green:FlxCamera = new FlxCamera(180, 10, 100, 100, 2)
-		camera_green.BgColor = FlxG.GREEN
-		FlxG.AddCamera(camera_green)		
+		Local green_camera:FlxCamera = new FlxCamera(180, 10, 100, 100, 2)
+		green_camera.BgColor = FlxG.GREEN
+		FlxG.AddCamera(green_camera)		
 	End Method
 	
 End Class

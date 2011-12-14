@@ -1,12 +1,12 @@
 Strict
 
-Import plugin.monkey.flxcolor
-
 Import flxg
 Import flxpoint
 Import flxrect
 Import flxbasic
 Import flxobject
+
+Import plugin.monkey.flxcolor
 
 Class FlxCamera Extends FlxBasic
 
@@ -37,6 +37,8 @@ Class FlxCamera Extends FlxBasic
 	Field point:FlxPoint	
 	
 Private
+	Const _MIN_FLOAT_VALUE:Float = .0000001
+
 	Field _x:Float
 	
 	Field _y:Float
@@ -65,7 +67,17 @@ Private
 	
 	Field _clipped:Bool
 	
-	Field _bgColor:FlxColor	
+	Field _bgColor:FlxColor
+	
+	Field _fillColor:FlxColor
+	
+	Field _fxFlashColor:Int
+	
+	Field _fxFlashDuration:Float
+	
+	Field _fxFlashComplete:FlxFunction
+	
+	Field _fxFlashAlpha:Float	
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
@@ -80,7 +92,33 @@ Public
 		_point = New FlxPoint()
 		bounds = Null
 		_bgColor = New FlxColor(FlxG.BgColor())
-		_color = New FlxColor()			
+		_color = New FlxColor()
+		_fillColor = New FlxColor(0)
+		
+		_fxFlashColor = 0
+		_fxFlashDuration = 0
+		_fxFlashComplete = null
+		_fxFlashAlpha = 0			
+	End Method
+	
+	Method Destroy:Void()
+		target = Null
+		scroll = Null
+		deadzone = Null
+		bounds = Null
+		_color = Null
+		_bgColor = Null
+		_fillColor = Null		
+		_fxFlashComplete = Null
+	End Method
+	
+	Method Update:Void()	
+		If (_fxFlashAlpha > 0) Then			
+			_fxFlashAlpha-= FlxG.elapsed / _fxFlashDuration
+			If (_fxFlashAlpha <= 0 And _fxFlashComplete <> Null) Then
+				_fxFlashComplete.Call()
+			End If
+		End If
 	End Method
 	
 	Method Lock:Void()
@@ -107,8 +145,32 @@ Public
 		End if		
 	End Method
 	
-	Method Unlock:Void()		
+	Method Unlock:Void()
+		If (_fillColor.argb <> 0) Then
+			If (_fillColor.argb <> FlxG._lastDrawingColor) Then
+				SetAlpha(_fillColor.a)
+				SetColor(_fillColor.r, _fillColor.g, _fillColor.b)
+			End if
+			
+			DrawRect(0, 0, _width, _height)		
+		End If
+		
 		PopMatrix()
+		_fillColor.SetARGB(0)
+	End Method
+	
+	Method Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)	
+		If (Not force And _fxFlashAlpha > 0) Return
+		
+		_fxFlashColor = color		
+		If (duration <= 0) duration = _MIN_FLOAT_VALUE
+		_fxFlashDuration = duration
+		_fxFlashComplete = onComplete
+		_fxFlashAlpha = 1				
+	End Method
+	
+	Method StopFX:Void()
+		_fxFlashAlpha = 0
 	End Method
 	
 	Method X:Float() Property
@@ -196,10 +258,16 @@ Public
 		_realHeight = Min(Float(FlxG.DEVICE_HEIGHT), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
 	End Method
 	
-	Method Fill:Void(color:Color)
-		SetColor(FlxColor.r, FlxColor.g, FlxColor.b)
-		DrawRect(x, y, width, height)
-		SetColor(255, 255, 255)
+	Method Fill:Void(color:Int, blendAlpha:Bool = True)
+		Local alphaComponent:Float
+	
+		If (blendAlpha) Then
+			alphaComponent = _fxFlashColor Shr 24
+			If (alphaComponent <= 0) alphaComponent = $FF 
+			_fillColor.SetARGB(((alphaComponent * _fxFlashAlpha) Shl 24) + (_fxFlashColor & $00ffffff))
+		Else
+			_fillColor.SetARGB(color)	
+		End If
 	End Method
 	
 	Method Color:Int() Property
@@ -217,9 +285,13 @@ Public
 	Method BgColor:Void(color:Int) Property
 		_bgColor.SetARGB(color)
 	End Method
+	
+	Method DrawFX:Void()
+		If (_fxFlashAlpha > 0) Fill(_fxFlashColor)
+	End Method
 
 	Method ToString:String()
 		Return "FlxCamera"	
-	End Method
+	End Method	
 
 End Class
