@@ -85,6 +85,8 @@ Private
 	
 	Field _fxFadeAlpha:Float
 	
+	
+	
 	Field _fill:FlxColor
 
 Public
@@ -171,18 +173,18 @@ Public
 	End Method
 	
 	Method Unlock:Void()
-		If (_fillColor.argb <> 0) Then
-			If (_fillColor.argb <> FlxG._lastDrawingColor) Then
-				SetAlpha(_fillColor.a)
-				SetColor(_fillColor.r, _fillColor.g, _fillColor.b)
+		If (_fill.argb <> 0) Then
+			If (_fill.argb <> FlxG._lastDrawingColor) Then
+				SetAlpha(_fill.a)
+				SetColor(_fill.r, _fill.g, _fill.b)
 			End if
 			
 			DrawRect(0, 0, _width, _height)
-			FlxG._lastDrawingColor = _fillColor.argb		
+			FlxG._lastDrawingColor = _fill.argb		
 		End If
 		
 		PopMatrix()
-		_fillColor.SetARGB(0)
+		_fill.SetARGB(0)
 	End Method
 	
 	Method Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)	
@@ -299,7 +301,7 @@ Public
 		If (blendAlpha) Then
 			_fill.SetARGB(color)
 		Else			
-			_fillColor.SetRGB(color)	
+			_fill.SetRGB(color)	
 		End If
 	End Method
 	

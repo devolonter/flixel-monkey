@@ -30,6 +30,8 @@ Private
 	
 	Field _lastMillisecs:Float
 	
+	Field _step:Int
+	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
 		_lostFocus = False		
@@ -54,7 +56,7 @@ Public
 		FlxG._deviceScaleFactorY = FlxG.DEVICE_HEIGHT / Float(FlxG.height)		
 		
 		_InitData()		
-		_lastMillisecs = Millisecs() - (1000 / Float(FlxG.framerate))						
+		_step = 1000 / FlxG.framerate								
 		_Step()				
 		Return 0
 	End Method
@@ -80,10 +82,10 @@ Public
 			cam = cams.Get(i)
 			If (cam = Null Or Not cam.exists Or Not cam.visible) Continue
 			
+			cam.DrawFX() 'not realy draw. Only calculation
 			cam.Lock()			
 			_state.Draw()
-			FlxG.DrawPlugins()
-			cam.DrawFX()
+			FlxG.DrawPlugins()			
 			cam.Unlock()
 									
 			i+=1
@@ -110,14 +112,19 @@ Private
 		If (_state <> Null) _state.Destroy()		
 		
 		_state = _requestedState
-		_state.Create()	
+		_state.Create()
+		
+		If (Millisecs() - _lastMillisecs > _step) Then
+			_lastMillisecs = Millisecs() - _step
+		End If
 	End Method
 
 	Method _Step:Void()
 		If (_requestedReset) Then
 			_requestedReset = False
 			_requestedState = FlxState(_iState.CreateInstance())
-			FlxG.Reset()			
+			FlxG.Reset()
+			_lastMillisecs = Millisecs() - _step			
 		End If		
 		
 		If (_state <> _requestedState) _SwitchState()		
