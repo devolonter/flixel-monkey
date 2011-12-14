@@ -184,11 +184,7 @@ Public
 	
 	Method Lock:Void()
 		If (_clipped) Then
-			If (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0) Then
-				SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)				
-			Else
-				SetScissor(_realX, _realY, _realWidth, _realHeight)
-			End If			
+			SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)			
 		End If
 				
 		PushMatrix()
