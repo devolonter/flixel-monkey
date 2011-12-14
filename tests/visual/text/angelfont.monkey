@@ -1,6 +1,7 @@
 Strict
 
 Import flixel
+Import flixel.flxtext.driver.angelfont
 
 Function Main:Int()
 	New AngelFontTest()
@@ -43,19 +44,19 @@ Class TextTestState Extends FlxState
 	Global CLASS_OBJECT:FlxClass = new TextTestStateClass()
 	
 	Method Create:Void()		
-		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!", FlxText.DRIVER_ANGELFONT)	
+		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!", New FlxTextAngelFontDriver())	
 		helloWorld.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER, FlxG.PINK)	
 		Add(helloWorld)
 		
-		Local leftAlignedText:FlxText = New FlxText(10, 70, 150, "This text is left-aligned", FlxText.DRIVER_ANGELFONT)	
+		Local leftAlignedText:FlxText = New FlxText(10, 70, 150, "This text is left-aligned", New FlxTextAngelFontDriver())	
 		leftAlignedText.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.RED, FlxText.ALIGN_LEFT)	
 		Add(leftAlignedText)
 		
-		Local rightAlignedText:FlxText = New FlxText(480, 70, 150, "This text is right-aligned", FlxText.DRIVER_ANGELFONT)	
+		Local rightAlignedText:FlxText = New FlxText(480, 70, 150, "This text is right-aligned", New FlxTextAngelFontDriver())	
 		rightAlignedText.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.GREEN, FlxText.ALIGN_RIGHT)	
 		Add(rightAlignedText)
 		
-		Local abouFlixel:FlxText = New FlxText(10, 140, 620, "Flixel is an open source game-making library that is completely free for personal or commercial use. Written entirely in ActionScript 3 by Adam Atomic Saltsman, and designed to be used with free development tools, Flixel is easy to learn, extend and customize.", FlxText.DRIVER_ANGELFONT)	
+		Local abouFlixel:FlxText = New FlxText(10, 140, 620, "Flixel is an open source game-making library that is completely free for personal or commercial use. Written entirely in ActionScript 3 by Adam Atomic Saltsman, and designed to be used with free development tools, Flixel is easy to learn, extend and customize.", New FlxTextAngelFontDriver())	
 		abouFlixel.SetFormat(FlxText.SYSTEM_FONT, 14, FlxG.BLUE, FlxText.ALIGN_LEFT)	
 		Add(abouFlixel)
 	End Method

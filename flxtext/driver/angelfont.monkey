@@ -43,7 +43,10 @@ Public
 		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)		
 		_fontHeight = _font.TextHeight(_text)*1.5
 	End Method
-		
+	
+	Method ID:Int() Property
+		Return FlxText.DRIVER_ANGELFONT		 	
+	End Method		
 
 End Class
 

@@ -96,7 +96,11 @@ Public
 	
 	Method Reset:Void() Abstract
 
-	Method Draw:Void(x:Float, y:Float) Abstract	
+	Method Draw:Void(x:Float, y:Float) Abstract
+	
+	Method ID:Int() Property
+		Return FlxText.DRIVER_NATIVE			 	
+	End Method
 	
 Private
 	Method _ParseText:Void()

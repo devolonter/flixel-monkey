@@ -46,6 +46,10 @@ Public
 		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)		
 		_fontHeight = _font.GetFontHeight()	
 	End Method
+	
+	Method ID:Int() Property
+		Return FlxText.DRIVER_FONTMACHINE		 	
+	End Method
 
 End Class
 
