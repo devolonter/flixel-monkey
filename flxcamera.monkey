@@ -172,11 +172,11 @@ Public
 				If (_fxShakeComplete <> Null) _fxShakeComplete.Call()
 			Else
 				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_HORIZONTAL_ONLY) Then
-					_fxShakeOffset.x = (Rnd() * _fxShakeIntensity * _width * 2 - _fxShakeIntensity * _width) * _zoom		
+					_fxShakeOffset.x = (FlxG.random() * _fxShakeIntensity * _width * 2 - _fxShakeIntensity * _width) * _zoom		
 				End If
 				
 				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_VERTICAL_ONLY) Then
-					_fxShakeOffset.y = Rnd() * _fxShakeIntensity * _height * 2 - _fxShakeIntensity * _height * _zoom
+					_fxShakeOffset.y = FlxG.random() * _fxShakeIntensity * _height * 2 - _fxShakeIntensity * _height * _zoom
 				End If
 			End If
 		End If

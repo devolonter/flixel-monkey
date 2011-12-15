@@ -48,6 +48,8 @@ Class FlxG
 	
 	Global visualDebug:Bool
 	
+	Global globalSeed:Float
+	
 	Global framerate:Int
 	
 	Global _deviceScaleFactorX:Float = 1	
@@ -64,7 +66,8 @@ Class FlxG
 
 Public	
 	Function random:Float()
-		Return Rnd()
+		FlxG.globalSeed = FlxU.Srand(globalSeed)
+		Return FlxG.globalSeed
 	End Function
 	
 	Function GetRandom:FlxBasic(objects:FlxBasic[], startIndex:Int = 0, length:Int = 0)
@@ -212,9 +215,10 @@ Public
 		AddPlugin(New TimerManager())	
 	End Function
 	
-	Function Reset:Void()
-		FlxG.elapsed = 0
-		FlxG.timeScale = 1.0	
+	Function Reset:Void()		
+		FlxG.timeScale = 1
+		FlxG.elapsed = 0 
+		FlxG.globalSeed = Rnd();
 	End Function
 	
 	Function UpdateCameras:Void()
