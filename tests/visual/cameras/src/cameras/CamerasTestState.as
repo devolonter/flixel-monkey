@@ -28,7 +28,7 @@ package cameras
 		{
 			if (FlxG.keys.justPressed("S"))
 			{
-				pink_camera.shake();
+				FlxG.shake();
 			}
 			
 			if (FlxG.keys.justPressed("L"))

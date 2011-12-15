@@ -49,6 +49,7 @@ Public
 	
 	Method OnCreate:Int()
 		SetUpdateRate(FlxG.framerate)
+		Seed = flixel.SystemMillisecs()
 		
 		FlxG.DEVICE_WIDTH = DeviceWidth()
 		FlxG.DEVICE_HEIGHT = DeviceHeight()

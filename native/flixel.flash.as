@@ -1,0 +1,8 @@
+
+class flixel {
+
+	static public function systemMillisecs():int {
+		return (new Date).getTime();
+	}
+
+}

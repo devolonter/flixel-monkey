@@ -218,7 +218,7 @@ Public
 	Function Reset:Void()		
 		FlxG.timeScale = 1
 		FlxG.elapsed = 0 
-		FlxG.globalSeed = Rnd();
+		FlxG.globalSeed = Rnd()
 	End Function
 	
 	Function UpdateCameras:Void()

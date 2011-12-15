@@ -17,3 +17,13 @@ Import plugin.monkey.flxcolor
 Import plugin.monkey.flxassetsmanager
 Import plugin.monkey.flxresourcesmanager
 Import plugin.monkey.flxfont
+
+Import "native/flixel.${TARGET}.${LANG}"
+
+Extern
+
+#If LANG="cpp" Then
+	Function SystemMillisecs:Int() = "flixel::systemMillisecs"
+#Else
+	Function SystemMillisecs:Int() = "flixel.systemMillisecs"
+#End
