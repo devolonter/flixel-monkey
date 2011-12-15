@@ -11,7 +11,7 @@ End Interface
 
 Class FlxTimer
 	
-	Field time:Int
+	Field time:Float
 	
 	Field loops:Int
 	
@@ -22,7 +22,7 @@ Class FlxTimer
 Private
 	Field _callback:FlxTimerCallback
 	
-	Field _timeCounter:Int
+	Field _timeCounter:Float
 	
 	Field _loopsCounter:Int
 	
