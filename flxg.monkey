@@ -48,7 +48,7 @@ Class FlxG
 	
 	Global visualDebug:Bool
 	
-	Global globalSeed:Float
+	Global globalSeed:Int
 	
 	Global framerate:Int
 	
@@ -66,8 +66,8 @@ Class FlxG
 
 Public	
 	Function random:Float()
-		FlxG.globalSeed = FlxU.Srand(globalSeed)
-		Return FlxG.globalSeed
+		FlxG.globalSeed = (FlxG.globalSeed * 1664525 + 1013904223)|0
+		Return FlxU.Srand(FlxG.globalSeed)
 	End Function
 	
 	Function GetRandom:FlxBasic(objects:FlxBasic[], startIndex:Int = 0, length:Int = 0)
@@ -218,7 +218,7 @@ Public
 	Function Reset:Void()		
 		FlxG.timeScale = 1
 		FlxG.elapsed = 0 
-		FlxG.globalSeed = Rnd()
+		FlxG.globalSeed = Rnd(1000, 100000)
 	End Function
 	
 	Function UpdateCameras:Void()

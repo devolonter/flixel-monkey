@@ -35,7 +35,7 @@ Class FlxU
 	End Function
 	
 	Function Srand:Float(seed:Float)
-		Return Abs(Float((69621 * int(seed * $7FFFFFFF)) Mod $7FFFFFFF) / $7FFFFFFF)
+		Return Float(seed Shr 8 & $ffffff)/$1000000
 	End Function
 	
 	Function Shuffle:Object[](objects:Object[], howManyTimes:Int)
