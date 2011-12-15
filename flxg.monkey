@@ -65,7 +65,7 @@ Class FlxG
 	Global _lastDrawingBlend:Int	
 
 Public	
-	Function random:Float()
+	Function Random:Float()
 		FlxG.globalSeed = (FlxG.globalSeed * 1664525 + 1013904223)|0
 		Return FlxU.Srand(FlxG.globalSeed)
 	End Function
@@ -218,7 +218,7 @@ Public
 	Function Reset:Void()		
 		FlxG.timeScale = 1
 		FlxG.elapsed = 0 
-		FlxG.globalSeed = Rnd(1000, 100000)
+		FlxG.globalSeed = Rnd(1, 10000000)
 	End Function
 	
 	Function UpdateCameras:Void()

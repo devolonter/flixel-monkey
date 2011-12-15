@@ -205,7 +205,7 @@ Private
 					If (_countLines >= linesCapacity) Then
 						_textLines.Push(New FlxTextDriverTextLine(tmpString))
 					Else
-						_textLines.Get(_countLines).text = tmpString
+						_textLines.Get(_countLines - 1).text = tmpString
 					End If			
 					Exit
 				End If
