@@ -35,7 +35,7 @@ Class FlxU
 	End Function
 	
 	Function Srand:Float(seed:Float)
-		Seed = Int(seed * 1000)
+		Seed = Int(seed * 10000)
 		Return Rnd()
 	End Function
 	
