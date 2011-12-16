@@ -6,20 +6,6 @@ Strict
 Import flxcamera
 Import flxg
 
-Interface FlxClass
-	
-	Method CreateInstance:FlxBasic()
-	
-	Method InstanceOf:Bool(object:FlxBasic)
-
-End Interface
-
-Interface FlxFunction
-	
-	Method Call:Void()
-
-End Interface
-
 Interface FlxBasicCaller
 	
 	Method Call:Void(object:FlxBasic)

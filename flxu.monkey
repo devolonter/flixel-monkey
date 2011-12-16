@@ -38,8 +38,10 @@ Class FlxU
 		Return Float(seed Shr 8 & $ffffff)/$1000000
 	End Function
 	
+	#Rem
 	Function Shuffle:Object[](objects:Object[], howManyTimes:Int)
-		'TODO	
+		Shuffle is not currently supported in Monkey. Use FlxArray.Shuffle method
 	End Function
+	#End
 
 End Class

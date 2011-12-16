@@ -27,3 +27,47 @@ Extern
 #Else
 	Function SystemMillisecs:Int() = "flixel.systemMillisecs"
 #End
+
+Public
+
+Interface FlxClass
+	
+	Method CreateInstance:FlxBasic()
+	
+	Method InstanceOf:Bool(object:FlxBasic)
+
+End Interface
+
+Interface FlxFunction
+	
+	Method Call:Void()
+
+End Interface
+
+Class FlxArray<T>
+	
+	Field data:T[]
+	
+	Method New(data:T[])
+		Self.data = data
+	End Method
+	
+	Method GetRandom:T(startIndex:Int = 0, length:Int = 0)
+		
+	End Method
+	
+	'Get safe random for replays/recordings
+	Method GetSafeRandom:T(startIndex:Int = 0, length:Int = 0)
+		
+	End Method
+	
+	Method Shuffle:Void(howManyTimes:Int)
+		
+	End Method
+	
+	'Safe shuffle for replays/recordings
+	Method SafeShuffle:Void(howManyTimes:Int)
+		
+	End Method
+
+End Class

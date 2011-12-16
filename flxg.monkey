@@ -74,6 +74,12 @@ Public
 		Return Null
 	End Function
 	
+	#Rem
+	Function GetRandom:Object(objects:Object[], startIndex:Int = 0, length:Int = 0)
+		GetRandom is not currently supported in Monkey. Use FlxArray.GetSafeRandom method
+	End Function
+	#End
+	
 	Function AddCamera:FlxCamera(newCamera:FlxCamera)
 		FlxG.cameras.Push(newCamera)
 		Return newCamera
