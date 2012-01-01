@@ -90,6 +90,10 @@ Public
 	End Function
 	#End
 	
+	Function SwitchState:Void(state:FlxState)
+		FlxG._game._requestedState = state
+	End Function
+	
 	Function AddCamera:FlxCamera(newCamera:FlxCamera)
 		FlxG.cameras.Push(newCamera)
 		Return newCamera
