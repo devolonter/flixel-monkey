@@ -148,7 +148,7 @@ Public
 	End Function		
 	
 	Function BgColor:Int()
-		If (FlxG.camera = Null) Return FlxG._bgColor.argb	
+		If (FlxG.camera = Null Or Not FlxG.camera.alive) Return FlxG._bgColor.argb	
 		Return FlxG.camera.BgColor
 	End Function
 	
