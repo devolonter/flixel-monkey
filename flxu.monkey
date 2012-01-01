@@ -124,5 +124,17 @@ Class FlxU
 		If (alpha <= 1) alpha *= 255
 		Return (alpha & $FF) Shl 24 | int(red * 255) Shl 16 | int(green * 255) Shl 8 | int(blue * 255)
 	End Function
+	
+	Function GetRGBA:Float[](color:Int, resluts:Float[] = [])
+		If (resluts.Length <> 4) resluts = resluts.Resize(4)
+		
+		resluts[0] = (color Shr 16) & $FF
+		resluts[1] = (color Shr 8) & $FF
+		resluts[2] = color & $FF
+		resluts[3] = Float((color Shr 24) & $FF) / 255
+		Return resluts
+	End Function
+	
+	
 
 End Class
