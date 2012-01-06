@@ -2,6 +2,7 @@
 	header:This module contains the FlxObject class.
 #end
 Import flxbasic
+Import flxpoint
 
 #Rem
 summary:This is the base class for most of the display objects (FlxSprite, FlxText, etc).
@@ -87,6 +88,13 @@ Class FlxObject Extends FlxBasic
 		Self.y = y
 		Self.width = width
 		Self.height = height	
+	End Method
+	
+	Method GetMidpoint:FlxPoint(point:FlxPoint)
+		If (point = Null) point = New FlxPoint()		
+		point.x = x + width * .5
+		point.y = y + height * .5		
+		Return point
 	End Method
 	
 	Method ToString:String()

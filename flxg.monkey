@@ -35,6 +35,8 @@ Class FlxG
 	Global width:Int
 	
 	Global height:Int
+	
+	Global worldBounds:FlxRect
 			
 	Global cameras:Stack<FlxCamera>
 	
@@ -239,6 +241,7 @@ Public
 		FlxG.timeScale = 1
 		FlxG.elapsed = 0 
 		FlxG.globalSeed = Rnd(1, 10000000)
+		FlxG.worldBounds = New FlxRect(-10, -10, FlxG.width + 20, FlxG.height + 20)
 	End Function
 	
 	Function UpdateCameras:Void()

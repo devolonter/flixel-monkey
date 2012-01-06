@@ -34,8 +34,6 @@ Class FlxCamera Extends FlxBasic
 	
 	Field scroll:FlxPoint
 	
-	Field point:FlxPoint	
-	
 Private
 	Const _MIN_FLOAT_VALUE:Float = .0000001
 
@@ -60,10 +58,14 @@ Private
 	Field _point:FlxPoint
 	
 	Field _color:FlxColor
+	
+	Field _alpha:Float
 		
 	Field _scaleX:Float
 	
 	Field _scaleY:Float
+	
+	Field _angle:Float
 	
 	Field _clipped:Bool
 	
@@ -148,10 +150,41 @@ Public
 	Method Update:Void()
 		If (target <> Null) Then
 			If (deadzone = Null) Then
-				
+				FocusOn(target.GetMidpoint(_point))		
 			Else
-			
+				Local edge:Float
+				Local targetX:Float
+				Local targetY:Float
+				
+				If (target.x > 0) Then
+					targetX = target.x + 0.0000001	
+				Else
+					targetX = target.x - 0.0000001
+				End If
+				
+				If (target.y > 0) Then
+					targetY = target.y + 0.0000001	
+				Else
+					targetY = target.y - 0.0000001
+				End If
+				
+				edge = targetX - deadzone.x
+				If (scroll.x > edge) scroll.x = edge
+				edge = targetX + target.width - deadzone.x - deadzone.width
+				If (scroll.x < edge) scroll.x = edge
+				
+				edge  = targetY - deadzone.y
+				If (scroll.y > edge) scroll.y = edge				
+				edge = targetY + target.height - deadzone.y - deadzone.height
+				If (scroll.y < edge) scroll.y = edge
 			End If
+		End If
+		
+		If (bounds <> Null) Then
+			If (scroll.x < bounds.Left) scroll.x = bounds.Left
+			If (scroll.x > bounds.Right - _width) scroll.x = bounds.Right - _width
+			If (scroll.y < bounds.Top) scroll.y = bounds.Top
+			If (scroll.y > bounds.Bottom - _height) scroll.y = bounds.Bottom - _height
 		End If
 		
 		If (_fxFlashAlpha > 0) Then			
@@ -189,8 +222,53 @@ Public
 		End If
 	End Method
 	
-	Method FocusOn:Void(point:FlxPoint)
+	Method Follow:Void(target:FlxObject, style:Int = STYLE_LOCKON)
+		Self.target = target
+		Local helper:Float
 		
+		Select (style)
+			Case STYLE_PLATFORMER
+				Local w:Float = _width / 8
+				Local h:Float = _height / 3
+				deadzone = New FlxRect((_width - w) / 2, (_height - h) / 2 - h * .25, w, h)
+			
+			Case STYLE_TOPDOWN
+				helper = Max(_width, _height) / 4
+				deadzone = New FlxRect((_width - helper) / 2, (_height - helper) / 2, helper, helper)
+				
+			Case STYLE_TOPDOWN_TIGHT
+				helper = Max(_width, _height) / 8
+				deadzone = New FlxRect((_width - helper) / 2, (_height - helper) / 2, helper, helper)
+				
+			Case STYLE_LOCKON
+				deadzone = Null
+				
+			Default
+				deadzone = Null	
+		End Select
+	End Method
+	
+	Method FocusOn:Void(point:FlxPoint)
+		If (point.x > 0) Then
+			point.x += 0.0000001	
+		Else
+			point.x -= 0.0000001	 
+		End If
+		
+		If (point.y > 0) Then
+			point.y += 0.0000001	
+		Else
+			point.y -= 0.0000001	 
+		End If
+		
+		scroll.Make(point.x - _width * .5, point.y - _height * .5)		
+	End Method
+	
+	Method SetBounds:Void(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0, updateWorld:Bool = False)
+		If (bounds = Null) bounds = New FlxRect()		
+		bounds.Make(x, y, width, height)
+		If (updateWorld) FlxG.worldBounds.CopyFrom(bounds)
+		Update()
 	End Method
 	
 	Method Lock:Void()
@@ -202,8 +280,6 @@ Public
 				
 		Translate(_x + _fxShakeOffset.x, _y + _fxShakeOffset.y)		
 		Scale(_scaleX, _scaleY)		
-		
-		SetAlpha(_color.a)
 		
 		If (_clipped Or _bgColor.argb <> FlxG._bgColor.argb) 
 			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
@@ -268,6 +344,27 @@ Public
 		_fxShakeDuration = 0
 		_fxShakeOffset.x = 0
 		_fxShakeOffset.y = 0
+	End Method
+	
+	Method CopyFrom:FlxCamera(camera:FlxCamera)
+		If (camera.bounds = Null) Then
+			bounds = camera.bounds
+		Else
+			If (bounds = Null) bounds = New FlxRect()
+			bounds.CopyFrom(camera.bounds)
+		End If
+		
+		target = camera.target
+		If (target <> Null) Then
+			If (camera.deadzone = Null) Then
+				deadzone = Null
+			Else
+				If (deadzone = Null) deadzone = New FlxRect()
+				deadzone.CopyFrom(camera.deadzone)
+			End If
+		End If
+		
+		Return Self
 	End Method
 	
 	Method X:Float() Property
@@ -344,6 +441,38 @@ Public
 		SetScale(_zoom, _zoom)	
 	End Method
 	
+	Method Alpha:Float() Property
+		Return _alpha
+	End Method
+	
+	Method Alpha:Void(alpha:Float) Property
+		_alpha = alpha	
+	End Method
+	
+	Method Angle:Float() Property
+		Return _angle
+	End Method
+	
+	Method Angle:Void(angle:Float) Property
+		_angle = angle	
+	End Method
+	
+	Method Color:Int() Property
+		Return _color.argb
+	End Method
+	
+	Method Color:Void(color:Int) Property
+		_color.SetRGB(color)
+	End Method
+	
+	Method BgColor:Int() Property
+		Return _bgColor.argb
+	End Method
+	
+	Method BgColor:Void(color:Int) Property
+		_bgColor.SetARGB(color)
+	End Method
+	
 	Method GetScale:FlxPoint()
 		Return _point.Make(_scaleX, _scaleY)	
 	End Method
@@ -363,22 +492,6 @@ Public
 		End If
 	End Method
 	
-	Method Color:Int() Property
-		Return _color.argb
-	End Method
-	
-	Method Color:Void(color:Int) Property
-		_color.SetARGB(color)
-	End Method
-	
-	Method BgColor:Int() Property
-		Return _bgColor.argb
-	End Method
-	
-	Method BgColor:Void(color:Int) Property
-		_bgColor.SetARGB(color)
-	End Method
-	
 	Method DrawFX:Void()	
 		If (_fxFlashAlpha > 0) Then
 			Local alphaComponent:Float
@@ -396,7 +509,7 @@ Public
 			Fill(((alphaComponent * _fxFadeAlpha) Shl 24) + (_fxFadeColor & $00FFFFFF))	
 		End If
 	End Method
-
+	
 	Method ToString:String()
 		Return "FlxCamera"	
 	End Method	
