@@ -145,8 +145,9 @@ Private
 	
 	Field _pathInc:Int
 	
-	Field _pathRotate:Bool	
+	Field _pathRotate:Bool
 	
+Public	
 	Method New(x:Float, y:Float, width:Float = 0, height:Float = 0)
 		Self.x = x
 		Self.y = y
