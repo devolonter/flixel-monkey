@@ -71,7 +71,7 @@ Public
 	End Function
 	
 	Function GetRandom:FlxBasic(objects:FlxBasic[], startIndex:Int = 0, length:Int = 0)
-		If (objects <> Null) Then
+		If (objects.Length() > 0) Then
 			Local l:Int = length
 			
 			If (l = 0 Or l > objects.Length() - startIndex) Then

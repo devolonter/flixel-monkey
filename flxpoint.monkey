@@ -37,9 +37,11 @@ Class FlxPoint
 	[*]y: The Y-coordinate of the point in space.
 	[/list]
 	#End
-	Function Make:FlxPoint(x:Float = 0, y:Float = 0)
-		Return New FlxPoint(x, y)
-	End Function
+	Method Make:FlxPoint(x:Float = 0, y:Float = 0)
+		Self.x = x
+		Self.y = y	
+		Return Self
+	End Method
 	
 	#Rem
 	summary:Helper function, just copies the values from the specified point.

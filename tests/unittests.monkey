@@ -51,7 +51,8 @@ End Class
 Class FlxPointMakeUnitTest Extends FlxPointUnitTestBase
 
 	Method Run:Bool()
-		p1 = FlxPoint.Make(x, y)
+		p1 = New FlxPoint()
+		p1 = p1.Make(x, y)
 		Return _AssertPoint()
 	End Method
 
@@ -134,7 +135,8 @@ End Class
 Class FlxRectMakeUnitTest Extends FlxRectUnitTestBase
 
 	Method Run:Bool()
-		r1 = FlxRect.Make(x, y, width, height)
+		r1 = New FlxRect()
+		r1 = r1.Make(x, y, width, height)
 		Return _AssertRect()
 	End Method
 

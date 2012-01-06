@@ -145,7 +145,15 @@ Public
 		_fill = Null
 	End Method
 	
-	Method Update:Void()	
+	Method Update:Void()
+		If (target <> Null) Then
+			If (deadzone = Null) Then
+				
+			Else
+			
+			End If
+		End If
+		
 		If (_fxFlashAlpha > 0) Then			
 			_fxFlashAlpha -= FlxG.elapsed / _fxFlashDuration
 			
@@ -166,9 +174,8 @@ Public
 		If (_fxShakeDuration > 0) Then
 			_fxShakeDuration -= FlxG.elapsed
 			If (_fxShakeDuration <= 0) Then
-				_fxShakeOffset.x = 0
-				_fxShakeOffset.y = 0
-				
+				_fxShakeOffset.Make()
+								
 				If (_fxShakeComplete <> Null) _fxShakeComplete.Call()
 			Else
 				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_HORIZONTAL_ONLY) Then
@@ -180,6 +187,10 @@ Public
 				End If
 			End If
 		End If
+	End Method
+	
+	Method FocusOn:Void(point:FlxPoint)
+		
 	End Method
 	
 	Method Lock:Void()
@@ -248,8 +259,7 @@ Public
 		_fxShakeDuration = duration
 		_fxShakeComplete = onComplete
 		_fxShakeDirection = direction
-		_fxShakeOffset.x = 0
-		_fxShakeOffset.y = 0
+		_fxShakeOffset.Make()
 	End Method
 	
 	Method StopFX:Void()
@@ -335,7 +345,7 @@ Public
 	End Method
 	
 	Method GetScale:FlxPoint()
-		Return FlxPoint.Make(_scaleX, _scaleY)	
+		Return _point.Make(_scaleX, _scaleY)	
 	End Method
 	
 	Method SetScale:Void(x:Float, y:Float)
