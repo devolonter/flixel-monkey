@@ -1,4 +1,5 @@
 *.as3proj
+*.build
 bin
 lib
 obj
