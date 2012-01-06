@@ -1,8 +1,11 @@
+Strict
+
 #rem
 	header:This module contains the FlxObject class.
 #end
 Import flxbasic
 Import flxpoint
+Import flxpath
 
 #Rem
 summary:This is the base class for most of the display objects (FlxSprite, FlxText, etc).
@@ -83,11 +86,120 @@ Class FlxObject Extends FlxBasic
 	'summary:Whether an object will move/alter position after a collision.	
 	Field immovable:Bool
 	
+	Field velocity:FlxPoint
+	
+	Field mass:Float
+	
+	Field elasticity:Float
+	
+	Field acceleration:FlxPoint
+	
+	Field drag:FlxPoint
+	
+	Field maxVelocity:FlxPoint
+	
+	Field angle:Float
+	
+	Field angularVelocity:Float
+	
+	Field angularAcceleration:Float
+	
+	Field angularDrag:Float
+	
+	Field maxAngular:Float
+	
+	Field scrollFactor:FlxPoint
+	
+	Field health:Float
+	
+	Field moves:Bool
+	
+	Field touching:Int
+	
+	Field wasTouching:Int
+	
+	Field allowCollisions:Int
+	
+	Field last:FlxPoint
+	
+	Field path:FlxPath
+	
+	Field pathSpeed:Float
+	
+	Field pathAngle:Float	
+	
+Private
+	Global _pZero:FlxPoint = New FlxPoint()
+	
+	Field _flicker:Bool
+	
+	Field _flickerTimer:Float
+	
+	Field _point:FlxPoint
+	
+	Field _rect:FlxRect	
+	
+	Field _pathNodeIndex:Int
+	
+	Field _pathMode:Int
+	
+	Field _pathInc:Int
+	
+	Field _pathRotate:Bool	
+	
 	Method New(x:Float, y:Float, width:Float = 0, height:Float = 0)
 		Self.x = x
 		Self.y = y
+		last = New FlxPoint(x, y)
 		Self.width = width
-		Self.height = height	
+		Self.height = height
+		mass = 1.0
+		elasticity = 0.0
+		
+		health = 1
+		
+		immovable = False
+		moves = True
+		
+		touching = NONE
+		wasTouching = NONE
+		allowCollisions = ANY
+		
+		velocity = New FlxPoint()
+		acceleration = New FlxPoint()
+		drag = New FlxPoint()
+		maxVelocity = New FlxPoint(10000, 10000)
+		
+		angle = 0
+		angularVelocity = 0
+		angularAcceleration = 0
+		angularDrag = 0
+		maxAngular = 10000
+		
+		scrollFactor = New FlxPoint(1.0, 1.0)
+		_flicker = False
+		_flickerTimer = 0
+		
+		_point = New FlxPoint()
+		_rect = New	FlxRect()
+		
+		path = Null
+		pathSpeed = 0
+		pathAngle = 0		
+	End Method
+	
+	Method Destroy:Void()
+		velocity = Null
+		acceleration = Null
+		drag = Null
+		maxVelocity = Null
+		scrollFactor = Null
+		_point = Null
+		_rect = Null
+		last = Null
+		cameras = Null
+		If (path <> Null) path.Destroy()
+		path = Null	
 	End Method
 	
 	Method GetMidpoint:FlxPoint(point:FlxPoint)
