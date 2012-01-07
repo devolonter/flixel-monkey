@@ -5,6 +5,7 @@ Import flxcamera
 Import flxu
 
 Import plugin.timermanager
+Import plugin.debugpathdisplay
 
 Class FlxG	
 
@@ -64,9 +65,20 @@ Class FlxG
 	
 	Global _lastDrawingColor:Int
 	
-	Global _lastDrawingBlend:Int	
+	Global _lastDrawingBlend:Int
+	
+	Global _currentCamera:FlxCamera
 
-Public	
+Public
+	Function GetLibraryName:String()
+		Return FlxG.LIBRARY_NAME + " v" + FlxG.LIBRARY_MAJOR_VERSION + "." + FlxG.LIBRARY_MINOR_VERSION
+	End Function
+	
+	Function Log:Void(data:Object)
+		Print data
+		'TODO
+	End Function
+	
 	Function Random:Float()
 		FlxG.globalSeed = (FlxG.globalSeed * 1664525 + 1013904223)|0
 		Return FlxU.Srand(FlxG.globalSeed)
@@ -234,7 +246,8 @@ Public
 		FlxG.cameras = New Stack<FlxCamera>()		
 		
 		plugins = New Stack<FlxBasic>
-		AddPlugin(New TimerManager())	
+		AddPlugin(New DebugPathDisplay())
+		AddPlugin(New TimerManager())		
 	End Function
 	
 	Function Reset:Void()		
@@ -242,6 +255,8 @@ Public
 		FlxG.elapsed = 0 
 		FlxG.globalSeed = Rnd(1, 10000000)
 		FlxG.worldBounds = New FlxRect(-10, -10, FlxG.width + 20, FlxG.height + 20)
+		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.CLASS_OBJECT))
+		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
 	End Function
 	
 	Function UpdateCameras:Void()

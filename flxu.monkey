@@ -2,6 +2,7 @@ Strict
 
 Import mojo.app
 Import flxpoint
+Import flxg
 
 Class FlxU
 
@@ -134,6 +135,33 @@ Class FlxU
 		resluts[2] = color & $FF
 		resluts[3] = Float((color Shr 24) & $FF) / 255
 		Return resluts
+	End Function
+	
+	Function ComputeVelocity:Float(velocity:Float, acceleration:Float = 0, drag:Float = 0, max:Float = 10000)
+		If (acceleration <> 0) Then
+			velocity += acceleration * FlxG.elapsed
+						
+		ElseIf (drag <> 0) Then
+			drag *= FlxG.elapsed
+			
+			If (velocity - drag > 0) Then
+				velocity -= drag			
+			ElseIf (velocity + drag < 0) Then
+				velocity += drag			
+			Else
+				velocity = 0
+			End If
+		End If
+		
+		If (velocity <> 0 And max <> 10000) Then
+			If (velocity > max) Then
+				velocity = max
+			ElseIf (velocity < -max) Then
+				velocity = -max	
+			End If
+		End If
+		
+		Return velocity
 	End Function
 	
 	Function RotatePoint:FlxPoint(x:Float, y:Float, pivotX:Float, pivotY:Float, angle:Float, point:FlxPoint = Null)

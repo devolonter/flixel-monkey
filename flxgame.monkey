@@ -69,28 +69,27 @@ Public
 	
 	Method OnRender:Int()	
 		Cls(FlxG._bgColor.r, FlxG._bgColor.g, FlxG._bgColor.b)		
-		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)
-		
-		Local cam:FlxCamera
-		Local cams:Stack<FlxCamera> = FlxG.cameras
-		Local i:Int = 0
-		Local l:Int = cams.Length()
+		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)		
 		
 		FlxG._lastDrawingColor = FlxG.WHITE
-		FlxG._lastDrawingBlend = GetBlend()		
+		FlxG._lastDrawingBlend = GetBlend()
+		FlxG._currentCamera = Null
+		
+		Local i:Int = 0
+		Local l:Int = FlxG.cameras.Length()		
 		
 		While(i < l)
-			cam = cams.Get(i)
-			If (cam = Null Or Not cam.exists Or Not cam.visible) Continue
+			FlxG._currentCamera = FlxG.cameras.Get(i)
+			If (FlxG._currentCamera = Null Or Not FlxG._currentCamera.exists Or Not FlxG._currentCamera.visible) Continue
 			
-			cam.DrawFX() 'not realy draw. Only calculation
-			cam.Lock()			
+			FlxG._currentCamera.DrawFX() 'not realy draw. Only calculation
+			FlxG._currentCamera.Lock()			
 			_state.Draw()
 			FlxG.DrawPlugins()			
-			cam.Unlock()
+			FlxG._currentCamera.Unlock()
 									
 			i+=1
-		Wend
+		Wend		
 								
 		Return 0	
 	End Method

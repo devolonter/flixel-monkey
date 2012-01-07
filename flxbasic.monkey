@@ -140,8 +140,12 @@ Class FlxBasic
 	
 	#Rem
 	summary:Override this function to draw custom "debug mode" graphics to the specified camera while the debugger's visual mode is toggled on.
+	Params:
+	[list]
+	[*][a flxcamera.monkey.html]camera:FlxCamera[/a] - which camera to draw the debug visuals to.
+	[/list]
 	#End
-	Method DrawDebug:Void()
+	Method DrawDebug:Void(camera:FlxCamera = Null)
 	End Method
 	
 	#Rem

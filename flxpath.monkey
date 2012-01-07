@@ -110,7 +110,7 @@ Public
 		Return Null	
 	End Method
 	
-	Method DrawDebug:Void()
+	Method DrawDebug:Void(camera:FlxCamera = Null)
 		'TODO		
 	End Method
 	

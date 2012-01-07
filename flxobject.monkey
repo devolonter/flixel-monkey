@@ -6,8 +6,13 @@ Strict
 Import flxbasic
 Import flxpoint
 Import flxpath
+Import flxgroup
+Import flxcamera
+Import flxtilemap
 Import flxg
 Import flxu
+
+Import plugin.monkey.flxcolor
 
 #Rem
 summary:This is the base class for most of the display objects (FlxSprite, FlxText, etc).
@@ -149,6 +154,8 @@ Private
 	
 	Field _pathRotate:Bool
 	
+	Field _debugBoundingBoxColor:FlxColor
+	
 Public	
 	Method New(x:Float, y:Float, width:Float = 0, height:Float = 0)
 		Self.x = x
@@ -188,7 +195,7 @@ Public
 		
 		path = Null
 		pathSpeed = 0
-		pathAngle = 0		
+		pathAngle = 0	
 	End Method
 	
 	Method Destroy:Void()
@@ -202,7 +209,8 @@ Public
 		last = Null
 		cameras = Null
 		If (path <> Null) path.Destroy()
-		path = Null	
+		path = Null		
+		_debugBoundingBoxColor = Null	
 	End Method
 	
 	Method PreUpdate:Void()
@@ -226,6 +234,261 @@ Public
 		End If
 	End Method
 	
+	Method PostUpdate:Void()
+		If (moves) _UpdateMotion()
+		
+		wasTouching = touching
+		touching = NONE
+	End Method
+	
+	Method Draw:Void()
+		If (Not OnScreen(FlxG._currentCamera)) Return
+		
+		_VISIBLECOUNT += 1
+		If (FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._currentCamera)	
+	End Method
+	
+	Method DrawDebug:Void(camera:FlxCamera = Null)
+		Local boundingBoxX:Float = x - Int(camera.scroll.x * scrollFactor.x)		
+		Local boundingBoxY:Float = y - Int(camera.scroll.y * scrollFactor.y)
+		
+		If (boundingBoxX > 0) Then
+			boundingBoxX += 0.0000001
+		Else
+			boundingBoxX -= 0.0000001
+		End If
+		
+		If (boundingBoxY > 0) Then
+			boundingBoxY += 0.0000001
+		Else
+			boundingBoxY -= 0.0000001
+		End If
+		
+		Local boundingBoxWidth:Int
+		Local boundingBoxHeight:Int
+		
+		If (width <> Int(width)) Then
+			boundingBoxWidth = width
+		Else
+			boundingBoxWidth = width - 1
+		End If
+		
+		If (height <> Int(height)) Then
+			boundingBoxHeight = height
+		Else
+			boundingBoxHeight = height - 1
+		End If
+		
+		If (_debugBoundingBoxColor = Null) _debugBoundingBoxColor = New FlxColor()
+		If (allowCollisions) Then
+			If (allowCollisions <> ANY) Then
+				_debugBoundingBoxColor.SetARGB(FlxG.PINK)
+			ElseIf (immovable)
+				_debugBoundingBoxColor.SetARGB(FlxG.GREEN)
+			Else
+				_debugBoundingBoxColor.SetARGB(FlxG.RED)				
+			End if
+		Else
+			_debugBoundingBoxColor.SetARGB(FlxG.BLUE)
+		End If
+		
+		SetAlpha(.5)
+		SetColor(_debugBoundingBoxColor.r, _debugBoundingBoxColor.g, _debugBoundingBoxColor.b)
+		
+		DrawLine(boundingBoxX, boundingBoxY, boundingBoxX + boundingBoxWidth, boundingBoxY)
+		DrawLine(boundingBoxX + boundingBoxWidth, boundingBoxY, boundingBoxX + boundingBoxWidth ,boundingBoxY + boundingBoxHeight)
+		DrawLine(boundingBoxX + boundingBoxWidth ,boundingBoxY + boundingBoxHeight, boundingBoxX, boundingBoxY + boundingBoxHeight)
+		DrawLine(boundingBoxX, boundingBoxY + boundingBoxHeight, boundingBoxX, boundingBoxY)
+		
+		FlxG._lastDrawingColor = _debugBoundingBoxColor.argb
+		SetAlpha(1)
+	End Method
+	
+	Method FollowPath:Void(path:FlxPath, speed:Float = 100, mode:Int = PATH_FORWARD, autoRotate:Bool = False)
+		If (path.nodes.Length() <= 0) Then
+			FlxG.Log("WARNING: Paths need at least one node in them to be followed.")
+			Return
+		End If
+		
+		Self.path = path
+		pathSpeed = Abs(speed)
+		_pathMode = mode
+		_pathRotate = autoRotate
+		
+		If (_pathMode = PATH_BACKWARD Or _pathMode = PATH_LOOP_BACKWARD) Then
+			_pathNodeIndex = Self.path.nodes.Length() - 1
+			_pathInc = -1
+		Else
+			_pathNodeIndex = 0
+			_pathInc = 1
+		End If
+	End Method
+	
+	Method StopFollowingPath:Void(destroyPath:Bool = False)
+		pathSpeed = 0
+		If (destroyPath And path <> Null) Then
+			path.Destroy()
+			path = Null
+		End If
+	End Method
+	
+	Method Overlaps:Bool(objectOrGroup:FlxBasic, inScreenSpace:Bool = False, camera:FlxCamera = Null)
+		If (objectOrGroup = Null) Return False
+	
+		If (FlxGroup(objectOrGroup) <> Null) Then
+			Local results:Bool = False			
+			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
+			Local i:Int = 0
+			Local l:Int = members.Length()
+			
+			While(i < l)
+				If (Overlaps(members[i], inScreenSpace, camera)) Then
+					results = True
+					Exit
+				End if
+				i += 1
+			Wend
+			
+			Return results
+		End If
+		
+		If (FlxTilemap(objectOrGroup) <> Null) Then
+			Return FlxTilemap(objectOrGroup).overlaps(Self, inScreenSpace, camera)
+		End If
+		
+		Local object:FlxObject = FlxObject(objectOrGroup)
+		
+		If (Not inScreenSpace) Then
+			Return (object.x + object.width > x) And (object.x < x + width) And
+				(object.y + object.height > y) And (object.y < y + height)
+		End If
+		
+		If (camera = Null) camera = FlxG.camera
+		Local objectScreenPos:FlxPoint = object.GetScreenXY(Null, camera)		
+		GetScreenXY(_point, camera)
+		
+		Return (objectScreenPos.x + object.width > _point.x) And (objectScreenPos.x < _point.x + width) And
+			(objectScreenPos.y + object.height > _point.y) And (objectScreenPos.y < _point.y + height)
+	End Method
+	
+	Method OverlapsAt:Bool(x:Float, y:Float, objectOrGroup:FlxBasic, inScreenSpace:Bool = False, camera:FlxCamera = Null)
+		If (objectOrGroup = Null) Return False
+	
+		If (FlxGroup(objectOrGroup) <> Null) Then
+			Local results:Bool = False			
+			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
+			Local i:Int = 0
+			Local l:Int = members.Length()
+			
+			While(i < l)
+				If (overlapsAt(x, y, members[i], inScreenSpace, camera)) Then
+					results = True
+					Exit
+				End if
+				i += 1
+			Wend
+			
+			Return results
+		End If
+		
+		If (FlxTilemap(objectOrGroup) <> Null) Then
+			Local tilemap:FlxTilemap = FlxTilemap(objectOrGroup)
+			Return tilemap.OverlapsAt(tilemap.x - (x - Self.x), tilemap.y - (y - Self.y), Self ,inScreenSpace, camera)
+		End If
+		
+		Local object:FlxObject = FlxObject(objectOrGroup)
+		
+		If (Not inScreenSpace) Then
+			Return (object.x + object.width > x) And (object.x < x + width) And
+				(object.y + object.height > y) And (object.y < y + height)
+		End If
+		
+		If (camera = Null) camera = FlxG.camera
+		Local objectScreenPos:FlxPoint = object.GetScreenXY(Null, camera)
+		
+		point.x = x - Int(camera.scroll.x * scrollFactor.x)
+		point.y = y - Int(camera.scroll.y * scrollFactor.y)
+		
+		If (point.x > 0) Then
+			point.x += 0.0000001
+		Else
+			point.x -= 0.0000001			
+		End If
+		
+		If (point.y > 0) Then
+			point.y += 0.0000001
+		Else
+			point.y -= 0.0000001			
+		End If
+		
+		Return (objectScreenPos.x + object.width > _point.x) And (objectScreenPos.x < _point.x + width) And
+			(objectScreenPos.y + object.height > _point.y) And (objectScreenPos.y < _point.y + height)
+	End Method
+	
+	Method OverlapsPoint:Bool(point:FlxPoint, inScreenSpace:Bool = False, camera:FlxCamera = Null)
+		If (Not inScreenSpace) Then
+			Return (point.x > x) And (point.x < x + width) And (point.y > y) And (point.y < y + height)
+		End If
+		
+		If (camera = Null) camera = FlxG.camera
+		
+		Local x:Float = point.x - camera.scroll.x
+		Local y:Float = point.y - camera.scroll.y
+		GetScreenXY(_point, camera)
+		
+		Return (x > _point.x) And (x < _point.x + width) And (y > _point.y) And (y < _point.y + height)
+	End Method	
+	
+	Method OnScreen:Bool(camera:FlxCamera = Null)
+		If (camera = Null) camera = FlxG.camera
+		
+		GetScreenXY(_point, camera)
+		Return (_point.x + width > 0) And (_point.x < camera.Width) And (_point.y + height > 0) And (_point.y < camera.Height)
+	End Method
+	
+	Method GetScreenXY:FlxPoint(point:FlxPoint = Null, camera:FlxCamera = Null)
+		If (point = Null) point = New FlxPoint()
+		If (camera = Null) camera = FlxG.camera
+		
+		point.x = x - Int(camera.scroll.x * scrollFactor.x)
+		point.y = y - Int(camera.scroll.y * scrollFactor.y)
+		
+		If (point.x > 0) Then
+			point.x += 0.0000001
+		Else
+			point.x -= 0.0000001			
+		End If
+		
+		If (point.y > 0) Then
+			point.y += 0.0000001
+		Else
+			point.y -= 0.0000001			
+		End If
+		
+		Return point
+	End Method
+	
+	Method Flicker:Void(duration:Float = 1)
+		_flickerTimer = duration
+		If (_flickerTimer = 0) _flicker = False
+	End Method
+	
+	Method Flickering:Bool() Property
+		Return _flickerTimer <> 0
+	End Method
+	
+	Method Solid:Bool() Property
+		Return (allowCollisions & ANY) > NONE
+	End Method
+	
+	Method Solid:Void(solid:Bool) Property
+		If (solid) Then
+			allowCollisions = ANY
+		Else
+			allowCollisions = NONE
+		End If
+	End Method
+	
 	Method GetMidpoint:FlxPoint(point:FlxPoint)
 		If (point = Null) point = New FlxPoint()		
 		point.x = x + width * .5
@@ -233,11 +496,68 @@ Public
 		Return point
 	End Method
 	
+	Method Reset:Void(x:Float, y:Float)
+		Revive()
+		touching = NONE
+		wasTouching = NONE
+		Self.x = x
+		Self.y = y
+		last.x = x
+		last.y = y
+		velocity.x = 0
+		velocity.y = 0
+	End Method
+	
+	Method IsTouching:Bool(direction:Int)
+		Return (touching & direction) > NONE
+	End Method
+	
+	Method JustTouched:Bool(direction:Int)
+		Return (touching & direction) > NONE And (wasTouching & direction) <= NONE
+	End Method
+	
+	Method Hurt:Void(damage:Float)
+		health -= damage
+		If (health <= 0) Kill()
+	End Method
+	
+	Method SeparateX:Bool(object1:FlxObject, object2:FlxObject)
+		Local obj1immovable:Bool = object1.immovable
+		Local obj2immovable:Bool = object2.immovable
+		
+		If (obj1immovable And obj2immovable) Return False
+		
+		'(FlxTilemap(object1) <> Null) Return FlxTilemap(object1).
+		'TODO
+	End Method
+	
 	Method ToString:String()
 		Return "FlxObject"	
 	End Method
 	
-Private	
+Private
+	Method _UpdateMotion:Void()
+		Local delta:Float
+		Local velocityDelta:Float
+		
+		velocityDelta = (FlxU.ComputeVelocity(angularVelocity, angularAcceleration, angularDrag, maxAngular) - angularVelocity) / 2
+		angularVelocity += velocityDelta
+		angle += angularVelocity * FlxG.elapsed
+		angularVelocity += velocityDelta
+		
+		velocityDelta = (FlxU.ComputeVelocity(velocity.x, acceleration.x, drag.x, maxVelocity.x) - velocity.x) / 2
+		velocity.x += velocityDelta
+		delta = velocity.x * FlxG.elapsed
+		velocity.x += velocityDelta
+		x += delta
+		
+		velocityDelta = (FlxU.ComputeVelocity(velocity.y, acceleration.y, drag.y, maxVelocity.y) - velocity.y) / 2
+		velocity.y += velocityDelta
+		delta = velocity.y * FlxG.elapsed
+		velocity.y += velocityDelta
+		y += delta
+	End Method
+	
 	Method _AdvancePath:FlxPoint(snap:Bool = True)
 		If (snap) Then
 			Local oldNode:FlxPoint = path.nodes.Get(_pathNodeIndex)
