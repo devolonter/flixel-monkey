@@ -55,6 +55,10 @@ Public
 		
 		_paths.Clear()		
 	End Method
+	
+	Method ToString:String()
+		Return "DebugPathDisplay"	
+	End Method
 
 End Class
 

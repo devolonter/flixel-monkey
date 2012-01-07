@@ -1,6 +1,7 @@
 Strict
 
 Import mojo.app
+Import flxpoint
 
 Class FlxU
 
@@ -135,6 +136,94 @@ Class FlxU
 		Return resluts
 	End Function
 	
+	Function RotatePoint:FlxPoint(x:Float, y:Float, pivotX:Float, pivotY:Float, angle:Float, point:FlxPoint = Null)
+		Local sin:Float = 0
+		Local cos:Float = 0
+		Local radians:Float = angle * -0.017453293
+		
+		While (radians < -PI)
+			radians += TWOPI	
+		Wend
+		
+		While (radians > PI)
+			radians = radians - TWOPI
+		Wend
+		
+		If (radians < 0) Then
+			sin =  1.27323954 * radians + .405284735 * radians * radians
+			If (sin < 0) Then
+				sin = .225 * (sin * -sin - sin) + sin
+			Else
+				sin = .225 * (sin * sin - sin) + sin	
+			End If
+		Else
+			sin = 1.27323954 * radians - 0.405284735 * radians * radians
+			If (sin < 0) Then
+				sin = .225 * (sin * -sin - sin) + sin
+			Else
+				sin = .225 * (sin * sin - sin) + sin		
+			End If
+		End If
+		
+		radians += HALFPI		
+		If (radians > PI) radians -= TWOPI
+		
+		If (radians < 0) Then
+			cos = 1.27323954 * radians + 0.405284735 * radians * radians
+			If (cos < 0) Then
+				cos = .225 * (cos * -cos - cos) + cos
+			Else
+				cos = .225 * (cos * cos - cos) + cos			
+			End If
+		Else
+			cos = 1.27323954 * radians - 0.405284735 * radians * radians
+			If (cos < 0) Then
+				cos = .225 * (cos * -cos - cos) + cos
+			Else
+				cos = .225 * (cos * cos - cos) + cos					
+			End If
+		End If
+		
+		Local dx:Float = x - pivotX
+		Local dy:Float = pivotY + y
+		
+		If (point = Null) point = New FlxPoint()
+		point.x = pivotX + cos * dx - sin * dy
+		point.y = pivotY - sin * dx - cos * dy
+		
+		Return point
+	End Function
 	
+	Function GetAngle:Float(point1:FlxPoint, point2:FlxPoint)
+		Local x:Float = point2.x - point1.x
+		Local y:Float = point2.y - point1.y
+		
+		If (x = 0 And y = 0) Return 0
+		
+		Local c1:Float = PI * .25
+		Local c2:Float = 3 * c1		
+		Local ay:Float = Abs(y)
+		Local angle:Float = 0
+		
+		If (x >= 0) Then
+			angle = c1 - c1 * ((x - ay) / (x + ay))
+		Else
+			angle = c2 - c1 * ((x + ay) / (ay - x))	
+		End If
+		
+		If (y < 0) Then
+			angle =	-angle * 57.2957796
+		Else
+			angle =	angle * 57.2957796
+		End If
+		
+		If (angle > 90) Then
+			angle = angle - 270
+		Else
+			angle += 90			
+		End If
+		
+		Return angle
+	End Function
 
 End Class

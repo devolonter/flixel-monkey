@@ -12,6 +12,10 @@ Class FlxSprite Extends FlxObject
 		Super.New(x, y)
 	End Method
 	
+	Method ToString:String()
+		Return "FlxSprite"	
+	End Method
+	
 End Class
 
 Private	

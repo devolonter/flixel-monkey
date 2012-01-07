@@ -6,6 +6,8 @@ Strict
 Import flxbasic
 Import flxpoint
 Import flxpath
+Import flxg
+Import flxu
 
 #Rem
 summary:This is the base class for most of the display objects (FlxSprite, FlxText, etc).
@@ -203,6 +205,27 @@ Public
 		path = Null	
 	End Method
 	
+	Method PreUpdate:Void()
+		_ACTIVECOUNT += 1
+		
+		If (_flickerTimer <> 0) Then
+			If (_flickerTimer > 0) Then
+				_flickerTimer -= FlxG.elapsed
+				If (_flickerTimer <= 0) Then
+					_flickerTimer = 0
+					_flicker = False
+				End If
+			End If
+		End If
+		
+		last.x = x
+		last.y = y
+		
+		If (path <> Null And pathSpeed <> 0 And path.nodes.Get(_pathNodeIndex) <> Null) Then
+			_UpdatePathMotion()		 
+		End If
+	End Method
+	
 	Method GetMidpoint:FlxPoint(point:FlxPoint)
 		If (point = Null) point = New FlxPoint()		
 		point.x = x + width * .5
@@ -212,6 +235,138 @@ Public
 	
 	Method ToString:String()
 		Return "FlxObject"	
+	End Method
+	
+Private	
+	Method _AdvancePath:FlxPoint(snap:Bool = True)
+		If (snap) Then
+			Local oldNode:FlxPoint = path.nodes.Get(_pathNodeIndex)
+			If (oldNode <> Null) Then
+				If ((_pathMode & PATH_VERTICAL_ONLY) = 0) Then
+					x = oldNode.x - width * .5
+				End If
+							
+				If ((_pathMode & PATH_HORIZONTAL_ONLY) = 0) Then
+					y = oldNode.y - height * .5				
+				End If
+			End If
+		End If
+		
+		_pathNodeIndex += _pathInc
+		
+		If ((_pathMode & PATH_BACKWARD) > 0) Then
+			If (_pathNodeIndex < 0) Then
+				_pathNodeIndex = 0
+				pathSpeed = 0			
+			End If
+			
+		ElseIf ((_pathMode & PATH_LOOP_FORWARD) > 0) Then
+			If (_pathNodeIndex >= path.nodes.Length()) Then
+				_pathNodeIndex = 0
+			End If
+			
+		ElseIf ((_pathMode & PATH_LOOP_BACKWARD) > 0) Then
+			If (_pathNodeIndex < 0) Then
+				_pathNodeIndex = path.nodes.Length() - 1
+				If (_pathNodeIndex < 0) _pathNodeIndex = 0			 
+			End If
+			
+		ElseIf ((_pathMode & PATH_YOYO) > 0)
+			If (_pathInc > 0) Then
+				If (_pathNodeIndex >= path.nodes.Length()) Then
+					_pathNodeIndex = path.nodes.Length() - 2
+					
+					If (_pathNodeIndex < 0) _pathNodeIndex = 0
+					_pathInc = -_pathInc
+					
+				ElseIf (_pathNodeIndex < 0) Then
+					_pathNodeIndex = 1					
+					If (_pathNodeIndex >= path.nodes.Length()) Then
+						_pathNodeIndex = path.nodes.Length() -1
+					End If
+										
+					If (_pathNodeIndex < 0) _pathNodeIndex = 0
+					_pathInc = -_pathInc
+				End If
+			End If
+			
+		Else
+			If (_pathNodeIndex >= path.nodes.Length()) Then
+				_pathNodeIndex = path.nodes.Length() - 1
+				pathSpeed = 0
+			End If
+		End If
+		
+		Return path.nodes.Get(_pathNodeIndex)
+	End Method
+	
+	Method _UpdatePathMotion:Void()
+		_point.x = x + width * .5
+		_point.y = y + height * .5
+		
+		Local node:FlxPoint = path.nodes.Get(_pathNodeIndex)
+		Local deltaX:Float = node.x - _point.x
+		Local deltaY:Float = node.y - _point.y
+		
+		Local horizontalOnly:Bool = (_pathMode & PATH_HORIZONTAL_ONLY) > 0
+		Local verticalOnly:Bool = (_pathMode & PATH_VERTICAL_ONLY) > 0
+		
+		If (horizontalOnly) Then
+			If (Abs(deltaX) < pathSpeed * FlxG.elapsed) node = _AdvancePath()
+			
+		ElseIf (verticalOnly) Then
+			If (Abs(deltaY) < pathSpeed * FlxG.elapsed) node = _AdvancePath()
+			
+		Else
+			If (Sqrt(deltaX * deltaX + deltaY * deltaY) < pathSpeed * FlxG.elapsed) Then
+				node = _AdvancePath()		
+			End If
+		End If
+		
+		If (pathSpeed <> 0) Then
+			_point.x = x + width * .5
+			_point.y = y + height * .5
+			If (horizontalOnly Or _point.y = node.y) Then
+				If (_point.x < node.x) Then
+					velocity.x = pathSpeed
+				Else
+					velocity.x = -pathSpeed
+				End if
+				
+				If (velocity.x < 0) Then
+					pathAngle = -90
+				Else
+					pathAngle = 90
+				End If
+				
+				If (Not horizontalOnly) velocity.y = 0
+												
+			ElseIf (verticalOnly Or _point.x = node.x) Then
+				If (_point.y < node.y) Then
+					velocity.y = pathSpeed
+				Else
+					velocity.y = -pathSpeed	 
+				End If
+				
+				If (velocity.y < 0) Then
+					pathAngle = 0
+				Else
+					pathAngle = 180
+				End If
+				
+				If (Not verticalOnly) velocity.x = 0
+				
+			Else
+				pathAngle = FlxU.GetAngle(_point, node)
+				FlxU.RotatePoint(0, pathSpeed, 0, 0, pathAngle, velocity)
+			End If
+			
+			If (_pathRotate) Then
+				angularVelocity = 0
+				angularAcceleration = 0
+				angle = pathAngle
+			End If
+		End If
 	End Method
 
 End Class
