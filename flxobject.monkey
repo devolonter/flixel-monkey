@@ -293,7 +293,10 @@ Public
 		End If
 		
 		SetAlpha(.5)
-		SetColor(_debugBoundingBoxColor.r, _debugBoundingBoxColor.g, _debugBoundingBoxColor.b)
+		
+		If (FlxG._lastDrawingColor <> _debugBoundingBoxColor.argb) Then
+			SetColor(_debugBoundingBoxColor.r, _debugBoundingBoxColor.g, _debugBoundingBoxColor.b)
+		End If
 		
 		DrawLine(boundingBoxX, boundingBoxY, boundingBoxX + boundingBoxWidth, boundingBoxY)
 		DrawLine(boundingBoxX + boundingBoxWidth, boundingBoxY, boundingBoxX + boundingBoxWidth ,boundingBoxY + boundingBoxHeight)
@@ -301,6 +304,7 @@ Public
 		DrawLine(boundingBoxX, boundingBoxY + boundingBoxHeight, boundingBoxX, boundingBoxY)
 		
 		FlxG._lastDrawingColor = _debugBoundingBoxColor.argb
+		
 		SetAlpha(1)
 	End Method
 	

@@ -107,7 +107,7 @@ Public
 	End Method
 	
 	Method DrawDebug:Void(camera:FlxCamera = Null)
-		'TODO		
+				
 	End Method
 	
 	Function Manager:DebugPathDisplay()
