@@ -213,7 +213,7 @@ Public
 		_debugBoundingBoxColor = Null	
 	End Method
 	
-	Method PreUpdate:Void()
+	Method PreUpdate:Void()		
 		_ACTIVECOUNT += 1
 		
 		If (_flickerTimer <> 0) Then
@@ -321,7 +321,7 @@ Public
 		Else
 			_pathNodeIndex = 0
 			_pathInc = 1
-		End If
+		End If		
 	End Method
 	
 	Method StopFollowingPath:Void(destroyPath:Bool = False)
@@ -777,8 +777,9 @@ Private
 					
 					If (_pathNodeIndex < 0) _pathNodeIndex = 0
 					_pathInc = -_pathInc
+				End If
 					
-				ElseIf (_pathNodeIndex < 0) Then
+			ElseIf (_pathNodeIndex < 0) Then
 					_pathNodeIndex = 1					
 					If (_pathNodeIndex >= path.nodes.Length()) Then
 						_pathNodeIndex = path.nodes.Length() -1
@@ -786,7 +787,6 @@ Private
 										
 					If (_pathNodeIndex < 0) _pathNodeIndex = 0
 					_pathInc = -_pathInc
-				End If
 			End If
 			
 		Else
@@ -799,7 +799,7 @@ Private
 		Return path.nodes.Get(_pathNodeIndex)
 	End Method
 	
-	Method _UpdatePathMotion:Void()
+	Method _UpdatePathMotion:Void()	
 		_point.x = x + width * .5
 		_point.y = y + height * .5
 		

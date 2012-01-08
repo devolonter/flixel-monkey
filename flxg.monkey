@@ -74,7 +74,7 @@ Public
 		Return FlxG.LIBRARY_NAME + " v" + FlxG.LIBRARY_MAJOR_VERSION + "." + FlxG.LIBRARY_MINOR_VERSION
 	End Function
 	
-	Function Log:Void(data:Object)
+	Function Log:Void(data:String)
 		Print data
 		'TODO
 	End Function

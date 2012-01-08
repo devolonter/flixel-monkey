@@ -96,7 +96,7 @@ Public
 	#Rem
 	summary:Automatically goes through and calls update on everything you added.
 	#End
-	Method Update:Void()
+	Method Update:Void()	
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
@@ -114,7 +114,7 @@ Public
 	#Rem
 	summary:Automatically goes through and calls render on everything you added.
 	#End
-	Method Draw:Void()
+	Method Draw:Void()	
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			

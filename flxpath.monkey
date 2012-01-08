@@ -36,10 +36,6 @@ Public
 		If (debugPathDisplay <> Null) debugPathDisplay.Add(Self)			
 	End Method
 
-	Method New(nodes:FlxPoint[])
-		Super.New(New Stack<FlxPoint>(nodes))		
-	End Method
-
 	Method Destroy:Void()
 		Local debugPathDisplay:DebugPathDisplay = Manager()
 		If (debugPathDisplay <> Null) debugPathDisplay.Remove(Self)
