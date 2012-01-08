@@ -5,7 +5,7 @@ Import plugin.timermanager
 
 Interface FlxTimerCallback
 	
-	Method onTimer:Void(timer:FlxTimer)
+	Method OnTimer:Void(timer:FlxTimer)
 
 End Interface
 
@@ -52,7 +52,7 @@ Public
 			_loopsCounter += 1
 			If (loops > 0 And _loopsCounter >= loops) Stop()
 			
-			If (_callback <> Null) _callback.onTimer(Self)		
+			If (_callback <> Null) _callback.OnTimer(Self)		
 		Wend
 	End Method
 	

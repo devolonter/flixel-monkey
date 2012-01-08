@@ -191,7 +191,7 @@ Public
 			_fxFlashAlpha -= FlxG.elapsed / _fxFlashDuration
 			
 			If (_fxFlashAlpha <= 0 And _fxFlashComplete <> Null) Then
-				_fxFlashComplete.Call()
+				_fxFlashComplete.Invoke()
 			End If
 		End If
 		
@@ -200,7 +200,7 @@ Public
 						
 			If (_fxFadeAlpha >= 1) Then
 				_fxFadeAlpha = 1				
-				If (_fxFadeComplete <> Null) _fxFadeComplete.Call()				
+				If (_fxFadeComplete <> Null) _fxFadeComplete.Invoke()				
 			End If
 		End If
 		
@@ -209,7 +209,7 @@ Public
 			If (_fxShakeDuration <= 0) Then
 				_fxShakeOffset.Make()
 								
-				If (_fxShakeComplete <> Null) _fxShakeComplete.Call()
+				If (_fxShakeComplete <> Null) _fxShakeComplete.Invoke()
 			Else
 				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_HORIZONTAL_ONLY) Then
 					_fxShakeOffset.x = (FlxG.Random() * _fxShakeIntensity * _width * 2 - _fxShakeIntensity * _width) * _zoom		

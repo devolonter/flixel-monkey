@@ -40,7 +40,7 @@ End Interface
 
 Interface FlxFunction
 	
-	Method Call:Void()
+	Method Invoke:Void()
 
 End Interface
 

@@ -1,5 +1,5 @@
 #rem
-	header:This module contains the FlxGroup class and next inerfaces: FlxGroupCaller, FlxGroupSetter, FlxGroupComparator.
+	header:This module contains the FlxGroup class
 #end
 Strict
 
@@ -22,7 +22,7 @@ Class FlxGroup Extends FlxBasic
 	summary:See detail.
 	Use with [a #Sort]Sort()[/a] to sort in descending order.
 	#End
-	Const DESCENDING:Bool = True		
+	Const DESCENDING:Bool = True
 	
 Private	
 	Field _maxSize:Int
@@ -315,7 +315,7 @@ Public
 		Wend
 	End Method
 	
-	Method CallAll:Void(caller:FlxBasicCaller, recurse:Bool = True)
+	Method CallAll:Void(invoker:FlxBasicInvoker, recurse:Bool = True)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
@@ -323,9 +323,9 @@ Public
 			basic = _members[i]
 			If (basic <> Null) Then
 				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).CallAll(caller, recurse)	
+					FlxGroup(basic).CallAll(invoker, recurse)	
 				Else
-					caller.Call(basic)
+					invoker.Invoke(basic)
 				End If
 			End If
 			i+=1		

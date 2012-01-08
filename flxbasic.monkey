@@ -6,9 +6,9 @@ Strict
 Import flxcamera
 Import flxg
 
-Interface FlxBasicCaller
+Interface FlxBasicInvoker
 	
-	Method Call:Void(object:FlxBasic)
+	Method Invoke:Void(object:FlxBasic)
 
 End Interface
 

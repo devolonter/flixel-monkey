@@ -567,7 +567,7 @@ Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicSet
 	
 End Class
 
-Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicCaller
+Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicInvoker
 
 	Method Run:Bool()	
 		group = New FlxGroup()
@@ -607,7 +607,7 @@ Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicCa
 		Return "FlxGroup.CallAll"
 	End Method
 	
-	Method Call:Void(basic:FlxBasic)
+	Method Invoke:Void(basic:FlxBasic)
 		basic.Kill()
 	End Method
 	
@@ -892,10 +892,11 @@ End Class
 
 Class FlxGAddPluginUnitTest Implements IUnitTest
 	
-	Method Run:Bool()	
+	Method Run:Bool()
+		Local oldL:Int = FlxG.plugins.Length()	
 		FlxG.AddPlugin(New TimerManager())
 		FlxG.AddPlugin(New TimerManager())
-		Return UnitTest.AssertEqualsI(1, FlxG.plugins.Length())			
+		Return UnitTest.AssertEqualsI(oldL, FlxG.plugins.Length())			
 	End Method
 
 	Method GetName:String()
@@ -918,9 +919,10 @@ End Class
 
 Class FlxGRemovePluginUnitTest Implements IUnitTest
 	
-	Method Run:Bool()	
+	Method Run:Bool()
+		Local oldL:Int = FlxG.plugins.Length()	
 		FlxG.RemovePlugin(FlxG.GetPlugin(TimerManager.CLASS_OBJECT))
-		If (Not UnitTest.AssertEqualsI(0, FlxG.plugins.Length())) Return False
+		If (Not UnitTest.AssertEqualsI(oldL - 1, FlxG.plugins.Length())) Return False
 		FlxG.Init(Null, 0, 0, 0)
 		Return True				
 	End Method
@@ -933,9 +935,10 @@ End Class
 
 Class FlxGRemovePluginTypeUnitTest Implements IUnitTest
 	
-	Method Run:Bool()	
+	Method Run:Bool()
+		Local oldL:Int = FlxG.plugins.Length()	
 		FlxG.RemovePluginType(TimerManager.CLASS_OBJECT)
-		If (Not UnitTest.AssertEqualsI(0, FlxG.plugins.Length())) Return False
+		If (Not UnitTest.AssertEqualsI(oldL -  1, FlxG.plugins.Length())) Return False
 		FlxG.Init(Null, 0, 0, 0)
 		Return True				
 	End Method
