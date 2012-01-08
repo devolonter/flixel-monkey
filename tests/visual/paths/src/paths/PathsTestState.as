@@ -5,17 +5,17 @@ package paths
 	public class PathsTestState extends FlxState 
 	{
 		
-		public var pathFrowardedObject:FlxObject
-		public var pathForward:FlxPath
+		public var pathFrowardedObject:FlxObject;
+		public var pathForward:FlxPath;
 		
-		public var pathBackwardedObject:FlxObject
-		public var pathBackward:FlxPath
+		public var pathBackwardedObject:FlxObject;
+		public var pathBackward:FlxPath;
 		
-		public var pathLoopForwadedObject:FlxObject
-		public var pathLoopForward:FlxPath
+		public var pathLoopForwadedObject:FlxObject;
+		public var pathLoopForward:FlxPath;
 		
-		public var pathLoopBackwardedObject:FlxObject
-		public var pathLoopBackward:FlxPath
+		public var pathLoopBackwardedObject:FlxObject;
+		public var pathLoopBackward:FlxPath;
 		
 		override public function create():void 
 		{	

@@ -172,6 +172,8 @@ Public
 				linealpha = .15
 			End If
 			
+			_debugNodeColor.SetARGB(debugColor)
+			
 			SetAlpha(linealpha)
 			
 			If (FlxG._lastDrawingColor <> _debugNodeColor.argb) Then
