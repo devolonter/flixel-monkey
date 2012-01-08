@@ -213,7 +213,7 @@ Public
 		_debugBoundingBoxColor = Null	
 	End Method
 	
-	Method PreUpdate:Void()		
+	Method PreUpdate:Void()
 		_ACTIVECOUNT += 1
 		
 		If (_flickerTimer <> 0) Then
@@ -799,7 +799,7 @@ Private
 		Return path.nodes.Get(_pathNodeIndex)
 	End Method
 	
-	Method _UpdatePathMotion:Void()	
+	Method _UpdatePathMotion:Void()
 		_point.x = x + width * .5
 		_point.y = y + height * .5
 		
