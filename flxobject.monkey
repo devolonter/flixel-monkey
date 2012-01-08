@@ -521,18 +521,193 @@ Public
 		If (health <= 0) Kill()
 	End Method
 	
+	Method Separate:Bool(object1:FlxObject, object2:FlxObject)
+		Local separatedX:Bool = SeparateX(object1, object2)
+		Local separatedY:Bool = SeparateY(object1, object2)
+		
+		Return separatedX Or separatedY
+	End Method
+	
 	Method SeparateX:Bool(object1:FlxObject, object2:FlxObject)
 		Local obj1immovable:Bool = object1.immovable
 		Local obj2immovable:Bool = object2.immovable
 		
 		If (obj1immovable And obj2immovable) Return False
 		
-		'(FlxTilemap(object1) <> Null) Return FlxTilemap(object1).
-		'TODO
+		If (FlxTilemap(object1) <> Null) Then
+			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_X
+			_separateInvoker.parent = Self
+			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateInvoker)
+		End If
+		
+		If (FlxTilemap(object2) <> Null) Then
+			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_X
+			_separateInvoker.parent = Self
+			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateInvoker, True)
+		End If
+		
+		Local overlap:Float = 0
+		Local obj1delta:Float = object1.x - object1.last.x
+		Local obj2delta:Float = object2.x - object2.last.x
+		
+		If (obj1delta <> obj2delta) Then
+			Local obj1deltaAbs:Float = Abs(obj1delta)
+			Local obj2deltaAbs:Float = Abs(obj2delta)
+			Local obj1rect:FlxRect = New FlxRect(object1.x - Max(obj1delta, 0), object1.last.y, object1.width + obj1deltaAbs, object1.height)
+			Local obj2rect:FlxRect = New FlxRect(object2.x - Max(obj2delta, 0), object2.last.y, object2.width + obj2deltaAbs, object2.height)
+			
+			If (obj1rect.x + obj1rect.width > obj2rect.x And obj1rect.x < obj2rect.x + obj2rect.width And obj1rect.y + obj1rect.height > obj2rect.y And obj1rect.y < obj2rect.y + obj2rect.height) Then
+				Local maxOverlap:Float = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS
+				
+				If (obj1delta > obj2delta) Then
+					overlap = object1.x + object1.width - object2.x
+					
+					If (overlap > maxOverlap Or Not (object1.allowCollisions & RIGHT) Or Not (object2.allowCollisions & LEFT)) Then
+						overlap = 0
+					Else
+						object1.touching |= RIGHT
+						object2.touching |= LEFT
+					End If
+					
+				ElseIf (obj1delta < obj2delta) Then
+					overlap = object1.x - object2.width - object2.x
+					
+					If (-overlap > maxOverlap Or Not (object1.allowCollisions & LEFT) Or Not (object2.allowCollisions & RIGHT)) Then
+						overlap = 0
+					Else
+						object1.touching |= LEFT
+						object2.touching |= RIGHT
+					End If
+				End If
+			End If
+		End If
+		
+		If (overlap <> 0) Then
+			Local obj1v:Float = object1.velocity.x
+			Local obj2v:Float = object2.velocity.x
+			
+			If (Not obj1immovable And Not obj2immovable) Then
+				overlap *= .5
+				object1.x -= overlap
+				object2.x += overlap
+				
+				Local obj1velocity:Float = Sqrt((obj2v * obj2v * object2.mass) / object1.mass) * _Sgn(obj2v)
+				Local obj2velocity:Float = Sqrt((obj1v * obj1v * object1.mass) / object2.mass) * _Sgn(obj1v)
+				Local average:Float = (obj1velocity + obj2velocity) * .5
+				
+				obj1velocity -= average
+				obj2velocity -= average
+				object1.velocity.x = average + obj1velocity * object1.elasticity
+				object2.velocity.x = average + obj2velocity * object2.elasticity
+			
+			ElseIf (Not obj1immovable) Then
+				object1.x -= overlap
+				object1.velocity.x = obj2v - obj1v * object1.elasticity
+				
+			ElseIf (Not obj2immovable) Then
+				object2.x += overlap
+				object2.velocity.x = obj1v - obj2v * object2.elasticity
+			End If
+			
+			Return True
+		Else
+			Return False
+		End If
 	End Method
 	
 	Method SeparateY:Bool(object1:FlxObject, object2:FlxObject)
+		Local obj1immovable:Bool = object1.immovable
+		Local obj2immovable:Bool = object2.immovable
 		
+		If (obj1immovable And obj2immovable) Return False
+		
+		If (FlxTilemap(object1) <> Null) Then
+			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_Y
+			_separateInvoker.parent = Self
+			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateInvoker)
+		End If
+		
+		If (FlxTilemap(object2) <> Null) Then
+			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_Y
+			_separateInvoker.parent = Self
+			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateInvoker, True)
+		End If
+		
+		Local overlap:Float = 0
+		Local obj1delta:Float = object1.y - object1.last.y
+		Local obj2delta:Float = object2.y - object2.last.y
+		
+		If (obj1delta <> obj2delta) Then
+			Local obj1deltaAbs:Float = Abs(obj1delta)
+			Local obj2deltaAbs:Float = Abs(obj2delta)
+			Local obj1rect:FlxRect = New FlxRect(object1.x, object1.y - Max(obj1delta, 0), object1.width, object1.height + obj1deltaAbs)
+			Local obj2rect:FlxRect = New FlxRect(object2.x, object2.y - Max(obj2delta, 0), object2.width, object2.height +  + obj2deltaAbs)
+			
+			If (obj1rect.x + obj1rect.width > obj2rect.x And obj1rect.x < obj2rect.x + obj2rect.width And obj1rect.y + obj1rect.height > obj2rect.y And obj1rect.y < obj2rect.y + obj2rect.height) Then
+				Local maxOverlap:Float = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS
+				
+				If (obj1delta > obj2delta) Then
+					overlap = object1.y + object1.height - object2.y
+					
+					If (overlap > maxOverlap Or Not (object1.allowCollisions & DOWN) Or Not (object2.allowCollisions & UP)) Then
+						overlap = 0
+					Else
+						object1.touching |= DOWN
+						object2.touching |= UP
+					End If
+					
+				ElseIf (obj1delta < obj2delta) Then
+					overlap = object1.y - object2.height - object2.y
+					
+					If (-overlap > maxOverlap Or Not (object1.allowCollisions & UP) Or Not (object2.allowCollisions & DOWN)) Then
+						overlap = 0
+					Else
+						object1.touching |= UP
+						object2.touching |= DOWN
+					End If
+				End If
+			End If
+		End If
+		
+		If (overlap <> 0) Then
+			Local obj1v:Float = object1.velocity.y
+			Local obj2v:Float = object2.velocity.y
+			
+			If (Not obj1immovable And Not obj2immovable) Then
+				overlap *= .5
+				object1.y -= overlap
+				object2.y += overlap
+				
+				Local obj1velocity:Float = Sqrt((obj2v * obj2v * object2.mass) / object1.mass) * _Sgn(obj2v)
+				Local obj2velocity:Float = Sqrt((obj1v * obj1v * object1.mass) / object2.mass) * _Sgn(obj1v)
+				Local average:Float = (obj1velocity + obj2velocity) * .5
+				
+				obj1velocity -= average
+				obj2velocity -= average
+				object1.velocity.y = average + obj1velocity * object1.elasticity
+				object2.velocity.y = average + obj2velocity * object2.elasticity
+			
+			ElseIf (Not obj1immovable) Then
+				object1.y -= overlap
+				object1.velocity.y = obj2v - obj1v * object1.elasticity
+				
+				If (object2.active And object2.moves And obj1delta > obj2delta) Then
+					object1.x += object2.x - object2.last.x
+				End If
+				
+			ElseIf (Not obj2immovable) Then
+				object2.y += overlap
+				object2.velocity.y = obj1v - obj2v * object2.elasticity
+				
+				If (object1.active And object1.moves And obj1delta < obj2delta) Then
+					object2.x += object1.x - object1.last.x
+				End If
+			End If
+			
+			Return True
+		Else
+			Return False
+		End If		
 	End Method
 	
 	Method ToString:String()
@@ -692,6 +867,11 @@ Private
 			End If
 		End If
 	End Method
+	
+	Method _Sgn:Float(value:Float)
+		If (value > 0) Return 1
+		Return -1
+	End Method
 
 End Class
 
@@ -726,17 +906,17 @@ End Class
 
 Class FlxObjectSeparateInvoker
 	
-	Const SEAPARATE_X:Int = 0
-	Const SEPARATE_Y:Int = 1
+	Const METHOD_SEAPARATE_X:Int = 0
+	Const METHOD_SEPARATE_Y:Int = 1
 	
-	Field target:FlxObject
+	Field parent:FlxObject
 	Field methodToInvoke:Int
 	
 	Method Invoke:Bool(object1:FlxObject, object2:FlxObject)
-		If (methodToInvoke = SEAPARATE_X) Then
-			target.SeparateX(object1, object2)
+		If (methodToInvoke = METHOD_SEAPARATE_X) Then
+			parent.SeparateX(object1, object2)
 		Else
-			target.SeparateY(object1, object2)
+			parent.SeparateY(object1, object2)
 		End If	
 	End Method
 
