@@ -531,6 +531,10 @@ Public
 		'TODO
 	End Method
 	
+	Method SeparateY:Bool(object1:FlxObject, object2:FlxObject)
+		
+	End Method
+	
 	Method ToString:String()
 		Return "FlxObject"	
 	End Method
@@ -719,6 +723,27 @@ Class FlxObjectXComparator Implements FlxBasicComparator
 	End Method
 	
 End Class
+
+Class FlxObjectSeparateInvoker
+	
+	Const SEAPARATE_X:Int = 0
+	Const SEPARATE_Y:Int = 1
+	
+	Field target:FlxObject
+	Field methodToInvoke:Int
+	
+	Method Invoke:Bool(object1:FlxObject, object2:FlxObject)
+		If (methodToInvoke = SEAPARATE_X) Then
+			target.SeparateX(object1, object2)
+		Else
+			target.SeparateY(object1, object2)
+		End If	
+	End Method
+
+End Class
+
+Private
+	Global _separateInvoker:FlxObjectSeparateInvoker = New FlxObjectSeparateInvoker()	
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
