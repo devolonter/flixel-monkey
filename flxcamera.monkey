@@ -147,6 +147,43 @@ Public
 		_fill = Null
 	End Method
 	
+	Method Lock:Void()
+		If (_clipped) Then
+			SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)			
+		End If
+				
+		PushMatrix()
+				
+		Translate(_x + _fxShakeOffset.x, _y + _fxShakeOffset.y)		
+		Scale(_scaleX, _scaleY)		
+		
+		If (_clipped Or _bgColor.argb <> FlxG._bgColor.argb) 
+			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
+			DrawRect(0, 0, _width, _height)
+			FlxG._lastDrawingColor = _bgColor.argb
+		End If
+		
+		If (_color.argb <> FlxG._lastDrawingColor) Then
+			SetColor(_color.r, _color.g, _color.b)
+			FlxG._lastDrawingColor = _color.argb
+		End if		
+	End Method
+	
+	Method Unlock:Void()
+		If (_fill.argb <> 0) Then
+			If (_fill.argb <> FlxG._lastDrawingColor) Then
+				SetAlpha(_fill.a)
+				SetColor(_fill.r, _fill.g, _fill.b)
+			End if
+			
+			DrawRect(0, 0, _width, _height)
+			FlxG._lastDrawingColor = _fill.argb		
+		End If
+		
+		PopMatrix()
+		_fill.SetARGB(0)
+	End Method
+	
 	Method Update:Void()
 		If (target <> Null) Then
 			If (deadzone = Null) Then
@@ -269,44 +306,7 @@ Public
 		bounds.Make(x, y, width, height)
 		If (updateWorld) FlxG.worldBounds.CopyFrom(bounds)
 		Update()
-	End Method
-	
-	Method Lock:Void()
-		If (_clipped) Then
-			SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)			
-		End If
-				
-		PushMatrix()
-				
-		Translate(_x + _fxShakeOffset.x, _y + _fxShakeOffset.y)		
-		Scale(_scaleX, _scaleY)		
-		
-		If (_clipped Or _bgColor.argb <> FlxG._bgColor.argb) 
-			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
-			DrawRect(0, 0, _width, _height)
-			FlxG._lastDrawingColor = _bgColor.argb
-		End If
-		
-		If (_color.argb <> FlxG._lastDrawingColor) Then
-			SetColor(_color.r, _color.g, _color.b)
-			FlxG._lastDrawingColor = _color.argb
-		End if		
-	End Method
-	
-	Method Unlock:Void()
-		If (_fill.argb <> 0) Then
-			If (_fill.argb <> FlxG._lastDrawingColor) Then
-				SetAlpha(_fill.a)
-				SetColor(_fill.r, _fill.g, _fill.b)
-			End if
-			
-			DrawRect(0, 0, _width, _height)
-			FlxG._lastDrawingColor = _fill.argb		
-		End If
-		
-		PopMatrix()
-		_fill.SetARGB(0)
-	End Method
+	End Method	
 	
 	Method Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)	
 		If (Not force And _fxFlashAlpha > 0) Return

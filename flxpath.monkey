@@ -10,7 +10,7 @@ Class FlxPath
 
 	Field nodes:Stack<FlxPoint>
 	
-	Field debugColor:FlxColor
+	Field debugColor:Int
 	
 	Field debugScrollFactor:FlxPoint
 	
@@ -18,6 +18,8 @@ Class FlxPath
 	
 Private
 	Field _point:FlxPoint
+	
+	Field _debugNodeColor:FlxColor
 	
 Public
 	Method New(nodes:Stack<FlxPoint> = Null)
@@ -29,7 +31,7 @@ Public
 		
 		_point = New FlxPoint()
 		debugScrollFactor = New FlxPoint(1.0, 1.0)
-		debugColor = New FlxColor(FlxG.WHITE)
+		debugColor = FlxG.WHITE
 		ignoreDrawDebug = False
 		
 		Local debugPathDisplay:DebugPathDisplay = Manager()
@@ -43,6 +45,7 @@ Public
 		debugScrollFactor = Null
 		_point = Null
 		nodes = Null
+		_debugNodeColor = Null
 	End Method
 	
 	Method Add:Void(x:Float, y:Float)
@@ -107,7 +110,99 @@ Public
 	End Method
 	
 	Method DrawDebug:Void(camera:FlxCamera = Null)
-				
+		If (nodes.Length() <= 0) Return
+		If (camera = Null) camera = FlxG.camera
+	
+		Local node:FlxPoint
+		Local nextNode:FlxPoint
+		Local i:Int = 0
+		Local l:Int = nodes.Length()
+		
+		Local fromX:Float
+		Local fromY:Float		
+		
+		While(i < l)
+			node = nodes.Get(i)
+			
+			_point.x = node.x - Int(camera.scroll.x * debugScrollFactor.x)
+			_point.y = node.y - Int(camera.scroll.y * debugScrollFactor.y)
+			
+			If (_point.x > 0) Then
+				_point.x = Int(_point.x + 0.0000001)
+			Else
+				_point.x = Int(_point.x - 0.0000001)			
+			End If
+			
+			If (_point.y > 0) Then
+				_point.y = Int(_point.y + 0.0000001)
+			Else
+				_point.y = Int(_point.y - 0.0000001)			
+			End If
+			
+			Local nodeSize:Int = 2
+			If (i = 0 Or i = l - 1) nodeSize *= 2
+			
+			If (_debugNodeColor = Null) _debugNodeColor = New FlxColor()
+			_debugNodeColor.SetARGB(FlxG.WHITE)
+			
+			If (l > 1) Then
+				If (i = 0) Then
+					_debugNodeColor.SetARGB(FlxG.GREEN)
+					
+				ElseIf (i = l -1) Then
+					_debugNodeColor.SetARGB(FlxG.RED)
+				End If
+			End If
+			
+			SetAlpha(.5)		
+			
+			If (FlxG._lastDrawingColor <> _debugNodeColor.argb) Then
+				SetColor(_debugNodeColor.r, _debugNodeColor.g, _debugNodeColor.b)
+				FlxG._lastDrawingColor = _debugNodeColor.argb
+			End If
+			
+			DrawRect(_point.x - nodeSize * 0.5, _point.y - nodeSize * 0.5, nodeSize, nodeSize)
+			
+			Local linealpha:Float = .3
+			
+			If (i < l - 1) Then
+				nextNode = nodes.Get(i + 1)
+			Else
+				nextNode = nodes.Get(0)
+				linealpha = .15
+			End If
+			
+			SetAlpha(linealpha)
+			
+			If (FlxG._lastDrawingColor <> _debugNodeColor.argb) Then
+				SetColor(_debugNodeColor.r, _debugNodeColor.g, _debugNodeColor.b)
+				FlxG._lastDrawingColor = _debugNodeColor.argb
+			End If
+			
+			fromX = _point.x
+			fromY = _point.y		
+			
+			_point.x = nextNode.x - Int(camera.scroll.x * debugScrollFactor.x)
+			_point.y = nextNode.y - Int(camera.scroll.y * debugScrollFactor.y)
+			
+			If (_point.x > 0) Then
+				_point.x = Int(_point.x + 0.0000001)
+			Else
+				_point.x = Int(_point.x - 0.0000001)			
+			End If
+			
+			If (_point.y > 0) Then
+				_point.y = Int(_point.y + 0.0000001)
+			Else
+				_point.y = Int(_point.y - 0.0000001)			
+			End If		
+			
+			DrawLine(fromX, fromY, _point.x, _point.y)
+			
+			i += 1
+		Wend
+		
+		SetAlpha(1)		
 	End Method
 	
 	Function Manager:DebugPathDisplay()
