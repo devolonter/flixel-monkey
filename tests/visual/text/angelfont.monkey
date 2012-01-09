@@ -4,14 +4,14 @@ Import flixel
 Import flixel.flxtext.driver.angelfont
 
 Function Main:Int()
-	New AngelFontTest()
+	New AngelFont()
 	Return 0
 End Function
 
-Class AngelFontTest Extends FlxGame
+Class AngelFont Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, TextTestState.CLASS_OBJECT)	
+		Super.New(640, 480, TextState.CLASS_OBJECT)	
 	End Method
 	
 	Method OnContentInit:Void()
@@ -27,21 +27,21 @@ Class AngelFontTest Extends FlxGame
 
 End Class
 
-Class TextTestStateClass Implements FlxClass
+Class TextStateClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
-		Return New TextTestState()
+		Return New TextState()
 	End Method
 	
 	Method InstanceOf:Bool(object:FlxBasic)
-		Return (TextTestState(object) <> Null)
+		Return (TextState(object) <> Null)
 	End Method
 
 End Class
 
-Class TextTestState Extends FlxState
+Class TextState Extends FlxState
 
-	Global CLASS_OBJECT:FlxClass = new TextTestStateClass()
+	Global CLASS_OBJECT:FlxClass = new TextStateClass()
 	
 	Method Create:Void()		
 		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!", New FlxTextAngelFontDriver())	

@@ -3,33 +3,33 @@ Strict
 Import flixel
 
 Function Main:Int()
-	New CamerasTest()
+	New Cameras()
 	Return 0
 End Function
 
-Class CamerasTest Extends FlxGame
+Class Cameras Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, CamerasTestState.CLASS_OBJECT)	
+		Super.New(640, 480, CamerasState.CLASS_OBJECT)	
 	End Method
 
 End Class
 
-Class CamerasTestStateClass Implements FlxClass
+Class CamerasStateClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
-		Return New CamerasTestState()
+		Return New CamerasState()
 	End Method
 	
 	Method InstanceOf:Bool(object:FlxBasic)
-		Return (CamerasTestState(object) <> Null)
+		Return (CamerasState(object) <> Null)
 	End Method
 
 End Class
 
-Class CamerasTestState Extends FlxState
+Class CamerasState Extends FlxState
 
-	Global CLASS_OBJECT:FlxClass = new CamerasTestStateClass()
+	Global CLASS_OBJECT:FlxClass = new CamerasStateClass()
 	
 	Field pink_camera:FlxCamera
 	Field red_camera:FlxCamera

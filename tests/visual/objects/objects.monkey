@@ -3,76 +3,51 @@ Strict
 Import flixel
 
 Function Main:Int()
-	New ObjectsTest()
+	New Objects()
 	Return 0
 End Function
 
-Class ObjectsTest Extends FlxGame
+Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, ObjectsTestState.CLASS_OBJECT)	
+		Super.New(640, 480, ObjectsState.CLASS_OBJECT)
+		FlxG.visualDebug = True
 	End Method
 
 End Class
 
-Class ObjectsTestStateClass Implements FlxClass
+Class ObjectsStateClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
-		Return New ObjectsTestState()
+		Return New ObjectsState()
 	End Method
 	
 	Method InstanceOf:Bool(object:FlxBasic)
-		Return (ObjectsTestState(object) <> Null)
+		Return (ObjectsState(object) <> Null)
 	End Method
 
 End Class
 
-Class ObjectsTestState Extends FlxState
+Class ObjectsState Extends FlxState
 
-	Global CLASS_OBJECT:FlxClass = new ObjectsTestStateClass()
+	Global CLASS_OBJECT:FlxClass = new ObjectsStateClass()
 	
 	Field blocks1:FlxGroup
 	Field blocks2:FlxGroup	
 	Field floor:FlxGroup
 	Field sky:FlxGroup
 	
-	Method Create:Void()
-		FlxG.visualDebug = True
-		
+	Field player:FlxObject
+	
+	Method Create:Void()		
 		Local block:FlxObject
 		Local path:FlxPath
 		
 		blocks1 = New FlxGroup()
 		For Local i:Int = 0 Until 5
-			block = New FlxObject(50 + i * 50, FlxG.height / 2 - 50, 50, 50)
-			
-			#Rem			
-			path = New FlxPath()
-			
-			path.Add(75 + i * 50, FlxG.height / 2 - 25)
-			path.Add(75 + i * 50, 150)
-			
-			If (i Mod 2 = 0) Then
-				block.FollowPath(path, 100, FlxObject.PATH_LOOP_FORWARD)
-			Else
-				block.FollowPath(path, 100, FlxObject.PATH_BACKWARD)
-			End If
-			#End
-			
+			block = New FlxObject(50 + i * 50, FlxG.height / 2 - 50, 50, 50)			
 			blocks1.Add(block)
-		Next
-		
-		path = New FlxPath()
-			
-		path.Add(75 + 4 * 50, FlxG.height / 2 - 25)
-		path.Add(75 + 4 * 50, 150)
-		
-		If (4 Mod 2 = 0) Then
-			block.FollowPath(path, 100, FlxObject.PATH_BACKWARD)
-		Else
-			block.FollowPath(path, 100, FlxObject.PATH_BACKWARD)
-		End If
-		
+		Next		
 		Add(blocks1)
 		
 		blocks2 = New FlxGroup()
@@ -96,15 +71,21 @@ Class ObjectsTestState Extends FlxState
 			sky.Add(block)	
 		Next
 		Add(sky)
+		
+		player = New FlxObject(FlxG.width / 2 - 15, FlxG.height - 70, 30, 30)
+		Add(player)		
+		
+		FlxG.camera.Follow(player, FlxCamera.STYLE_PLATFORMER)
+		FlxG.camera.deadzone.y = FlxG.height - 70
 	End Method
 	
 	Method Update:Void()
 		If (KeyDown(KEY_RIGHT)) Then
-			FlxG.camera.scroll.x += 2
+			player.x += 2
 		End If
 		
 		If (KeyDown(KEY_LEFT)) Then
-			FlxG.camera.scroll.x -= 2
+			player.x -= 2
 		End If
 		
 		Super.Update()

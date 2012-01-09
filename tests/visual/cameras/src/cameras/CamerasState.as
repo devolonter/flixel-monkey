@@ -2,7 +2,7 @@ package cameras
 {
 	import org.flixel.*;
 	
-	public class CamerasTestState extends FlxState
+	public class CamerasState extends FlxState
 	{
 		
 		public var pink_camera:FlxCamera

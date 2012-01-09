@@ -2,7 +2,7 @@ package paths
 {
 	import org.flixel.*;
 	
-	public class PathsTestState extends FlxState 
+	public class PathsState extends FlxState 
 	{
 		
 		public var pathFrowardedObject:FlxObject;
