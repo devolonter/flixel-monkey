@@ -19,7 +19,6 @@ Public
 	Method GetResource:T(name:String, loader:FlxResourceLoader<T>)
 		Local resource:FlxResource<T> = _resources.Get(name)		
 		If (resource <> Null) Then
-			resource.count+=1
 			Return resource.object
 		End If
 		
@@ -38,11 +37,9 @@ Private
 Class FlxResource<T>	
 	
 	Field object:T
-	Field count:Int
 	
 	Method New(object:T)		
 		Self.object = object
-		If (object <> Null) count+=1
 	End Method
 
 End Class

@@ -40,7 +40,7 @@ Public
 		LOADER.fontFamily = _fontFamily
 		LOADER.fontSize = _size
 		
-		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)		
+		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)	
 		_fontHeight = _font.TextHeight(_text)*1.5
 	End Method
 	
@@ -188,7 +188,7 @@ Public
 		For Local i:= 0 Until txt.Length
 			Local asc:Int = txt[i]
 			Local ac:Char = chars[asc]
-			If ac.height > h h = ac.height
+			If (ac <> Null And ac.height > h) h = ac.height
 		Next
 		Return h
 	End

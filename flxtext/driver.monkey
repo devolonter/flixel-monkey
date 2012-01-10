@@ -119,9 +119,9 @@ Private
 		
 		If (offset >= 0) Then
 			While (offset >= 0)			
-				_BuildLines(_text[prevOffset..offset])
+				_BuildLines(_text[prevOffset..offset], True)
 				
-				prevOffset = offset+1
+				prevOffset = offset + 1
 				
 				offsetN = _text.Find("~n", prevOffset)
 				offsetR = _text.Find("~r", prevOffset)
@@ -141,8 +141,8 @@ Private
 		Alignment = _alignment 'recalc alignment
 	End Method
 	
-	Method _BuildLines:Void(text:String)		
-		Local textWidth:Int = GetTextWidth(text)		
+	Method _BuildLines:Void(text:String, addLine:Bool = False)		
+		Local textWidth:Int = GetTextWidth(text)
 
 		If (_width < textWidth) Then		
 			Local textLength:Int = text.Length
@@ -158,7 +158,7 @@ Private
 			Local linesCapacity:Int = _textLines.Length()
 			Local tmpOffset:Int = 0
 			Local tmpString:String = ""
-			
+						
 			Repeat
 				Repeat
 					offset -= 1
@@ -206,10 +206,22 @@ Private
 						_textLines.Push(New FlxTextDriverTextLine(tmpString))
 					Else
 						_textLines.Get(_countLines - 1).text = tmpString
-					End If			
+					End If
+					
+					If (addLine) _countLines += 1	
 					Exit
 				End If
-			Forever						
+			Forever
+		ElseIf (addLine Or _countLines > 1) Then
+			Local linesCapacity:Int = _textLines.Length()
+					
+			If (_countLines >= linesCapacity) Then
+				_textLines.Push(New FlxTextDriverTextLine(text.Trim()))
+			Else
+				_textLines.Get(_countLines - 1).text = text.Trim()
+			End If
+			
+			If (addLine) _countLines += 1							
 		End If	
 	End Method
 	
