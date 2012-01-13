@@ -166,10 +166,14 @@ Public
 		If (_color.argb <> FlxG._lastDrawingColor) Then
 			SetColor(_color.r, _color.g, _color.b)
 			FlxG._lastDrawingColor = _color.argb
-		End if		
+		End if
+		
+		PushMatrix()		
 	End Method
 	
 	Method Unlock:Void()
+		PopMatrix()
+	
 		If (_fill.argb <> 0) Then
 			If (_fill.argb <> FlxG._lastDrawingColor) Then
 				SetAlpha(_fill.a)
