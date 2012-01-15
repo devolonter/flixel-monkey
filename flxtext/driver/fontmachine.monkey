@@ -11,8 +11,6 @@ Import flixel.plugin.monkey.flxresourcesmanager
 
 Class FlxTextFontMachineDriver Extends FlxTextDriver
 
-	Global LOADER:FlxFMDriverLoader = New FlxFMDriverLoader()
-
 Private	
 	Field _font:BitmapFont
 	Field _fontHeight:Int
@@ -40,10 +38,10 @@ Public
 	End Method			
 
 	Method Reset:Void()
-		LOADER.fontFamily = _fontFamily
-		LOADER.fontSize = _size
+		_fontLoader.fontFamily = _fontFamily
+		_fontLoader.fontSize = _size
 		
-		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)		
+		_font = _fontsManager.GetResource(_fontFamily + _size, _fontLoader)		
 		_fontHeight = _font.GetFontHeight()	
 	End Method
 	
@@ -54,6 +52,8 @@ Public
 End Class
 
 Private
+Global _fontLoader:FlxFMDriverLoader = New FlxFMDriverLoader()
+
 Class FlxFMDriverLoader Extends FlxResourceLoader<BitmapFont>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT

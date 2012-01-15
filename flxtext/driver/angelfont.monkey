@@ -8,9 +8,7 @@ Import flixel.flxtext.driver
 Import flixel.plugin.monkey.flxassetsmanager
 Import flixel.plugin.monkey.flxresourcesmanager
 
-Class FlxTextAngelFontDriver Extends FlxTextDriver
-
-	Global LOADER:FlxAFDriverLoader = New FlxAFDriverLoader()
+Class FlxTextAngelFontDriver Extends FlxTextDriver	
 
 Private	
 	Field _font:AngelFont
@@ -37,10 +35,10 @@ Public
 	End Method			
 
 	Method Reset:Void()
-		LOADER.fontFamily = _fontFamily
-		LOADER.fontSize = _size
+		_fontLoader.fontFamily = _fontFamily
+		_fontLoader.fontSize = _size
 		
-		_font = _fontsManager.GetResource(_fontFamily + _size, LOADER)	
+		_font = _fontsManager.GetResource(_fontFamily + _size, _fontLoader)	
 		_fontHeight = _font.TextHeight(_text)*1.5
 	End Method
 	
@@ -51,6 +49,8 @@ Public
 End Class
 
 Private
+Global _fontLoader:FlxAFDriverLoader = New FlxAFDriverLoader()
+
 Class FlxAFDriverLoader Extends FlxResourceLoader<AngelFont>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT
