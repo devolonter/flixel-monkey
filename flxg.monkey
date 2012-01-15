@@ -1,8 +1,12 @@
 Strict
 
+Import mojo
+
 Import flxgame
 Import flxcamera
 Import flxu
+
+Import plugin.monkey.flxresourcesmanager
 
 Import plugin.timermanager
 Import plugin.debugpathdisplay
@@ -63,6 +67,8 @@ Class FlxG
 	
 	Global _game:FlxGame
 	
+	Global _cache:FlxResourcesManager<Image>
+	
 	Global _lastDrawingColor:Int
 	
 	Global _lastDrawingAlpha:Float
@@ -105,6 +111,35 @@ Public
 		GetRandom is not currently supported in Monkey. Use FlxArray.GetSafeRandom method
 	End Function
 	#End
+	
+	Function CheckBitmapCache:Bool(key:String)
+		Return _cache.CheckResource(key)
+	End Function
+	
+	Function AddBitmap:Image(graphic:String, graphicLoader:FlxResourceLoader<Image>, unique:Bool = False, key:String = "")
+		If (key.Length() = 0) Then
+			key = graphic
+			
+			If (unique And CheckBitmapCache(key)) Then
+				Local inc:Int = 0
+				Local ukey:String
+				
+				Repeat
+					ukey = key + inc
+					inc += 1
+				Until(CheckBitmapCache(ukey))
+				
+				key = ukey
+			End If
+		End If
+		
+		Return _cache.GetResource(key, graphicLoader)
+	End Function
+	
+	Function ClearBitmapCache:Void()
+		If (_cache = Null) _cache = New FlxResourcesManager<Image>()
+		_cache.Clear()
+	End Function
 	
 	Function SwitchState:Void(state:FlxState)
 		FlxG._game._requestedState = state
@@ -242,7 +277,9 @@ Public
 	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)
 		FlxG._game = game
 		FlxG.width = width
-		FlxG.height = height		
+		FlxG.height = height
+		
+		FlxG.ClearBitmapCache()		
 		
 		FlxCamera.defaultZoom = zoom
 		FlxG.cameras = New Stack<FlxCamera>()		

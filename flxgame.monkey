@@ -73,7 +73,7 @@ Public
 		
 		FlxG._lastDrawingColor = FlxG.WHITE
 		FlxG._lastDrawingBlend = GetBlend()
-		FlxG._lastDrawingAlpha = 1
+		FlxG._lastDrawingAlpha = GetAlpha()
 		FlxG._currentCamera = Null
 		
 		Local i:Int = 0
@@ -154,6 +154,8 @@ Private
 		For Local size:Int = minSystemFontSize To maxSystemFontSize
 			system.SetPath(size, fontPathPrefix + "_" + Min(size, 17) + ".png")
 		Next
+		
+		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "default", FlxG.DATA_PREFIX + "default.png")
 		
 		Self.OnContentInit()
 	End Method

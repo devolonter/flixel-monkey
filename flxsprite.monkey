@@ -36,7 +36,7 @@ Class FlxSprite Extends FlxObject
 	
 	Field _color:FlxColor
 	
-Private	
+Private
 	Field _animations:StringMap<FlxAnim>
 	
 	Field _flipped:Int
@@ -57,7 +57,7 @@ Private
 	
 	Field _bakedRotation:Float
 	
-	Field _image:Image
+	Field _pixels:Image
 	
 	Field _matrix:Float[6]
 	
@@ -67,7 +67,7 @@ Private
 	
 	Field _halfWidth:Float
 	
-	Field _halfHeight:Float
+	Field _halfHeight:Float	
 
 Public
 	Method New(x:Float = 0, y:Float = 0, simpleGraphic:String = "")
@@ -92,15 +92,14 @@ Public
 		
 		_callback = Null
 		
-		#rem
-			if(SimpleGraphic == null)
-				SimpleGraphic = ImgDefault;
-			loadGraphic(SimpleGraphic);
-			TODO
-		#end
-		
 		_surfaceColor = New FlxColor(FlxG.WHITE)
 		_mixedColor = New FlxColor(FlxG.WHITE)
+		
+		If (simpleGraphic.Length() = 0)
+			simpleGraphic = FlxG.DATA_PREFIX + "default"
+		End If
+		
+		LoadGraphic(simpleGraphic)
 	End Method
 	
 	Method Destroy:Void()
@@ -119,8 +118,29 @@ Public
 		_mixedColor = Null
 	End Method
 	
+	Method LoadGraphic:FlxSprite(graphic:String, animated:Bool = False, reverse:Bool = False, width:Int = 0, height:Int = 0, unique:Bool = False)
+		_bakedRotation = 0
+		
+		_graphicLoader.name = graphic
+		_graphicLoader.animated = animated
+		_graphicLoader.width = width
+		_graphicLoader.height = height
+		
+		_pixels = FlxG.AddBitmap(graphic, _graphicLoader, unique)
+		
+		Self.width = _pixels.Width()
+		frameWidth = Self.width
+		
+		Self.height = _pixels.Height()
+		frameHeight = Self.height
+		
+		_ResetHelpers()
+	
+		Return Self
+	End Method
+	
 	Method MakeGraphic:FlxSprite(width:Int, height:Int, color:Int = FlxG.WHITE)
-		_image = Null
+		_pixels = Null
 		_bakedRotation = 0
 		_surfaceColor.SetARGB(color)
 		
@@ -171,8 +191,62 @@ Public
 			_point.y -= 0.0000001			
 		End If
 	
-		If (_image <> Null) Then
+		If (_pixels <> Null) Then
+			If (camera.Color <> FlxG.WHITE) Then
+				_mixedColor.MixRGB(_color, camera._GetColorObject())
+				
+				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
+					FlxG._lastDrawingColor = _mixedColor.argb
+				End If				
+			Else
+				If (FlxG._lastDrawingColor <> _color.argb) Then
+					SetColor(_color.r, _color.g, _color.b)
+					FlxG._lastDrawingColor = _color.argb
+				End If		
+			End If
+			
+			If (camera.Alpha < 1) Then
+				Local _mixedAlpha:Float = camera.Alpha * _alpha
+				
+				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+					SetAlpha(_mixedAlpha)
+					FlxG._lastDrawingAlpha = _mixedAlpha					
+				End If
+			Else
+				If (FlxG._lastDrawingAlpha <> _alpha) Then
+					SetAlpha(_alpha)
+					FlxG._lastDrawingAlpha = _alpha					
+				End If
+			End If
+			
+			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
+				DrawImage(_pixels, _point.x, _point.y, _curIndex)
+			Else
+				PushMatrix()
+					'Translate
+					_matrix[4] = _point.x + origin.x
+					_matrix[5] = _point.y + origin.y
 					
+					'Scale
+					_matrix[0] = scale.x
+					_matrix[3] = scale.y
+					
+					'Rotate
+					If (angle <> 0 And _bakedRotation = 0) Then						
+						Local sin:Float = -Sin(angle)
+						Local cos:Float = Cos(angle)
+					
+						_matrix[1] = -sin * _matrix[3]
+						_matrix[2] = _matrix[0] * sin										
+						_matrix[0] *= cos						
+						_matrix[3] = cos * _matrix[3]
+					End If			
+									
+					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])						
+					DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
+				PopMatrix()
+			End If
 		Else		
 			If (camera.Color <> FlxG.WHITE) Then
 				_mixedColor.MixRGB(_surfaceColor, camera._GetColorObject())
@@ -211,7 +285,7 @@ Public
 				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
 					SetAlpha(_mixedAlpha)
 					FlxG._lastDrawingAlpha = _mixedAlpha					
-				End If			
+				End If
 			Else
 				If (_surfaceColor.a < 1) Then
 					Local _mixedAlpha:Float = _surfaceColor.a * _alpha
@@ -251,9 +325,9 @@ Public
 						_matrix[3] = cos * _matrix[3]
 					End If			
 									
-					SetMatrix(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])						
+					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])						
 					DrawRect(-origin.x, -origin.y, frameWidth, frameHeight)
-				PopMatrix()				
+				PopMatrix()
 			End If		
 		End If
 	End Method
@@ -299,8 +373,8 @@ Public
 	Method RandomFrame:Void()
 		_curAnim = Null
 		
-		If (_image <> Null) Then			
-			_curIndex = Int(FlxG.Random() * _image.Frames())
+		If (_pixels <> Null) Then			
+			_curIndex = Int(FlxG.Random() * _pixels.Frames())
 		Else
 			_curIndex = 1
 		End If
@@ -321,6 +395,19 @@ Public
 			x += offset.x
 			y += offset.y
 		End If
+	End Method
+	
+	Method Pixels:Image() Property
+		Return _pixels
+	End Method
+	
+	Method Pixels:Void(pixels:Image) Property
+		_pixels = pixels
+		width = pixels.Width()
+		height = pixels.Height()
+		frameWidth = width
+		frameHeight = height
+		_ResetHelpers()
 	End Method
 	
 	Method Facing:Int() Property
@@ -386,8 +473,8 @@ Private
 		_halfHeight = frameHeight * .5
 		origin.Make(_halfWidth, _halfHeight)
 		
-		If (_image <> Null) Then
-			frames = _image.Frames()
+		If (_pixels <> Null) Then
+			frames = _pixels.Frames()
 		Else
 			frames = 1		 
 		End If
@@ -445,7 +532,9 @@ Interface FlxAnimationCallback
 
 End Interface
 
-Private	
+Private
+Global _graphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
+
 Class FlxSpriteClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
@@ -456,4 +545,41 @@ Class FlxSpriteClass Implements FlxClass
 		Return (FlxSprite(object) <> Null)
 	End Method	
 	
+End Class
+
+Class FlxGraphicLoader Extends FlxResourceLoader<Image>
+
+	Field name:String
+	Field animated:Bool
+	Field width:Float
+	Field height:Float
+
+	Method Load:Image(name:String)
+		Local image:Image = LoadImage(FlxAssetsManager.GetImagePath(name))
+		
+		If (Not animated) Then
+			Return image
+		Else
+			Local oneRow:Bool = False
+			Local frames:Int = 1
+			
+			If (width = 0) Then
+				width = image.Height()
+				oneRow = True
+			End If
+			
+			If (height = 0) Then
+				height = width
+			End If
+			
+			If (oneRow) Then
+				frames = Ceil(image.Width() / width)
+			Else
+				frames = Ceil((image.Width() * image.Height()) / (width * height))
+			End If
+			
+			Return image.GrabImage(0, 0, width, height, frames)
+		End If		
+	End Method
+
 End Class
