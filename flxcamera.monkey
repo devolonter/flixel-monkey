@@ -162,10 +162,14 @@ Public
 			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
 			DrawRect(0, 0, _width, _height)
 			FlxG._lastDrawingColor = _bgColor.argb
-		End If	
+		End If
+		
+		PushMatrix()	
 	End Method
 	
-	Method Unlock:Void()	
+	Method Unlock:Void()
+		PopMatrix()
+		
 		If (_fill.argb <> 0) Then
 			If (_fill.argb <> FlxG._lastDrawingColor) Then				
 				SetColor(_fill.r, _fill.g, _fill.b)
