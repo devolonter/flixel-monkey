@@ -39,7 +39,9 @@ Class FlxSprite Extends FlxObject
 Private
 	Field _animations:StringMap<FlxAnim>
 	
-	Field _flipped:Int
+	Field _flipped:Bool
+	
+	Field _flipNeeded:Bool
 	
 	Field _curAnim:FlxAnim
 	
@@ -84,7 +86,7 @@ Public
 		finished = False
 		_facing = RIGHT
 		_animations = New StringMap<FlxAnim>
-		_flipped = 0
+		_flipped = False
 		_curAnim = Null
 		_curFrame = 0
 		_curIndex = 0
@@ -127,6 +129,12 @@ Public
 		_graphicLoader.height = height
 		
 		_pixels = FlxG.AddBitmap(graphic, _graphicLoader, unique)
+		
+		If (reverse) Then
+			_flipped = True
+		Else
+			_flipped = True
+		End if
 		
 		Self.width = _pixels.Width()
 		frameWidth = Self.width
@@ -221,8 +229,15 @@ Public
 			End If
 			
 			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
-				DrawImage(_pixels, _point.x, _point.y, _curIndex)
-			Else
+				If (Not _flipNeeded) Then
+					DrawImage(_pixels, _point.x, _point.y, _curIndex)					
+				Else
+					PushMatrix()						
+						Transform(-1, 0, 0, 1, _point.x + _halfWidth, _point.y + _halfHeight)						
+						DrawImage(_pixels, -_halfWidth, -_halfHeight, _curIndex)
+					PopMatrix()									
+				End If		
+			Else							
 				PushMatrix()
 					'Translate
 					_matrix[4] = _point.x + origin.x
@@ -241,11 +256,16 @@ Public
 						_matrix[2] = _matrix[0] * sin										
 						_matrix[0] *= cos						
 						_matrix[3] = cos * _matrix[3]
-					End If			
+					End If	
 									
-					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])						
+					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])
+					
+					If (_flipNeeded) Then						
+						Transform(-1, 0, 0, 1, _halfWidth - origin.x, _halfHeight - origin.y)
+					End If
+											
 					DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
-				PopMatrix()
+				PopMatrix()				
 			End If
 		Else		
 			If (camera.Color <> FlxG.WHITE) Then
@@ -330,6 +350,9 @@ Public
 				PopMatrix()
 			End If		
 		End If
+		
+		_VISIBLECOUNT += 1;
+		If(FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(camera);
 	End Method
 	
 	Method DrawFrame:Void(force:Bool = False)
@@ -417,6 +440,8 @@ Public
 	Method Facing:Void(direction:Int) Property
 		If (_facing <> direction) dirty = True
 		_facing = direction
+
+		_flipNeeded = (_flipped And _facing = LEFT)
 	End Method
 	
 	Method Alpha:Float() Property
