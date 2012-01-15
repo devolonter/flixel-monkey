@@ -532,7 +532,7 @@ Private
 				
 				_curIndex = _curAnim.frames[_curFrame]
 				dirty = True
-			Wend
+			Wend			
 		End If
 		
 		If (dirty) _CalcFrame()

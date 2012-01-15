@@ -15,7 +15,7 @@ Class FlxAnim
 		delay = 0
 		If (frameRate > 0) delay = 1.0 / frameRate
 		Self.frames = frames
-		looped = looped	
+		Self.looped = looped	
 	End Method
 	
 	Method ToString:String()
