@@ -140,7 +140,7 @@ Public
 	End Method
 		
 	Method Draw:Void()
-		If (_frameTimer <> 0) Then
+		If (_flickerTimer <> 0) Then
 			_flicker = Not _flicker
 			If (_flicker) Return
 		End If
@@ -175,10 +175,10 @@ Public
 					
 		Else		
 			If (camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixARGB(_surfaceColor, camera._GetColorObject())
+				_mixedColor.MixRGB(_surfaceColor, camera._GetColorObject())
 				
 				If (_color.argb <> FlxG.WHITE) Then
-					_mixedColor.MixARGB(_color)					
+					_mixedColor.MixRGB(_color)					
 				End If
 				
 				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
@@ -187,7 +187,7 @@ Public
 				End If
 			Else
 				If (_color.argb <> FlxG.WHITE) Then
-					_mixedColor.MixARGB(_surfaceColor, _color)
+					_mixedColor.MixRGB(_surfaceColor, _color)
 					
 					If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
 						SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
@@ -345,7 +345,7 @@ Public
 	End Method
 	
 	Method Color:Void(color:Int) Property
-		_color.SetARGB(color)
+		_color.SetRGB(color)
 	End Method
 	
 	Method Frame:Int() Property

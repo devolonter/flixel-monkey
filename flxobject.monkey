@@ -217,7 +217,7 @@ Public
 		
 		If (_flickerTimer <> 0) Then
 			If (_flickerTimer > 0) Then
-				_flickerTimer -= FlxG.elapsed
+				_flickerTimer -= FlxG.elapsed				
 				If (_flickerTimer <= 0) Then
 					_flickerTimer = 0
 					_flicker = False

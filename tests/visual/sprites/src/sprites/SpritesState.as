@@ -48,6 +48,11 @@ package sprites
 				FlxG.camera.alpha = .5
 			}
 			
+			if (FlxG.keys.justPressed("F"))
+			{
+				sprite.flicker()
+			}
+			
 			super.update();
 		}
 		

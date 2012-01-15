@@ -28,19 +28,19 @@ Public
 		Self.argb = ($FF Shl 24) + (rgb & $00FFFFFF)		
 	End Method
 	
-	Method MixARGB:Void(fore:FlxColor)
-		r = Ceil((r * fore.a * fore.r) / 255.0)
-		g = Ceil((g * fore.a * fore.g) / 255.0)
-		b = Ceil((b * fore.a * fore.b) / 255.0)
+	Method MixRGB:Void(fore:FlxColor)
+		r = (r * fore.r) / 255.0
+		g = (g * fore.g) / 255.0
+		b = (b * fore.b) / 255.0
 		a = 1
 		
 		Self.argb = ($FF Shl 24) | (int(r) Shl 16) | (int(g) Shl 8) | int(b)
 	End Method
 	
-	Method MixARGB:Void(back:FlxColor, fore:FlxColor)
-		r = Ceil((back.r * fore.a * fore.r) / 255.0)
-		g = Ceil((back.g * fore.a * fore.g) / 255.0)
-		b = Ceil((back.b * fore.a * fore.b) / 255.0)
+	Method MixRGB:Void(back:FlxColor, fore:FlxColor)
+		r = (back.r * fore.r) / 255.0
+		g = (back.g * fore.g) / 255.0
+		b = (back.b * fore.b) / 255.0
 		a = 1
 	
 		Self.argb = ($FF Shl 24) | (int(r) Shl 16) | (int(g) Shl 8) | int(b)
