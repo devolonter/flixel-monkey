@@ -65,6 +65,8 @@ Class FlxG
 	
 	Global _lastDrawingColor:Int
 	
+	Global _lastDrawingAlpha:Float
+	
 	Global _lastDrawingBlend:Int
 	
 	Global _currentCamera:FlxCamera
@@ -240,7 +242,7 @@ Public
 	Function Init:Void(game:FlxGame, width:Int, height:Int, zoom:Float)
 		FlxG._game = game
 		FlxG.width = width
-		FlxG.height = height
+		FlxG.height = height		
 		
 		FlxCamera.defaultZoom = zoom
 		FlxG.cameras = New Stack<FlxCamera>()		

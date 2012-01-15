@@ -112,7 +112,8 @@ Public
 		_point = New FlxPoint()
 		bounds = Null
 		_bgColor = New FlxColor(FlxG.BgColor())
-		_color = New FlxColor()		
+		_color = New FlxColor()
+		_alpha = 1	
 		
 		_fxFlashColor = 0
 		_fxFlashDuration = 0
@@ -161,27 +162,21 @@ Public
 			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
 			DrawRect(0, 0, _width, _height)
 			FlxG._lastDrawingColor = _bgColor.argb
-		End If
-		
-		If (_color.argb <> FlxG._lastDrawingColor) Then
-			SetColor(_color.r, _color.g, _color.b)
-			FlxG._lastDrawingColor = _color.argb
-		End if
-		
-		PushMatrix()		
+		End If	
 	End Method
 	
-	Method Unlock:Void()
-		PopMatrix()
-	
+	Method Unlock:Void()	
 		If (_fill.argb <> 0) Then
-			If (_fill.argb <> FlxG._lastDrawingColor) Then
-				SetAlpha(_fill.a)
+			If (_fill.argb <> FlxG._lastDrawingColor) Then				
 				SetColor(_fill.r, _fill.g, _fill.b)
+				FlxG._lastDrawingColor = _fill.argb				
 			End if
 			
-			DrawRect(0, 0, _width, _height)
-			FlxG._lastDrawingColor = _fill.argb		
+			If (FlxG._lastDrawingAlpha <> _fill.a) Then
+				SetAlpha(_fill.a)			
+			End If
+			
+			DrawRect(0, 0, _width, _height)			
 		End If
 		
 		PopMatrix()
@@ -516,6 +511,10 @@ Public
 	
 	Method ToString:String()
 		Return "FlxCamera"	
-	End Method	
+	End Method
+	
+	Method _GetColorObject:FlxColor()
+		Return Self._color
+	End Method
 
 End Class

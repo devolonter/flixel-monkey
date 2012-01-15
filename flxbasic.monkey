@@ -76,14 +76,6 @@ Class FlxBasic
 	Field alive:Bool
 	
 	#Rem
-	summary:An array of camera objects that this object will use during Draw().
-	This value will initialize itself during the first draw to automatically
-	point at the main camera list out in [a flxg.monkey.html]FlxG[/a] unless you already set it.
-	You can also change it afterward too, very flexible!
-	#End
-	Field cameras:Stack<FlxCamera>
-	
-	#Rem
 	summary:Setting this to true will prevent the object from appearing when the visual debug mode in the debugger overlay is toggled on.
 	#End
 	Field ignoreDrawDebug:Bool

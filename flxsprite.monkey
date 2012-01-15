@@ -1,12 +1,22 @@
 Strict
 
+Import mojo.graphics
+
+Import flxpoint
 Import flxobject
+Import flxcamera
+Import flxg
+Import system.flxanim
+
+Import plugin.monkey.flxcolor
 
 Import "data/flx_default.png"
 
 Class FlxSprite Extends FlxObject
 
 	Global CLASS_OBJECT:FlxClass = new FlxSpriteClass()
+	
+	Field origin:FlxPoint
 	
 	Field offset:FlxPoint
 	
@@ -24,21 +34,416 @@ Class FlxSprite Extends FlxObject
 	
 	Field dirty:Bool
 	
-Private
-	Field _origin:FlxPoint
+	Field _color:FlxColor
 	
+Private	
+	Field _animations:StringMap<FlxAnim>
 	
+	Field _flipped:Int
+	
+	Field _curAnim:FlxAnim
+	
+	Field _curFrame:Int
+	
+	Field _curIndex:Int
+	
+	Field _frameTimer:Float
+	
+	Field _callback:FlxAnimationCallback
+	
+	Field _facing:Int
+	
+	Field _alpha:Float	
+	
+	Field _bakedRotation:Float
+	
+	Field _image:Image
+	
+	Field _matrix:Float[6]
+	
+	Field _surfaceColor:FlxColor
+	
+	Field _mixedColor:FlxColor
+	
+	Field _halfWidth:Float
+	
+	Field _halfHeight:Float
 
 Public
-	Method New(x:Float = 0, y:Float = 0)
+	Method New(x:Float = 0, y:Float = 0, simpleGraphic:String = "")
 		Super.New(x, y)
+		
+		offset = New FlxPoint()
+		origin = New FlxPoint()
+		
+		scale = New FlxPoint(1.0, 1.0)
+		_alpha = 1
+		_color = New FlxColor(FlxG.WHITE)
+		blend = AlphaBlend
+		
+		finished = False
+		_facing = RIGHT
+		_animations = New StringMap<FlxAnim>
+		_flipped = 0
+		_curAnim = Null
+		_curFrame = 0
+		_curIndex = 0
+		_frameTimer = 0
+		
+		_callback = Null
+		
+		#rem
+			if(SimpleGraphic == null)
+				SimpleGraphic = ImgDefault;
+			loadGraphic(SimpleGraphic);
+			TODO
+		#end
+		
+		_surfaceColor = New FlxColor(FlxG.WHITE)
+		_mixedColor = New FlxColor(FlxG.WHITE)
+	End Method
+	
+	Method Destroy:Void()
+		If (_animations <> Null) Then
+			_animations.Clear()
+			_animations = Null
+		End If
+		
+		offset = Null
+		origin = Null
+		scale = Null
+		_curAnim = Null
+		_callback = Null
+		_color = Null
+		_surfaceColor = Null
+		_mixedColor = Null
+	End Method
+	
+	Method MakeGraphic:FlxSprite(width:Int, height:Int, color:Int = FlxG.WHITE)
+		_image = Null
+		_bakedRotation = 0
+		_surfaceColor.SetARGB(color)
+		
+		Self.width = width
+		frameWidth = width
+		Self.height = height
+		frameHeight = height
+		
+		_ResetHelpers()
+		
+		Return Self
+	End Method
+	
+	Method PostUpdate:Void()
+		Super.PostUpdate()
+		_UpdateAnimation()
+	End Method
+		
+	Method Draw:Void()
+		If (_frameTimer <> 0) Then
+			_flicker = Not _flicker
+			If (_flicker) Return
+		End If
+		
+		If (Not OnScreen(FlxG._currentCamera)) Return
+		
+		If (dirty) _CalcFrame()
+		
+		Local camera:FlxCamera = FlxG._currentCamera		
+		
+		If (FlxG._lastDrawingBlend <> blend) Then
+			SetBlend(blend)
+			FlxG._lastDrawingBlend = blend
+		End If
+		
+		_point.x = x - int(camera.scroll.x * scrollFactor.x) - offset.x
+		_point.y = y - int(camera.scroll.y * scrollFactor.y) - offset.y
+		
+		If (_point.x > 0) Then
+			_point.x += 0.0000001
+		Else
+			_point.x -= 0.0000001			
+		End If
+		
+		If (_point.y > 0) Then
+			_point.y += 0.0000001
+		Else
+			_point.y -= 0.0000001			
+		End If
+	
+		If (_image <> Null) Then
+					
+		Else		
+			If (camera.Color <> FlxG.WHITE) Then
+				_mixedColor.MixARGB(_surfaceColor, camera._GetColorObject())
+				
+				If (_color.argb <> FlxG.WHITE) Then
+					_mixedColor.MixARGB(_color)					
+				End If
+				
+				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
+					FlxG._lastDrawingColor = _mixedColor.argb
+				End If
+			Else
+				If (_color.argb <> FlxG.WHITE) Then
+					_mixedColor.MixARGB(_surfaceColor, _color)
+					
+					If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+						SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
+						FlxG._lastDrawingColor = _mixedColor.argb
+					End If
+				Else
+					If (FlxG._lastDrawingColor <> _surfaceColor.argb) Then
+						SetColor(_surfaceColor.r, _surfaceColor.g, _surfaceColor.b)
+						FlxG._lastDrawingColor = _surfaceColor.argb
+					End If						
+				End If			
+			End If
+			
+			If (camera.Alpha < 1) Then
+				Local _mixedAlpha:Float = camera.Alpha * _alpha
+				
+				If (_surfaceColor.a < 1) Then
+					_mixedAlpha *= _surfaceColor.a				
+				End If
+				
+				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+					SetAlpha(_mixedAlpha)
+					FlxG._lastDrawingAlpha = _mixedAlpha					
+				End If			
+			Else
+				If (_surfaceColor.a < 1) Then
+					Local _mixedAlpha:Float = _surfaceColor.a * _alpha
+					
+					If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+						SetAlpha(_mixedAlpha)
+						FlxG._lastDrawingAlpha = _mixedAlpha	
+					End If
+				Else
+					If (FlxG._lastDrawingAlpha <> _alpha) Then
+						SetAlpha(_alpha)
+						FlxG._lastDrawingAlpha = _alpha		
+					End If	
+				End If				
+			End If
+		
+			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then			
+				DrawRect(_point.x, _point.y, frameWidth, frameHeight)
+			Else
+				PushMatrix()
+					'Translate
+					_matrix[4] = _point.x + origin.x
+					_matrix[5] = _point.y + origin.y
+					
+					'Scale
+					_matrix[0] = scale.x
+					_matrix[3] = scale.y
+					
+					'Rotate
+					If (angle <> 0 And _bakedRotation = 0) Then						
+						Local sin:Float = -Sin(angle)
+						Local cos:Float = Cos(angle)
+					
+						_matrix[1] = -sin * _matrix[3]
+						_matrix[2] = _matrix[0] * sin										
+						_matrix[0] *= cos						
+						_matrix[3] = cos * _matrix[3]
+					End If			
+									
+					SetMatrix(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])						
+					DrawRect(-origin.x, -origin.y, frameWidth, frameHeight)
+				PopMatrix()				
+			End If		
+		End If
+	End Method
+	
+	Method DrawFrame:Void(force:Bool = False)
+		If (force Or dirty) _CalcFrame()
+	End Method
+	
+	Method AddAnimation:Void(name:String, frames:Int[], frameRate:Float = 0, looped:Bool = True)
+		_animations.Set(name, New FlxAnim(name, frames, frameRate, looped))
+	End Method
+	
+	Method AddAnimationCallback:Void(animationCallback:FlxAnimationCallback)
+		_callback = animationCallback
+	End Method
+	
+	Method Play:Void(animName:String, force:Bool = False)
+		If (Not force And _curAnim <> Null And animName = _curAnim.name And( _curAnim.looped Or Not finished )) Return
+		
+		_curFrame = 0
+		_curIndex = 0
+		_frameTimer = 0
+		
+		Local anim:FlxAnim = _animations.Get(animName)
+		
+		If (anim <> Null) Then
+			_curAnim = anim
+			
+			If (_curAnim.delay <= 0) Then
+				finished = True
+			Else
+				finished = False				
+			End If
+			
+			_curIndex = _curAnim.frames[_curFrame]
+			dirty = True
+			Return
+		End If
+		
+		FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
+	End Method
+	
+	Method RandomFrame:Void()
+		_curAnim = Null
+		
+		If (_image <> Null) Then			
+			_curIndex = Int(FlxG.Random() * _image.Frames())
+		Else
+			_curIndex = 1
+		End If
+		
+		dirty = True		
+	End Method
+	
+	Method SetOriginToCorner:Void()
+		origin.x = 0
+		origin.y = 0
+	End Method
+	
+	Method CenterOffsets:Void(adjustPosition:Bool = False)
+		offset.x = (frameWidth - width) * .5
+		offset.y = (frameHeight - height) * .5
+		
+		If (adjustPosition) Then
+			x += offset.x
+			y += offset.y
+		End If
+	End Method
+	
+	Method Facing:Int() Property
+		Return _facing	
+	End Method
+	
+	Method Facing:Void(direction:Int) Property
+		If (_facing <> direction) dirty = True
+		_facing = direction
+	End Method
+	
+	Method Alpha:Float() Property
+		Return _alpha	
+	End Method
+	
+	Method Alpha:Void(alpha:Float) Property
+		_alpha = alpha 
+	End Method
+	
+	Method Color:Int() Property
+		Return _color.argb	
+	End Method
+	
+	Method Color:Void(color:Int) Property
+		_color.SetARGB(color)
+	End Method
+	
+	Method Frame:Int() Property
+		Return _curIndex
+	End Method
+	
+	Method Frame:Void(frame:Int) Property
+		_curAnim = Null
+		_curIndex = frame
+		dirty = True
+	End Method	
+	
+	Method OnScreen:Bool(camera:FlxCamera)
+		If (camera = Null) camera = FlxG.camera	
+		GetScreenXY(_point, camera)
+		
+		_point.x = _point.x - offset.x
+		_point.y = _point.y - offset.y
+		
+		If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
+			Return _point.x + frameWidth > 0 And _point.x < camera.Width And _point.y + frameHeight > 0 And _point.y < camera.Height
+		End If
+		
+		Local radius:Float = Sqrt(_halfWidth * _halfWidth + _halfHeight * _halfHeight) * Max(Abs(scale.x), Abs(scale.y))
+		_point.x += _halfWidth
+		_point.y += _halfHeight
+		
+		Return _point.x + radius > 0 And _point.x - radius < camera.Width And _point.y + radius > 0 And _point.y - radius < camera.Height
 	End Method
 	
 	Method ToString:String()
 		Return "FlxSprite"	
 	End Method
+
+Private
+	Method _ResetHelpers:Void()
+		_halfWidth = frameWidth * .5
+		_halfHeight = frameHeight * .5
+		origin.Make(_halfWidth, _halfHeight)
+		
+		If (_image <> Null) Then
+			frames = _image.Frames()
+		Else
+			frames = 1		 
+		End If
+		
+		_curIndex = 0
+		_mixedColor.SetARGB(FlxG.WHITE)
+	End Method
+	
+	Method _UpdateAnimation:Void()
+		If (_bakedRotation > 0) Then
+			Local oldIndex:Int = _curIndex
+			Local angleHelper:Int = angle Mod 360
+			
+			If (angleHelper < 0) angleHelper += 360
+			_curIndex = angleHelper / _bakedRotation + 0.5
+			
+			If (oldIndex <> _curIndex) dirty = True
+		
+		ElseIf (_curAnim <> Null And _curAnim.delay > 0 And (_curAnim.looped Or Not finished))
+			_frameTimer += FlxG.elapsed
+			While (_frameTimer > _curAnim.delay)
+				_frameTimer -= _curAnim.delay
+				
+				If (_curFrame = _curAnim.frames.Length() - 1) Then
+					If (_curAnim.looped) _curFrame = 0
+					finished = True
+				Else
+					_curFrame += 1
+				End If
+				
+				_curIndex = _curAnim.frames[_curFrame]
+				dirty = True
+			Wend
+		End If
+		
+		If (dirty) _CalcFrame()
+	End Method
+	
+	Method _CalcFrame:Void()	
+		If (_callback <> Null) Then
+			If (_curAnim <> Null) Then
+				_callback.OnFrame(_curAnim.name, _curFrame, _curIndex)
+			Else
+				_callback.OnFrame("", _curFrame, _curIndex)
+			End If
+		End If
+		dirty = False
+	End Method
 	
 End Class
+
+Interface FlxAnimationCallback
+	
+	Method OnFrame:Void(animName:String, frame:Int, index:Int)
+
+End Interface
 
 Private	
 Class FlxSpriteClass Implements FlxClass

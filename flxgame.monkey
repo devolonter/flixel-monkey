@@ -44,17 +44,17 @@ Public
 		_iState = initialState
 		_requestedState = Null
 		_requestedReset = True
-		_created = False 				
+		_created = False				
 	End Method
 	
-	Method OnCreate:Int()
+	Method OnCreate:Int()	
 		SetUpdateRate(FlxG.framerate)
 		Seed = flixel.SystemMillisecs()
 		
 		FlxG.deviceWidth = DeviceWidth()
 		FlxG.deviceHeight = DeviceHeight()
 		FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
-		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)		
+		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)	
 		
 		_InitData()		
 		_step = 1000 / FlxG.framerate								
@@ -73,6 +73,7 @@ Public
 		
 		FlxG._lastDrawingColor = FlxG.WHITE
 		FlxG._lastDrawingBlend = GetBlend()
+		FlxG._lastDrawingAlpha = 1
 		FlxG._currentCamera = Null
 		
 		Local i:Int = 0

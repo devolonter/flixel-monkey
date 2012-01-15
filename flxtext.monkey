@@ -25,8 +25,6 @@ Class FlxText Extends FlxSprite
 	
 Private
 	Field _driver:FlxTextDriver
-	
-	Field _color:FlxColor
 	Field _shadow:FlxColor	
 
 Public

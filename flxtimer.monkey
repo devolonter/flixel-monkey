@@ -3,12 +3,6 @@ Strict
 Import flxg
 Import plugin.timermanager
 
-Interface FlxTimerCallback
-	
-	Method OnTimer:Void(timer:FlxTimer)
-
-End Interface
-
 Class FlxTimer
 	
 	Field time:Float
@@ -106,3 +100,9 @@ Public
 	End Method
 	
 End Class
+
+Interface FlxTimerCallback
+	
+	Method OnTimer:Void(timer:FlxTimer)
+
+End Interface

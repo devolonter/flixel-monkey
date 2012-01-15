@@ -133,16 +133,16 @@ Class FlxObject Extends FlxBasic
 	
 	Field pathSpeed:Float
 	
-	Field pathAngle:Float	
-	
-Private
-	Global _pZero:FlxPoint = New FlxPoint()
+	Field pathAngle:Float
 	
 	Field _flicker:Bool
 	
 	Field _flickerTimer:Float
 	
 	Field _point:FlxPoint
+	
+Private
+	Global _pZero:FlxPoint = New FlxPoint()	
 	
 	Field _rect:FlxRect	
 	
@@ -207,7 +207,6 @@ Public
 		_point = Null
 		_rect = Null
 		last = Null
-		cameras = Null
 		If (path <> Null) path.Destroy()
 		path = Null		
 		_debugBoundingBoxColor = Null	
