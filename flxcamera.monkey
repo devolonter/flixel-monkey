@@ -173,7 +173,8 @@ Public
 			End if
 			
 			If (FlxG._lastDrawingAlpha <> _fill.a) Then
-				SetAlpha(_fill.a)			
+				SetAlpha(_fill.a)
+				FlxG._lastDrawingAlpha = _fill.a			
 			End If
 			
 			DrawRect(0, 0, _width, _height)			
