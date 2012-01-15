@@ -53,8 +53,12 @@ Public
 		
 		FlxG.deviceWidth = DeviceWidth()
 		FlxG.deviceHeight = DeviceHeight()
-		FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
-		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)	
+		
+		If (FlxG.targetWidth = 0) FlxG.targetWidth = FlxG.width
+		If (FlxG.targetHeight = 0) FlxG.targetHeight = FlxG.height
+		
+		FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.targetWidth)
+		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.targetHeight)	
 		
 		_InitData()		
 		_step = 1000 / FlxG.framerate								

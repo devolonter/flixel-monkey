@@ -15,6 +15,9 @@ package sprites
 			sprite.loadGraphic(ImgDefault, false, true);
 			sprite.x -= sprite.width * .5;
 			sprite.y -= sprite.height * .5;
+			sprite.angle = 45;
+			sprite.scale.x = 2;
+			sprite.scale.y = 2;
 		
 			add(sprite)			
 		}
