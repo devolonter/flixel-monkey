@@ -537,15 +537,13 @@ Public
 		If (obj1immovable And obj2immovable) Return False
 		
 		If (FlxTilemap(object1) <> Null) Then
-			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_X
-			_separateInvoker.parent = Self
-			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateInvoker)
+			_separateXCallback.invoker = Self
+			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateXCallback)
 		End If
 		
 		If (FlxTilemap(object2) <> Null) Then
-			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_X
-			_separateInvoker.parent = Self
-			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateInvoker, True)
+			_separateXCallback.invoker = Self
+			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateXCallback, True)
 		End If
 		
 		Local overlap:Float = 0
@@ -624,15 +622,13 @@ Public
 		If (obj1immovable And obj2immovable) Return False
 		
 		If (FlxTilemap(object1) <> Null) Then
-			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_Y
-			_separateInvoker.parent = Self
-			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateInvoker)
+			_separateYCallback.invoker = Self
+			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateYCallback)
 		End If
 		
 		If (FlxTilemap(object2) <> Null) Then
-			_separateInvoker.methodToInvoke = FlxObjectSeparateInvoker.METHOD_SEAPARATE_Y
-			_separateInvoker.parent = Self
-			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateInvoker, True)
+			_separateYCallback.invoker = Self
+			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateYCallback, True)
 		End If
 		
 		Local overlap:Float = 0
@@ -877,7 +873,10 @@ Private
 
 End Class
 
-Private	
+Private
+Global _separateXCallback:FlxObjectSeparateX = New FlxObjectSeparateX()
+Global _separateYCallback:FlxObjectSeparateY = New FlxObjectSeparateY()
+
 Class FlxObjectClass Implements FlxClass
 
 	Method CreateInstance:FlxBasic()
@@ -906,26 +905,25 @@ Class FlxObjectXComparator Implements FlxBasicComparator
 	
 End Class
 
-Class FlxObjectSeparateInvoker
+Class FlxObjectSeparateX Implements FlxTilemapOverlapCallback
+
+	Field invoker:FlxObject
 	
-	Const METHOD_SEAPARATE_X:Int = 0
-	Const METHOD_SEPARATE_Y:Int = 1
-	
-	Field parent:FlxObject
-	Field methodToInvoke:Int
-	
-	Method Invoke:Bool(object1:FlxObject, object2:FlxObject)
-		If (methodToInvoke = METHOD_SEAPARATE_X) Then
-			parent.SeparateX(object1, object2)
-		Else
-			parent.SeparateY(object1, object2)
-		End If	
+	Method OnOverlap:Bool(object1:FlxObject, object2:FlxObject)
+		invoker.SeparateX(object1, object2)
 	End Method
 
 End Class
 
-Private
-	Global _separateInvoker:FlxObjectSeparateInvoker = New FlxObjectSeparateInvoker()	
+Class FlxObjectSeparateY Implements FlxTilemapOverlapCallback
+
+	Field invoker:FlxObject
+	
+	Method OnOverlap:Bool(object1:FlxObject, object2:FlxObject)
+		invoker.SeparateY(object1, object2)
+	End Method
+
+End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.

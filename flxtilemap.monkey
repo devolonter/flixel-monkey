@@ -14,7 +14,7 @@ Class FlxTilemap Extends FlxObject
 		Return False	
 	End Method
 	
-	Method OverlapsWithCallback:Bool(object:FlxObject, callback:FlxObjectSeparateInvoker = Null, flipCallbackParams:Bool = False, position:FlxPoint = Null)
+	Method OverlapsWithCallback:Bool(object:FlxObject, callback:FlxTilemapOverlapCallback = Null, flipCallbackParams:Bool = False, position:FlxPoint = Null)
 		'TODO
 		Return False	
 	End Method
@@ -24,3 +24,9 @@ Class FlxTilemap Extends FlxObject
 	End Method
 
 End Class
+
+Interface FlxTilemapOverlapCallback
+	
+	Method OnOverlap:Bool(object1:FlxObject, object2:FlxObject)
+
+End Interface
