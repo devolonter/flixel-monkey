@@ -12,10 +12,9 @@ Import flxg
 Import flxgame
 Import flxu
 
-Import plugin.monkey.flxcolor
-Import plugin.monkey.flxassetsmanager
-Import plugin.monkey.flxresourcesmanager
-Import plugin.monkey.flxfont
-
-Import system.flxanim
+Import system.flxcolor
 Import system.flxarray
+Import system.flxassetsmanager
+Import system.flxresourcesmanager
+Import system.flxfont
+Import system.flxanim

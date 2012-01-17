@@ -3,7 +3,7 @@ Strict
 Import flixel.flxextern
 Import flixel.flxtext
 
-Import flixel.plugin.monkey.flxfont
+Import flixel.system.flxfont
 
 Class FlxAssetsManager
 	

@@ -6,8 +6,8 @@ Import fontmachine.fontmachine
 Import flixel.flxtext
 Import flixel.flxtext.driver
 
-Import flixel.plugin.monkey.flxassetsmanager
-Import flixel.plugin.monkey.flxresourcesmanager
+Import flixel.system.flxassetsmanager
+Import flixel.system.flxresourcesmanager
 
 Class FlxTextFontMachineDriver Extends FlxTextDriver
 

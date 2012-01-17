@@ -5,8 +5,8 @@ Import mojo
 Import flixel.flxtext
 Import flixel.flxtext.driver
 
-Import flixel.plugin.monkey.flxassetsmanager
-Import flixel.plugin.monkey.flxresourcesmanager
+Import flixel.system.flxassetsmanager
+Import flixel.system.flxresourcesmanager
 
 Import "../../data/flx_system_font_8.png"
 Import "../../data/flx_system_font_9.png"

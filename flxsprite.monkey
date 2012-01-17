@@ -7,9 +7,9 @@ Import flxpoint
 Import flxobject
 Import flxcamera
 Import flxg
-Import system.flxanim
 
-Import plugin.monkey.flxcolor
+Import system.flxanim
+Import system.flxcolor
 
 Import "data/flx_default.png"
 

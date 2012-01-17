@@ -6,8 +6,8 @@ Import flxtext.driver
 Import flxtext.driver.native
 Import flxg
 
-Import plugin.monkey.flxcolor
-Import plugin.monkey.flxassetsmanager
+Import system.flxcolor
+Import system.flxassetsmanager
 
 Class FlxText Extends FlxSprite
 

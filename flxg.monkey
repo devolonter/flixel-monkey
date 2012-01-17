@@ -7,7 +7,7 @@ Import flxgame
 Import flxcamera
 Import flxu
 
-Import plugin.monkey.flxresourcesmanager
+Import system.flxresourcesmanager
 
 Import plugin.timermanager
 Import plugin.debugpathdisplay

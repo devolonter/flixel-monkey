@@ -10,9 +10,10 @@ Import flxtimer
 Import flxtext
 Import flxg
 
+Import system.flxassetsmanager
+Import system.flxfont
+
 Import plugin.timermanager
-Import plugin.monkey.flxassetsmanager
-Import plugin.monkey.flxfont
 
 Class FlxGame extends App
 

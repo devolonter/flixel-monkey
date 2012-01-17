@@ -7,7 +7,7 @@ Import flxbasic
 Import flxobject
 Import flxg
 
-Import plugin.monkey.flxcolor
+Import system.flxcolor
 
 Class FlxCamera Extends FlxBasic
 

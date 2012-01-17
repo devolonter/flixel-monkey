@@ -14,7 +14,7 @@ Import flxtilemap
 Import flxg
 Import flxu
 
-Import plugin.monkey.flxcolor
+Import system.flxcolor
 
 #Rem
 summary:This is the base class for most of the display objects (FlxSprite, FlxText, etc).
