@@ -21,7 +21,7 @@ Class FlxTilemap Extends FlxObject
 	End Method
 	
 	Method ToString:String()
-		Return "FlxTileMap"
+		Return "FlxTilemap"
 	End Method
 
 End Class

@@ -105,10 +105,6 @@ Public
 		
 	End Method
 	
-	Method ToString:String()
-		Return "FlxGame"	
-	End Method
-	
 Private
 	Method _SwitchState:Void()
 		FlxG.ResetCameras()

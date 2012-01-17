@@ -17,9 +17,5 @@ Class FlxAnim
 		Self.frames = frames
 		Self.looped = looped	
 	End Method
-	
-	Method ToString:String()
-		Return "FlxAnim"	
-	End Method
 
 End Class

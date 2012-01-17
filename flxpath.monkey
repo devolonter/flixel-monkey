@@ -213,9 +213,5 @@ Public
 	Function Manager:DebugPathDisplay()
 		Return DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._CLASS))
 	End Function
-	
-	Method ToString:String()
-		Return "FlxPath"	
-	End Method
 
 End Class

@@ -69,10 +69,6 @@ Class FlxPoint
 		return point
 	End Method
 	
-	Method ToString:String()
-		Return "FlxPoint"
-	End Method
-	
 End Class
 
 #Rem 
