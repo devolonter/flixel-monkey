@@ -1,5 +1,7 @@
 Strict
 
+Import flxbasic
+
 Import "native/flixel.${TARGET}.${LANG}"
 
 Extern

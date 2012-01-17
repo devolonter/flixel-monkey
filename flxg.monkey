@@ -14,7 +14,7 @@ Import plugin.debugpathdisplay
 
 Class FlxG	
 
-	Const LIBRARY_NAME:String = "Monkey flixel"
+	Const LIBRARY_NAME:String = "Monkey Flixel"
 	
 	Const LIBRARY_MAJOR_VERSION:Int = 1
 	
