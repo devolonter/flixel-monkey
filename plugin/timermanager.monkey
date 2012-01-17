@@ -1,6 +1,8 @@
 Strict
 
-Import flixel
+Import flixel.flxextern
+Import flixel.flxbasic
+Import flixel.flxtimer
 
 Class TimerManager Extends FlxBasic
 

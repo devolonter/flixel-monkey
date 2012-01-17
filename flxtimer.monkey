@@ -1,6 +1,8 @@
 Strict
 
+Import flxextern
 Import flxg
+
 Import plugin.timermanager
 
 Class FlxTimer

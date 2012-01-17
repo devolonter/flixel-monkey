@@ -3,6 +3,7 @@
 #end
 Strict
 
+Import flxextern
 Import flxcamera
 Import flxg
 

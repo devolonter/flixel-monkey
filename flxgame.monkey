@@ -2,12 +2,13 @@ Strict
 
 Import mojo
 
-Import flxg
+Import flxextern
 Import flxbasic
 Import flxstate
 Import flxcamera
 Import flxtimer
 Import flxtext
+Import flxg
 
 Import plugin.timermanager
 Import plugin.monkey.flxassetsmanager

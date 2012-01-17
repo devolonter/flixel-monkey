@@ -1,5 +1,4 @@
-Strict
-
+Import flxextern
 Import flxpoint
 Import flxrect
 Import flxbasic
@@ -18,28 +17,5 @@ Import plugin.monkey.flxassetsmanager
 Import plugin.monkey.flxresourcesmanager
 Import plugin.monkey.flxfont
 
-Import "native/flixel.${TARGET}.${LANG}"
-
-Extern
-
-#If LANG="cpp" Then
-	Function SystemMillisecs:Int() = "flixel::systemMillisecs"
-#Else
-	Function SystemMillisecs:Int() = "flixel.systemMillisecs"
-#End
-
-Public
-
-Interface FlxClass
-	
-	Method CreateInstance:FlxBasic()
-	
-	Method InstanceOf:Bool(object:FlxBasic)
-
-End Interface
-
-Interface FlxFunction
-	
-	Method Invoke:Void()
-
-End Interface
+Import system.flxanim
+Import system.flxarray

@@ -1,5 +1,6 @@
 Strict
 
+Import flxextern
 Import flxobject
 
 Class FlxTilemap Extends FlxObject

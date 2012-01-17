@@ -1,7 +1,8 @@
 Strict
 
-Import mojo.graphics
+Import mojo
 
+Import flxextern
 Import flxpoint
 Import flxobject
 Import flxcamera

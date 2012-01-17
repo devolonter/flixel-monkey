@@ -1,6 +1,8 @@
 Strict
 
-Import mojo.app
+Import mojo
+
+Import flxextern
 Import flxpoint
 Import flxg
 

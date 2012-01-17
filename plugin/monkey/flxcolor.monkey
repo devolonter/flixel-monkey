@@ -1,7 +1,5 @@
 Strict
 
-Import mojo
-
 Class FlxColor	
 
 Public

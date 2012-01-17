@@ -2,6 +2,7 @@ Strict
 
 Import mojo
 
+Import flxextern
 Import flxgame
 Import flxcamera
 Import flxu

@@ -1,5 +1,7 @@
 Strict
 
+Import flixel.flxg
+
 Class FlxArray<T>
 	
 	Field data:T[]

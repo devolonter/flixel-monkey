@@ -1,10 +1,11 @@
 Strict
 
-Import flxg
+Import flxextern
 Import flxpoint
 Import flxrect
 Import flxbasic
 Import flxobject
+Import flxg
 
 Import plugin.monkey.flxcolor
 

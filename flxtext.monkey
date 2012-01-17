@@ -1,5 +1,6 @@
 Strict
 
+Import flxextern
 Import flxsprite
 Import flxtext.driver
 Import flxtext.driver.native

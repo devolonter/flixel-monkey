@@ -1,5 +1,6 @@
 Strict
 
+Import flixel.flxextern
 Import flixel.flxbasic
 Import flixel.flxpath
 

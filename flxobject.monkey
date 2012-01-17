@@ -3,6 +3,8 @@ Strict
 #rem
 	header:This module contains the FlxObject class.
 #end
+
+Import flxextern
 Import flxbasic
 Import flxpoint
 Import flxpath

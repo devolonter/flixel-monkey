@@ -1,7 +1,9 @@
 Strict
 
+Import flxextern
 Import flxpoint
 Import flxg
+
 Import flixel.plugin.monkey.flxcolor
 Import flixel.plugin.debugpathdisplay
 
