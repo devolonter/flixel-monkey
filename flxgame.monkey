@@ -17,9 +17,9 @@ Import plugin.timermanager
 
 Class FlxGame extends App
 
-Private
 	Field _state:FlxState
-	
+
+Private	
 	Field _iState:FlxClass
 	
 	Field _created:Bool
