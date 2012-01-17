@@ -8,6 +8,7 @@ Import flxcamera
 Import flxu
 
 Import system.flxresourcesmanager
+Import system.flxquadtree
 
 Import plugin.timermanager
 Import plugin.debugpathdisplay
@@ -47,6 +48,8 @@ Class FlxG
 	Global height:Int
 	
 	Global worldBounds:FlxRect
+	
+	Global worldDivisions:Int
 			
 	Global cameras:Stack<FlxCamera>
 	
@@ -146,6 +149,10 @@ Public
 		_cache.Clear()
 	End Function
 	
+	Function State:FlxState()
+		Return _game._state
+	End Function
+	
 	Function SwitchState:Void(state:FlxState)
 		FlxG._game._requestedState = state
 	End Function
@@ -224,6 +231,21 @@ Public
 		FlxG._bgColor.SetARGB(color)
 	End Function
 	
+	Function Overlap:Bool(objectOrGroup1:FlxBasic = Null, objectOrGroup2:FlxBasic, notifyCallback:FlxQuadTreeOverlapNotifyCallback = Null, processCallback:FlxQuadTreeOverlapProcessCallback = Null)
+		If (objectOrGroup1 = Null) objectOrGroup1 = FlxG.State()
+		If (objectOrGroup2 = objectOrGroup1) objectOrGroup2 = Null
+		
+		FlxQuadTree.divisions = FlxG.worldDivisions
+		
+		Local quadTree:FlxQuadTree = New FlxQuadTree(FlxG.worldBounds.x, FlxG.worldBounds.y, FlxG.worldBounds.width, FlxG.worldBounds.height)
+		quadTree.Load(objectOrGroup1, objectOrGroup2, notifyCallback, processCallback)
+		
+		Local result:Bool = quadTree.Execute()
+		quadTree.Destroy()
+		
+		Return result
+	End Function
+	
 	Function AddPlugin:FlxBasic(plugin:FlxBasic)
 		Local pluginList:Stack<FlxBasic> = FlxG.plugins
 		Local i:Int = 0
@@ -299,6 +321,7 @@ Public
 		FlxG.elapsed = 0 
 		FlxG.globalSeed = Rnd(1, 10000000)
 		FlxG.worldBounds = New FlxRect(-10, -10, FlxG.width + 20, FlxG.height + 20)
+		FlxG.worldDivisions = 6
 		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._CLASS))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
 	End Function

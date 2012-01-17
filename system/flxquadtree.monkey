@@ -360,7 +360,7 @@ Private
 	Method _AddToList:Void()
 		Local ot:FlxList
 		
-		If (_list == A_LIST) Then
+		If (_list = A_LIST) Then
 			If (_tailA.object <> Null) Then
 				ot = _tailA
 				_tailA = New FlxList()

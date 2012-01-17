@@ -21,6 +21,7 @@ Import system.flxassetsmanager
 Import system.flxcolor
 Import system.flxfont
 Import system.flxlist
+Import system.flxquadtree
 Import system.flxresourcesmanager
 
 Import plugin.debugpathdisplay
