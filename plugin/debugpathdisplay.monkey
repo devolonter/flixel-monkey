@@ -9,7 +9,7 @@ Private
 	Field _paths:Stack<FlxPath>
 	
 Public
-	Global CLASS_OBJECT:FlxClass = new DebugPathDisplayClass()
+	Global _CLASS:FlxClass = new DebugPathDisplayClass()
 
 	Method New()
 		_paths = New Stack<FlxPath>

@@ -21,7 +21,7 @@ basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
 
-	Global CLASS_OBJECT:FlxClass = new FlxObjectClass()
+	Global _CLASS:FlxClass = new FlxObjectClass()
 	
 	Global X_COMPARATOR:FlxBasicComparator = new FlxObjectXComparator()
 	

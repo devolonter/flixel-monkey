@@ -10,7 +10,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, ObjectsState.CLASS_OBJECT)
+		Super.New(640, 480, ObjectsState._CLASS)
 		FlxG.visualDebug = True
 	End Method
 
@@ -30,7 +30,7 @@ End Class
 
 Class ObjectsState Extends FlxState
 
-	Global CLASS_OBJECT:FlxClass = new ObjectsStateClass()
+	Global _CLASS:FlxClass = new ObjectsStateClass()
 	
 	Field blocks1:FlxGroup
 	Field blocks2:FlxGroup	

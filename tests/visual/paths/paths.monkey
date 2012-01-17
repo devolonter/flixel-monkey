@@ -10,7 +10,7 @@ End Function
 Class Paths Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, PathsState.CLASS_OBJECT)
+		Super.New(640, 480, PathsState._CLASS)
 		FlxG.visualDebug = True	
 	End Method
 
@@ -30,7 +30,7 @@ End Class
 
 Class PathsState Extends FlxState
 
-	Global CLASS_OBJECT:FlxClass = new PathsStateClass()
+	Global _CLASS:FlxClass = new PathsStateClass()
 	
 	Field pathFrowardedObject:FlxObject
 	Field pathForward:FlxPath

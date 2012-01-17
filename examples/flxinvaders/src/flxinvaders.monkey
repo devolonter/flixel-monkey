@@ -9,7 +9,7 @@ Import alien
 Class FlxInvaders Extends FlxGame
 	
 	Method New()		
-		Super.New(320, 240, PlayState._class)
+		Super.New(320, 240, PlayState._CLASS)
 	End Method
 	
 	Method OnContentInit:Void()

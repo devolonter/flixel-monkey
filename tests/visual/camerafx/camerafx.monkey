@@ -11,7 +11,7 @@ End Function
 Class CameraFX Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, CameraFXState.CLASS_OBJECT)	
+		Super.New(640, 480, CameraFXState._CLASS)	
 	End Method
 	
 	Method OnContentInit:Void()
@@ -41,7 +41,7 @@ End Class
 
 Class CameraFXState Extends FlxState
 
-	Global CLASS_OBJECT:FlxClass = new CameraFXStateClass()
+	Global _CLASS:FlxClass = new CameraFXStateClass()
 	
 	Method Create:Void()		
 		Local manual:FlxText = New FlxText(10, 10, 620, "- Press S to shake", New FlxTextAngelFontDriver())	

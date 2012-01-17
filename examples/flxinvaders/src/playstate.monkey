@@ -7,7 +7,7 @@ Import alien
 
 Class PlayState Extends FlxState
 
-	Global _class:FlxClass = New PlayStateClass()
+	Global _CLASS:FlxClass = New PlayStateClass()
 	
 	Field player:PlayerShip
 	Field aliens:FlxGroup

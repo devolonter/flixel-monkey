@@ -298,7 +298,7 @@ Public
 		FlxG.elapsed = 0 
 		FlxG.globalSeed = Rnd(1, 10000000)
 		FlxG.worldBounds = New FlxRect(-10, -10, FlxG.width + 20, FlxG.height + 20)
-		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.CLASS_OBJECT))
+		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._CLASS))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
 	End Function
 	

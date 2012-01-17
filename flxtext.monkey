@@ -10,7 +10,7 @@ Import plugin.monkey.flxassetsmanager
 
 Class FlxText Extends FlxSprite
 
-	Global CLASS_OBJECT:FlxClass = new FlxTextClass()
+	Global _CLASS:FlxClass = new FlxTextClass()
 	
 	Const ALIGN_LEFT:Float = 0
 	Const ALIGN_RIGHT:Float = 1
