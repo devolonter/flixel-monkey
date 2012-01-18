@@ -26,8 +26,8 @@ Public
 		
 			_map = _map.Resize(_to)
 		
-			Local i:Int = _from			
-			While (i < _to)
+			Local i:Int = KEY_BACKSPACE
+			While (i < KEY_TOUCH0 + 32)
 				_map[i] = New InputState()
 				i += 1
 			Wend
@@ -71,15 +71,15 @@ Public
 	End Method
 	
 	Method Pressed:Bool(key:Int)
-		Return _map[key] = 1
+		Return _map[key].current > 0
 	End Method
 	
 	Method JustPressed:Bool(key:Int)
-		Return _map[key] = 2
+		Return _map[key].current = 2
 	End Method
 	
 	Method JustReleased:Bool(key:Int)
-		Return _map[key] = -1
+		Return _map[key].current = -1
 	End Method
 	
 	Method Record:Stack<KeyRecord>()
