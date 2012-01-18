@@ -27,18 +27,31 @@ Public
 			is = _map[i]
 			
 			If (GetState(i)) Then
-				If (is.current > 0) Then
+				If (is.current > 0 And is.last = 2) Then
 					is.current = 1
 				Else
 					is.current = 2
 				End If
 			Else
-				If (is.current > 0) Then
+				If (is.current > 0 And is.last > 0) Then
 					is.current = -1
 				Else
 					is.current = 0			
 				End If
 			End If
+			
+			is.last = is.current
+		Wend
+	End Method
+	
+	Method Reset:Void()
+		Local i:Int = 0
+		Local is:InputState
+		 	
+		While (i < _total)
+			is = _map[i]			
+			is.current = 0
+			is.last = 0
 		Wend
 	End Method
 	
@@ -128,8 +141,8 @@ Class InputState
 	Field last:Int
 	
 	Method New()
-		current = -1
-		last = -1	
+		current = 0
+		last = 0	
 	End Method
 
 End Class
