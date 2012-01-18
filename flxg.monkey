@@ -150,7 +150,6 @@ Public
 	End Function
 	
 	Function State:FlxState()
-		Print "State"
 		Return _game._state
 	End Function
 	
@@ -233,8 +232,6 @@ Public
 	End Function
 	
 	Function Overlap:Bool(objectOrGroup1:FlxBasic = Null, objectOrGroup2:FlxBasic, notifyCallback:FlxQuadTreeOverlapNotifyCallback = Null, processCallback:FlxQuadTreeOverlapProcessCallback = Null)
-		Print "Overlap"
-		
 		If (objectOrGroup1 = Null) objectOrGroup1 = FlxG.State()
 		If (objectOrGroup2 = objectOrGroup1) objectOrGroup2 = Null
 		
