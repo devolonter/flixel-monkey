@@ -2,12 +2,12 @@ Strict
 
 Import flixel
 
+Import assets
+
 Class PlayerShip Extends FlxSprite	
 	
-	Const IMAGE_SHIP:String = "ship"
-	
 	Method New()
-		Super.New(FlxG.width/2 - 6, FlxG.height - 12, IMAGE_SHIP)
+		Super.New(FlxG.width/2 - 6, FlxG.height - 12, Assets.IMAGE_PLAYER_SHIP)
 	End Method
 	
 	Method Update:Void()
@@ -29,7 +29,7 @@ Class PlayerShip Extends FlxSprite
 			
 		If (x < 4) Then
 			x = 4
-		End if
+		End If
 		If (KeyHit(KEY_SPACE)) Then
 
 		End If

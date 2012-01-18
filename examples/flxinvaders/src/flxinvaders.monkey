@@ -5,6 +5,7 @@ Import flixel
 Import playstate
 Import playership
 Import alien
+Import assets
 
 Class FlxInvaders Extends FlxGame
 	
@@ -14,8 +15,8 @@ Class FlxInvaders Extends FlxGame
 	
 	Method OnContentInit:Void()
 		'Register assets
-		FlxAssetsManager.AddImage(PlayerShip.IMAGE_SHIP, "ship.png")
-		FlxAssetsManager.AddImage(Alien.IMAGE_ALIEN, "alien.png")
+		FlxAssetsManager.AddImage(Assets.IMAGE_PLAYER_SHIP, "ship.png")
+		FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP, "alien.png")
 	End Method
 
 End Class

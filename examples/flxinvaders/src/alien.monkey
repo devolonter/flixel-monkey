@@ -2,15 +2,17 @@ Strict
 
 Import flixel
 
-Class Alien Extends FlxSprite
+Import assets
 
-	Const IMAGE_ALIEN:String = "alien"
+Class Alien Extends FlxSprite
 	
 	Global ReverseVelocity:ReverseVelocityInvoker = New ReverseVelocityInvoker()
 	
 	Field originalX:Int
 	
 Private
+	Const _DEFAULT_ANIMATION:String = "Default"
+
 	Field _shotClock:Float
 	Field _bullets:FlxGroup
 	
@@ -18,14 +20,14 @@ Public
 	Method New(x:Int, y:Int, color:Int, bullets:FlxGroup)
 		Super.New(x, y)
 		
-		LoadGraphic(IMAGE_ALIEN, True)
+		LoadGraphic(Assets.IMAGE_ALIEN_SHIP, True)
 		Color = color
 		ResetShotClock()
 		originalX = x
 		_bullets = bullets
 		
-		AddAnimation("Default", [0,1,0,2], 6 + FlxG.Random() * 4)
-		Play("Default")
+		AddAnimation(_DEFAULT_ANIMATION, [0,1,0,2], 6 + FlxG.Random() * 4)
+		Play(_DEFAULT_ANIMATION)
 		
 		velocity.x = 10
 	End Method
@@ -49,8 +51,8 @@ End Class
 
 Class ReverseVelocityInvoker Implements FlxBasicInvoker
 
-	Method Invoke:Void(object:FlxBasic)
-		Local alien:Alien = Alien(object)
+	Method Invoke:Void(Object:FlxBasic)
+		Local alien:Alien = Alien(Object)
 		
 		If (alien.velocity.x > 0) Then
 			alien.x = alien.originalX + 8
