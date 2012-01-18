@@ -94,47 +94,7 @@ Class Keyboard Extends Input
 	
 	Method ZERO:Bool() Property
 		Return Pressed(KEY_0)	
-	End Method
-	
-	Method NUMPADONE:Bool() Property
-		Return Pressed(96)	
-	End Method
-	
-	Method NUMPADTWO:Bool() Property
-		Return Pressed(97)	
-	End Method
-	
-	Method NUMPADTHREE:Bool() Property
-		Return Pressed(98)	
-	End Method
-	
-	Method NUMPADFOUR:Bool() Property
-		Return Pressed(99)	
-	End Method
-	
-	Method NUMPADFIVE:Bool() Property
-		Return Pressed(100)	
-	End Method
-	
-	Method NUMPADSIX:Bool() Property
-		Return Pressed(101)	
-	End Method
-	
-	Method NUMPADSEVEN:Bool() Property
-		Return Pressed(102)	
-	End Method
-	
-	Method NUMPADEIGHT:Bool() Property
-		Return Pressed(103)	
-	End Method
-	
-	Method NUMPADNINE:Bool() Property
-		Return Pressed(104)	
-	End Method
-	
-	Method NUMPADZERO:Bool() Property
-		Return Pressed(105)	
-	End Method
+	End Method	
 	
 	Method PAGEUP:Bool() Property
 		Return Pressed(KEY_PAGEUP)	
@@ -160,16 +120,8 @@ Class Keyboard Extends Input
 		Return Pressed(KEY_MINUS)	
 	End Method
 	
-	Method NUMPADMINUS:Bool() Property
-		Return Pressed(109)	
-	End Method
-	
 	Method PLUS:Bool() Property
 		Return Pressed(KEY_EQUALS)	
-	End Method
-	
-	Method NUMPADPLUS:Bool() Property
-		Return Pressed(107)	
 	End Method
 	
 	Method DELETE:Bool() Property
@@ -238,10 +190,6 @@ Class Keyboard Extends Input
 	
 	Method BACKSLASH:Bool() Property
 		Return Pressed(KEY_BACKSLASH)	
-	End Method
-	
-	Method CAPSLOCK:Bool() Property
-		Return Pressed(KEY_CAPSLOCK)	
 	End Method
 	
 	Method A:Bool() Property
@@ -342,10 +290,6 @@ Class Keyboard Extends Input
 	
 	Method SLASH:Bool() Property
 		Return Pressed(KEY_SLASH)	
-	End Method
-	
-	Method NUMPADSLASH:Bool() Property
-		Return Pressed(191)	
 	End Method
 	
 	Method CONTROL:Bool() Property

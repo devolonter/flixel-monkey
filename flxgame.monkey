@@ -30,6 +30,8 @@ Private
 	
 	Field _requestedReset:Bool
 	
+	Field _replaying:Bool
+	
 	Field _lastMillisecs:Float
 	
 	Field _step:Int
@@ -42,6 +44,8 @@ Public
 		FlxG.framerate = framerate		
 		
 		_state = Null
+		
+		_replaying = False
 		
 		_iState = initialState
 		_requestedState = Null
@@ -130,7 +134,12 @@ Private
 			_lastMillisecs = Millisecs() - _step			
 		End If		
 		
-		If (_state <> _requestedState) _SwitchState()		
+		If (_state <> _requestedState) _SwitchState()
+		
+		If (_replaying) Then
+		Else
+			FlxG.UpdateInput()
+		End If
 		
 		_Update()
 	End Method

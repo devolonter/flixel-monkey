@@ -7,6 +7,7 @@ Import flxgame
 Import flxcamera
 Import flxu
 
+Import system.input.keyboard
 Import system.flxresourcesmanager
 Import system.flxquadtree
 
@@ -71,6 +72,8 @@ Class FlxG
 	
 	Global globalSeed:Int
 	
+	Global keys:Keyboard
+	
 	Global framerate:Int
 	
 	Global _deviceScaleFactorX:Float = 1	
@@ -125,6 +128,10 @@ Public
 		GetRandom is not currently supported in Monkey. Use FlxArray.GetSafeRandom method
 	End Function
 	#End
+	
+	Function ResetInput:Void()
+		keys.Reset()
+	End Function
 	
 	Function CheckBitmapCache:Bool(key:String)
 		Return _cache.CheckResource(key)
@@ -319,10 +326,14 @@ Public
 		
 		plugins = New Stack<FlxBasic>
 		AddPlugin(New DebugPathDisplay())
-		AddPlugin(New TimerManager())		
+		AddPlugin(New TimerManager())
+		
+		FlxG.keys = New Keyboard()		
 	End Function
 	
-	Function Reset:Void()		
+	Function Reset:Void()
+		FlxG.ClearBitmapCache()
+		FlxG.ResetInput()		
 		FlxG.timeScale = 1
 		FlxG.elapsed = 0 
 		FlxG.globalSeed = Rnd(1, 10000000)
@@ -330,6 +341,10 @@ Public
 		FlxG.worldDivisions = 6
 		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._CLASS))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
+	End Function
+	
+	Function UpdateInput:Void()
+		FlxG.keys.Update()
 	End Function
 	
 	Function UpdateCameras:Void()

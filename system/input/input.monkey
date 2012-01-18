@@ -23,11 +23,13 @@ Public
 				_from = KEY_BACKSPACE
 				_to = KEY_TOUCH0 + 1
 			End If
-		
-			_map = _map.Resize(_to)
-		
+			
 			Local i:Int = KEY_BACKSPACE
-			While (i < KEY_TOUCH0 + 32)
+			Local size:Int = KEY_TOUCH0 + 32
+		
+			_map = _map.Resize(size)		
+			
+			While (i < size)
 				_map[i] = New InputState()
 				i += 1
 			Wend
@@ -42,20 +44,21 @@ Public
 			is = _map[i]
 			
 			If (KeyDown(i)) Then
-				If (is.current > 0 And is.last = 2) Then
-					is.current = 1
-				Else
+				If (is.last < 1) Then
 					is.current = 2
+				Else
+					is.current = 1
 				End If
 			Else
-				If (is.current > 0 And is.last > 0) Then
+				If (is.last > 0) Then
 					is.current = -1
 				Else
-					is.current = 0			
+					is.current = 0
 				End If
 			End If
 			
 			is.last = is.current
+			i += 1
 		Wend
 	End Method
 	
@@ -67,6 +70,7 @@ Public
 			is = _map[i]			
 			is.current = 0
 			is.last = 0
+			i += 1
 		Wend
 	End Method
 	

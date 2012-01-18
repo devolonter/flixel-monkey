@@ -15,6 +15,7 @@ Import flxtilemap
 Import flxtimer
 Import flxu
 
+Import system.input.keyboard
 Import system.flxanim
 Import system.flxarray
 Import system.flxassetsmanager
