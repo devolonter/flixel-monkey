@@ -89,7 +89,7 @@ Private
 	Global _checkObjectHullHeight:Float
 
 Public
-	Method New(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree)
+	Method New(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
 		Super.New(x, y, width, height)
 		_tailA = New FlxList()
 		_headA = _tailA
@@ -101,7 +101,7 @@ Public
 			Local iterator:FlxList
 			Local ot:FlxList
 			
-			If (_parent._headA.object <> Null) Then
+			If (parent._headA.object <> Null) Then
 				iterator = parent._headA
 				
 				While (iterator <> Null)
@@ -247,7 +247,7 @@ Public
 				If (_useBothLists) Then
 					_iterator = _headB
 				Else
-					_iterator.nextLink
+					_iterator = iterator.nextLink
 				End If
 				
 				If (_object.exists And _object.allowCollisions > 0 And _iterator <> Null And _iterator.object <> Null And _iterator.object.exists And _OverlapNode()) Then
