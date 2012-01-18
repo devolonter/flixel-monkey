@@ -12,7 +12,7 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 	Field player:PlayerShip
 	Field playerBullets:FlxGroup
 	Field aliens:FlxGroup
-	Field aliensBullets:FlxGroup
+	Field alienBullets:FlxGroup
 	
 	Field vsPlayerBullets:FlxGroup
 	Field vsAlienBullets:FlxGroup
@@ -33,15 +33,15 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 		Add(playerBullets)
 		
 		Local numAlienBullets:Int = 32
-		aliensBullets = New FlxGroup(numAlienBullets)
+		alienBullets = New FlxGroup(numAlienBullets)
 		
 		For Local i:Int = 0 Until numAlienBullets
 			sprite = New FlxSprite(-100, -100)
 			sprite.MakeGraphic(2, 8)
 			sprite.exists = False
-			aliensBullets.Add(sprite)
+			alienBullets.Add(sprite)
 		Next
-		Add(aliensBullets)		
+		Add(alienBullets)		
 		
 		Local numAliens:Int = 50
 		aliens = New FlxGroup(numAliens)		
@@ -49,7 +49,7 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 		Local colors:Int[] = [FlxG.BLUE, FlxG.BLUE | FlxG.GREEN, FlxG.GREEN, FlxG.GREEN | FlxG.RED, FlxG.RED]		
 				
 		For Local i:Int = 0 Until numAliens
-			a = New Alien(8 + (i Mod 10) * 32, 24 + Int(i / 10) * 32, colors[Int(i / 10)], aliensBullets)
+			a = New Alien(8 + (i Mod 10) * 32, 24 + Int(i / 10) * 32, colors[Int(i / 10)], alienBullets)
 			aliens.Add(a)
 		Next
 		Add(aliens)
