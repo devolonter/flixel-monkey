@@ -11,7 +11,7 @@ Class FlxQuadTree Extends FlxRect
 	
 	Const A_LIST:Int = 0
 	
-	Const B_LIST:Int = 0
+	Const B_LIST:Int = 1
 	
 	Global divisions:Int
 	
