@@ -17,10 +17,7 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 	Field vsPlayerBullets:FlxGroup
 	Field vsAlienBullets:FlxGroup
 	
-	Method Create:Void()
-		player = New PlayerShip()
-		Add(player)
-		
+	Method Create:Void()		
 		Local numPlayerBullets:Int = 8
 		playerBullets = New FlxGroup(numPlayerBullets)
 		Local sprite:FlxSprite
@@ -28,9 +25,12 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 			sprite = New FlxSprite(-100, -100)
 			sprite.MakeGraphic(2, 8)
 			sprite.exists = False
-			playerBullets .Add(sprite)
+			playerBullets.Add(sprite)
 		Next
 		Add(playerBullets)
+		
+		player = New PlayerShip(playerBullets)
+		Add(player)
 		
 		Local numAlienBullets:Int = 32
 		alienBullets = New FlxGroup(numAlienBullets)
@@ -64,10 +64,12 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 	Method Update:Void()
 		If (KeyHit(KEY_ESCAPE)) Error ""
 		
-		Local alien:Alien = Alien(aliens.Members[0])		
-		If (alien.x < 0 Or alien.x > 16) Then
-			aliens.CallAll(Alien.ReverseVelocity)	
-		End If
+		For Local alien:FlxBasic = Eachin aliens
+			If (Alien(alien).SwitchDirectionNeeded()) Then
+				aliens.CallAll(Alien.SwitchDirection)
+				Exit
+			End If
+		Next
 		
 		FlxG.Overlap(playerBullets, vsPlayerBullets, Self)
 		FlxG.Overlap(alienBullets, vsAlienBullets, Self)

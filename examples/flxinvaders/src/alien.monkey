@@ -6,13 +6,12 @@ Import assets
 
 Class Alien Extends FlxSprite
 	
-	Global ReverseVelocity:ReverseVelocityInvoker = New ReverseVelocityInvoker()
-	
-	Field originalX:Int
+	Global SwitchDirection:SwitchDirectionInvoker = New SwitchDirectionInvoker()	
 	
 Private
 	Const _DEFAULT_ANIMATION:String = "Default"
 
+	Field _originalX:Int
 	Field _shotClock:Float
 	Field _bullets:FlxGroup
 	
@@ -23,7 +22,7 @@ Public
 		LoadGraphic(Assets.IMAGE_ALIEN_SHIP, True)
 		Color = color
 		ResetShotClock()
-		originalX = x
+		_originalX= x
 		_bullets = bullets
 		
 		AddAnimation(_DEFAULT_ANIMATION, [0,1,0,2], 6 + FlxG.Random() * 4)
@@ -43,21 +42,25 @@ Public
 		End If
 	End Method
 	
+	Method SwitchDirectionNeeded:Bool()
+		Return Abs(x - _originalX) > 8
+	End Method
+	
 	Method ResetShotClock:Void()
 		_shotClock = 1 + FlxG.Random() * 20
 	End Method
 
 End Class
 
-Class ReverseVelocityInvoker Implements FlxBasicInvoker
+Class SwitchDirectionInvoker Implements FlxBasicInvoker
 
 	Method Invoke:Void(Object:FlxBasic)
 		Local alien:Alien = Alien(Object)
 		
 		If (alien.velocity.x > 0) Then
-			alien.x = alien.originalX + 8
+			alien.x = alien._originalX + 8
 		Else
-			alien.x = alien.originalX - 8
+			alien.x = alien._originalX - 8
 		End If
 		
 		alien.velocity.x = -alien.velocity.x		
