@@ -1,1 +1,1 @@
-class flixel {	public static int systemMillisecs() {		return (int) (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);	}}
+class flixel {	public static int systemMillisecs() {		return (int) (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);	}		public static void showMouse() {		gxtkApp.game.IsMouseVisible = true;	}		public static void hideMouse() {		gxtkApp.game.IsMouseVisible = false;	}}

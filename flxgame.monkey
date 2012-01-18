@@ -17,6 +17,8 @@ Import plugin.timermanager
 
 Class FlxGame extends App
 
+	Field useSystemCursor:Bool
+
 	Field _state:FlxState
 
 Private	
@@ -41,7 +43,10 @@ Public
 		_lostFocus = False		
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
-		FlxG.framerate = framerate		
+		FlxG.framerate = framerate
+		
+		Self.useSystemCursor = useSystemCursor
+		If (Not useSystemCursor) HideMouse()
 		
 		_state = Null
 		
