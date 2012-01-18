@@ -63,6 +63,12 @@ Class FlxG
 	
 	Global visualDebug:Bool
 	
+	#If TARGET = "android" Or TARGET = "ios"
+	Global mobile:Bool = True
+	#Else
+	Global mobile:Bool = False	
+	#End
+	
 	Global globalSeed:Int
 	
 	Global framerate:Int
