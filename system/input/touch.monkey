@@ -1,5 +1,0 @@
-Strict
-
-Import
-
-Class Touch 
