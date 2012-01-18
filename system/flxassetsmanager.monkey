@@ -6,6 +6,10 @@ Import flixel.flxtext
 Import flixel.system.flxfont
 
 Class FlxAssetsManager
+
+Private
+	Global _fonts:StringMap<FlxFont>[] = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
+	Global _images:StringMap<String>
 	
 Public	
 	Function Init:Void()
@@ -52,7 +56,3 @@ Public
 	End Function
 
 End Class
-
-Private
-Global _fonts:StringMap<FlxFont>[] = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
-Global _images:StringMap<String>

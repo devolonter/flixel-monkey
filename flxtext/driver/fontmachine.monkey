@@ -11,7 +11,10 @@ Import flixel.system.flxresourcesmanager
 
 Class FlxTextFontMachineDriver Extends FlxTextDriver
 
-Private	
+Private
+	Global _fontLoader:FlxFMDriverLoader = New FlxFMDriverLoader()
+	Global _fontsManager:FlxResourcesManager<BitmapFont> = New FlxResourcesManager<BitmapFont>()
+	
 	Field _font:BitmapFont
 	Field _fontHeight:Int
 
@@ -52,8 +55,6 @@ Public
 End Class
 
 Private
-Global _fontLoader:FlxFMDriverLoader = New FlxFMDriverLoader()
-
 Class FlxFMDriverLoader Extends FlxResourceLoader<BitmapFont>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT
@@ -64,5 +65,3 @@ Class FlxFMDriverLoader Extends FlxResourceLoader<BitmapFont>
 	End Method
 
 End Class
-
-Global _fontsManager:FlxResourcesManager<BitmapFont> = New FlxResourcesManager<BitmapFont>()

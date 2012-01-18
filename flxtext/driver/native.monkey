@@ -21,7 +21,11 @@ Import "../../data/flx_system_font_17.png"
 
 Class FlxTextNativeDriver Extends FlxTextDriver
 
-Private	
+Private
+	Global _fontLoader:FlxNFDriverLoader = New FlxNFDriverLoader()
+	Global _fontsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
+	Global _defaultFont:Image
+	
 	Field _font:Image
 	Field _fontHeight:Int
 
@@ -61,8 +65,6 @@ Public
 End Class
 
 Private
-Global _fontLoader:FlxNFDriverLoader = New FlxNFDriverLoader()
-
 Class FlxNFDriverLoader Extends FlxResourceLoader<Image>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT
@@ -73,6 +75,3 @@ Class FlxNFDriverLoader Extends FlxResourceLoader<Image>
 	End Method
 
 End Class
-
-Global _fontsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
-Global _defaultFont:Image

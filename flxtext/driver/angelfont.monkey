@@ -10,9 +10,12 @@ Import flixel.system.flxresourcesmanager
 
 Class FlxTextAngelFontDriver Extends FlxTextDriver	
 
-Private	
+Private
+	Global _fontLoader:FlxAFDriverLoader = New FlxAFDriverLoader()
+	Global _fontsManager:FlxResourcesManager<AngelFont> = New FlxResourcesManager<AngelFont>()
+	
 	Field _font:AngelFont
-	Field _fontHeight:Int
+	Field _fontHeight:Int	
 	
 Public	
 	Method GetTextWidth:Int(text:String)
@@ -49,8 +52,6 @@ Public
 End Class
 
 Private
-Global _fontLoader:FlxAFDriverLoader = New FlxAFDriverLoader()
-
 Class FlxAFDriverLoader Extends FlxResourceLoader<AngelFont>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT
@@ -62,8 +63,6 @@ Class FlxAFDriverLoader Extends FlxResourceLoader<AngelFont>
 
 End Class
 
-Global _fontsManager:FlxResourcesManager<AngelFont> = New FlxResourcesManager<AngelFont>()
-
 #Rem
 	AngelFont ported source	
 
@@ -71,7 +70,6 @@ Global _fontsManager:FlxResourcesManager<AngelFont> = New FlxResourcesManager<An
 	Mac/PC: http://slick.cokeandcode.com/demos/hiero.jnlp
 #End
 
-Private
 Class AngelFont
 
 Private	

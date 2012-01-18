@@ -1,32 +1,36 @@
 Strict
 
+Import mojo
+
+Import flixel.system.replay.keysrecord
+
 Class Input Abstract
 	
 Private
-	Field _map:InputState[]
-	Field _total:Int
+	Global _map:InputState[]
+	CONST _TOTAL:Int = 416
 	
 Public
 	Method New()
-		_total = GetTotal()
-		_map = _map.Resize(_total)
+		If (_map.Length() = 0) Then
+			_map = _map.Resize(_TOTAL)
 		
-		Local i:Int = 0
-			
-		While (i < _total)
-			_map = New InputState()
-			i += 1
-		Wend
+			Local i:Int = 0			
+			While (i < _TOTAL)
+				_map[i] = New InputState()
+				i += 1
+			Wend
+		End If
 	End Method
 	
-	Method Update:Void()
+	Method UpdateKeys:Void()
 		Local i:Int = 0
 		Local is:InputState
 		 	
-		While (i < _total)
+		While (i < _TOTAL)
 			is = _map[i]
 			
-			If (GetState(i)) Then
+			If (KeyDown(i)) Then
 				If (is.current > 0 And is.last = 2) Then
 					is.current = 1
 				Else
@@ -48,7 +52,7 @@ Public
 		Local i:Int = 0
 		Local is:InputState
 		 	
-		While (i < _total)
+		While (i < _TOTAL)
 			is = _map[i]			
 			is.current = 0
 			is.last = 0
@@ -72,7 +76,7 @@ Public
 		Local i:Int = 0
 		Local is:InputState
 		
-		While (i < _total)
+		While (i < _TOTAL)
 			is = _map[i]
 			
 			If (is.current = 0) Continue
@@ -104,32 +108,16 @@ Public
 	Method Any:Bool()
 		Local i:Int = 0
 		 	
-		While (i < _total)
-			If (_map[i].current > 0) Return True
+		While (i < _TOTAL)
+			If (_map[i].current > 0) Then
+				If (i <> MOUSE_LEFT And i <> MOUSE_RIGHT And i <> MOUSE_MIDDLE) Then
+					Return True
+				End If
+			End If
 			i += 1
 		Wend
 		
 		Return False
-	End Method
-	
-	Method Destroy:Void()
-		_total = 0
-	End Method
-
-	Method GetTotal:Int() Abstract
-	
-	Method GetState:Bool(index:Int) Abstract
-
-End Class
-
-Class InputRecord
-	
-	Field code:Int
-	Field value:Int
-	
-	Method New (code:Int, value:Int)
-		Self.code = code
-		Self.value = value
 	End Method
 
 End Class
