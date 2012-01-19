@@ -78,10 +78,10 @@ Public
 		Return _size
 	End Method
 	
-	Method Alignment:Void(aligment:Float) Property
-		If (_text = Null Or _text.ToString().Length = 0) Return
-	
+	Method Alignment:Void(aligment:Float) Property	
 		_alignment = aligment
+		
+		If (_text = Null Or _text.ToString().Length = 0) Return
 		
 		If (_text.ToString().Length > 0) Then
 			If (_countLines <= 1) Then

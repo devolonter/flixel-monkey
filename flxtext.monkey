@@ -77,6 +77,14 @@ Public
 		_ResetHelpers()
 	End Method
 	
+	Method Text:Void(text:FlxStringable) Property
+		_driver.Text = text
+		
+		Self.height = _driver.GetTextHeight()
+		frameHeight = Self.height
+		_ResetHelpers()
+	End Method
+	
 	Method Size:Void(size:Int) Property
 		_driver.Size = FlxAssetsManager.GetValidFontSize(_driver.Font, size, _driver.ID)
 		
