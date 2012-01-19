@@ -21,7 +21,7 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 	
 	Method Create:Void()
 		If (FlxG.scores.Length() = 0) Then
-			
+			FlxG.scores.Insert(0, New FlxString("WELCOME TO FLX INVADERS"))
 		End If
 		
 		Local numPlayerBullets:Int = 8
@@ -65,6 +65,8 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 		
 		vsAlienBullets = New FlxGroup()
 		vsAlienBullets.Add(player)
+		
+		Local t:FlxText = New FlxText(4, 4, FlxG.width - 8, FlxG.scores.Get(0))
 	End Method
 	
 	Method Update:Void()
