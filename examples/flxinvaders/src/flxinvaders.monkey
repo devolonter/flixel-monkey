@@ -8,7 +8,7 @@ Import playership
 Import alien
 Import assets
 
-#MOJO_IMAGE_FILTERING_ENABLED="False"
+#MOJO_IMAGE_FILTERING_ENABLED="false"
 
 Class FlxInvaders Extends FlxGame
 	
@@ -26,11 +26,12 @@ Class FlxInvaders Extends FlxGame
 		FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP, "alien.png")
 		
 		#If TARGET = "html5"
-			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + (FlxG.BLUE), "alien" + (FlxG.BLUE) + ".png")
-			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + (FlxG.BLUE | FlxG.GREEN), "alien" + (FlxG.BLUE | FlxG.GREEN) + ".png")
-			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + (FlxG.GREEN), "alien" + (FlxG.GREEN) + ".png")
-			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + (FlxG.GREEN | FlxG.RED), "alien" + (FlxG.GREEN | FlxG.RED) + ".png")
-			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + (FlxG.RED), "alien" + (FlxG.RED) + ".png")
+			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + Abs(FlxG.BLUE), "alien" + Abs(FlxG.BLUE) + ".png")
+			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + Abs(FlxG.BLUE | FlxG.GREEN), "alien" + Abs(FlxG.BLUE | FlxG.GREEN) + ".png")
+			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + Abs(FlxG.GREEN), "alien" + Abs(FlxG.GREEN) + ".png")
+			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + Abs(FlxG.GREEN | FlxG.RED), "alien" + Abs(FlxG.GREEN | FlxG.RED) + ".png")
+			FlxAssetsManager.AddImage(Assets.IMAGE_ALIEN_SHIP + Abs(FlxG.RED), "alien" + Abs(FlxG.RED) + ".png")
+		#end
 	End Method
 
 End Class

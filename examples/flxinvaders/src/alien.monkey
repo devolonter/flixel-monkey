@@ -23,7 +23,7 @@ Public
 			LoadGraphic(Assets.IMAGE_ALIEN_SHIP, True)
 			Color = color
 		#Else
-			LoadGraphic(Assets.IMAGE_ALIEN_SHIP + color, True)
+			LoadGraphic(Assets.IMAGE_ALIEN_SHIP + Abs(color), True)
 		#End
 		
 		ResetShotClock()
