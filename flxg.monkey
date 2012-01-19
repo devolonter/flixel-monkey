@@ -72,6 +72,9 @@ Class FlxG
 	
 	Global globalSeed:Int
 	
+	Global scores:Stack<String>	
+	Global score:Int	
+	
 	Global keys:Keyboard
 	
 	Global framerate:Int
@@ -128,6 +131,14 @@ Public
 		GetRandom is not currently supported in Monkey. Use FlxArray.GetSafeRandom method
 	End Function
 	#End
+	
+	Function ResetState:Void()
+		_game._requestedState = FlxState(_game._state.GetClass().CreateInstance())
+	End Function
+	
+	Function ResetGame:Void()
+		_game._requestedReset = True
+	End Function
 	
 	Function ResetInput:Void()
 		keys.Reset()
@@ -328,12 +339,17 @@ Public
 		AddPlugin(New DebugPathDisplay())
 		AddPlugin(New TimerManager())
 		
-		FlxG.keys = New Keyboard()		
+		FlxG.keys = New Keyboard()
+		
+		FlxG.scores = New Stack<String>()		
 	End Function
 	
 	Function Reset:Void()
 		FlxG.ClearBitmapCache()
-		FlxG.ResetInput()		
+		FlxG.ResetInput()
+		FlxG.scores.Clear()
+		FlxG.scores.Push("")
+		FlxG.score = 0	
 		FlxG.timeScale = 1
 		FlxG.elapsed = 0 
 		FlxG.globalSeed = Rnd(1, 10000000)

@@ -20,17 +20,17 @@ Class FlxGame extends App
 	Field useSystemCursor:Bool
 
 	Field _state:FlxState
+	
+	Field _requestedState:FlxState
+	
+	Field _requestedReset:Bool
 
 Private	
 	Field _iState:FlxClass
 	
 	Field _created:Bool
 
-	Field _lostFocus:Bool
-	
-	Field _requestedState:FlxState
-	
-	Field _requestedReset:Bool
+	Field _lostFocus:Bool	
 	
 	Field _replaying:Bool
 	
