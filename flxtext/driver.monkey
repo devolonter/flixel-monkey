@@ -1,14 +1,13 @@
 Strict
 
 Import flixel.flxg
-Import flixel.system.flxstring
 
 Class FlxTextDriver
 	
 'private
 	Field _width:Int
 	Field _offsetX:Float
-	Field _text:FlxStringable
+	Field _text:String
 	Field _textLines:Stack<FlxTextDriverTextLine>
 	Field _countLines:Int
 	
@@ -21,30 +20,18 @@ Public
 		_textLines = New Stack<FlxTextDriverTextLine>();
 	End Method
 	
-	Method Update:Void()
-		If (_text.StringIsChanged()) Then
-			If (_width <> 0) _ParseText()
-		End If
-	End Method
-
 	Method Width:Void(width:Int) Property
 		_width = width
-		If (_text <> Null And _text.ToString().Length > 0) _ParseText()
+		If (_text.Length > 0) _ParseText()
 	End Method
 	
 	Method Text:Void(text:String) Property
-		If (_text = Null) _text = New FlxString()
-		_text.FromString(text)
+		_text = text
 		If (_width <> 0) _ParseText()
 	End Method
 	
-	Method Text:Void(text:FlxStringable) Property		
-		_text = text
-		If (_width <> 0) _ParseText()
-	End Method	
-	
 	Method Text:String() Property
-		Return _text.ToString()
+		Return _text
 	End Method
 	
 	Method SetFormat:Void(fontFamily:String, size:Int, alignment:Float)
@@ -53,14 +40,14 @@ Public
 		_size = size
 		Reset()	
 			
-		If (_text <> Null And _text.ToString().Length > 0) _ParseText()
+		If (_text.Length() > 0) _ParseText()
 	End Method
 	
 	Method Font:Void(fontFamily:String) Property
 		_fontFamily = fontFamily	
 		Reset()
 		
-		If (_text <> Null And _text.ToString().Length > 0) _ParseText()
+		If (_text <> Null And _text.Length > 0) _ParseText()
 	End Method
 	
 	Method Font:String() Property
@@ -71,7 +58,7 @@ Public
 		_size = size
 		Reset()
 		
-		If (_text <> Null And _text.ToString().Length > 0) _ParseText()
+		If (_text <> Null And _text.Length > 0) _ParseText()
 	End Method	
 	
 	Method Size:Int() Property
@@ -81,11 +68,11 @@ Public
 	Method Alignment:Void(aligment:Float) Property	
 		_alignment = aligment
 		
-		If (_text = Null Or _text.ToString().Length = 0) Return
+		If (_text.Length() = 0) Return
 		
-		If (_text.ToString().Length > 0) Then
+		If (_text.Length() > 0) Then
 			If (_countLines <= 1) Then
-				_offsetX = (_width - GetTextWidth(_text.ToString())) * _alignment
+				_offsetX = (_width - GetTextWidth(_text)) * _alignment
 			Else		
 				For Local line:Int = 0 Until _countLines
 					_textLines.Get(line).offsetX = (_width - GetTextWidth(_textLines.Get(line).text)) * _alignment
@@ -124,8 +111,8 @@ Private
 		_countLines = 1
 		
 		Local prevOffset:Int = 0
-		Local offsetN:Int = _text.ToString().Find("~n", 0)
-		Local offsetR:Int = _text.ToString().Find("~r", 0)
+		Local offsetN:Int = _text.Find("~n", 0)
+		Local offsetR:Int = _text.Find("~r", 0)
 		Local offset:Int = 0
 		
 		If (offsetN >= 0 And offsetR >= 0) Then
@@ -136,12 +123,12 @@ Private
 		
 		If (offset >= 0) Then
 			While (offset >= 0)			
-				_BuildLines(_text.ToString()[prevOffset..offset], True)
+				_BuildLines(_text[prevOffset..offset], True)
 				
 				prevOffset = offset + 1
 				
-				offsetN = _text.ToString().Find("~n", prevOffset)
-				offsetR = _text.ToString().Find("~r", prevOffset)
+				offsetN = _text.Find("~n", prevOffset)
+				offsetR = _text.Find("~r", prevOffset)
 								
 				If (offsetN >= 0 And offsetR >= 0) Then
 					offset = Min(offsetN, offsetR)
@@ -150,9 +137,9 @@ Private
 				End if
 			Wend
 			
-			_BuildLines(_text.ToString()[prevOffset..])
+			_BuildLines(_text[prevOffset..])
 		Else			
-			_BuildLines(_text.ToString())	
+			_BuildLines(_text)	
 		End If
 		
 		Alignment = _alignment 'recalc alignment
