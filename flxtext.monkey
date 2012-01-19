@@ -31,7 +31,7 @@ Private
 	Field _shadow:FlxColor
 
 Public
-	Method New(x:Float, y:Float, width:Int = 0, text:FlxStringable = Null, driver:FlxClass = Null)
+	Method New(x:Float, y:Float, width:Int, text:FlxStringable, driver:FlxClass = Null)
 		Super.New(x, y)		
 		_Construct(width, driver)
 		Text = text	
