@@ -348,7 +348,6 @@ Public
 		FlxG.ClearBitmapCache()
 		FlxG.ResetInput()
 		FlxG.scores.Clear()
-		FlxG.scores.Push("")
 		FlxG.score = 0	
 		FlxG.timeScale = 1
 		FlxG.elapsed = 0 
