@@ -35,3 +35,13 @@ Interface FlxFunction
 	Method Invoke:Void()
 
 End Interface
+
+Interface FlxStringable
+	
+	Method ToString:String()
+
+	Method FromString:FlxStringable(value:String)
+	
+	Method IsChanged:Bool()
+	
+End Interface

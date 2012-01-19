@@ -78,7 +78,7 @@ Public
 	
 	Method Draw:Void(x:Float, y:Float)
 		If (_countLines <= 1) Then
-			_font.DrawText(_text, x + _offsetX, y)
+			_font.DrawText(_text.ToString(), x + _offsetX, y)
 		Else			
 			For Local line:Int = 0 Until _countLines
 				_font.DrawText(_textLines.Get(line).text, x + _textLines.Get(line).offsetX, y + line * _fontHeight)

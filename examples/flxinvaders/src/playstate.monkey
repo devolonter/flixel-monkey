@@ -9,6 +9,8 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 
 	Global _CLASS:FlxClass = New PlayStateClass()
 	
+	Field caption:FlxText
+	
 	Field player:PlayerShip
 	Field playerBullets:FlxGroup
 	Field aliens:FlxGroup
@@ -17,7 +19,11 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 	Field vsPlayerBullets:FlxGroup
 	Field vsAlienBullets:FlxGroup
 	
-	Method Create:Void()		
+	Method Create:Void()
+		If (FlxG.scores.Length() = 0) Then
+			
+		End If
+		
 		Local numPlayerBullets:Int = 8
 		playerBullets = New FlxGroup(numPlayerBullets)
 		Local sprite:FlxSprite
@@ -80,6 +86,10 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 	Method OnOverlap:Void(object1:FlxObject,object2:FlxObject)
 		object1.Kill()
 		object2.Kill()
+	End Method
+	
+	Method GetClass:FlxClass()
+		Return _CLASS
 	End Method
 
 End Class

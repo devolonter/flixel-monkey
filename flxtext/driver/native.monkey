@@ -45,7 +45,7 @@ Public
 		SetFont(_font)
 		
 		If (_countLines <= 1) Then
-			DrawText(_text, x + _offsetX, y)
+			DrawText(_text.ToString(), x + _offsetX, y)
 		Else			
 			For Local line:Int = 0 Until _countLines
 				DrawText(_textLines.Get(line).text, x + _textLines.Get(line).offsetX, y + line * _fontHeight)
