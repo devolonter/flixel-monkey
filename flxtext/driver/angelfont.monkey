@@ -97,7 +97,12 @@ Public
 		_fontLoader.fontSize = _size
 		
 		_font = _fontsManager.GetResource(_fontFamily + _size, _fontLoader)	
-		_fontHeight = _font.TextHeight(_text)*1.5
+		
+		If (_text <> Null) Then
+			_fontHeight = _font.TextHeight(_text.ToString()) * 1.5
+		Else
+			_fontHeight = _font.TextHeight(" ") * 1.5
+		End If
 	End Method
 	
 	Method ID:Int() Property
