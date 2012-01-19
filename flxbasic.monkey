@@ -30,13 +30,13 @@ summary:This is a useful "generic" Flixel object.
 Both [a flxobject.monkey.html]FlxObject[/a] and [a flxgroup.monkey.html]FlxGroup[/a] extend this class, 
 as do the plugins.  Has no size, position or graphical data.
 #End
-Class FlxBasic
+Class FlxBasic Implements FlxStringable
 
 	Global _ACTIVECOUNT:Int
 	
 	Global _VISIBLECOUNT:Int	
 	
-	Global _CLASS:FlxClass = new FlxBasicClass()
+	Global _CLASS:FlxClass = New FlxBasicClass()
 	
 	Global EXISTS_COMPARATOR:FlxBasicComparator = new FlxBasicExistsComparator()
 	
@@ -168,18 +168,26 @@ Class FlxBasic
 	Method ToString:String()
 		Return "FlxBasic"
 	End Method
+	
+	Method FromString:FlxStringable(value:String)
+		Return Null
+	End Method
+	
+	Method StringIsChanged:Bool()
+		Return False
+	End Method
 
 End Class
 
 Private	
 Class FlxBasicClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New FlxBasic()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
-		Return True
+	Method InstanceOf:Bool(object:Object)
+		Return (FlxBasic(object) <> Null)
 	End Method
 	
 End Class

@@ -177,11 +177,11 @@ End Class
 Private	
 Class FlxTextClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New FlxText()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)			
+	Method InstanceOf:Bool(object:Object)			
 		Return (FlxText(object) <> Null)
 	End Method	
 	

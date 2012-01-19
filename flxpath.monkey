@@ -11,6 +11,8 @@ Import flixel.plugin.debugpathdisplay
 
 Class FlxPath
 
+	Global _CLASS:FlxClass = new FlxObjectClass()
+
 	Field nodes:Stack<FlxPoint>
 	
 	Field debugColor:Int

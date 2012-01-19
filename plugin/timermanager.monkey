@@ -65,11 +65,11 @@ End Class
 Private
 Class TimerManagerClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New TimerManager()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (TimerManager(object) <> Null)
 	End Method	
 	

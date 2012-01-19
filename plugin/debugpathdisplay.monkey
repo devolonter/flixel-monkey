@@ -66,11 +66,11 @@ End Class
 Private
 Class DebugPathDisplayClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New DebugPathDisplay()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (DebugPathDisplay(object) <> Null)
 	End Method	
 	

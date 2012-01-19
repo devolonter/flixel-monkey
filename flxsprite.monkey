@@ -574,11 +574,11 @@ Global _graphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
 
 Class FlxSpriteClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New FlxSprite()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)			
+	Method InstanceOf:Bool(object:Object)			
 		Return (FlxSprite(object) <> Null)
 	End Method	
 	

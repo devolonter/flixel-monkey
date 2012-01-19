@@ -13,6 +13,8 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
+	Global _CLASS:FlxClass = New FlxGroupClass()
+
 	#Rem
 	summary:See detail.
 	Use with [a #Sort]Sort()[/a] to sort in ascending order.
@@ -211,15 +213,15 @@ Public
 	
 	Params:
 	[list]
-	[*]creator:FlxClass - the type creator implements FlxClass you want to recycle (e.g. FlxSpriteClass, EvilRobotClass, etc). Do NOT "new" the class in the parameter!	
+	[*]objectClass:FlxClass - the type objectClass implements FlxClass you want to recycle (e.g. FlxSpriteClass, EvilRobotClass, etc). Do NOT "new" the class in the parameter!	
 	[/list]
-	Return a reference to the object that was created. Don't forget to cast it back to the creator you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassClass))).
+	Return a reference to the object that was created. Don't forget to cast it back to the objectClass you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassClass))).
 	#End
-	Method Recycle:FlxBasic(creator:FlxClass = null)
+	Method Recycle:FlxBasic(objectClass:FlxClass = null)
 		If (_maxSize > 0) Then
 			If (_length < _maxSize) Then
-				If (creator = Null) Return Null				
-				Return Add(creator.CreateInstance())
+				If (objectClass = Null) Return Null				
+				Return Add(FlxBasic(objectClass.CreateInstance()))
 			Else				
 				Local basic:FlxBasic = _members[_marker]
 				_marker+=1
@@ -227,10 +229,10 @@ Public
 				Return basic		
 			End If
 		Else						
-			Local basic:FlxBasic = GetFirstAvailable(creator)
+			Local basic:FlxBasic = GetFirstAvailable(objectClass)
 			If (basic <> Null) Return basic
-			If (creator = Null) Return Null
-			Return Add(creator.CreateInstance())				
+			If (objectClass = Null) Return Null
+			Return Add(FlxBasic(objectClass.CreateInstance()))				
 		End If
 	End Method
 	
@@ -333,14 +335,14 @@ Public
 		Wend
 	End Method
 	
-	Method GetFirstAvailable:FlxBasic(creator:FlxClass = null)
+	Method GetFirstAvailable:FlxBasic(objectClass:FlxClass = null)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null And Not basic.exists And 
-					(creator = Null Or creator.InstanceOf(basic))) Return basic
+					(objectClass = Null Or objectClass.InstanceOf(basic))) Return basic
 			i+=1
 		Wend
 
@@ -543,6 +545,19 @@ Private
 	Field _index:Int
 
 End
+
+Private
+Class FlxGroupClass Implements FlxClass
+
+	Method CreateInstance:Object()
+		Return New FlxGroup()
+	End Method
+	
+	Method InstanceOf:Bool(object:Object)
+		Return FlxGroup(object) <> Null
+	End Method
+	
+End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.

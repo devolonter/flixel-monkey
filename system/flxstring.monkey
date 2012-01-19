@@ -27,7 +27,7 @@ Public
 		Return Self
 	End Method
 	
-	Method IsChanged:Bool()
+	Method StringIsChanged:Bool()
 		If (_isChanged) Then
 			_isChanged = False		
 			Return True

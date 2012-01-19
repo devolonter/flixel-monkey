@@ -24,6 +24,7 @@ Import system.flxfont
 Import system.flxlist
 Import system.flxquadtree
 Import system.flxresourcesmanager
+Import system.flxstring
 
 Import plugin.debugpathdisplay
 Import plugin.timermanager

@@ -22,7 +22,7 @@ Public
 	End Method
 	
 	Method Update:Void()
-		If (_text.IsChanged()) Then
+		If (_text.StringIsChanged()) Then
 			If (_width <> 0) _ParseText()
 		End If
 	End Method

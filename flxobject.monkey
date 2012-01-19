@@ -881,11 +881,11 @@ Global _separateYCallback:FlxObjectSeparateY = New FlxObjectSeparateY()
 
 Class FlxObjectClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New FlxObject()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)			
+	Method InstanceOf:Bool(object:Object)			
 		Return (FlxObject(object) <> Null)
 	End Method	
 	

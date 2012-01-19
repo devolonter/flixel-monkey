@@ -11,6 +11,8 @@ Import system.flxcolor
 
 Class FlxCamera Extends FlxBasic
 
+	Global _CLASS:FlxClass = New FlxCameraClass()
+
 	Const STYLE_LOCKON:Int = 0
 	
 	Const STYLE_PLATFORMER:Int = 1
@@ -511,12 +513,25 @@ Public
 		End If
 	End Method
 	
-	Method ToString:String()
-		Return "FlxCamera"	
-	End Method
-	
 	Method _GetColorObject:FlxColor()
 		Return Self._color
 	End Method
+	
+	Method ToString:String()
+		Return "FlxCamera"	
+	End Method	
 
+End Class
+
+Private
+Class FlxCameraClass Implements FlxClass
+
+	Method CreateInstance:Object()
+		Return New FlxCamera()
+	End Method
+	
+	Method InstanceOf:Bool(object:Object)
+		Return FlxCamera(object) <> Null
+	End Method
+	
 End Class

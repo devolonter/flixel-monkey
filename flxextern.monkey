@@ -24,9 +24,9 @@ Public
 
 Interface FlxClass
 	
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 
 End Interface
 
@@ -42,6 +42,6 @@ Interface FlxStringable
 
 	Method FromString:FlxStringable(value:String)
 	
-	Method IsChanged:Bool()
+	Method StringIsChanged:Bool()
 	
 End Interface
