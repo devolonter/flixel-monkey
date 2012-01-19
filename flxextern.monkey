@@ -39,8 +39,14 @@ End Interface
 Interface FlxStringable
 	
 	Method ToString:String()
+	
+End Interface
 
-	Method FromString:FlxStringable(value:String)
+Interface FlxExStringable
+
+	Method ToString:String()
+	
+	Method FromString:Object(value:String)
 	
 	Method StringIsChanged:Bool()
 	

@@ -109,11 +109,11 @@ End Class
 Private
 Class FlxAFDriverClass Implements FlxClass
 	
-	Method CreateInstance:FlxTextDriver()
+	Method CreateInstance:Object()
 		Return New FlxTextAngelFontDriver()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxTextDriver)
+	Method InstanceOf:Bool(object:Object)
 		Return FlxTextAngelFontDriver(object) <> Null
 	End Method
 

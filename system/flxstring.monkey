@@ -2,7 +2,7 @@ Strict
 
 Import flixel.flxextern
 
-Class FlxString Implements FlxStringable
+Class FlxString Implements FlxExStringable
 
 Private
 	Field _value:String
@@ -21,7 +21,7 @@ Public
 		Return _value
 	End Method
 	
-	Method FromString:FlxStringable(value:String)
+	Method FromString:Object(value:String)
 		_value = value
 		_isChanged = True
 		Return Self

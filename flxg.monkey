@@ -72,7 +72,7 @@ Class FlxG
 	
 	Global globalSeed:Int
 	
-	Global scores:Stack<FlxStringable>	
+	Global scores:Stack<FlxExStringable>	
 	Global score:Int	
 	
 	Global keys:Keyboard
@@ -341,7 +341,7 @@ Public
 		
 		FlxG.keys = New Keyboard()
 		
-		FlxG.scores = New Stack<FlxStringable>()		
+		FlxG.scores = New Stack<FlxExStringable>()		
 	End Function
 	
 	Function Reset:Void()

@@ -74,11 +74,11 @@ End Class
 Private
 Class FlxNFDriverClass Implements FlxClass
 	
-	Method CreateInstance:FlxTextDriver()
+	Method CreateInstance:Object()
 		Return New FlxTextNativeDriver()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxTextDriver)
+	Method InstanceOf:Bool(object:Object)
 		Return FlxTextNativeDriver(object) <> Null
 	End Method
 

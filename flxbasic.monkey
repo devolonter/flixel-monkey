@@ -170,11 +170,7 @@ Class FlxBasic Implements FlxStringable
 	End Method
 	
 	Method FromString:FlxStringable(value:String)
-		Return Null
-	End Method
-	
-	Method StringIsChanged:Bool()
-		Return False
+		Return New FlxBasic()
 	End Method
 
 End Class

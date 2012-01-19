@@ -8,7 +8,7 @@ Class FlxTextDriver
 'private
 	Field _width:Int
 	Field _offsetX:Float
-	Field _text:FlxStringable
+	Field _text:FlxExStringable
 	Field _textLines:Stack<FlxTextDriverTextLine>
 	Field _countLines:Int
 	
@@ -38,7 +38,7 @@ Public
 		If (_width <> 0) _ParseText()
 	End Method
 	
-	Method Text:Void(text:FlxStringable) Property		
+	Method Text:Void(text:FlxExStringable) Property		
 		_text = text
 		If (_width <> 0) _ParseText()
 	End Method	
