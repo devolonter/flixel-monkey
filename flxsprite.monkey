@@ -37,6 +37,8 @@ Class FlxSprite Extends FlxObject
 	
 	Field _color:FlxColor
 	
+	Field _mixedColor:FlxColor	
+	
 Private
 	Field _animations:StringMap<FlxAnim>
 	
@@ -64,9 +66,7 @@ Private
 	
 	Field _matrix:Float[6]
 	
-	Field _surfaceColor:FlxColor
-	
-	Field _mixedColor:FlxColor
+	Field _surfaceColor:FlxColor	
 	
 	Field _halfWidth:Float
 	
@@ -323,8 +323,8 @@ Public
 				End If				
 			End If
 		
-			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then			
-				DrawRect(_point.x, _point.y, frameWidth, frameHeight)
+			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
+				_DrawSurface(_point.x, _point.y)
 			Else
 				PushMatrix()
 					'Translate
@@ -346,8 +346,8 @@ Public
 						_matrix[3] = cos * _matrix[3]
 					End If			
 									
-					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])						
-					DrawRect(-origin.x, -origin.y, frameWidth, frameHeight)
+					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])					
+					_DrawSurface(-origin.x, -origin.y)
 				PopMatrix()
 			End If		
 		End If
@@ -427,8 +427,15 @@ Public
 	
 	Method Pixels:Void(pixels:Image) Property
 		_pixels = pixels
-		width = pixels.Width()
-		height = pixels.Height()
+		
+		If (_pixels <> Null) Then
+			width = pixels.Width()
+			height = pixels.Height()	
+		Else
+			width = 0
+			height = 0		
+		End If
+		
 		frameWidth = width
 		frameHeight = height
 		_ResetHelpers()
@@ -489,11 +496,10 @@ Public
 		Return _point.x + radius > 0 And _point.x - radius < camera.Width And _point.y + radius > 0 And _point.y - radius < camera.Height
 	End Method
 	
-	Method ToString:String()
-		Return "FlxSprite"	
+	Method _DrawSurface:Void(x:Float, y:Float)
+		DrawRect(x, y, frameWidth, frameHeight)
 	End Method
-
-Private
+	
 	Method _ResetHelpers:Void()
 		_halfWidth = frameWidth * .5
 		_halfHeight = frameHeight * .5
@@ -509,6 +515,11 @@ Private
 		_mixedColor.SetARGB(FlxG.WHITE)
 	End Method
 	
+	Method ToString:String()
+		Return "FlxSprite"	
+	End Method
+
+Private	
 	Method _UpdateAnimation:Void()
 		If (_bakedRotation > 0) Then
 			Local oldIndex:Int = _curIndex

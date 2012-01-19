@@ -36,6 +36,10 @@ Public
 		Return text.Length()*_font.Width()
 	End Method
 	
+	Method GetTextHeight:Int()
+		Return _countLines * _fontHeight
+	End Method
+	
 	Method Draw:Void(x:Float, y:Float)
 		_defaultFont = GetFont()
 		SetFont(_font)

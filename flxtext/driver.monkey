@@ -94,6 +94,8 @@ Public
 	
 	Method GetTextWidth:Int(text:String) Abstract
 	
+	Method GetTextHeight:Int() Abstract
+	
 	Method Reset:Void() Abstract
 
 	Method Draw:Void(x:Float, y:Float) Abstract

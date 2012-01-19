@@ -2,6 +2,7 @@ Strict
 
 Import flxextern
 Import flxsprite
+Import flxcamera
 Import flxtext.driver
 Import flxtext.driver.native
 Import flxg
@@ -27,11 +28,13 @@ Class FlxText Extends FlxSprite
 Private
 	Global _defaultDriver:FlxTextDriverClass = NATIVE_TEXT_DRIVER
 	Field _driver:FlxTextDriver
-	Field _shadow:FlxColor	
+	Field _shadow:FlxColor
 
 Public
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:FlxTextDriverClass = Null)
 		Super.New(x, y)
+		
+		Pixels = Null
 		
 		_color = New FlxColor()
 		_shadow = New FlxColor(0)	
@@ -39,15 +42,22 @@ Public
 		If (driver = Null) driver =	_defaultDriver
 		_driver = driver.CreateInstance()
 		
+		Self.width = width
+		frameWidth = Self.width
+		
 		_driver.Width = width
 		SetFormat(SYSTEM_FONT)
 		Text = text		
-	End Method	
+	End Method
 	
 	Method SetFormat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
 		_driver.SetFormat(font, FlxAssetsManager.GetFont(font, _driver.ID).GetValidSize(size), alignment)
 		Self.Color = color
-		Shadow = shadowColor
+		Shadow = shadowColor		
+		
+		Self.height = _driver.GetTextHeight()
+		frameHeight = Self.height
+		_ResetHelpers()
 	End Method
 	
 	Method Text:String() Property
@@ -56,10 +66,18 @@ Public
 	
 	Method Text:Void(text:String) Property
 		_driver.Text = text
+		
+		Self.height = _driver.GetTextHeight()
+		frameHeight = Self.height
+		_ResetHelpers()
 	End Method
 	
 	Method Size:Void(size:Int) Property
 		_driver.Size = FlxAssetsManager.GetValidFontSize(_driver.Font, size, _driver.ID)
+		
+		Self.height = _driver.GetTextHeight()
+		frameHeight = Self.height
+		_ResetHelpers()
 	End Method
 	
 	Method Size:Int() Property
@@ -88,6 +106,10 @@ Public
 	
 	Method Alignment:Void(alignment:Float) Property
 		_driver.Alignment = alignment
+		
+		Self.height = _driver.GetTextHeight()
+		frameHeight = Self.height
+		_ResetHelpers()
 	End Method
 	
 	Method Shadow:Int() Property
@@ -98,22 +120,41 @@ Public
 		_shadow.SetARGB(color)
 	End Method
 	
-	Method Draw:Void()
+	Method _DrawSurface:Void(x:Float, y:Float)	
 		If (_shadow.argb <> 0) Then
-			If (_shadow.argb <> FlxG._lastDrawingColor) Then
-				SetColor(_shadow.r, _shadow.g, _shadow.b)
-				SetAlpha(_shadow.a)
-				FlxG._lastDrawingColor = _shadow.argb
-			End if
+			Local oldColor:Int = FlxG._lastDrawingColor
+			Local oldAlpha:Int = FlxG._lastDrawingAlpha
+			Local camera:FlxCamera = FlxG.camera
+		
+			If (camera.Color <> FlxG.WHITE) Then
+				_mixedColor.MixRGB(_shadow, camera._GetColorObject())
+				
+				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
+				End If				
+			Else
+				If (FlxG._lastDrawingColor <> _shadow.argb) Then
+					SetColor(_shadow.r, _shadow.g, _shadow.b)
+				End If		
+			End If
 			
+			If (camera.Alpha < 1) Then
+				Local _mixedAlpha:Float = camera.Alpha * _shadow.a
+				
+				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+					SetAlpha(_mixedAlpha)					
+				End If
+			Else
+				If (FlxG._lastDrawingAlpha <> _shadow.a) Then
+					SetAlpha(_shadow.a)					
+				End If
+			End If					
 			_driver.Draw(x+1, y+1)
-		End If
-	
-		If (_color.argb <> FlxG._lastDrawingColor) Then
-			SetColor(_color.r, _color.g, _color.b)
-			SetAlpha(_color.a)
-			FlxG._lastDrawingColor = _color.argb
-		End If
+			
+			_mixedColor.SetRGB(oldColor)
+			SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
+			SetAlpha(oldAlpha)
+		End If		
 		
 		_driver.Draw(x, y)
 	End Method

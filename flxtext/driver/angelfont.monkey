@@ -73,6 +73,10 @@ Public
 		Return _font.TextWidth(text)
 	End Method
 	
+	Method GetTextHeight:Int()
+		Return _countLines * _fontHeight
+	End Method
+	
 	Method Draw:Void(x:Float, y:Float)
 		If (_countLines <= 1) Then
 			_font.DrawText(_text, x + _offsetX, y)
