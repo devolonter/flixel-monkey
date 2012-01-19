@@ -3,6 +3,7 @@ Strict
 Import mojo
 Import fontmachine.fontmachine
 
+Import flixel.flxextern
 Import flixel.flxtext
 Import flixel.flxtext.driver
 
@@ -44,7 +45,7 @@ Import "../../data/flx_system_machine_font_23.txt"
 Import "../../data/flx_system_machine_font_24_P_1.png"
 Import "../../data/flx_system_machine_font_24.txt"
 
-Global FONTMACHINE_TEXT_DRIVER:FlxTextDriverClass = New FlxFMDriverClass()
+Global FONTMACHINE_TEXT_DRIVER:FlxClass = New FlxFMDriverClass()
 
 Class FlxTextFontMachineDriver Extends FlxTextDriver
 
@@ -108,7 +109,7 @@ Public
 End Class
 
 Private
-Class FlxFMDriverClass Implements FlxTextDriverClass
+Class FlxFMDriverClass Implements FlxClass
 	
 	Method CreateInstance:FlxTextDriver()
 		Return New FlxTextFontMachineDriver()

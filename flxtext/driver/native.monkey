@@ -2,6 +2,7 @@ Strict
 
 Import mojo
 
+Import flixel.flxextern
 Import flixel.flxtext
 Import flixel.flxtext.driver
 
@@ -19,7 +20,7 @@ Import "../../data/flx_system_font_15.png"
 Import "../../data/flx_system_font_16.png"
 Import "../../data/flx_system_font_17.png"
 
-Global NATIVE_TEXT_DRIVER:FlxTextDriverClass = New FlxNFDriverClass()
+Global NATIVE_TEXT_DRIVER:FlxClass = New FlxNFDriverClass()
 
 Class FlxTextNativeDriver Extends FlxTextDriver
 
@@ -71,7 +72,7 @@ Public
 End Class
 
 Private
-Class FlxNFDriverClass Implements FlxTextDriverClass
+Class FlxNFDriverClass Implements FlxClass
 	
 	Method CreateInstance:FlxTextDriver()
 		Return New FlxTextNativeDriver()

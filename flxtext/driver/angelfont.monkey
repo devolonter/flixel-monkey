@@ -45,7 +45,7 @@ Import "../../data/flx_system_angel_font_23.txt"
 Import "../../data/flx_system_angel_font_24.png"
 Import "../../data/flx_system_angel_font_24.txt"
 
-Global ANGELFONT_TEXT_DRIVER:FlxTextDriverClass = New FlxAFDriverClass()
+Global ANGELFONT_TEXT_DRIVER:FlxClass = New FlxAFDriverClass()
 
 Class FlxTextAngelFontDriver Extends FlxTextDriver	
 
@@ -107,7 +107,7 @@ Public
 End Class
 
 Private
-Class FlxAFDriverClass Implements FlxTextDriverClass
+Class FlxAFDriverClass Implements FlxClass
 	
 	Method CreateInstance:FlxTextDriver()
 		Return New FlxTextAngelFontDriver()

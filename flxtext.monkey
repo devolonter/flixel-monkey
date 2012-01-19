@@ -26,12 +26,12 @@ Class FlxText Extends FlxSprite
 	Const SYSTEM_FONT:String = "system"
 	
 Private
-	Global _defaultDriver:FlxTextDriverClass = NATIVE_TEXT_DRIVER
+	Global _defaultDriver:FlxClass = NATIVE_TEXT_DRIVER
 	Field _driver:FlxTextDriver
 	Field _shadow:FlxColor
 
 Public
-	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:FlxTextDriverClass = Null)
+	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:FlxClass = Null)
 		Super.New(x, y)
 		
 		Pixels = Null
@@ -40,7 +40,7 @@ Public
 		_shadow = New FlxColor(0)	
 		
 		If (driver = Null) driver =	_defaultDriver
-		_driver = driver.CreateInstance()
+		_driver = FlxTextDriver(driver.CreateInstance())
 		
 		Self.width = width
 		frameWidth = Self.width
@@ -164,7 +164,7 @@ Public
 		_driver.Draw(x, y)
 	End Method
 	
-	Function SetDefaultDriver:Void(driver:FlxTextDriverClass)
+	Function SetDefaultDriver:Void(driver:FlxClass)
 		_defaultDriver = driver
 	End Function
 	

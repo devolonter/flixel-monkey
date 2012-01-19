@@ -255,14 +255,6 @@ Private
 	
 End Class
 
-Interface FlxTextDriverClass
-	
-	Method CreateInstance:FlxTextDriver()
-	
-	Method InstanceOf:Bool(object:FlxTextDriver)
-
-End Interface
-
 Private
 Class FlxTextDriverTextLine
 
