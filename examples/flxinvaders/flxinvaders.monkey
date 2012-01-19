@@ -1,6 +1,6 @@
 Import flixel
 Import src.flxinvaders
 
-Function Main()
+Function Main()		
 	New FlxInvaders()
 End Function

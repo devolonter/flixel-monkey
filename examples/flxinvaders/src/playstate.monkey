@@ -66,11 +66,15 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 		vsAlienBullets = New FlxGroup()
 		vsAlienBullets.Add(player)
 		
-		Local t:FlxText = New FlxText(4, 4, FlxG.width - 8, FlxG.scores.Get(0))
+		Local t:FlxText = New FlxText(4, 4, FlxG.width - 8)		
+		t.Text = FlxG.scores.Get(0)
+		t.Alignment = FlxText.ALIGN_CENTER
+		Add(t)
 	End Method
 	
 	Method Update:Void()
-		If (KeyHit(KEY_ESCAPE)) Error ""
+		If (FlxG.keys.JustPressed(KEY_ESCAPE)) Error ""		
+		If (MouseHit()) HideMouse()
 		
 		For Local alien:FlxBasic = Eachin aliens
 			If (Alien(alien).SwitchDirectionNeeded()) Then
@@ -78,6 +82,15 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 				Exit
 			End If
 		Next
+		
+		If (Not player.exists) Then
+			FlxG.scores.Get(0).FromString("YOU LOST")
+			FlxG.ResetState()
+			
+		Elseif (aliens.GetFirstExtant() = Null)
+			FlxG.scores.Get(0).FromString("YOU WON")
+			FlxG.ResetState()
+		End If
 		
 		FlxG.Overlap(playerBullets, vsPlayerBullets, Self)
 		FlxG.Overlap(alienBullets, vsAlienBullets, Self)
@@ -98,11 +111,11 @@ End Class
 
 Class PlayStateClass Implements FlxClass
 	
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New PlayState()
 	End Method
 	
-	Method InstanceOf:Bool(Object:FlxBasic)
+	Method InstanceOf:Bool(Object:Object)
 		Return (PlayState(Object) <> Null)
 	End Method
 

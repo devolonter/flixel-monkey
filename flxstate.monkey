@@ -12,6 +12,7 @@ Class FlxState Extends FlxGroup Abstract
 	
 	Method GetClass:FlxClass()
 		Error "You must override GetClass method"
+		Return Null
 	End Method
 	
 	Method ToString:String()

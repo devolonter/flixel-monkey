@@ -19,8 +19,13 @@ Public
 	Method New(x:Int, y:Int, color:Int, bullets:FlxGroup)
 		Super.New(x, y)
 		
-		LoadGraphic(Assets.IMAGE_ALIEN_SHIP, True)
-		Color = color
+		#If TARGET <> "html5"
+			LoadGraphic(Assets.IMAGE_ALIEN_SHIP, True)
+			Color = color
+		#Else
+			LoadGraphic(Assets.IMAGE_ALIEN_SHIP + color, True)
+		#End
+		
 		ResetShotClock()
 		_originalX= x
 		_bullets = bullets

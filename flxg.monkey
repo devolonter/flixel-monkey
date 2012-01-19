@@ -203,6 +203,8 @@ Public
 		Wend
 		
 		FlxG.cameras.Clear()
+		FlxG.camera = Null
+		
 		If (newCamera = Null) newCamera = New FlxCamera(0, 0, FlxG.width, FlxG.height)
 		
 		FlxG.camera = FlxG.AddCamera(newCamera)	

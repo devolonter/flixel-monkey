@@ -18,13 +18,23 @@ Public
 	Method Update:Void()
 		velocity.x = 0
 		
-		If (KeyDown(KEY_LEFT) Or AccelX() < -.2) Then
-			velocity.x -= 150
-		End If
-		
-		If (KeyDown(KEY_RIGHT) Or AccelX() > .2) Then
-			velocity.x += 150
-		End If
+		#If TARGET = "android" Or TARGET = "ios"
+			If (AccelX() < -.2) Then
+				velocity.x -= 150
+			End If
+			
+			If (AccelX() > .2) Then
+				velocity.x += 150
+			End If
+		#Else
+			If (KeyDown(KEY_LEFT)) Then
+				velocity.x -= 150
+			End If
+			
+			If (KeyDown(KEY_RIGHT)) Then
+				velocity.x += 150
+			End If
+		#End
 			
 		Super.Update()
 		
