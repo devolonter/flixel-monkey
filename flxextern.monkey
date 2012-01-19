@@ -37,12 +37,6 @@ Interface FlxFunction
 End Interface
 
 Interface FlxStringable
-	
-	Method ToString:String()
-	
-End Interface
-
-Interface FlxExStringable
 
 	Method ToString:String()
 	

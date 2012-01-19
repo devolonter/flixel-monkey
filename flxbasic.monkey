@@ -7,24 +7,6 @@ Import flxextern
 Import flxcamera
 Import flxg
 
-Interface FlxBasicInvoker
-	
-	Method Invoke:Void(object:FlxBasic)
-
-End Interface
-
-Interface FlxBasicSetter
-	
-	Method Set:Void(object:FlxBasic, value:Object)
-
-End Interface
-
-Interface FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
-
-End Interface
-
 #Rem
 summary:This is a useful "generic" Flixel object.
 Both [a flxobject.monkey.html]FlxObject[/a] and [a flxgroup.monkey.html]FlxGroup[/a] extend this class, 
@@ -168,12 +150,26 @@ Class FlxBasic Implements FlxStringable
 	Method ToString:String()
 		Return "FlxBasic"
 	End Method
-	
-	Method FromString:FlxStringable(value:String)
-		Return New FlxBasic()
-	End Method
 
 End Class
+
+Interface FlxBasicInvoker
+	
+	Method Invoke:Void(object:FlxBasic)
+
+End Interface
+
+Interface FlxBasicSetter
+	
+	Method Set:Void(object:FlxBasic, value:Object)
+
+End Interface
+
+Interface FlxBasicComparator
+
+	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
+
+End Interface
 
 Private	
 Class FlxBasicClass Implements FlxClass

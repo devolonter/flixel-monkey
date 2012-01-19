@@ -2,7 +2,7 @@ Strict
 
 Import flixel.flxextern
 
-Class FlxString Implements FlxExStringable
+Class FlxString Implements FlxStringable
 
 Private
 	Field _value:String
