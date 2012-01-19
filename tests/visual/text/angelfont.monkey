@@ -15,14 +15,8 @@ Class AngelFont Extends FlxGame
 	End Method
 	
 	Method OnContentInit:Void()
-		Local minSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MinSize
-		Local maxSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MaxSize
-		
-		Local angelSystemFont:FlxFont = FlxAssetsManager.AddFont("system", FlxText.DRIVER_ANGELFONT)
-		
-		For Local i:Int = minSize To maxSize
-			angelSystemFont.SetPath(i, "fonts/"+FlxText.SYSTEM_FONT+"/angelfont/"+i+".txt")	
-		Next
+		FlxTextAngelFontDriver.Init()
+		FlxText.SetDefaultDriver(ANGELFONT_TEXT_DRIVER)
 	End Method
 
 End Class
@@ -44,19 +38,19 @@ Class TextState Extends FlxState
 	Global _CLASS:FlxClass = new TextStateClass()
 	
 	Method Create:Void()		
-		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!", New FlxTextAngelFontDriver())	
+		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!")	
 		helloWorld.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER, FlxG.PINK)	
 		Add(helloWorld)
 		
-		Local leftAlignedText:FlxText = New FlxText(10, 70, 150, "This text is left-aligned", New FlxTextAngelFontDriver())	
+		Local leftAlignedText:FlxText = New FlxText(10, 70, 150, "This text is left-aligned")	
 		leftAlignedText.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.RED, FlxText.ALIGN_LEFT)	
 		Add(leftAlignedText)
 		
-		Local rightAlignedText:FlxText = New FlxText(480, 70, 150, "This text is right-aligned", New FlxTextAngelFontDriver())	
+		Local rightAlignedText:FlxText = New FlxText(480, 70, 150, "This text is right-aligned")	
 		rightAlignedText.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.GREEN, FlxText.ALIGN_RIGHT)	
 		Add(rightAlignedText)
 		
-		Local abouFlixel:FlxText = New FlxText(10, 140, 620, "Flixel is an open source game-making library that is completely free for personal or commercial use. Written entirely in ActionScript 3 by Adam Atomic Saltsman, and designed to be used with free development tools, Flixel is easy to learn, extend and customize.", New FlxTextAngelFontDriver())	
+		Local abouFlixel:FlxText = New FlxText(10, 140, 620, "Flixel is an open source game-making library that is completely free for personal or commercial use. Written entirely in ActionScript 3 by Adam Atomic Saltsman, and designed to be used with free development tools, Flixel is easy to learn, extend and customize.")	
 		abouFlixel.SetFormat(FlxText.SYSTEM_FONT, 14, FlxG.BLUE, FlxText.ALIGN_LEFT)	
 		Add(abouFlixel)
 	End Method

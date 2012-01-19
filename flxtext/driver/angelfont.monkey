@@ -2,11 +2,50 @@ Strict
 
 Import mojo
 
+Import flixel.flxextern
 Import flixel.flxtext
 Import flixel.flxtext.driver
 
+Import flixel.system.flxfont
 Import flixel.system.flxassetsmanager
 Import flixel.system.flxresourcesmanager
+
+Import "../../data/flx_system_angel_font_8.png"
+Import "../../data/flx_system_angel_font_8.txt"
+Import "../../data/flx_system_angel_font_9.png"
+Import "../../data/flx_system_angel_font_9.txt"
+Import "../../data/flx_system_angel_font_10.png"
+Import "../../data/flx_system_angel_font_10.txt"
+Import "../../data/flx_system_angel_font_11.png"
+Import "../../data/flx_system_angel_font_11.txt"
+Import "../../data/flx_system_angel_font_12.png"
+Import "../../data/flx_system_angel_font_12.txt"
+Import "../../data/flx_system_angel_font_13.png"
+Import "../../data/flx_system_angel_font_13.txt"
+Import "../../data/flx_system_angel_font_14.png"
+Import "../../data/flx_system_angel_font_14.txt"
+Import "../../data/flx_system_angel_font_15.png"
+Import "../../data/flx_system_angel_font_15.txt"
+Import "../../data/flx_system_angel_font_16.png"
+Import "../../data/flx_system_angel_font_16.txt"
+Import "../../data/flx_system_angel_font_17.png"
+Import "../../data/flx_system_angel_font_17.txt"
+Import "../../data/flx_system_angel_font_18.png"
+Import "../../data/flx_system_angel_font_18.txt"
+Import "../../data/flx_system_angel_font_19.png"
+Import "../../data/flx_system_angel_font_19.txt"
+Import "../../data/flx_system_angel_font_20.png"
+Import "../../data/flx_system_angel_font_20.txt"
+Import "../../data/flx_system_angel_font_21.png"
+Import "../../data/flx_system_angel_font_21.txt"
+Import "../../data/flx_system_angel_font_22.png"
+Import "../../data/flx_system_angel_font_22.txt"
+Import "../../data/flx_system_angel_font_23.png"
+Import "../../data/flx_system_angel_font_23.txt"
+Import "../../data/flx_system_angel_font_24.png"
+Import "../../data/flx_system_angel_font_24.txt"
+
+Global ANGELFONT_TEXT_DRIVER:FlxTextDriverClass = New FlxAFDriverClass()
 
 Class FlxTextAngelFontDriver Extends FlxTextDriver	
 
@@ -17,7 +56,19 @@ Private
 	Field _font:AngelFont
 	Field _fontHeight:Int	
 	
-Public	
+Public
+	Function Init:Void()
+		Local minSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MinSize
+		Local maxSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MaxSize
+		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_angel_font_"
+		
+		Local angelSystemFont:FlxFont = FlxAssetsManager.AddFont("system", FlxText.DRIVER_ANGELFONT)
+		
+		For Local size:Int = minSize To maxSize
+			angelSystemFont.SetPath(size, fontPathPrefix +  size + ".txt")
+		Next
+	End Function
+	
 	Method GetTextWidth:Int(text:String)
 		Return _font.TextWidth(text)
 	End Method
@@ -52,6 +103,18 @@ Public
 End Class
 
 Private
+Class FlxAFDriverClass Implements FlxTextDriverClass
+	
+	Method CreateInstance:FlxTextDriver()
+		Return New FlxTextAngelFontDriver()
+	End Method
+	
+	Method InstanceOf:Bool(object:FlxTextDriver)
+		Return FlxTextAngelFontDriver(object) <> Null
+	End Method
+
+End Class
+
 Class FlxAFDriverLoader Extends FlxResourceLoader<AngelFont>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT

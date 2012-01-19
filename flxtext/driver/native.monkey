@@ -19,6 +19,8 @@ Import "../../data/flx_system_font_15.png"
 Import "../../data/flx_system_font_16.png"
 Import "../../data/flx_system_font_17.png"
 
+Global NATIVE_TEXT_DRIVER:FlxTextDriverClass = New FlxNFDriverClass()
+
 Class FlxTextNativeDriver Extends FlxTextDriver
 
 Private
@@ -65,6 +67,18 @@ Public
 End Class
 
 Private
+Class FlxNFDriverClass Implements FlxTextDriverClass
+	
+	Method CreateInstance:FlxTextDriver()
+		Return New FlxTextNativeDriver()
+	End Method
+	
+	Method InstanceOf:Bool(object:FlxTextDriver)
+		Return FlxTextNativeDriver(object) <> Null
+	End Method
+
+End Class
+
 Class FlxNFDriverLoader Extends FlxResourceLoader<Image>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT

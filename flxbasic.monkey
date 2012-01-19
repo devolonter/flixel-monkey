@@ -180,7 +180,7 @@ Class FlxBasicClass Implements FlxClass
 	
 	Method InstanceOf:Bool(object:FlxBasic)
 		Return True
-	End Method	
+	End Method
 	
 End Class
 
