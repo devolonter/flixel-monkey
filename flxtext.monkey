@@ -31,16 +31,23 @@ Private
 	Field _shadow:FlxColor
 
 Public
-	Method New(x:Float, y:Float, width:Int, text:FlxStringable, driver:FlxClass = Null)
-		Super.New(x, y)		
-		_Construct(width, driver)
-		Text = text	
-	End Method
-
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:FlxClass = Null)
-		Super.New(x, y)		
-		_Construct(width, driver)
-		Text = text	
+		Super.New(x, y)
+		
+		Pixels = Null
+		
+		_color = New FlxColor()
+		_shadow = New FlxColor(0)	
+		
+		If (driver = Null) driver =	_defaultDriver
+		_driver = FlxTextDriver(driver.CreateInstance())
+		
+		Self.width = width
+		frameWidth = Self.width
+		
+		_driver.Width = width
+		SetFormat(SYSTEM_FONT)
+		Text = text		
 	End Method
 	
 	Method Update:Void()
@@ -63,14 +70,6 @@ Public
 	End Method
 	
 	Method Text:Void(text:String) Property
-		_driver.Text = text
-		
-		Self.height = _driver.GetTextHeight()
-		frameHeight = Self.height
-		_ResetHelpers()
-	End Method
-	
-	Method Text:Void(text:FlxStringable) Property
 		_driver.Text = text
 		
 		Self.height = _driver.GetTextHeight()
@@ -171,23 +170,6 @@ Public
 	
 	Method ToString:String()
 		Return "FlxText"	
-	End Method
-	
-Private
-	Method _Construct:Void(width:Int = 0, driver:FlxClass = Null)
-		Pixels = Null
-		
-		_color = New FlxColor()
-		_shadow = New FlxColor(0)	
-		
-		If (driver = Null) driver =	_defaultDriver
-		_driver = FlxTextDriver(driver.CreateInstance())
-		
-		Self.width = width
-		frameWidth = Self.width
-		
-		_driver.Width = width
-		SetFormat(SYSTEM_FONT)		
 	End Method
 	
 End Class
