@@ -19,11 +19,13 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 	Field vsPlayerBullets:FlxGroup
 	Field vsAlienBullets:FlxGroup
 	
+	Field scoresLabel:FlxText
+	
 	Method Create:Void()
 		If (FlxG.scores.Length() = 0) Then
-			FlxG.scores.Insert(0, New FlxString("WELCOME TO FLX INVADERS"))
+			FlxG.scores.Insert(0, "WELCOME TO FLX INVADERS")
 		End If
-		
+	
 		Local numPlayerBullets:Int = 8
 		playerBullets = New FlxGroup(numPlayerBullets)
 		Local sprite:FlxSprite
@@ -66,10 +68,11 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 		vsAlienBullets = New FlxGroup()
 		vsAlienBullets.Add(player)
 		
-		Local t:FlxText = New FlxText(4, 4, FlxG.width - 8)		
-		t.Text = FlxG.scores.Get(0)
-		t.Alignment = FlxText.ALIGN_CENTER
-		Add(t)
+		StringObject
+		
+		scoresLabel = New FlxText(4, 4, FlxG.width - 8, FlxG.scores.Get(0))		
+		scoresLabel.Alignment = FlxText.ALIGN_CENTER		
+		Add(scoresLabel)
 	End Method
 	
 	Method Update:Void()
@@ -84,11 +87,13 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 		Next
 		
 		If (Not player.exists) Then
-			FlxG.scores.Get(0).FromString("YOU LOST")
+			FlxG.scores.Set(0, "YOU LOST")
+			scoresLabel.Text = FlxG.scores.Get(0)
 			FlxG.ResetState()
 			
-		Elseif (aliens.GetFirstExtant() = Null)
-			FlxG.scores.Get(0).FromString("YOU WON")
+		ElseIf (aliens.GetFirstExtant() = Null)
+			FlxG.scores.Set(0, "YOU WON")
+			scoresLabel.Text = FlxG.scores.Get(0)
 			FlxG.ResetState()
 		End If
 		
