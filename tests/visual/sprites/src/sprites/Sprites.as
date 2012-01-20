@@ -9,7 +9,6 @@ package sprites
 		public function Sprites():void 
 		{
 			super(640, 480, SpritesState);
-			FlxG.visualDebug = true
 		}
 		
 	}

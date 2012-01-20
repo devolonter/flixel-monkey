@@ -6,34 +6,28 @@ Import flixel.flxg
 
 Import flixel.system.replay.keyrecord
 
-Class Input Abstract
+Class Input Abstract	
 	
 Private
-	Global _map:InputState[]
-	Global _from:Int
-	Global _to:Int
+	Global _map:InputState[KEY_TOUCH0 + 32]
+	
+	Field _from:Int
+	Field _to:Int
 	
 Public
-	Method New()
-		If (_to = 0) Then
-			If (FlxG.mobile) Then
-				_from = KEY_TOUCH0
-				_to = KEY_TOUCH0 + 32
-			Else
-				_from = KEY_BACKSPACE
-				_to = KEY_TOUCH0 + 1
-			End If
+	Method New(from_key:Int, to_key:Int)
+		If (_map[0] = Null) Then
+			Local i:Int = 0			
+			Local l:Int = _map.Length()		
 			
-			Local i:Int = KEY_BACKSPACE
-			Local size:Int = KEY_TOUCH0 + 32
-		
-			_map = _map.Resize(size)		
-			
-			While (i < size)
+			While (i < l)
 				_map[i] = New InputState()
 				i += 1
 			Wend
 		End If
+		
+		_from = from_key
+		_to = to_key + 1	
 	End Method
 	
 	Method Update:Void()
@@ -60,6 +54,10 @@ Public
 			is.last = is.current
 			i += 1
 		Wend
+	End Method
+	
+	Method Update:Void(x:Float, y:Float)
+		Return
 	End Method
 	
 	Method Reset:Void()

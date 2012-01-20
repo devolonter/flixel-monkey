@@ -30,8 +30,16 @@ Public
 		Return resource
 	End Method
 	
+	Method RemoveResource:Void(name:String)
+		_resources.Remove(name)
+	End Method
+	
 	Method CheckResource:Bool(name:String)
 		Return (_resources.Get(name) <> Null)
+	End Method
+	
+	Method Resources:StringMap<T>() Property
+		Return _resources
 	End Method
 	
 	Method Clear:Void()

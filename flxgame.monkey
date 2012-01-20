@@ -7,11 +7,13 @@ Import flxbasic
 Import flxstate
 Import flxcamera
 Import flxtimer
+
 Import flxtext
 Import flxg
 
 Import system.flxassetsmanager
 Import system.flxfont
+Import system.flxdebugger
 
 Import plugin.timermanager
 
@@ -24,6 +26,10 @@ Class FlxGame extends App
 	Field _requestedState:FlxState
 	
 	Field _requestedReset:Bool
+	
+	Field _debugger:FlxDebugger
+	
+	Field _debuggerUp:Bool
 
 Private	
 	Field _iState:FlxClass
@@ -47,6 +53,7 @@ Public
 		
 		Self.useSystemCursor = useSystemCursor
 		If (Not useSystemCursor) HideMouse()
+		_debuggerUp = false
 		
 		_state = Null
 		
@@ -105,7 +112,9 @@ Public
 			FlxG._currentCamera.Unlock()
 									
 			i+=1
-		Wend		
+		Wend
+		
+		FlxG.mouse.Draw()		
 								
 		Return 0	
 	End Method

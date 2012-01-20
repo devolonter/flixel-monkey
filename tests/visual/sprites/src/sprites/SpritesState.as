@@ -11,6 +11,8 @@ package sprites
 		
 		override public function create():void 
 		{
+			FlxG.mouse.show()
+			
 			sprite = new FlxSprite(FlxG.width / 2, FlxG.height / 2);
 			sprite.loadGraphic(ImgDefault, false, true);
 			sprite.x -= sprite.width * .5;

@@ -8,6 +8,7 @@ Import flxcamera
 Import flxu
 
 Import system.input.keyboard
+Import system.input.mouse
 Import system.flxresourcesmanager
 Import system.flxquadtree
 
@@ -77,6 +78,8 @@ Class FlxG
 	
 	Global keys:Keyboard
 	
+	Global mouse:Mouse
+	
 	Global framerate:Int
 	
 	Global _deviceScaleFactorX:Float = 1	
@@ -142,6 +145,7 @@ Public
 	
 	Function ResetInput:Void()
 		keys.Reset()
+		mouse.Reset()
 	End Function
 	
 	Function CheckBitmapCache:Bool(key:String)
@@ -342,6 +346,7 @@ Public
 		AddPlugin(New TimerManager())
 		
 		FlxG.keys = New Keyboard()
+		FlxG.mouse = New Mouse()
 		
 		FlxG.scores = New Stack<String>()		
 	End Function
@@ -362,6 +367,10 @@ Public
 	
 	Function UpdateInput:Void()
 		FlxG.keys.Update()
+		
+		If (Not _game._debuggerUp Or Not _game._debugger.hasMouse) Then
+			FlxG.mouse.Update(MouseX(), MouseY())
+		End If
 	End Function
 	
 	Function UpdateCameras:Void()

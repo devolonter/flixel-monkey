@@ -3,6 +3,10 @@ Strict
 Import input
 
 Class Keyboard Extends Input
+
+	Method New()
+		Super.New(KEY_BACKSPACE, KEY_QUOTES)
+	End Method
 	
 	Method ESCAPE:Bool() Property
 		Return Pressed(KEY_ESCAPE)	

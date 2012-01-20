@@ -144,6 +144,10 @@ Class FlxObject Extends FlxBasic
 	Field _point:FlxPoint
 	
 Private
+	Global _separateXCallback:FlxObjectSeparateX = New FlxObjectSeparateX()
+	
+	Global _separateYCallback:FlxObjectSeparateY = New FlxObjectSeparateY()
+
 	Global _pZero:FlxPoint = New FlxPoint()	
 	
 	Field _rect:FlxRect	
@@ -876,9 +880,6 @@ Private
 End Class
 
 Private
-Global _separateXCallback:FlxObjectSeparateX = New FlxObjectSeparateX()
-Global _separateYCallback:FlxObjectSeparateY = New FlxObjectSeparateY()
-
 Class FlxObjectClass Implements FlxClass
 
 	Method CreateInstance:Object()
