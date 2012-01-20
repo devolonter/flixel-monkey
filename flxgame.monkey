@@ -173,6 +173,8 @@ Private
 		
 		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "default", FlxG.DATA_PREFIX + "default.png")
 		
+		FlxAssetsManager.AddCursor(FlxG.DATA_PREFIX + "cursor", FlxG.DATA_PREFIX + "cursor.png")
+		
 		Self.OnContentInit()
 	End Method
 End Class

@@ -18,11 +18,11 @@ End Class
 
 Class SpritesStateClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New SpritesState()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (SpritesState(object) <> Null)
 	End Method
 
@@ -47,11 +47,11 @@ Class SpritesState Extends FlxState
 	End Method
 	
 	Method Update:Void()
-		If (KeyHit(KEY_RIGHT)) Then
+		If (FlxG.keys.JustPressed(KEY_RIGHT)) Then
 			sprite.Facing = FlxObject.RIGHT
 		End If
 		
-		If (KeyHit(KEY_LEFT)) Then
+		If (FlxG.keys.JustPressed(KEY_LEFT)) Then
 			sprite.Facing = FlxObject.LEFT
 		End If
 	

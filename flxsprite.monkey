@@ -40,6 +40,8 @@ Class FlxSprite Extends FlxObject
 	Field _mixedColor:FlxColor	
 	
 Private
+	Global _graphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
+
 	Field _animations:StringMap<FlxAnim>
 	
 	Field _flipped:Bool
@@ -570,8 +572,6 @@ Interface FlxAnimationCallback
 End Interface
 
 Private
-Global _graphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
-
 Class FlxSpriteClass Implements FlxClass
 
 	Method CreateInstance:Object()
@@ -592,7 +592,7 @@ Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 	Field height:Float
 
 	Method Load:Image(name:String)
-		Local image:Image = LoadImage(FlxAssetsManager.GetImagePath(name))
+		Local image:Image = LoadImage(FlxAssetsManager.GetImagePath(Self.name))
 		
 		If (Not animated) Then
 			Return image
