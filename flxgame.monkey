@@ -7,14 +7,12 @@ Import flxbasic
 Import flxstate
 Import flxcamera
 Import flxtimer
-
 Import flxtext
 Import flxg
-
 Import system.flxassetsmanager
 Import system.flxfont
 Import system.flxdebugger
-
+Import system.flxreplay
 Import plugin.timermanager
 
 Class FlxGame extends App
@@ -36,9 +34,23 @@ Private
 	
 	Field _created:Bool
 
-	Field _lostFocus:Bool	
+	Field _lostFocus:Bool
+	
+	Field _replay:FlxReplay
+	
+	Field _replayRequested:Bool
+	
+	Field _recordingRequested:Bool	
 	
 	Field _replaying:Bool
+	
+	Field _recording:Bool
+	
+	Field _replayCancelKeys:Int[]
+	
+	Field _replayTimer:Int
+	
+	Field _replayCallback:FlxFunction
 	
 	Field _lastMillisecs:Float
 	
@@ -57,6 +69,8 @@ Public
 		
 		_state = Null
 		
+		_replay = New FlxReplay()
+		_replayRequested = False
 		_replaying = False
 		
 		_iState = initialState
@@ -151,6 +165,7 @@ Private
 		If (_state <> _requestedState) _SwitchState()
 		
 		If (_replaying) Then
+			
 		Else
 			FlxG.UpdateInput()
 		End If

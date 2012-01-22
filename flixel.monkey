@@ -16,6 +16,7 @@ Import flxtimer
 Import flxu
 
 Import system.input.keyboard
+Import system.input.mouse
 Import system.flxanim
 Import system.flxarray
 Import system.flxassetsmanager
@@ -23,6 +24,7 @@ Import system.flxcolor
 Import system.flxfont
 Import system.flxlist
 Import system.flxquadtree
+Import system.flxreplay
 Import system.flxresourcesmanager
 
 Import plugin.debugpathdisplay
