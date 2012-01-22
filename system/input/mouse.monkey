@@ -2,6 +2,7 @@ Strict
 
 Import mojo
 
+Import xydevice
 Import flixel.flxpoint
 Import flixel.flxcamera
 Import flixel.flxg
@@ -10,15 +11,7 @@ Import flixel.system.flxassetsmanager
 
 Import "../../data/flx_cursor.png"
 
-Class Mouse Extends Input
-
-	Field x:Float
-	
-	Field y:Float
-	
-	Field screenX:Float
-	
-	Field screenY:Float
+Class Mouse Extends XYDevice
 
 Private
 	Global _cursorsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
@@ -27,26 +20,9 @@ Private
 	
 	Field _cursor:FlxCursor
 	
-	Field _lastX:Float
-	
-	Field _lastY:Float
-	
-	Field _point:FlxPoint
-	
-	Field _globalScreenPosition:FlxPoint	
-	
 Public
 	Method New()
 		Super.New(KEY_LMB, KEY_MMB)
-	
-		x = 0
-		y = 0
-		screenX = 0
-		screenY = 0
-		_lastX = 0
-		_lastY = 0
-		_point = New FlxPoint()
-		_globalScreenPosition = New FlxPoint()	
 	End Method
 	
 	Method Destroy:Void()
@@ -60,8 +36,18 @@ Public
 		
 		If (_cursor <> Null) _cursor.Destroy()
 		_cursor = Null
-		_point = Null
-		_globalScreenPosition = Null
+	End Method
+	
+	Method LEFT:Bool() Property
+		Return Pressed(MOUSE_LEFT)	
+	End Method
+	
+	Method RIGHT:Bool() Property
+		Return Pressed(MOUSE_RIGHT)	
+	End Method
+	
+	Method MIDDLE:Bool() Property
+		Return Pressed(MOUSE_MIDDLE)	
 	End Method
 	
 	Method Show:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)
@@ -103,21 +89,7 @@ Public
 			
 			_cursor = Null
 		End If
-	End Method
-	
-	Method Update:Void(x:Float, y:Float)
-		Super.Update()
-	
-		_globalScreenPosition.x = x
-		_globalScreenPosition.y = y
-		
-		_UpdateCursor()
-	End Method
-	
-	Method GetWorldPosition:FlxPoint(camera:FlxCamera)
-		'TODO
-		Return Null
-	End Method
+	End Method	
 	
 	Method Draw:Void()
 		If (Not _cursor.visible) Return
@@ -131,17 +103,12 @@ Public
 			PopMatrix()
 		End If
 	End Method
-Private	
-	Method _UpdateCursor:Void()
+	
+	Method _UpdateXY:Void()	
 		_cursor.x = _globalScreenPosition.x
 		_cursor.y = _globalScreenPosition.y
 		
-		Local camera:FlxCamera = FlxG.camera
-		
-		screenX = (_globalScreenPosition.x - camera.X) / (camera.Zoom * FlxG._deviceScaleFactorX)
-		screenY = (_globalScreenPosition.y - camera.Y) / (camera.Zoom * FlxG._deviceScaleFactorY)
-		x = screenX + camera.scroll.x
-		y = screenY + camera.scroll.y		
+		Super._UpdateXY()
 	End Method
 End Class
 

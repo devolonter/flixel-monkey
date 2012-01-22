@@ -68,8 +68,6 @@ Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
 		vsAlienBullets = New FlxGroup()
 		vsAlienBullets.Add(player)
 		
-		StringObject
-		
 		scoresLabel = New FlxText(4, 4, FlxG.width - 8, FlxG.scores.Get(0))		
 		scoresLabel.Alignment = FlxText.ALIGN_CENTER		
 		Add(scoresLabel)

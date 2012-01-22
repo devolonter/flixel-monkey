@@ -3,7 +3,6 @@ Strict
 Import mojo
 
 Import flixel.flxg
-
 Import flixel.system.replay.keyrecord
 
 Class Input Abstract	
@@ -15,7 +14,7 @@ Private
 	Field _to:Int
 	
 Public
-	Method New(from_key:Int, to_key:Int)
+	Method New(fromKey:Int, toKey:Int)
 		If (_map[0] = Null) Then
 			Local i:Int = 0			
 			Local l:Int = _map.Length()		
@@ -26,8 +25,8 @@ Public
 			Wend
 		End If
 		
-		_from = from_key
-		_to = to_key + 1	
+		_from = fromKey
+		_to = toKey + 1	
 	End Method
 	
 	Method Update:Void()
@@ -84,8 +83,7 @@ Public
 		Return _map[key].current = -1
 	End Method
 	
-	Method Record:Stack<KeyRecord>()
-		Local data:Stack<KeyRecord> = Null
+	Method RecordKeys:Stack<KeyRecord>(data:Stack<KeyRecord> = Null)
 		Local i:Int = _from
 		Local is:InputState
 		
@@ -95,10 +93,10 @@ Public
 			If (is.current = 0) Continue
 			
 			If (data = Null) Then
-				data = New Stack<InputRecord>()
+				data = New Stack<KeyRecord>()
 			End If
 			
-			data.Push(New InputRecord(i, is.current))
+			data.Push(New KeyRecord(i, is.current))
 			
 			i += 1
 		Wend
@@ -106,7 +104,7 @@ Public
 		Return data
 	End Method
 	
-	Method Playback:Void(record:Stack<KeyRecord>)
+	Method PlaybackKeys:Void(record:Stack<KeyRecord>)
 		Local i:Int = 0
 		Local l:Int = record.Length()
 		Local kr:KeyRecord
