@@ -20,7 +20,7 @@ Private
 		mouse = Null	
 	End Method
 	
-	Method Create:FrameRecord(frame:Int, keys:Stack<KeyRecord> = Null, mouse:XYRecord)
+	Method Create:FrameRecord(frame:Int, keys:Stack<KeyRecord> = Null, mouse:XYRecord = Null)
 		Self.frame = frame
 		Self.keys = keys
 		Self.mouse = mouse
@@ -50,7 +50,7 @@ Private
 				
 				key = keys.Get(i)
 							
-				output.Push(key.code + ":" + key.value))
+				output.Push(key.code + ":" + key.value)
 			
 				i += 1
 			Wend
@@ -69,23 +69,23 @@ Private
 		Local i:Int
 		Local l:Int
 		
-		Local array:String[] = data.Split("k")
-		frame = Int(array[0])
+		Local tmpArray:String[] = data.Split("k")
+		frame = Int(tmpArray[0])
 		
-		array = array[1].Split("m")
+		tmpArray = tmpArray[1].Split("m")
 		
-		Local keyData:String = array[0]
-		Local mouseData:String = array[1]
+		Local keyData:String = tmpArray[0]
+		Local mouseData:String = tmpArray[1]
 		
 		If (keyData.Length() > 0) Then
-			array = keyData.Split(",")
+			tmpArray = keyData.Split(",")
 			
 			Local keyPair:String[]
 			i = 0
-			l = array.Length()
+			l = tmpArray.Length()
 			
 			While (i < l)
-				keyPair = array[i].Split(":")
+				keyPair = tmpArray[i].Split(":")
 				
 				If (keyPair.Length() = 2) Then
 					If (keys = Null) keys = New Stack<KeyRecord>()
@@ -98,10 +98,10 @@ Private
 		End If
 		
 		If (mouseData.Length() > 0) Then
-			array = mouseData.Split(",")
+			tmpArray = mouseData.Split(",")
 			
-			If (array.Length = 2) Then
-				mouse = New XYRecord(Int(array[0]), Int(array[1]))
+			If (tmpArray.Length() = 2) Then
+				mouse = New XYRecord(Int(tmpArray[0]), Int(tmpArray[1]))
 			End If
 		End If
 		

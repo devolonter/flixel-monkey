@@ -18,11 +18,11 @@ End Class
 
 Class ObjectsStateClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New ObjectsState()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (ObjectsState(object) <> Null)
 	End Method
 
@@ -79,7 +79,7 @@ Class ObjectsState Extends FlxState
 		FlxG.camera.deadzone.y = FlxG.height - 70
 	End Method
 	
-	Method Update:Void()
+	Method Update:Void()	
 		If (KeyDown(KEY_RIGHT)) Then
 			player.x += 2
 		End If

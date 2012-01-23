@@ -89,6 +89,7 @@ Public
 		
 		While (i < _to)
 			is = _map[i]
+			i += 1
 			
 			If (is.current = 0) Continue
 			
@@ -96,9 +97,7 @@ Public
 				data = New Stack<KeyRecord>()
 			End If
 			
-			data.Push(New KeyRecord(i, is.current))
-			
-			i += 1
+			data.Push(New KeyRecord(i - 1, is.current))		
 		Wend
 		
 		Return data
@@ -110,7 +109,7 @@ Public
 		Local kr:KeyRecord
 		
 		While (i < l)
-			kr = record[i]
+			kr = record.Get(i)
 			_map[kr.code].current = kr.value
 			i += 1
 		Wend

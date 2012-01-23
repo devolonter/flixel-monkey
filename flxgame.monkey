@@ -28,13 +28,6 @@ Class FlxGame extends App
 	Field _debugger:FlxDebugger
 	
 	Field _debuggerUp:Bool
-
-Private	
-	Field _iState:FlxClass
-	
-	Field _created:Bool
-
-	Field _lostFocus:Bool
 	
 	Field _replay:FlxReplay
 	
@@ -51,6 +44,13 @@ Private
 	Field _replayTimer:Int
 	
 	Field _replayCallback:FlxFunction
+
+Private	
+	Field _iState:FlxClass
+	
+	Field _created:Bool
+
+	Field _lostFocus:Bool	
 	
 	Field _lastMillisecs:Float
 	
@@ -71,7 +71,9 @@ Public
 		
 		_replay = New FlxReplay()
 		_replayRequested = False
+		_recordingRequested = False
 		_replaying = False
+		_recording = False
 		
 		_iState = initialState
 		_requestedState = Null
@@ -133,8 +135,7 @@ Public
 		Return 0	
 	End Method
 	
-	Method OnContentInit:Void()
-		
+	Method OnContentInit:Void()		
 	End Method
 	
 Private
@@ -158,19 +159,103 @@ Private
 		If (_requestedReset) Then
 			_requestedReset = False
 			_requestedState = FlxState(_iState.CreateInstance())
+			_replayTimer = 0
+			_replayCancelKeys = []
 			FlxG.Reset()
 			_lastMillisecs = Millisecs() - _step			
-		End If		
+		End If
+		
+		If (_recordingRequested) Then
+			_recordingRequested = False
+			_replay.Create(FlxG.globalSeed)
+			_recording = True
+			
+			If (_debugger <> Null) Then
+				'TODO
+				FlxG.Log("FLIXEL: starting new flixel gameplay record.")
+			End If
+			
+		ElseIf (_replayRequested)
+			_replayRequested = False
+			_replay.Rewind()
+			FlxG.globalSeed = _replay.seed
+			
+			If (_debugger <> Null) Then
+				'TODO
+			End If
+			
+			_replaying = True
+		End If
 		
 		If (_state <> _requestedState) _SwitchState()
 		
-		If (_replaying) Then
+		FlxBasic._ACTIVECOUNT = 0
+		
+		If (_replaying) Then		
+			If (_replayCancelKeys.Length() > 0 And Not KeyDown(192) And Not KeyDown(220)) Then
+				Local i:Int = 0
+				Local l:Int = _replayCancelKeys.Length()
+				
+				While (i < l) 
+					If (_replayCancelKeys[i] = 0 Or KeyDown(_replayCancelKeys[i])) Then
+						If (_replayCallback <> Null) Then
+							_replayCallback.Invoke()
+							_replayCallback = Null
+						Else
+							FlxG.StopReplay()
+						End If
+						
+						Exit
+					End If
+					
+					i += 1
+				Wend
+			End If
 			
+			_replay.PlayNextFrame()
+			
+			If (_replayTimer > 0) Then
+				_replayTimer -= _step
+				
+				If (_replayTimer <= 0) Then
+					If (_replayCallback <> Null) Then
+						_replayCallback.Invoke()
+						_replayCallback = Null
+					Else
+						FlxG.StopReplay()
+					End If
+				End If				
+			End If
+			
+			If (_replaying And _replay.finished) Then
+				FlxG.StopReplay()
+				
+				If (_replayCallback <> Null) Then
+					_replayCallback.Invoke()
+					_replayCallback = Null
+				End If
+			End If
+			
+			If (_debugger <> Null) Then
+				'TODO
+			End If
 		Else
 			FlxG.UpdateInput()
 		End If
 		
+		If (_recording) Then
+			_replay.RecordFrame()
+						
+			If (_debugger <> Null) Then
+				'TODO
+			End If
+		End If
+		
 		_Update()
+		
+		If (_debugger <> Null) Then
+			'TODO
+		End If
 	End Method
 	
 	Method _Update:Void()

@@ -135,6 +135,60 @@ Public
 	End Function
 	#End
 	
+	Function LoadReplay:Void(data:String, state:FlxState = Null, cancelKeys:Int[] = [], timeout:Float = 0, callback:FlxFunction = Null)
+		_game._replay.Load(data)
+		If (state = Null) Then
+			FlxG.ResetGame()
+		Else
+			FlxG.SwitchState(state)
+		End If
+		
+		_game._replayCancelKeys = cancelKeys
+		_game._replayTimer = timeout * 1000
+		_game._replayCallback = callback
+		_game._replayRequested = True
+	End Function
+	
+	Function ReloadReplay:Void(standardMode:Bool = True)
+		If (standardMode) Then
+			FlxG.ResetGame()
+		Else
+			FlxG.ResetState()
+		End If
+		
+		If (_game._replay.frameCount > 0) _game._replayRequested = True
+	End Function	
+	
+	Function StopReplay:Void()
+		_game._replaying = False
+		
+		If (_game._debugger <> Null) Then
+			'TODO
+		End If
+		
+		ResetInput()
+	End Function
+	
+	Function RecordReplay:Void(standardMode:Bool = True)
+		If (standardMode) Then
+			FlxG.ResetGame()
+		Else
+			FlxG.ResetState()
+		End If
+		
+		_game._recordingRequested = True
+	End Function
+	
+	Function StopRecording:String()
+		_game._recording = False
+		
+		If (_game._debugger <> Null) Then
+			'TODO
+		End if
+		
+		Return _game._replay.Save()
+	End Function
+	
 	Function ResetState:Void()
 		_game._requestedState = FlxState(_game._state.GetClass().CreateInstance())
 	End Function

@@ -23,6 +23,8 @@ Private
 Public
 	Method New()
 		Super.New(KEY_LMB, KEY_MMB)
+		
+		_cursor = New FlxCursor()
 	End Method
 	
 	Method Destroy:Void()

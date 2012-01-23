@@ -53,7 +53,7 @@ Public
 		Rewind()
 	End Method
 	
-	Method Load:String(fileContents:String)
+	Method Load:Void(fileContents:String)
 		_Init()
 		
 		Local lines:String[] = fileContents.Split("~n")
@@ -69,13 +69,12 @@ Public
 			
 			If (line.Length() > 3) Then
 				_frames[frameCount] = (New FrameRecord()).Load(line)
+				frameCount += 1
 				
 				If (frameCount >= _capacity) Then
 					_capacity *= 2
 					_frames = _frames.Resize(_capacity)
-				End If
-				
-				frameCount += 1
+				End If				
 			End If
 			
 			i += 1
@@ -87,19 +86,20 @@ Public
 	Method Save:String()
 		If (frameCount <= 0) Return ""
 		
-		Local output:StringStack = New StringStack()
-		Local i:Int = 0
+		Local output:StringStack = New StringStack()		
+		output.Push(FlxG.globalSeed + "~n")	
 		
+		Local i:Int = 0
 		While (i < frameCount)
 			_frames[i].Save(output)
-			output.Push("\n")
+			output.Push("~n")
 			i += 1
 		Wend
 	
 		Return output.Join("")
 	End Method
 	
-	Method RecordFrame:Void()
+	Method RecordFrame:Void()	
 		Local keysRecord:Stack<KeyRecord> = FlxG.keys.RecordKeys()
 		Local mouseRecord:XYRecord = FlxG.mouse.RecordXY()
 		
@@ -108,17 +108,17 @@ Public
 			Return
 		End If
 		
-		_frames[frameCount] = (New FrameRecord(frame, keysRecord, mouseRecord)).Create()
+		_frames[frameCount] = (New FrameRecord()).Create(frame, keysRecord, mouseRecord)
 		frame += 1
 		frameCount += 1
 		
 		If (frameCount >= _capacity) Then
 			_capacity *= 2
 			_frames = _frames.Resize(_capacity)
-		End If 
+		End If
 	End Method
 	
-	Method PlayNextFrame:Void()
+	Method PlayNextFrame:Void()			
 		FlxG.ResetInput()
 		
 		If (_marker >= frameCount) Then
