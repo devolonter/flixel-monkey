@@ -8,7 +8,7 @@ Class Keyboard Extends Input
 		Super.New(KEY_BACKSPACE, KEY_QUOTES)
 	End Method
 	
-	Method ESCAPE:Bool() Property
+	Method Escape:Bool() Property
 		Return Pressed(KEY_ESCAPE)	
 	End Method
 	
@@ -60,83 +60,83 @@ Class Keyboard Extends Input
 		Return Pressed(KEY_F12)	
 	End Method
 	
-	Method ONE:Bool() Property
+	Method One:Bool() Property
 		Return Pressed(KEY_1)	
 	End Method
 	
-	Method TWO:Bool() Property
+	Method Two:Bool() Property
 		Return Pressed(KEY_2)	
 	End Method
 	
-	Method THREE:Bool() Property
+	Method Three:Bool() Property
 		Return Pressed(KEY_3)	
 	End Method
 	
-	Method FOUR:Bool() Property
+	Method Four:Bool() Property
 		Return Pressed(KEY_4)	
 	End Method
 	
-	Method FIVE:Bool() Property
+	Method Five:Bool() Property
 		Return Pressed(KEY_5)	
 	End Method
 	
-	Method SIX:Bool() Property
+	Method Six:Bool() Property
 		Return Pressed(KEY_6)	
 	End Method
 	
-	Method SEVEN:Bool() Property
+	Method Seven:Bool() Property
 		Return Pressed(KEY_7)	
 	End Method
 	
-	Method EIGHT:Bool() Property
+	Method Eight:Bool() Property
 		Return Pressed(KEY_8)	
 	End Method
 	
-	Method NINE:Bool() Property
+	Method Nine:Bool() Property
 		Return Pressed(KEY_9)	
 	End Method
 	
-	Method ZERO:Bool() Property
+	Method Zero:Bool() Property
 		Return Pressed(KEY_0)	
 	End Method	
 	
-	Method PAGEUP:Bool() Property
+	Method PageUp:Bool() Property
 		Return Pressed(KEY_PAGEUP)	
 	End Method
 	
-	Method PAGEDOWN:Bool() Property
+	Method PageDown:Bool() Property
 		Return Pressed(KEY_PAGEDOWN)	
 	End Method
 	
-	Method HOME:Bool() Property
+	Method Home:Bool() Property
 		Return Pressed(KEY_HOME)	
 	End Method
 	
-	Method END_KEY:Bool() Property
+	Method EndKey:Bool() Property
 		Return Pressed(KEY_END)	
 	End Method
 	
-	Method INSERT:Bool() Property
+	Method Insert:Bool() Property
 		Return Pressed(KEY_INSERT)	
 	End Method
 	
-	Method MINUS:Bool() Property
+	Method Minus:Bool() Property
 		Return Pressed(KEY_MINUS)	
 	End Method
 	
-	Method PLUS:Bool() Property
+	Method Plus:Bool() Property
 		Return Pressed(KEY_EQUALS)	
 	End Method
 	
-	Method DELETE:Bool() Property
+	Method Delete:Bool() Property
 		Return Pressed(KEY_DELETE)	
 	End Method
 	
-	Method BACKSPACE:Bool() Property
+	Method Backspace:Bool() Property
 		Return Pressed(KEY_BACKSPACE)	
 	End Method
 	
-	Method TAB:Bool() Property
+	Method Tab:Bool() Property
 		Return Pressed(KEY_BACKSPACE)	
 	End Method
 	
@@ -180,19 +180,15 @@ Class Keyboard Extends Input
 		Return Pressed(KEY_P)	
 	End Method
 	
-	Method LBRACKET:Bool() Property
+	Method LBracket:Bool() Property
 		Return Pressed(KEY_OPENBRACKET)	
 	End Method
 	
-	Method RBRACKET:Bool() Property
+	Method RBracket:Bool() Property
 		Return Pressed(KEY_CLOSEBRACKET)	
 	End Method
 	
-	Method RBRACKET:Bool() Property
-		Return Pressed(KEY_CLOSEBRACKET)	
-	End Method
-	
-	Method BACKSLASH:Bool() Property
+	Method BackSlash:Bool() Property
 		Return Pressed(KEY_BACKSLASH)	
 	End Method
 	
@@ -232,19 +228,19 @@ Class Keyboard Extends Input
 		Return Pressed(KEY_L)	
 	End Method
 	
-	Method SEMICOLON:Bool() Property
+	Method Semicolon:Bool() Property
 		Return Pressed(KEY_SEMICOLON)	
 	End Method
 	
-	Method QUOTE:Bool() Property
+	Method Quote:Bool() Property
 		Return Pressed(KEY_QUOTES)	
 	End Method
 	
-	Method ENTER:Bool() Property
+	Method Enter:Bool() Property
 		Return Pressed(KEY_ENTER)	
 	End Method
 	
-	Method SHIFT:Bool() Property
+	Method Shift:Bool() Property
 		Return Pressed(KEY_SHIFT)	
 	End Method
 	
@@ -276,51 +272,43 @@ Class Keyboard Extends Input
 		Return Pressed(KEY_M)	
 	End Method
 	
-	Method COMMA:Bool() Property
+	Method Comma:Bool() Property
 		Return Pressed(KEY_COMMA)	
 	End Method
 	
-	Method COMMA:Bool() Property
-		Return Pressed(KEY_COMMA)	
-	End Method
-	
-	Method PERIOD:Bool() Property
+	Method Period:Bool() Property
 		Return Pressed(KEY_PERIOD)	
 	End Method
 	
-	Method NUMPADPERIOD:Bool() Property
-		Return Pressed(110)	
-	End Method
-	
-	Method SLASH:Bool() Property
+	Method Slash:Bool() Property
 		Return Pressed(KEY_SLASH)	
 	End Method
 	
-	Method CONTROL:Bool() Property
+	Method Control:Bool() Property
 		Return Pressed(KEY_CONTROL)	
 	End Method
 	
-	Method ALT:Bool() Property
+	Method Alt:Bool() Property
 		Return Pressed(18)	
 	End Method
 	
-	Method SPACE:Bool() Property
+	Method Space:Bool() Property
 		Return Pressed(KEY_SPACE)	
 	End Method
 	
-	Method UP:Bool() Property
+	Method Up:Bool() Property
 		Return Pressed(KEY_UP)	
 	End Method
 	
-	Method DOWN:Bool() Property
+	Method Down:Bool() Property
 		Return Pressed(KEY_DOWN)	
 	End Method
 	
-	Method LEFT:Bool() Property
+	Method Left:Bool() Property
 		Return Pressed(KEY_LEFT)	
 	End Method
 	
-	Method RIGHT:Bool() Property
+	Method Right:Bool() Property
 		Return Pressed(KEY_RIGHT)	
 	End Method
 

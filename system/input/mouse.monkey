@@ -40,15 +40,15 @@ Public
 		_cursor = Null
 	End Method
 	
-	Method LEFT:Bool() Property
+	Method Left:Bool() Property
 		Return Pressed(MOUSE_LEFT)	
 	End Method
 	
-	Method RIGHT:Bool() Property
+	Method Right:Bool() Property
 		Return Pressed(MOUSE_RIGHT)	
 	End Method
 	
-	Method MIDDLE:Bool() Property
+	Method Middle:Bool() Property
 		Return Pressed(MOUSE_MIDDLE)	
 	End Method
 	
@@ -95,6 +95,21 @@ Public
 	
 	Method Draw:Void()
 		If (Not _cursor.visible) Return
+		
+		If (FlxG._lastDrawingBlend <> AlphaBlend) Then
+			SetBlend(AlphaBlend)
+			FlxG._lastDrawingBlend = AlphaBlend
+		End If
+		
+		If (FlxG._lastDrawingColor <> FlxG.WHITE) Then
+			SetColor(255, 255, 255)
+			FlxG._lastDrawingColor = FlxG.WHITE
+		End If
+		
+		If (FlxG._lastDrawingAlpha <> 1) Then
+			SetAlpha(1)
+			FlxG._lastDrawingAlpha = 1
+		End If
 		
 		If (_cursor.scale = 1) Then
 			DrawImage(_cursor.pixels, _cursor.x, _cursor.y)

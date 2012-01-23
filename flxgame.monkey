@@ -197,7 +197,7 @@ Private
 				Local l:Int = _replayCancelKeys.Length()
 				
 				While (i < l) 
-					If (_replayCancelKeys[i] = 0 Or KeyDown(_replayCancelKeys[i])) Then
+					If (KeyDown(_replayCancelKeys[i])) Then
 						If (_replayCallback <> Null) Then
 							_replayCallback.Invoke()
 							_replayCallback = Null
