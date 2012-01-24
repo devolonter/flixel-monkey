@@ -15,8 +15,11 @@ Import flxtilemap
 Import flxtimer
 Import flxu
 
+Import system.input.accel
+Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
+Import system.input.touch
 Import system.flxanim
 Import system.flxarray
 Import system.flxassetsmanager

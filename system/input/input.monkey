@@ -71,6 +71,18 @@ Public
 		Wend
 	End Method
 	
+	Method Pressed:Bool()
+		Return False
+	End Method
+	
+	Method JustPressed:Bool()
+		Return False
+	End Method
+	
+	Method JustReleased:Bool()
+		Return False
+	End Method
+	
 	Method Pressed:Bool(key:Int)
 		Return _map[key].current > 0
 	End Method

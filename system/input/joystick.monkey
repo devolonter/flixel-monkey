@@ -8,7 +8,7 @@ Class Joystick Extends Input
 	Field unit:Int = 0
 	
 Private
-	Const _COUNT_INDEXS = 2
+	Const _COUNT_INDEXS:Int = 2
 
 	Field _x:Float[_COUNT_INDEXS]
 	
@@ -68,15 +68,15 @@ Public
 	End Method
 	
 	Method X:Float(index:Int = 0)
-		Return _x[i]
+		Return _x[index]
 	End Method
 	
 	Method Y:Float(index:Int = 0)
-		Return _y[i]
+		Return _y[index]
 	End Method
 	
 	Method Z:Float(index:Int = 0)
-		Return _z[i]
+		Return _z[index]
 	End Method
 	
 	Method RecordXYZ:XYZRecord[](data:XYZRecord[] = [])
@@ -92,7 +92,7 @@ Public
 			_lastZ[i] = z[i]
 			
 			If (data = Null) data = data.Resize(_COUNT_INDEXS)			
-			data.[i] = New XYZRecord(_lastX[i], _lastY[i], _lastZ[i])
+			data[i] = New XYZRecord(_lastX[i], _lastY[i], _lastZ[i])
 			
 			i += 1
 		Wend

@@ -7,8 +7,11 @@ Import flxgame
 Import flxcamera
 Import flxu
 
+Import system.input.accel
+Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
+Import system.input.touch
 Import system.flxresourcesmanager
 Import system.flxquadtree
 
@@ -64,22 +67,21 @@ Class FlxG
 	Global timeScale:Float
 	
 	Global visualDebug:Bool
-	
-	#If TARGET = "android" Or TARGET = "ios"
-	Global mobile:Bool = True
-	#Else
-	Global mobile:Bool = False	
-	#End
+
+	Global mobile:Bool
 	
 	Global globalSeed:Int
 	
 	Global scores:Stack<String>	
-	Global score:Int	
+	
+	Global score:Int
+	
+	Global accel:Accel	
 	
 	Global keys:Keyboard
 	
 	Global mouse:Mouse
-	
+		
 	Global framerate:Int
 	
 	Global _deviceScaleFactorX:Float = 1	
@@ -99,6 +101,16 @@ Class FlxG
 	Global _lastDrawingBlend:Int
 	
 	Global _currentCamera:FlxCamera
+
+Private
+	Const _JOY_UNITS_COUNT:Int = 4
+	
+	Const _TOUCH_COUNT:Int = 32
+	
+	Global _joystick:Joystick[_JOY_UNITS_COUNT]
+	
+	Global _touch:Touch[_TOUCH_COUNT]
+	
 
 Public
 	Function GetLibraryName:String()
@@ -198,7 +210,25 @@ Public
 	End Function
 	
 	Function ResetInput:Void()
-		keys.Reset()
+		#If TARGET = "html5" OR TARGET = "ios" OR TARGET = "android"
+			accel.Reset()
+		#End				
+		
+		#If TARGET = "xna" OR TARGET = "glfw"
+			For Local i:Int = 0 Until _JOY_UNITS_COUNT
+				_joystick[i].Reset()
+			Next
+		#End
+		
+		#If TARGET = "ios" OR TARGET = "android"
+			For Local i:Int = 0 Until _TOUCH_COUNT
+				_touch[i].Reset()
+			Next
+		#Else
+			keys.Reset()
+			_touch[0].Reset()
+		#End
+		
 		mouse.Reset()
 	End Function
 	
@@ -399,8 +429,17 @@ Public
 		AddPlugin(New DebugPathDisplay())
 		AddPlugin(New TimerManager())
 		
+		FlxG.accel = New Accel()
 		FlxG.keys = New Keyboard()
 		FlxG.mouse = New Mouse()
+		
+		For Local i:Int = 0 Until _JOY_UNITS_COUNT
+			_joystick[i] = New Joystick(i)
+		Next
+		
+		For Local i:Int = 0 Until _TOUCH_COUNT
+			_touch[i] = New Touch(i)
+		Next
 		
 		FlxG.scores = New Stack<String>()		
 	End Function
@@ -420,7 +459,26 @@ Public
 	End Function
 	
 	Function UpdateInput:Void()
-		FlxG.keys.Update()
+		#If TARGET = "html5" OR TARGET = "ios" OR TARGET = "android"
+			accel.Update(AccelX(), AccelY(), AccelZ())
+		#End		
+		
+		#If TARGET = "xna" OR TARGET = "glfw"
+			For Local i:Int = 0 Until _JOY_UNITS_COUNT
+				_joystick[i].Update()
+			Next
+		#End
+		
+		#If TARGET = "ios" OR TARGET = "android"
+			For Local i:Int = 0 Until _TOUCH_COUNT
+				_touch[i].Update(TouchX(i), TouchY(i))
+				
+				If (i <> _TOUCH_COUNT - 1 And Not _touch[i + 1].Pressed() And Not _touch[i + 1].JustReleased()) Exit
+			Next
+		#Else
+			FlxG.keys.Update()
+			_touch[0].Update(TouchX(), TouchY())			
+		#End
 		
 		If (Not _game._debuggerUp Or Not _game._debugger.hasMouse) Then
 			FlxG.mouse.Update(MouseX(), MouseY())
@@ -464,6 +522,14 @@ Public
 			If (plugin.exists And plugin.visible) plugin.Draw()			
 			i+=1
 		Wend
+	End Function
+	
+	Function Joystick:Joystick(unit:Int = 0)
+		Return _joystick[unit]
+	End Function
+	
+	Function Touch:Touch(index:Int = 0)
+		Return _touch[index]
 	End Function
 
 End Class
