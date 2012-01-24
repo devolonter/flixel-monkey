@@ -22,6 +22,9 @@ Public
 		x = 0
 		y = 0
 		z = 0
+		_lastX = 0
+		_lastY = 0
+		_lastZ = 0
 	End Method
 	
 	Method Update:Void(x:Float, y:Float, z:Float)
