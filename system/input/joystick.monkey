@@ -79,19 +79,21 @@ Public
 		Return _z[index]
 	End Method
 	
-	Method RecordXYZ:XYZRecord[](data:XYZRecord[] = [])
+	Method RecordXYZ:XYZRecord[]()
 		Local i:Int = 0
+		Local data:XYZRecord[] 
 		
 		While (i < _COUNT_INDEXS)
-			If (_lastX[i] = x[i] And _lastY[i] = y[i] And _lastZ[i] = z[i]) Then
-				Exit
+			If (_lastX[i] = _x[i] And _lastY[i] = _y[i] And _lastZ[i] = _z[i]) Then
+				i += 1
+				Continue
 			End If
 			
-			_lastX[i] = x[i]
-			_lastY[i] = y[i]
-			_lastZ[i] = z[i]
+			_lastX[i] = _x[i]
+			_lastY[i] = _y[i]
+			_lastZ[i] = _z[i]
 			
-			If (data = Null) data = data.Resize(_COUNT_INDEXS)			
+			If (data.Length() = 0) data = data.Resize(_COUNT_INDEXS)		
 			data[i] = New XYZRecord(_lastX[i], _lastY[i], _lastZ[i])
 			
 			i += 1
@@ -102,13 +104,14 @@ Public
 	
 	Method PlaybackXYZ:Void(record:XYZRecord[])
 		Local xyz:XYZRecord
+		Local i:Int = 0
 	
 		While (i < _COUNT_INDEXS)
 			xyz = record[i]
 			
 			_x[i] = xyz.x
 			_y[i] = xyz.y
-			_z[i] = xyzz
+			_z[i] = xyz.z
 			
 			i += 1
 		Wend

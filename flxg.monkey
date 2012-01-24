@@ -210,22 +210,31 @@ Public
 	End Function
 	
 	Function ResetInput:Void()
-		#If TARGET = "html5" OR TARGET = "ios" OR TARGET = "android"
+		#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
 			accel.Reset()
 		#End				
 		
-		#If TARGET = "xna" OR TARGET = "glfw"
-			For Local i:Int = 0 Until _JOY_UNITS_COUNT
-				_joystick[i].Reset()
-			Next
+		#If TARGET = "xna" Or TARGET = "glfw"
+			If (Not FlxG.mobile) Then
+				For Local i:Int = 0 Until _JOY_UNITS_COUNT
+					_joystick[i].Reset()
+				Next
+			End If
 		#End
 		
-		#If TARGET = "ios" OR TARGET = "android"
+		#If TARGET = "ios" Or TARGET = "android"
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_touch[i].Reset()
 			Next
 		#Else
-			keys.Reset()
+			#If TARGET = "xna" Or TARGET = "html5"
+				If (Not FlxG.mobile) Then
+					keys.Reset()
+				End If
+			#Else
+				keys.Reset()
+			#End		
+			
 			_touch[0].Reset()
 		#End
 		
@@ -459,24 +468,33 @@ Public
 	End Function
 	
 	Function UpdateInput:Void()
-		#If TARGET = "html5" OR TARGET = "ios" OR TARGET = "android"
+		#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
 			accel.Update(AccelX(), AccelY(), AccelZ())
 		#End		
 		
-		#If TARGET = "xna" OR TARGET = "glfw"
-			For Local i:Int = 0 Until _JOY_UNITS_COUNT
-				_joystick[i].Update()
-			Next
+		#If TARGET = "xna" Or TARGET = "glfw"
+			If (Not FlxG.mobile) Then
+				For Local i:Int = 0 Until _JOY_UNITS_COUNT
+					_joystick[i].Update()
+				Next
+			End If
 		#End
 		
-		#If TARGET = "ios" OR TARGET = "android"
+		#If TARGET = "ios" Or TARGET = "android"
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_touch[i].Update(TouchX(i), TouchY(i))
 				
-				If (i <> _TOUCH_COUNT - 1 And Not _touch[i + 1].Pressed() And Not _touch[i + 1].JustReleased()) Exit
+				If (i <> _TOUCH_COUNT - 1 And Not _touch[i + 1].Used() And Not TouchDown(i + 1)) Exit
 			Next
 		#Else
-			FlxG.keys.Update()
+			#If TARGET = "xna" Or TARGET = "html5"
+				If (Not FlxG.mobile) Then
+					FlxG.keys.Update()
+				End If
+			#Else
+				FlxG.keys.Update()
+			#End
+			
 			_touch[0].Update(TouchX(), TouchY())			
 		#End
 		
@@ -530,6 +548,14 @@ Public
 	
 	Function Touch:Touch(index:Int = 0)
 		Return _touch[index]
+	End Function
+	
+	Function JoystickCount:Int()
+		Return _JOY_UNITS_COUNT
+	End Function
+	
+	Function TouchCount:Int()
+		Return _TOUCH_COUNT
 	End Function
 
 End Class

@@ -83,6 +83,10 @@ Public
 		Return False
 	End Method
 	
+	Method Used:Bool()
+		Return False
+	End Method
+	
 	Method Pressed:Bool(key:Int)
 		Return _map[key].current > 0
 	End Method
@@ -93,6 +97,10 @@ Public
 	
 	Method JustReleased:Bool(key:Int)
 		Return _map[key].current = -1
+	End Method
+	
+	Method Used:Bool(key:Int)
+		Return _map[key].current <> 0
 	End Method
 	
 	Method RecordKeys:Stack<KeyRecord>(data:Stack<KeyRecord> = Null)

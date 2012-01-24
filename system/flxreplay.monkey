@@ -3,6 +3,7 @@ Strict
 Import flixel.flxg
 Import replay.keyrecord
 Import replay.xyrecord
+Import replay.xyzrecord
 Import replay.framerecord
 
 Class FlxReplay
@@ -99,16 +100,60 @@ Public
 		Return output.Join("")
 	End Method
 	
-	Method RecordFrame:Void()	
-		Local keysRecord:Stack<KeyRecord> = FlxG.keys.RecordKeys()
-		Local mouseRecord:XYRecord = FlxG.mouse.RecordXY()
+	Method RecordFrame:Void()
+		Local accelRecord:XYZRecord
+		Local joystickRecord:Stack<XYZRecord[]> = New Stack<XYZRecord[]>()
+		Local touchRecord:Stack<XYRecord> = New Stack<XYRecord>()
+		Local keysRecord:Stack<KeyRecord>
+		Local mouseRecord:XYRecord
+		
+		#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
+			accelRecord = FlxG.accel.RecordXYZ()
+		#End		
+		
+		#If TARGET = "xna" Or TARGET = "glfw"
+			If (Not FlxG.mobile) Then
+				Local joyCount:Int = FlxG.JoystickCount()
+				Local joyXYZRecord:XYZRecord[]
+			
+				For Local i:Int = 0 Until joyCount
+					joystickRecord.Insert(i, FlxG.Joystick(i).RecordXYZ())
+					keysRecord = FlxG.Joystick(i).RecordKeys(keysRecord)
+				Next
+			End If
+		#End
+		
+		#If TARGET = "ios" Or TARGET = "android"
+			Local touchCount:Int = FlxG.TouchCount()
+		
+			For Local i:Int = 0 Until touchCount
+				touchRecord.Insert(i, FlxG.Touch(i).RecordXY())
+				keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
+							
+				If (i <> touchCount - 1 And Not FlxG.Touch(i + 1).Used()) Exit
+			Next
+		#Else
+			#If TARGET = "xna" Or TARGET = "html5"
+				If (Not FlxG.mobile) Then
+					keysRecord = FlxG.keys.RecordKeys(keysRecord)	
+				End If
+			#Else
+				keysRecord = FlxG.keys.RecordKeys(keysRecord)
+			#End
+			
+			touchRecord.Insert(0, FlxG.Touch(0).RecordXY())
+			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)		
+		#End
+		
+		mouseRecord = FlxG.mouse.RecordXY()
+		keysRecord = FlxG.mouse.RecordKeys(keysRecord)
 		
 		If (keysRecord = Null And mouseRecord = Null) Then
 			frame += 1
 			Return
 		End If
 		
-		_frames[frameCount] = (New FrameRecord()).Create(frame, keysRecord, mouseRecord)
+		_frames[frameCount] = (New FrameRecord()).Create(frame, keysRecord, mouseRecord, joystickRecord, touchRecord, accelRecord)
 		frame += 1
 		frameCount += 1
 		
@@ -138,6 +183,33 @@ Public
 		
 		If (fr.keys <> Null) FlxG.keys.PlaybackKeys(fr.keys)
 		If (fr.mouse <> Null) FlxG.mouse.PlaybackXY(fr.mouse)
+		
+		If (fr.joystick <> Null) Then
+			Local i:Int = 0
+			Local l:Int = FlxG.JoystickCount()
+			
+			While (i < l)
+				FlxG.Joystick(i).PlaybackXYZ(fr.joystick.Get(i))
+				i += 1
+			Wend			
+		End If
+		
+		If (fr.touch <> Null) Then
+			Local i:Int = 0
+			Local l:Int = FlxG.TouchCount()
+			Local tr:XYRecord
+			
+			While (i < l)
+				tr = fr.touch.Get(i)				
+				If (tr = Null) Exit	
+			
+				FlxG.Touch(i).PlaybackXY(tr)
+				
+				i += 1
+			Wend			
+		End If
+		
+		If (fr.accel <> Null) FlxG.accel.PlaybackXYZ(fr.accel)
 	End Method
 	
 	Method Rewind:Void()
