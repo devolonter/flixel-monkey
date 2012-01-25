@@ -102,8 +102,8 @@ Public
 	
 	Method RecordFrame:Void()
 		Local accelRecord:XYZRecord
-		Local joystickRecord:Stack<XYZRecord[]> = New Stack<XYZRecord[]>()
-		Local touchRecord:Stack<XYRecord> = New Stack<XYRecord>()
+		Local joystickRecord:Stack<XYZRecord[]>
+		Local touchRecord:Stack<XYRecord>
 		Local keysRecord:Stack<KeyRecord>
 		Local mouseRecord:XYRecord
 		
@@ -117,7 +117,13 @@ Public
 				Local joyXYZRecord:XYZRecord[]
 			
 				For Local i:Int = 0 Until joyCount
-					joystickRecord.Insert(i, FlxG.Joystick(i).RecordXYZ())
+					joyXYZRecord = FlxG.Joystick(i).RecordXYZ()
+					
+					If (joyXYZRecord.Length() > 0) Then
+						If (joystickRecord = Null) joystickRecord = New Stack<XYZRecord[]>()
+						joystickRecord.Insert(i, FlxG.Joystick(i).RecordXYZ())
+					End If				
+					
 					keysRecord = FlxG.Joystick(i).RecordKeys(keysRecord)
 				Next
 			End If
@@ -125,9 +131,16 @@ Public
 		
 		#If TARGET = "ios" Or TARGET = "android"
 			Local touchCount:Int = FlxG.TouchCount()
+			Local touchXYRecord:XYRecord
 		
 			For Local i:Int = 0 Until touchCount
-				touchRecord.Insert(i, FlxG.Touch(i).RecordXY())
+				touchXYRecord = FlxG.Touch(i).RecordXY()
+			
+				If (touchXYRecord <> Null) Then
+					If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
+					touchRecord.Insert(i, FlxG.Touch(i).RecordXY())
+				End If
+				
 				keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
 							
 				If (i <> touchCount - 1 And Not FlxG.Touch(i + 1).Used()) Exit
@@ -141,14 +154,20 @@ Public
 				keysRecord = FlxG.keys.RecordKeys(keysRecord)
 			#End
 			
-			touchRecord.Insert(0, FlxG.Touch(0).RecordXY())
-			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)		
+			Local touchXYRecord:XYRecord = FlxG.Touch(0).RecordXY()
+			
+			If (touchXYRecord <> Null) Then
+				If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
+				touchRecord.Insert(0, FlxG.Touch(0).RecordXY())
+			End If
+			
+			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
 		#End
 		
 		mouseRecord = FlxG.mouse.RecordXY()
 		keysRecord = FlxG.mouse.RecordKeys(keysRecord)
 		
-		If (keysRecord = Null And mouseRecord = Null) Then
+		If (keysRecord = Null And mouseRecord = Null And joystickRecord = Null And touchRecord = Null And accelRecord = Null) Then
 			frame += 1
 			Return
 		End If
@@ -186,7 +205,7 @@ Public
 		
 		If (fr.joystick <> Null) Then
 			Local i:Int = 0
-			Local l:Int = FlxG.JoystickCount()
+			Local l:Int = fr.joystick.Length()
 			
 			While (i < l)
 				FlxG.Joystick(i).PlaybackXYZ(fr.joystick.Get(i))

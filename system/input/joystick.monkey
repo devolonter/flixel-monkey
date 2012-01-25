@@ -15,12 +15,6 @@ Private
 	Field _y:Float[_COUNT_INDEXS]
 	
 	Field _z:Float[_COUNT_INDEXS]
-
-	Field _lastX:Float[_COUNT_INDEXS]
-	
-	Field _lastY:Float[_COUNT_INDEXS]
-	
-	Field _lastZ:Float[_COUNT_INDEXS]
 	
 Public	
 	Method New(unit:Int)
@@ -33,9 +27,6 @@ Public
 			_x[i] = 0
 			_y[i] = 0
 			_z[i] = 0
-			_lastX[i] = 0
-			_lastY[i] = 0
-			_lastZ[i] = 0
 			
 			i += 1
 		Wend
@@ -55,6 +46,18 @@ Public
 		Wend
 	End Method
 	
+	Method Reset:Void()
+		Local i:Int = 0
+		
+		While (i < _COUNT_INDEXS)
+			_x[i] = 0
+			_y[i] = 0
+			_z[i] = 0
+			
+			i += 1
+		Wend
+	End Method
+	
 	Method Pressed:Bool(button:Int)
 		Return Super.Pressed(button | unit Shl 4 | KEY_JOY0)
 	End Method
@@ -67,15 +70,27 @@ Public
 		Return Super.JustReleased(button | unit Shl 4 | KEY_JOY0)
 	End Method
 	
-	Method X:Float(index:Int = 0)
+	Method X:Float() Property
+		Return _x[0]
+	End Method
+	
+	Method Y:Float() Property
+		Return _y[0]
+	End Method
+	
+	Method Z:Float() Property
+		Return _z[0]
+	End Method
+	
+	Method X:Float(index:Int)
 		Return _x[index]
 	End Method
 	
-	Method Y:Float(index:Int = 0)
+	Method Y:Float(index:Int)
 		Return _y[index]
 	End Method
 	
-	Method Z:Float(index:Int = 0)
+	Method Z:Float(index:Int)
 		Return _z[index]
 	End Method
 	
@@ -83,18 +98,14 @@ Public
 		Local i:Int = 0
 		Local data:XYZRecord[] 
 		
-		While (i < _COUNT_INDEXS)
-			If (_lastX[i] = _x[i] And _lastY[i] = _y[i] And _lastZ[i] = _z[i]) Then
+		While (i < _COUNT_INDEXS)			
+			If (Abs(_x[i]) < 0.001 And Abs(_y[i]) < 0.001 And Abs(_z[i]) < 0.001) Then
 				i += 1
 				Continue
 			End If
 			
-			_lastX[i] = _x[i]
-			_lastY[i] = _y[i]
-			_lastZ[i] = _z[i]
-			
 			If (data.Length() = 0) data = data.Resize(_COUNT_INDEXS)		
-			data[i] = New XYZRecord(_lastX[i], _lastY[i], _lastZ[i])
+			data[i] = New XYZRecord(_x[i], _y[i], _z[i])
 			
 			i += 1
 		Wend
@@ -102,11 +113,12 @@ Public
 		Return data
 	End Method
 	
-	Method PlaybackXYZ:Void(record:XYZRecord[])
+	Method PlaybackXYZ:Void(record:XYZRecord[])	
 		Local xyz:XYZRecord
 		Local i:Int = 0
+		Local l:Int = record.Length()
 	
-		While (i < _COUNT_INDEXS)
+		While (i < l)
 			xyz = record[i]
 			
 			_x[i] = xyz.x

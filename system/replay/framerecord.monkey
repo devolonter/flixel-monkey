@@ -81,14 +81,13 @@ Class FrameRecord
 			
 			While (i < l)
 				If (i > 0) output.Push(",")
-				output.Push(i + ":")
+				output.Push(i)
 				
 				xyzArray = joystick.Get(i)
 				For Local index:Int = 0 Until xyzArray.Length()
 					If (xyzArray[index] = Null) xyzArray[index] = New XYZRecord(0, 0, 0)
-				
-					output.Push(":")
-					output.Push(xyzArray[index].x + ":" + xyzArray[index].y + ":" + xyzArray[index].z)
+
+					output.Push(":" + xyzArray[index].x + ":" + xyzArray[index].y + ":" + xyzArray[index].z)
 				Next
 			
 				i += 1			
@@ -183,7 +182,7 @@ Class FrameRecord
 			l = tmpArray.Length()
 			
 			While (i < l)
-				joyData = tmpArray[i].Split(":")	
+				joyData = tmpArray[i].Split(":")
 			
 				If (joyData.Length() > 3) Then
 					If (joystick = Null) joystick = New Stack<XYZRecord[]>()
@@ -192,8 +191,8 @@ Class FrameRecord
 					Local joyXYZRecord:XYZRecord[] = New XYZRecord[(jl - 1) / 3]
 					Local index:Int = 0
 					
-					For i = 1 Until jl Step 3
-						joyXYZRecord[index] = New XYZRecord(Float(joyData[i]), Float(joyData[i + 1]), Float(joyData[i + 2]))
+					For Local ji:Int = 1 Until jl Step 3						
+						joyXYZRecord[index] = New XYZRecord(Float(joyData[ji]), Float(joyData[ji + 1]), Float(joyData[ji + 2]))
 						index += 1
 					Next
 					
