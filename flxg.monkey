@@ -450,6 +450,8 @@ Public
 			_touch[i] = New Touch(i)
 		Next
 		
+		FlxG.mobile = IsMobile()
+		
 		FlxG.scores = New Stack<String>()		
 	End Function
 	

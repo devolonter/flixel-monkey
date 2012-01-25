@@ -24,4 +24,8 @@ public:
 		ShowCursor(false);
 	}
 	
+	static bool isMobile() {
+		return false;
+	}
+	
 };

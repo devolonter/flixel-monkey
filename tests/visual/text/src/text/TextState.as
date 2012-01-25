@@ -1,12 +1,23 @@
 package text
 {
+	import flash.system.Capabilities;
 	import org.flixel.*;
 	
 	public class TextState extends FlxState
 	{
 		override public function create():void
 		{
-			var helloWorld:FlxText = new FlxText(10, 10, 620, "Hello World!")
+			var os:String = Capabilities.version.substr(0, 3);
+			var isMobile:Boolean = false;
+			
+			if (os == "AND") {
+				isMobile = true;		
+			} else {
+				var mobileSystems:Array = new Array("Windows SmartPhone", "Windows PocketPC", "Windows Mobile");				
+				isMobile = (mobileSystems.indexOf(Capabilities.os) != -1)
+			}
+		
+			var helloWorld:FlxText = new FlxText(10, 10, 620, String(isMobile))
 			helloWorld.setFormat("system", 16, FlxG.WHITE, "center", FlxG.PINK)
 			add(helloWorld)
 			

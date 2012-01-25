@@ -14,10 +14,12 @@ Extern
 	Function SystemMillisecs:Int() = "flixel::systemMillisecs"
 	Function HideMouse:Void() = "flixel::hideMouse"
 	Function ShowMouse:Void() = "flixel::showMouse"
+	Function IsMobile:Bool() = "flixel::isMobile"
 #Else
 	Function SystemMillisecs:Int() = "flixel.systemMillisecs"
 	Function HideMouse:Void() = "flixel.hideMouse"
 	Function ShowMouse:Void() = "flixel.showMouse"
+	Function IsMobile:Bool() = "flixel.isMobile"
 #End
 
 Public

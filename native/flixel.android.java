@@ -11,4 +11,8 @@ class flixel {
 	public static void hideMouse() {
 	}
 	
+	public static boolean isMobile() {
+		return true;
+	}
+	
 }
