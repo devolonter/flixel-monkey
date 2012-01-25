@@ -121,7 +121,7 @@ Public
 					
 					If (joyXYZRecord.Length() > 0) Then
 						If (joystickRecord = Null) joystickRecord = New Stack<XYZRecord[]>()
-						joystickRecord.Insert(i, FlxG.Joystick(i).RecordXYZ())
+						joystickRecord.Insert(i, joyXYZRecord)
 					End If				
 					
 					keysRecord = FlxG.Joystick(i).RecordKeys(keysRecord)
@@ -138,7 +138,7 @@ Public
 			
 				If (touchXYRecord <> Null) Then
 					If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
-					touchRecord.Insert(i, FlxG.Touch(i).RecordXY())
+					touchRecord.Insert(i, touchXYRecord)
 				End If
 				
 				keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
@@ -158,7 +158,7 @@ Public
 			
 			If (touchXYRecord <> Null) Then
 				If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
-				touchRecord.Insert(0, FlxG.Touch(0).RecordXY())
+				touchRecord.Insert(0, touchXYRecord)
 			End If
 			
 			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)

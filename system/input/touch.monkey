@@ -11,16 +11,15 @@ Class Touch Extends XYDevice
 		Self.index = index
 	End Method
 
-	Method Pressed:Bool()
-		Print KEY_TOUCH0 + index
+	Method Pressed:Bool() Property
 		Return Super.Pressed(KEY_TOUCH0 + index)
 	End Method
 	
-	Method JustPressed:Bool()		
+	Method JustPressed:Bool() Property		
 		Return Super.JustPressed(KEY_TOUCH0 + index)
 	End Method
 	
-	Method JustReleased:Bool()
+	Method JustReleased:Bool() Property
 		Return Super.JustReleased(KEY_TOUCH0 + index)
 	End Method
 	

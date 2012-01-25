@@ -103,8 +103,8 @@ Public
 	Method _UpdateXY:Void()
 		Local camera:FlxCamera = FlxG.camera
 		
-		screenX = (x - camera.X) / (camera.Zoom * FlxG._deviceScaleFactorX)
-		screenY = (y - camera.Y) / (camera.Zoom * FlxG._deviceScaleFactorY)
+		screenX = (_globalScreenPosition.x - camera.X) / (camera.Zoom * FlxG._deviceScaleFactorX)
+		screenY = (_globalScreenPosition.y - camera.Y) / (camera.Zoom * FlxG._deviceScaleFactorY)
 		
 		Self.x = screenX + camera.scroll.x
 		Self.y = screenY + camera.scroll.y

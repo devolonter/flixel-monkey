@@ -99,7 +99,7 @@ Public
 		Local data:XYZRecord[] 
 		
 		While (i < _COUNT_INDEXS)			
-			If (Abs(_x[i]) < 0.001 And Abs(_y[i]) < 0.001 And Abs(_z[i]) < 0.001) Then
+			If (_x[i] = 0 And _y[i] = 0 And _z[i] = 0) Then
 				i += 1
 				Continue
 			End If
