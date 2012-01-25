@@ -219,7 +219,7 @@ Private
 				
 				If (_replayTimer <= 0) Then
 					If (_replayCallback <> Null) Then
-						_replayCallback.Invoke()
+						_replayCallback.OnReplayComplete()
 						_replayCallback = Null
 					Else
 						FlxG.StopReplay()
@@ -231,7 +231,7 @@ Private
 				FlxG.StopReplay()
 				
 				If (_replayCallback <> Null) Then
-					_replayCallback.Invoke()
+					_replayCallback.OnReplayComplete()
 					_replayCallback = Null
 				End If
 			End If

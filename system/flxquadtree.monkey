@@ -66,9 +66,9 @@ Private
 	
 	Global _useBothLists:Bool
 	
-	Global _processingCallback:FlxOverlapProcessCallback
+	Global _processingCallback:FlxOverlapProcessListener
 	
-	Global _notifyCallback:FlxOverlapNotifyCallback
+	Global _notifyCallback:FlxOverlapNotifyListener
 	
 	Global _iterator:FlxList
 	
@@ -177,7 +177,7 @@ Public
 		_notifyCallback = Null
 	End Method
 	
-	Method Load:Void(objectOrGroup1:FlxBasic, objectOrGroup2:FlxBasic = Null, notifyCallback:FlxOverlapNotifyCallback, processCallback:FlxOverlapProcessCallback = Null)
+	Method Load:Void(objectOrGroup1:FlxBasic, objectOrGroup2:FlxBasic = Null, notifyCallback:FlxOverlapNotifyListener, processCallback:FlxOverlapProcessListener = Null)
 		Add(objectOrGroup1, A_LIST)
 		
 		If (objectOrGroup2 <> Null) Then
@@ -457,12 +457,12 @@ Private
 			End If
 			
 			If (_objectHullX + _objectHullWidth > _checkObjectHullX And _objectHullX < _checkObjectHullX + _checkObjectHullWidth And _objectHullY + _objectHullHeight > _checkObjectHullY And _objectHullY < _checkObjectHullY + _checkObjectHullHeight) Then
-				If (_processingCallback = Null Or _processingCallback.OnOverlap(_object, checkObject)) Then
+				If (_processingCallback = Null Or _processingCallback.OnOverlapProcess(_object, checkObject)) Then
 					overlapProcessed = True
 				End If
 				
 				If (overlapProcessed And _notifyCallback <> Null) Then
-					_notifyCallback.OnOverlap(_object, checkObject)
+					_notifyCallback.OnOverlapNotify(_object, checkObject)
 				End If
 			End If
 			
@@ -474,14 +474,14 @@ Private
 	
 End Class
 
-Interface FlxOverlapNotifyCallback
+Interface FlxOverlapNotifyListener
 
-	Method OnOverlap:Void(object1:FlxObject, object2:FlxObject)
+	Method OnOverlapNotify:Void(object1:FlxObject, object2:FlxObject)
 
 End Interface
 
-Interface FlxOverlapProcessCallback
+Interface FlxOverlapProcessListener
 
-	Method OnOverlap:Bool(object1:FlxObject, object2:FlxObject)
+	Method OnOverlapProcess:Bool(object1:FlxObject, object2:FlxObject)
 
 End Interface

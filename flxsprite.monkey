@@ -56,7 +56,7 @@ Private
 	
 	Field _frameTimer:Float
 	
-	Field _callback:FlxAnimationCallback
+	Field _callback:FlxAnimationListener
 	
 	Field _facing:Int
 	
@@ -555,21 +555,15 @@ Private
 	Method _CalcFrame:Void()	
 		If (_callback <> Null) Then
 			If (_curAnim <> Null) Then
-				_callback.OnFrame(_curAnim.name, _curFrame, _curIndex)
+				_callback.OnAnimationFrame(_curAnim.name, _curFrame, _curIndex)
 			Else
-				_callback.OnFrame("", _curFrame, _curIndex)
+				_callback.OnAnimationFrame("", _curFrame, _curIndex)
 			End If
 		End If
 		dirty = False
 	End Method
 	
 End Class
-
-Interface FlxAnimationCallback
-	
-	Method OnFrame:Void(animName:String, frame:Int, index:Int)
-
-End Interface
 
 Private
 Class FlxSpriteClass Implements FlxClass

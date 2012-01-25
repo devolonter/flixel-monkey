@@ -19,3 +19,9 @@ Class FlxAnim
 	End Method
 
 End Class
+
+Interface FlxAnimationListener
+	
+	Method OnAnimationFrame:Void(animName:String, frame:Int, index:Int)
+
+End Interface

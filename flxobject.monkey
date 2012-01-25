@@ -908,21 +908,21 @@ Class FlxObjectXComparator Implements FlxBasicComparator
 	
 End Class
 
-Class FlxObjectSeparateX Implements FlxTilemapOverlapCallback
+Class FlxObjectSeparateX Implements FlxTilemapOverlapListener
 
 	Field invoker:FlxObject
 	
-	Method OnOverlap:Bool(object1:FlxObject, object2:FlxObject)
+	Method OnTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
 		invoker.SeparateX(object1, object2)
 	End Method
 
 End Class
 
-Class FlxObjectSeparateY Implements FlxTilemapOverlapCallback
+Class FlxObjectSeparateY Implements FlxTilemapOverlapListener
 
 	Field invoker:FlxObject
 	
-	Method OnOverlap:Bool(object1:FlxObject, object2:FlxObject)
+	Method OnTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
 		invoker.SeparateY(object1, object2)
 	End Method
 
