@@ -78,7 +78,7 @@ Private
 	
 	Field _fxFlashDuration:Float
 	
-	Field _fxFlashComplete:FlxFunction
+	Field _fxFlashComplete:FlxCameraFlashListener
 	
 	Field _fxFlashAlpha:Float
 	
@@ -86,7 +86,7 @@ Private
 	
 	Field _fxFadeDuration:Float
 	
-	Field _fxFadeComplete:FlxFunction
+	Field _fxFadeComplete:FlxCameraFadeListener
 	
 	Field _fxFadeAlpha:Float
 	
@@ -94,7 +94,7 @@ Private
 	
 	Field _fxShakeDuration:Float
 	
-	Field _fxShakeComplete:FlxFunction
+	Field _fxShakeComplete:FlxCameraShakeListener
 	
 	Field _fxShakeOffset:FlxPoint
 	
@@ -231,7 +231,7 @@ Public
 			_fxFlashAlpha -= FlxG.elapsed / _fxFlashDuration
 			
 			If (_fxFlashAlpha <= 0 And _fxFlashComplete <> Null) Then
-				_fxFlashComplete.Invoke()
+				_fxFlashComplete.OnFlashComplete()
 			End If
 		End If
 		
@@ -240,7 +240,7 @@ Public
 						
 			If (_fxFadeAlpha >= 1) Then
 				_fxFadeAlpha = 1				
-				If (_fxFadeComplete <> Null) _fxFadeComplete.Invoke()				
+				If (_fxFadeComplete <> Null) _fxFadeComplete.OnFadeComplete()				
 			End If
 		End If
 		
@@ -249,7 +249,7 @@ Public
 			If (_fxShakeDuration <= 0) Then
 				_fxShakeOffset.Make()
 								
-				If (_fxShakeComplete <> Null) _fxShakeComplete.Invoke()
+				If (_fxShakeComplete <> Null) _fxShakeComplete.OnShakeComplete()
 			Else
 				If (_fxShakeDirection = SHAKE_BOTH_AXES Or _fxShakeDirection = SHAKE_HORIZONTAL_ONLY) Then
 					_fxShakeOffset.x = (FlxG.Random() * _fxShakeIntensity * _width * 2 - _fxShakeIntensity * _width) * _zoom		
@@ -311,7 +311,7 @@ Public
 		Update()
 	End Method	
 	
-	Method Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)	
+	Method Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxCameraFlashListener = Null, force:Bool = False)	
 		If (Not force And _fxFlashAlpha > 0) Return
 		
 		_fxFlashColor = color		
@@ -321,7 +321,7 @@ Public
 		_fxFlashAlpha = 1				
 	End Method
 	
-	Method Fade:Void(color:Int = FlxG.BLACK, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)
+	Method Fade:Void(color:Int = FlxG.BLACK, duration:Float = 1, onComplete:FlxCameraFadeListener = Null, force:Bool = False)
 		If (Not force And _fxFadeAlpha > 0)	Return
 		
 		_fxFadeColor = color
@@ -331,7 +331,7 @@ Public
 		_fxFadeAlpha = _MIN_FLOAT_VALUE
 	End Method
 	
-	Method Shake:Void(intensity:Float = 0.05, duration:Float = 0.5, onComplete:FlxFunction = Null, force:Bool = True, direction:Int = SHAKE_BOTH_AXES)
+	Method Shake:Void(intensity:Float = 0.05, duration:Float = 0.5, onComplete:FlxCameraShakeListener = Null, force:Bool = True, direction:Int = SHAKE_BOTH_AXES)
 		If (Not force And (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0)) Return
 		
 		_fxShakeIntensity = intensity
@@ -522,6 +522,24 @@ Public
 	End Method	
 
 End Class
+
+Interface FlxCameraFlashListener
+	
+	Method OnFlashComplete:Void()
+
+End Interface
+
+Interface FlxCameraFadeListener
+	
+	Method OnFadeComplete:Void()
+
+End Interface
+
+Interface FlxCameraShakeListener
+	
+	Method OnShakeComplete:Void()
+
+End Interface
 
 Private
 Class FlxCameraClass Implements FlxClass

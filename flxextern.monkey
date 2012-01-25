@@ -29,9 +29,3 @@ Interface FlxClass
 	Method InstanceOf:Bool(object:Object)
 
 End Interface
-
-Interface FlxFunction
-	
-	Method Invoke:Void()
-
-End Interface

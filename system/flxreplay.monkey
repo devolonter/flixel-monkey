@@ -245,3 +245,9 @@ Private
 	End Method
 
 End Class
+
+Interface FlxReplayListener
+	
+	Method OnReplayComplete:Void()
+
+End Interface

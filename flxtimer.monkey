@@ -16,7 +16,7 @@ Class FlxTimer
 	Field finished:Bool
 	
 Private
-	Field _callback:FlxTimerCallback
+	Field _callback:FlxTimerListener
 	
 	Field _timeCounter:Float
 	
@@ -48,11 +48,11 @@ Public
 			_loopsCounter += 1
 			If (loops > 0 And _loopsCounter >= loops) Stop()
 			
-			If (_callback <> Null) _callback.OnTimer(Self)		
+			If (_callback <> Null) _callback.OnTimerTick(Self)		
 		Wend
 	End Method
 	
-	Method Start:FlxTimer(time:Float = 1, loops:Int = 1, callback:FlxTimerCallback = Null)
+	Method Start:FlxTimer(time:Float = 1, loops:Int = 1, callback:FlxTimerListener = Null)
 		Local timerManager:TimerManager = Manager		
 		If (timerManager <> Null) timerManager.Add(Self)
 		
@@ -103,8 +103,8 @@ Public
 	
 End Class
 
-Interface FlxTimerCallback
+Interface FlxTimerListener
 	
-	Method OnTimer:Void(timer:FlxTimer)
+	Method OnTimerTick:Void(timer:FlxTimer)
 
 End Interface

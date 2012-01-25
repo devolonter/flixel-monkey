@@ -14,6 +14,7 @@ Import system.input.mouse
 Import system.input.touch
 Import system.flxresourcesmanager
 Import system.flxquadtree
+Import system.flxreplay
 
 Import plugin.timermanager
 Import plugin.debugpathdisplay
@@ -147,7 +148,7 @@ Public
 	End Function
 	#End
 	
-	Function LoadReplay:Void(data:String, state:FlxState = Null, cancelKeys:Int[] = [], timeout:Float = 0, callback:FlxFunction = Null)
+	Function LoadReplay:Void(data:String, state:FlxState = Null, cancelKeys:Int[] = [], timeout:Float = 0, callback:FlxReplayListener = Null)
 		_game._replay.Load(data)
 		If (state = Null) Then
 			FlxG.ResetGame()
@@ -306,7 +307,7 @@ Public
 		FlxG.camera = FlxG.AddCamera(newCamera)	
 	End Function
 	
-	Function Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)
+	Function Flash:Void(color:Int = FlxG.WHITE, duration:Float = 1, onComplete:FlxCameraFlashListener = Null, force:Bool = False)
 		Local i:Int = 0
 		Local l:Int = FlxG.cameras.Length()
 				
@@ -316,7 +317,7 @@ Public
 		Wend
 	End Function
 	
-	Function Fade:Void(color:Int = FlxG.BLACK, duration:Float = 1, onComplete:FlxFunction = Null, force:Bool = False)
+	Function Fade:Void(color:Int = FlxG.BLACK, duration:Float = 1, onComplete:FlxCameraFadeListener = Null, force:Bool = False)
 		Local i:Int = 0
 		Local l:Int = FlxG.cameras.Length()
 				
@@ -326,7 +327,7 @@ Public
 		Wend
 	End Function
 	
-	Function Shake:Void(intensity:Float = 0.05, duration:Float = 0.5, onComplete:FlxFunction = Null, force:Bool = True, direction:Int = FlxCamera.SHAKE_BOTH_AXES)
+	Function Shake:Void(intensity:Float = 0.05, duration:Float = 0.5, onComplete:FlxCameraShakeListener = Null, force:Bool = True, direction:Int = FlxCamera.SHAKE_BOTH_AXES)
 		Local i:Int = 0
 		Local l:Int = FlxG.cameras.Length()
 				

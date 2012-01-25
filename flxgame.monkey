@@ -43,7 +43,7 @@ Class FlxGame extends App
 	
 	Field _replayTimer:Int
 	
-	Field _replayCallback:FlxFunction
+	Field _replayCallback:FlxReplayListener
 
 Private	
 	Field _iState:FlxClass
@@ -199,7 +199,7 @@ Private
 				While (i < l) 
 					If (KeyDown(_replayCancelKeys[i])) Then
 						If (_replayCallback <> Null) Then
-							_replayCallback.Invoke()
+							_replayCallback.OnReplayComplete()
 							_replayCallback = Null
 						Else
 							FlxG.StopReplay()
