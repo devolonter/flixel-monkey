@@ -5,7 +5,7 @@ Import flixel
 Import playership
 Import alien
 
-Class PlayState Extends FlxState Implements FlxQuadTreeOverlapNotifyCallback
+Class PlayState Extends FlxState Implements FlxOverlapNotifyCallback
 
 	Global _CLASS:FlxClass = New PlayStateClass()
 	

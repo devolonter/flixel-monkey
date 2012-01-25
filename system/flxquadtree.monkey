@@ -66,9 +66,9 @@ Private
 	
 	Global _useBothLists:Bool
 	
-	Global _processingCallback:FlxQuadTreeOverlapProcessCallback
+	Global _processingCallback:FlxOverlapProcessCallback
 	
-	Global _notifyCallback:FlxQuadTreeOverlapNotifyCallback
+	Global _notifyCallback:FlxOverlapNotifyCallback
 	
 	Global _iterator:FlxList
 	
@@ -177,7 +177,7 @@ Public
 		_notifyCallback = Null
 	End Method
 	
-	Method Load:Void(objectOrGroup1:FlxBasic, objectOrGroup2:FlxBasic = Null, notifyCallback:FlxQuadTreeOverlapNotifyCallback, processCallback:FlxQuadTreeOverlapProcessCallback = Null)
+	Method Load:Void(objectOrGroup1:FlxBasic, objectOrGroup2:FlxBasic = Null, notifyCallback:FlxOverlapNotifyCallback, processCallback:FlxOverlapProcessCallback = Null)
 		Add(objectOrGroup1, A_LIST)
 		
 		If (objectOrGroup2 <> Null) Then
@@ -474,13 +474,13 @@ Private
 	
 End Class
 
-Interface FlxQuadTreeOverlapNotifyCallback
+Interface FlxOverlapNotifyCallback
 
 	Method OnOverlap:Void(object1:FlxObject, object2:FlxObject)
 
 End Interface
 
-Interface FlxQuadTreeOverlapProcessCallback
+Interface FlxOverlapProcessCallback
 
 	Method OnOverlap:Bool(object1:FlxObject, object2:FlxObject)
 

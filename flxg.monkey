@@ -353,7 +353,7 @@ Public
 		FlxG._bgColor.SetARGB(color)
 	End Function
 	
-	Function Overlap:Bool(objectOrGroup1:FlxBasic = Null, objectOrGroup2:FlxBasic, notifyCallback:FlxQuadTreeOverlapNotifyCallback = Null, processCallback:FlxQuadTreeOverlapProcessCallback = Null)
+	Function Overlap:Bool(objectOrGroup1:FlxBasic = Null, objectOrGroup2:FlxBasic, notifyCallback:FlxOverlapNotifyCallback = Null, processCallback:FlxOverlapProcessCallback = Null)
 		If (objectOrGroup1 = Null) objectOrGroup1 = FlxG.State()
 		If (objectOrGroup2 = objectOrGroup1) objectOrGroup2 = Null
 		
