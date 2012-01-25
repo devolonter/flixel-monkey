@@ -152,8 +152,10 @@ Public
 				End If
 			#Else
 				keysRecord = FlxG.keys.RecordKeys(keysRecord)
-			#End
-			
+			#End			
+		#End
+		
+		#If TARGET = "html5" Or TARGET = "xna" Or TARGET = "glfw"
 			Local touchXYRecord:XYRecord = FlxG.Touch(0).RecordXY()
 			
 			If (touchXYRecord <> Null) Then
@@ -162,7 +164,7 @@ Public
 			End If
 			
 			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
-		#End
+		#End 
 		
 		mouseRecord = FlxG.mouse.RecordXY()
 		keysRecord = FlxG.mouse.RecordKeys(keysRecord)
