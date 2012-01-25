@@ -129,7 +129,7 @@ Public
 									
 			i+=1
 		Wend
-		
+
 		FlxG.mouse.Draw()		
 								
 		Return 0	

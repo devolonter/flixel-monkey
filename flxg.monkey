@@ -226,16 +226,15 @@ Public
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_touch[i].Reset()
 			Next
-		#Else
-			#If TARGET = "xna" Or TARGET = "html5"
-				If (Not FlxG.mobile) Then
-					keys.Reset()
-				End If
-			#Else
+		#ElseIf TARGET = "xna" Or TARGET = "html5"
+			If (Not FlxG.mobile) Then
 				keys.Reset()
-			#End		
+			End If
 			
 			_touch[0].Reset()
+		#Else
+			keys.Reset()
+			_touch[0].Reset()			
 		#End
 		
 		mouse.Reset()
@@ -486,16 +485,15 @@ Public
 				
 				If (i <> _TOUCH_COUNT - 1 And Not _touch[i + 1].Used() And Not TouchDown(i + 1)) Exit
 			Next
-		#Else
-			#If TARGET = "xna" Or TARGET = "html5"
-				If (Not FlxG.mobile) Then
-					FlxG.keys.Update()
-				End If
-			#Else
+		#ElseIf TARGET = "xna" Or TARGET = "html5"
+			If (Not FlxG.mobile) Then
 				FlxG.keys.Update()
-			#End
+			End If
 			
-			_touch[0].Update(TouchX(), TouchY())			
+			_touch[0].Update(TouchX(), TouchY())
+		#Else
+			FlxG.keys.Update()				
+			_touch[0].Update(TouchX(), TouchY())
 		#End
 		
 		If (Not _game._debuggerUp Or Not _game._debugger.hasMouse) Then

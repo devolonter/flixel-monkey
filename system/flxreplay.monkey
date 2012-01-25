@@ -145,14 +145,12 @@ Public
 							
 				If (i <> touchCount - 1 And Not FlxG.Touch(i + 1).Used()) Exit
 			Next
+		#ElseIf TARGET = "xna" Or TARGET = "html5"
+			If (Not FlxG.mobile) Then
+				keysRecord = FlxG.keys.RecordKeys(keysRecord)	
+			End If
 		#Else
-			#If TARGET = "xna" Or TARGET = "html5"
-				If (Not FlxG.mobile) Then
-					keysRecord = FlxG.keys.RecordKeys(keysRecord)	
-				End If
-			#Else
-				keysRecord = FlxG.keys.RecordKeys(keysRecord)
-			#End			
+			keysRecord = FlxG.keys.RecordKeys(keysRecord)		
 		#End
 		
 		#If TARGET = "html5" Or TARGET = "xna" Or TARGET = "glfw"

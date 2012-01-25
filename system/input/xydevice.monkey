@@ -39,8 +39,8 @@ Public
 		y = 0
 		screenX = 0
 		screenY = 0
-		_lastX = 0
-		_lastY = 0
+		_lastX = -1
+		_lastY = -1
 		_point = New FlxPoint()
 		_globalScreenPosition = New FlxPoint()	
 	End Method

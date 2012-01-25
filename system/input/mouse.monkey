@@ -41,15 +41,39 @@ Public
 	End Method
 	
 	Method Left:Bool() Property
-		Return Pressed(MOUSE_LEFT)	
+		Return Pressed(KEY_LMB)	
 	End Method
 	
 	Method Right:Bool() Property
-		Return Pressed(MOUSE_RIGHT)	
+		Return Pressed(KEY_RMB)	
 	End Method
 	
 	Method Middle:Bool() Property
-		Return Pressed(MOUSE_MIDDLE)	
+		Return Pressed(KEY_MMB)	
+	End Method
+	
+	Method Pressed:Bool()
+		Return Super.Pressed(KEY_LMB)
+	End Method
+	
+	Method JustPressed:Bool()
+		Return Super.JustPressed(KEY_LMB)
+	End Method
+	
+	Method JustReleased:Bool()
+		Return Super.JustReleased(KEY_LMB)
+	End Method
+	
+	Method Pressed:Bool(button:Int)
+		Return Super.Pressed(KEY_LMB + button)
+	End Method
+	
+	Method JustPressed:Bool(button:Int)
+		Return Super.JustPressed(KEY_LMB + button)
+	End Method
+	
+	Method JustReleased:Bool(button:Int)
+		Return Super.JustReleased(KEY_LMB + button)
 	End Method
 	
 	Method Show:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)
@@ -122,8 +146,8 @@ Public
 	End Method
 	
 	Method _UpdateXY:Void()	
-		_cursor.x = _globalScreenPosition.x
-		_cursor.y = _globalScreenPosition.y
+		_cursor.x = _globalScreenPosition.x / FlxG._deviceScaleFactorX
+		_cursor.y = _globalScreenPosition.y / FlxG._deviceScaleFactorY
 		
 		Super._UpdateXY()
 	End Method
