@@ -11,7 +11,7 @@ End Function
 Class AngelFont Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, TextState._CLASS)	
+		Super.New(640, 480, TextState._class)	
 	End Method
 	
 	Method OnContentInit:Void()
@@ -35,7 +35,7 @@ End Class
 
 Class TextState Extends FlxState
 
-	Global _CLASS:FlxClass = new TextStateClass()
+	Global _class:FlxClass = new TextStateClass()
 	
 	Method Create:Void()		
 		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!")	

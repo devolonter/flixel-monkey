@@ -23,11 +23,11 @@ basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
 
-	Global _CLASS:FlxClass = new FlxObjectClass()
+	Global _class:FlxClass = new FlxObjectClass()
 	
-	Global X_COMPARATOR:FlxBasicComparator = new FlxObjectXComparator()
+	Global XComparator:FlxBasicComparator = new FlxObjectXComparator()
 	
-	Global Y_COMPARATOR:FlxBasicComparator = new FlxObjectYComparator()
+	Global YComparator:FlxBasicComparator = new FlxObjectYComparator()
 	
 	'summary:Generic value for "left" Used by facing, allowCollisions, and touching.
 	Const LEFT:Int = 1

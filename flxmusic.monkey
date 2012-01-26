@@ -3,6 +3,7 @@ Strict
 Import mojo.audio
 
 Import flxsound
+Import system.flxassetsmanager
 
 Class FlxMusic Extends FlxSound
 
@@ -18,7 +19,7 @@ Public
 	Method Load:FlxMusic(music:String, looped:Bool = False, autoDestroy:Bool = True)
 		Stop()
 		_CreateSound()
-		_filename = music
+		_filename = FlxAssetsManager.GetMusicPath(music)
 		_looped = looped
 		_UpdateTransform()
 		exists = True

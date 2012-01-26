@@ -11,7 +11,7 @@ Import flixel.plugin.debugpathdisplay
 
 Class FlxPath
 
-	Global _CLASS:FlxClass = new FlxObjectClass()
+	Global _class:FlxClass = new FlxObjectClass()
 
 	Field nodes:Stack<FlxPoint>
 	
@@ -213,7 +213,7 @@ Public
 	End Method
 	
 	Function Manager:DebugPathDisplay()
-		Return DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._CLASS))
+		Return DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._class))
 	End Function
 
 End Class

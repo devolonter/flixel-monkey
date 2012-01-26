@@ -12,7 +12,7 @@ Import system.flxassetsmanager
 
 Class FlxText Extends FlxSprite
 
-	Global _CLASS:FlxClass = new FlxTextClass()
+	Global _class:FlxClass = new FlxTextClass()
 	
 	Const ALIGN_LEFT:Float = 0
 	Const ALIGN_RIGHT:Float = 1

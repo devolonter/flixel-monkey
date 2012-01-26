@@ -11,6 +11,7 @@ Private
 	Global _fonts:StringMap<FlxFont>[] = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
 	Global _images:StringMap<String>
 	Global _sounds:StringMap<String>
+	Global _music:StringMap<String>
 	Global _cursors:StringMap<String>	
 	
 Public	
@@ -21,7 +22,8 @@ Public
 		Next
 		
 		_images = New StringMap<String>()
-		_sounds= New StringMap<String>()
+		_sounds = New StringMap<String>()
+		_music = New StringMap<String>()
 		_cursors = New StringMap<String>()
 	End Function
 	
@@ -69,6 +71,18 @@ Public
 	
 	Function GetSoundPath:String(name:String)
 		Return _sounds.Get(name)
+	End Function
+	
+	Function AddMusic:Void(name:String, path:String)
+		_music.Set(name, path)
+	End Function
+	
+	Function RemoveMusic:Void(name:String)
+		_music.Remove(name)
+	End Function
+	
+	Function GetMusicPath:String(name:String)
+		Return _music.Get(name)
 	End Function
 	
 	Function AddCursor:Void(cursor:String, path:String)

@@ -8,6 +8,8 @@ Import flxu
 Import system.flxassetsmanager
 
 Class FlxSound Extends FlxBasic
+	
+	Global _class:FlxSoundClass = New FlxSoundClass()
 
 	Field x:Float
 	
@@ -313,4 +315,17 @@ Private
 		Return -1
 	End Method	
 
+End Class
+
+Private
+Class FlxSoundClass Implements FlxClass
+
+	Method CreateInstance:Object()
+		Return New FlxSound()
+	End Method
+	
+	Method InstanceOf:Bool(object:Object)
+		Return (FlxSound(object) <> Null)
+	End Method
+	
 End Class

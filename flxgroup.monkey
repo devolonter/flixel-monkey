@@ -13,7 +13,7 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
-	Global _CLASS:FlxClass = New FlxGroupClass()
+	Global _class:FlxClass = New FlxGroupClass()
 
 	#Rem
 	summary:See detail.
@@ -286,15 +286,15 @@ Public
 	
 	#Rem
 	summary:Call this function to sort the group according to a particular value and order. 
-	For example, to sort game objects for Zelda-style overlaps you might call myGroup.Sort(FlxObject.Y_COMPARATOR, FlxGroup.ASCENDING) at the bottom of your [a flxstate.monkey.html]FlxState.Update()[/a] override. To sort all existing objects after a big explosion or bomb attack, you might call myGroup.Sort(FlxBasic.EXISTS_COMPARATOR, FlxGroup.DESCENDING)
+	For example, to sort game objects for Zelda-style overlaps you might call myGroup.Sort(FlxObject.YComparator, FlxGroup.ASCENDING) at the bottom of your [a flxstate.monkey.html]FlxState.Update()[/a] override. To sort all existing objects after a big explosion or bomb attack, you might call myGroup.Sort(FlxBasic.ExistsComparator, FlxGroup.DESCENDING)
 	Params:
 	[list]
-	[*]comparator:FlxBasicComparator - The FlxBasicComparator you want to sort on. Default value is FlxObject.Y_COMPARATOR.
+	[*]comparator:FlxBasicComparator - The FlxBasicComparator you want to sort on. Default value is FlxObject.YComparator.
 	[*]order:Bool - A FlxGroup constant that defines the sort order. Possible values are ASCENDING and DESCENDING. Default value is ASCENDING.
 	[/list]
 	Return the new object.
 	#End	
-	Method Sort:Void(comparator:FlxBasicComparator = FlxObject.Y_COMPARATOR, order:Bool = ASCENDING)
+	Method Sort:Void(comparator:FlxBasicComparator = FlxObject.YComparator, order:Bool = ASCENDING)
 		_sortComparator = comparator
 		_sortDescending = order
 		_QSort(0, _length - 1)

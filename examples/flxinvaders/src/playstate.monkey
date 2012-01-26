@@ -7,7 +7,7 @@ Import alien
 
 Class PlayState Extends FlxState Implements FlxOverlapNotifyCallback
 
-	Global _CLASS:FlxClass = New PlayStateClass()
+	Global _class:FlxClass = New PlayStateClass()
 	
 	Field caption:FlxText
 	
@@ -107,7 +107,7 @@ Class PlayState Extends FlxState Implements FlxOverlapNotifyCallback
 	End Method
 	
 	Method GetClass:FlxClass()
-		Return _CLASS
+		Return _class
 	End Method
 
 End Class

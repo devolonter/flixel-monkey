@@ -94,7 +94,7 @@ Public
 	End Method
 	
 	Function Manager:TimerManager()
-		Return TimerManager(FlxG.GetPlugin(TimerManager._CLASS))				
+		Return TimerManager(FlxG.GetPlugin(TimerManager._class))				
 	End Function
 	
 	Method ToString:String()

@@ -18,15 +18,15 @@ Class FlxBasic
 	
 	Global _VISIBLECOUNT:Int	
 	
-	Global _CLASS:FlxClass = New FlxBasicClass()
+	Global _class:FlxClass = New FlxBasicClass()
 	
-	Global EXISTS_COMPARATOR:FlxBasicComparator = new FlxBasicExistsComparator()
+	Global ExistsComparator:FlxBasicComparator = new FlxBasicExistsComparator()
 	
-	Global ACTIVE_COMPARATOR:FlxBasicComparator = new FlxBasicActiveComparator()
+	Global ActiveComparator:FlxBasicComparator = new FlxBasicActiveComparator()
 	
-	Global VISIBLE_COMPARATOR:FlxBasicComparator = new FlxBasicVisibleComparator()
+	Global VisibleComparator:FlxBasicComparator = new FlxBasicVisibleComparator()
 	
-	Global ALIVE_COMPARATOR:FlxBasicComparator = new FlxBasicAliveComparator()
+	Global AliveComparator:FlxBasicComparator = new FlxBasicAliveComparator()
 
 	#Rem
 	summary:IDs seem like they could be pretty useful, huh?

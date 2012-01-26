@@ -3,8 +3,12 @@ Strict
 Import mojo
 
 Import flxextern
+Import flxbasic
 Import flxgame
 Import flxcamera
+Import flxobject
+Import flxsound
+Import flxmusic
 Import flxu
 
 Import system.input.accel
@@ -82,6 +86,8 @@ Class FlxG
 	Global keys:Keyboard
 	
 	Global mouse:Mouse
+	
+	Global music:FlxMusic
 	
 	Global sounds:FlxGroup
 	
@@ -245,6 +251,25 @@ Public
 		#End
 		
 		mouse.Reset()
+	End Function
+	
+	Function PlayMusic:Void(music:String, volume:Float = 1.0)
+		If (FlxG.music = Null) Then
+			FlxG.music = New FlxMusic()
+			
+		ElseIf (FlxG.music.active) Then
+			FlxG.music.Stop()
+		End If
+		
+		FlxG.music.Load(music, True)
+		FlxG.music.Volume = volume
+		FlxG.music.survive = True
+		
+		FlxG.music.Play()
+	End Function
+	
+	Function LoadSound:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = False, autoPlay:Bool = False)
+		Local s:FlxSound = FlxSound(sounds.Recycle())
 	End Function
 	
 	Function CheckBitmapCache:Bool(key:String)
@@ -476,7 +501,7 @@ Public
 		FlxG.globalSeed = Rnd(1, 10000000)
 		FlxG.worldBounds = New FlxRect(-10, -10, FlxG.width + 20, FlxG.height + 20)
 		FlxG.worldDivisions = 6
-		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._CLASS))
+		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._class))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
 	End Function
 	
