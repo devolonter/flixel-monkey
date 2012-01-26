@@ -23,6 +23,8 @@ Class FlxSound Extends FlxBasic
 	
 	Field _paused:Bool
 	
+	Field _looped:Bool
+	
 Private
 	Const _CHANNELS_COUNT:Int = 32
 
@@ -38,9 +40,7 @@ Private
 	
 	Field _volume:Float
 	
-	Field _volumeAdjust:Float
-	
-	Field _looped:Bool
+	Field _volumeAdjust:Float	
 	
 	Field _target:FlxObject
 	
@@ -67,8 +67,10 @@ Public
 	Method Destroy:Void()
 		Kill()
 		
-		_sound.Discard()
-		_sound = Null		
+		If (_sound <> Null) Then
+			_sound.Discard()
+			_sound = Null
+		End If	
 		
 		If (_channel >= 0) Then
 			_usedChannels[_channel] = False
@@ -185,7 +187,7 @@ Public
 		
 		active = True
 		_paused = False
-	End Method	
+	End Method
 	
 	Method Resume:Void()
 		If (Not _paused Or _channel < 0) Return
@@ -286,19 +288,6 @@ Public
 		autoDestroy = False
 	End Method
 	
-Private	
-	Method _GetFreeChannel:Int()
-		Local i:Int = 0
-		
-		While (i < _CHANNELS_COUNT)
-			If (Not _usedChannels[i]) Return i
-			i += 1
-		Wend
-		
-		FlxG.Log("All channels occupied!")
-		Return -1
-	End Method
-	
 	Method _UpdateTransform:Void()
 		If (Not FlxG.mute) Then
 			_soundVolume = FlxG._volume * _volume * _volumeAdjust
@@ -310,5 +299,18 @@ Private
 			_SetTransform(_soundVolume, _soundPan)
 		End If
 	End Method
+	
+Private	
+	Method _GetFreeChannel:Int()
+		Local i:Int = 0
+		
+		While (i < _CHANNELS_COUNT)
+			If (Not _usedChannels[i]) Return i
+			i += 1
+		Wend
+		
+		FlxG.Log("All channels occupied!")
+		Return -1
+	End Method	
 
 End Class
