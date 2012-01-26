@@ -273,6 +273,11 @@ Public
 	
 	Function ClearBitmapCache:Void()
 		If (_cache = Null) _cache = New FlxResourcesManager<Image>()
+		
+		For Local image:Image = EachIn _cache.Resources.Values()
+			If (image <> Null) image.Discard()
+		Next
+		
 		_cache.Clear()
 	End Function
 	
