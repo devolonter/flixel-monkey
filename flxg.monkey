@@ -67,6 +67,8 @@ Class FlxG
 	
 	Global plugins:Stack<FlxBasic>
 	
+	Global volumeHandler:FlxVolumeChangeListener
+	
 	Global elapsed:Float
 	
 	Global timeScale:Float
@@ -269,7 +271,98 @@ Public
 	End Function
 	
 	Function LoadSound:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = False, autoPlay:Bool = False)
-		Local s:FlxSound = FlxSound(sounds.Recycle())
+		Local s:FlxSound = FlxSound(sounds.Recycle(FlxSound._class))
+		
+		s.Load(sound, looped, autoDestroy)
+		s.Volume = volume		
+		If (autoPlay) s.Play()
+				
+		Return s
+	End Function
+	
+	Function Play:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = True)
+		Return FlxG.LoadSound(sound, volume, looped, autoDestroy, True)
+	End Function
+	
+	Function Volume:Float()
+		Return _volume
+	End Function
+	
+	Function Volume:Void(volume:Float)
+		_volume = volume
+		
+		If (_volume < 0) Then
+			_volume = 0
+		ElseIf (_volume > 1) Then
+			_volume = 1
+		End If
+		
+		If (volumeHandler <> Null) Then
+			If (FlxG.mute) Then
+				volumeHandler.OnVolumeChange(0)
+			Else
+				volumeHandler.OnVolumeChange(_volume)
+			End If
+		End If
+	End Function
+	
+	Function DestroySounds:Void(forceDestroy:Bool = False)
+		If (music <> Null And (forceDestroy Or Not music.survive)) Then
+			music.Destroy()
+			music = Null
+		End If
+		
+		Local sound:FlxSound
+		
+		For Local basic:FlxSound = EachIn sounds
+			sound = FlxSound(basic)
+			
+			If (sound <> Null And (forceDestroy Or Not sound.survive)) Then
+				sound.Destroy()
+			End If
+		Next
+	End Function
+	
+	Function UpdateSounds:Void()
+		If (music <> Null And music.active) Then
+			music.Update()
+		End If
+		
+		If (sounds <> Null And sounds.active) Then
+			sounds.Update()
+		End If
+	End Function
+	
+	Function PauseSounds:Void()
+		If (music <> Null And music.exists And music.active) Then
+			music.Pause()
+		End If
+		
+		Local sound:FlxSound
+		
+		For Local basic:FlxSound = EachIn sounds
+			sound = FlxSound(basic)
+			
+			If (sound <> Null And sound.exists And sound.active) Then
+				sound.Pause()
+			End If
+		Next
+	End Function
+	
+	Function ResumeSounds:Void()
+		If (music <> Null And music.exists) Then
+			music.Play()
+		End If
+		
+		Local sound:FlxSound
+		
+		For Local basic:FlxSound = EachIn sounds
+			sound = FlxSound(basic)
+			
+			If (sound <> Null And sound.exists) Then
+				sound.Resume()
+			End If
+		Next
 	End Function
 	
 	Function CheckBitmapCache:Bool(key:String)
@@ -465,6 +558,11 @@ Public
 		FlxG.width = width
 		FlxG.height = height
 		
+		FlxG.mute = False
+		FlxG._volume = .5
+		FlxG.sounds = New FlxGroup()
+		FlxG.volumeHandler = Null
+		
 		FlxG.ClearBitmapCache()		
 		
 		FlxCamera.defaultZoom = zoom
@@ -494,6 +592,7 @@ Public
 	Function Reset:Void()
 		FlxG.ClearBitmapCache()
 		FlxG.ResetInput()
+		FlxG.DestroySounds(True)
 		FlxG.scores.Clear()
 		FlxG.score = 0	
 		FlxG.timeScale = 1

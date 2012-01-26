@@ -152,7 +152,7 @@ Public
 		_sound = LoadSound(FlxAssetsManager.GetSoundPath(sound))
 		_looped = looped
 		_UpdateTransform()
-		exists = True
+		If (_sound <> Null) exists = True		
 		Return Self
 	End Method
 	
@@ -176,7 +176,10 @@ Public
 		
 		If (_channel < 0)  Then
 			_channel = _GetFreeChannel()
-			If (_channel < 0) Return
+			If (_channel < 0) Then
+				exists = False
+				Return
+			End If
 		End If
 		
 		_UpdateTransform()
@@ -192,7 +195,12 @@ Public
 	End Method
 	
 	Method Resume:Void()
-		If (Not _paused Or _channel < 0) Return
+		If (Not _paused) Return
+		
+		If (_channel < 0) Then
+			exists = False
+			Return
+		End If
 		
 		ResumeChannel(_channel)
 		_paused = False
@@ -200,7 +208,10 @@ Public
 	End Method
 	
 	Method Pause:Void()
-		If (_channel < 0) Return
+		If (_channel < 0) Then
+			exists = False
+			Return
+		End If
 		
 		PauseChannel(_channel)
 		_paused = True
@@ -219,6 +230,8 @@ Public
 			If (autoDestroy) Then
 				Destroy()				
 			End If
+		Else
+			exists = False
 		End If
 	End Method
 	
@@ -316,6 +329,12 @@ Private
 	End Method	
 
 End Class
+
+Interface FlxVolumeChangeListener
+
+	Method OnVolumeChange:Void(volume:Float)
+
+ End Interface
 
 Private
 Class FlxSoundClass Implements FlxClass
