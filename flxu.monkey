@@ -255,5 +255,19 @@ Class FlxU
 		
 		Return angle
 	End Function
+	
+	Function GetDistance:Float(point1:FlxPoint, point2:FlxPoint)
+		Local dx:Float = point1.x - point2.x
+		Local dy:Float = point1.y - point2.y
+		
+		Return Sqrt(dx * dx + dy * dy)
+	End Function
+	
+	Function GetDistance:Float(x1:Float, y1:Float, x2:Float, y2:Float)
+		Local dx:Float = x1 - x2
+		Local dy:Float = y1 - y2
+		
+		Return Sqrt(dx * dx + dy * dy)
+	End Function
 
 End Class

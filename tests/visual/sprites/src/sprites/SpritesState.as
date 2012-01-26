@@ -21,7 +21,7 @@ package sprites
 			sprite.scale.x = 2;
 			sprite.scale.y = 2;
 		
-			add(sprite)			
+			add(sprite)
 		}
 		
 		override public function update():void 
@@ -29,6 +29,7 @@ package sprites
 			if (FlxG.keys.pressed("RIGHT"))
 			{
 				sprite.facing = FlxObject.RIGHT;
+				FlxG.clearBitmapCache()
 			}
 			
 			if (FlxG.keys.pressed("LEFT"))

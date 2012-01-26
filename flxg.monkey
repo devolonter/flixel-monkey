@@ -82,8 +82,12 @@ Class FlxG
 	Global keys:Keyboard
 	
 	Global mouse:Mouse
+	
+	Global sounds:FlxGroup
+	
+	Global mute:Bool
 		
-	Global framerate:Int
+	Global framerate:Int	
 	
 	Global _deviceScaleFactorX:Float = 1	
 	
@@ -92,6 +96,8 @@ Class FlxG
 	Global _bgColor:FlxColor = FlxColor.ARGB(FlxG.BLACK)		
 	
 	Global _game:FlxGame
+	
+	Global _volume:Float
 	
 	Global _cache:FlxResourcesManager<Image>
 	

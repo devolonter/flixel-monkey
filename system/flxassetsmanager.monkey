@@ -10,7 +10,8 @@ Class FlxAssetsManager
 Private
 	Global _fonts:StringMap<FlxFont>[] = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
 	Global _images:StringMap<String>
-	Global _cursors:StringMap<String>
+	Global _sounds:StringMap<String>
+	Global _cursors:StringMap<String>	
 	
 Public	
 	Function Init:Void()
@@ -20,6 +21,7 @@ Public
 		Next
 		
 		_images = New StringMap<String>()
+		_sounds= New StringMap<String>()
 		_cursors = New StringMap<String>()
 	End Function
 	
@@ -55,6 +57,18 @@ Public
 	
 	Function GetImagePath:String(name:String)
 		Return _images.Get(name)
+	End Function
+	
+	Function AddSound:Void(name:String, path:String)
+		_sounds.Set(name, path)
+	End Function
+	
+	Function RemoveSound:Void(name:String)
+		_sounds.Remove(name)
+	End Function
+	
+	Function GetSoundPath:String(name:String)
+		Return _sounds.Get(name)
 	End Function
 	
 	Function AddCursor:Void(cursor:String, path:String)
