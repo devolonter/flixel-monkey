@@ -58,6 +58,8 @@ Private
 	
 	Field _step:Int
 	
+	Field _StepInSeconds:Float
+	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
 		_lostFocus = False		
@@ -97,7 +99,8 @@ Public
 		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.targetHeight)	
 		
 		_InitData()		
-		_step = 1000 / FlxG.framerate								
+		_step = 1000 / FlxG.framerate
+		_StepInSeconds = 1.0 / FlxG.framerate						
 		_Step()				
 		Return 0
 	End Method
@@ -277,7 +280,9 @@ Private
 	
 	Method _Update:Void()
 		FlxG.elapsed = FlxG.timeScale * ((Millisecs() - _lastMillisecs) / 1000.0)
-		_lastMillisecs = Millisecs()
+		If (FlxG.elapsed < _StepInSeconds) FlxG.elapsed = _StepInSeconds
+		
+		_lastMillisecs = Millisecs()		
 		
 		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		

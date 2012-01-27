@@ -92,12 +92,13 @@ Public
 		Local updateNeeded:Bool = False
 		
 		If (_target <> Null) Then
-			radial = FlxU.GetDistance(_target.x, _target.y, x, y) / _radius
+			'in original flixel: radial = FlxU.GetDistance(_target.x, _target.y, x, y) / _radius. Maybe a bug?		
+			radial = 1 - FlxU.GetDistance(_target.x, _target.y, x, y) / _radius
 			If (radial < 0) radial = 0
-			If (radial > 1) radial = 1			
 			
 			If (_pan) Then
-				Local d:Float = (_target.x - x) / _radius
+				'in original flixel: Local d:Float = (_target.x - x) / _radius. Maybe a bug?
+				Local d:Float = -(_target.x - x) / _radius
 				
 				If (d < -1) Then
 					d = -1
