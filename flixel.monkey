@@ -4,10 +4,12 @@ Import flxextern
 Import flxg
 Import flxgame
 Import flxgroup
+Import flxmusic
 Import flxobject
 Import flxpath
 Import flxpoint
 Import flxrect
+Import flxsound
 Import flxsprite
 Import flxstate
 Import flxtext
