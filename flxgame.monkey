@@ -100,7 +100,7 @@ Public
 		
 		_InitData()		
 		_step = 1000.0 / FlxG.framerate
-		_elapsed = 1.0 / FlxG.framerate					
+		_elapsed = 1.0 / FlxG.framerate				
 		_Step()				
 		Return 0
 	End Method

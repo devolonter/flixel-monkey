@@ -27,11 +27,11 @@ Public
 				velocity.x += 150
 			End If
 		#Else
-			If (KeyDown(KEY_LEFT)) Then
+			If (FlxG.keys.Left) Then
 				velocity.x -= 150
 			End If
 			
-			If (KeyDown(KEY_RIGHT)) Then
+			If (FlxG.keys.Right) Then
 				velocity.x += 150
 			End If
 		#End
@@ -46,7 +46,7 @@ Public
 			x = 4
 		End If
 		
-		If (KeyHit(KEY_SPACE) Or TouchHit()) Then
+		If (FlxG.keys.JustPressed(KEY_SPACE)) Then
 			Local bullet:FlxSprite = FlxSprite(_bullets.Recycle())		
 			bullet.Reset(x + width / 2 - bullet.width / 2, y)
 			bullet.velocity.y = -140

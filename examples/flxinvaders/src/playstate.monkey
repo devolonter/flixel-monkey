@@ -5,7 +5,7 @@ Import flixel
 Import playership
 Import alien
 
-Class PlayState Extends FlxState Implements FlxOverlapNotifyCallback
+Class PlayState Extends FlxState Implements FlxOverlapNotifyListener
 
 	Global _class:FlxClass = New PlayStateClass()
 	
@@ -74,8 +74,8 @@ Class PlayState Extends FlxState Implements FlxOverlapNotifyCallback
 	End Method
 	
 	Method Update:Void()
-		If (FlxG.keys.JustPressed(KEY_ESCAPE)) Error ""		
-		If (MouseHit()) HideMouse()
+		If (FlxG.keys.Escape) Error ""		
+		If (FlxG.mouse.JustPressed()) HideMouse()
 		
 		For Local alien:FlxBasic = Eachin aliens
 			If (Alien(alien).SwitchDirectionNeeded()) Then
@@ -101,7 +101,7 @@ Class PlayState Extends FlxState Implements FlxOverlapNotifyCallback
 		Super.Update()
 	End Method
 	
-	Method OnOverlap:Void(object1:FlxObject,object2:FlxObject)
+	Method OnOverlapNotify:Void(object1:FlxObject,object2:FlxObject)
 		object1.Kill()
 		object2.Kill()
 	End Method
