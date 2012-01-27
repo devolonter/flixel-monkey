@@ -54,8 +54,6 @@ Private
 
 	Field _lostFocus:Bool	
 	
-	Field _lastMillisecs:Float
-	
 	Field _step:Int
 	
 	Field _elapsed:Float
@@ -100,14 +98,15 @@ Public
 		
 		_InitData()		
 		_step = 1000.0 / FlxG.framerate
-		_elapsed = 1.0 / FlxG.framerate				
+		_elapsed = 1.0 / FlxG.framerate			
 		_Step()				
 		Return 0
 	End Method
 	
 	Method OnRender:Int()
-		FlxG.elapsed = _elapsed
-		_Step()				
+		'Elapsed in monkey very unstabled. Temporary elpased is constant... TODO!
+		FlxG.elapsed = FlxG.timeScale * _elapsed
+		_Step()			
 		
 		Cls(FlxG._bgColor.r, FlxG._bgColor.g, FlxG._bgColor.b)		
 		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)		
