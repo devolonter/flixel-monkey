@@ -17,11 +17,11 @@ public:
 	}
 	
 	static void showMouse() {
-		ShowCursor(true);
+		glfwEnable(GLFW_MOUSE_CURSOR);
 	}
 	
 	static void hideMouse() {
-		ShowCursor(false);
+		glfwDisable(GLFW_MOUSE_CURSOR);
 	}
 	
 	static bool isMobile() {
