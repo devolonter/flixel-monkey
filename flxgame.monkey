@@ -58,7 +58,7 @@ Private
 	
 	Field _step:Int
 	
-	Field _StepInSeconds:Float
+	Field _elapsed:Float
 	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
@@ -85,7 +85,7 @@ Public
 		_created = False				
 	End Method
 	
-	Method OnCreate:Int()	
+	Method OnCreate:Int()
 		SetUpdateRate(FlxG.framerate)
 		Seed = SystemMillisecs()
 		
@@ -99,18 +99,16 @@ Public
 		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.targetHeight)	
 		
 		_InitData()		
-		_step = 1000 / FlxG.framerate
-		_StepInSeconds = 1.0 / FlxG.framerate						
+		_step = 1000.0 / FlxG.framerate
+		_elapsed = 1.0 / FlxG.framerate					
 		_Step()				
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()		
-		_Step()		
-		Return 0
-	End Method
-	
-	Method OnRender:Int()	
+	Method OnRender:Int()
+		FlxG.elapsed = _elapsed
+		_Step()				
+		
 		Cls(FlxG._bgColor.r, FlxG._bgColor.g, FlxG._bgColor.b)		
 		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)		
 		
@@ -169,10 +167,6 @@ Private
 		
 		_state = _requestedState
 		_state.Create()
-		
-		If (Millisecs() - _lastMillisecs > _step) Then
-			_lastMillisecs = Millisecs() - _step
-		End If
 	End Method
 
 	Method _Step:Void()
@@ -181,8 +175,7 @@ Private
 			_requestedState = FlxState(_iState.CreateInstance())
 			_replayTimer = 0
 			_replayCancelKeys = []
-			FlxG.Reset()
-			_lastMillisecs = Millisecs() - _step			
+			FlxG.Reset()		
 		End If
 		
 		If (_recordingRequested) Then
@@ -278,12 +271,7 @@ Private
 		End If
 	End Method
 	
-	Method _Update:Void()
-		FlxG.elapsed = FlxG.timeScale * ((Millisecs() - _lastMillisecs) / 1000.0)
-		If (FlxG.elapsed < _StepInSeconds) FlxG.elapsed = _StepInSeconds
-		
-		_lastMillisecs = Millisecs()		
-		
+	Method _Update:Void()			
 		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		
 		_state.Update()
