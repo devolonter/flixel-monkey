@@ -19,11 +19,11 @@ Public
 		velocity.x = 0
 		
 		#If TARGET = "android" Or TARGET = "ios"
-			If (AccelX() < -.2) Then
+			If (FlxG.accel.x < -.2) Then
 				velocity.x -= 150
 			End If
 			
-			If (AccelX() > .2) Then
+			If (FlxG.accel.x > .2) Then
 				velocity.x += 150
 			End If
 		#Else
@@ -46,7 +46,7 @@ Public
 			x = 4
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_SPACE)) Then
+		If (FlxG.keys.JustPressed(KEY_SPACE) Or FlxG.Touch().JustPressed()) Then
 			Local bullet:FlxSprite = FlxSprite(_bullets.Recycle())		
 			bullet.Reset(x + width / 2 - bullet.width / 2, y)
 			bullet.velocity.y = -140
