@@ -2,41 +2,36 @@ package sprites
 {
 	import org.flixel.*;	
 	
-	public class SpritesState extends FlxState 
-	{		
-		public var sprite:FlxSprite;
+	public class SpritesState extends FlxState
+	{
+		[Embed(source="asteroids.mp3")] private var asteroids:Class
 		
-		
-		[Embed(source="default.png")] protected var ImgDefault:Class;
+		var soundBox:FlxSprite
+		var player:FlxSprite	
 		
 		override public function create():void 
 		{
-			FlxG.mouse.show()
-			
-			sprite = new FlxSprite(FlxG.width / 2, FlxG.height / 2);
-			sprite.loadGraphic(ImgDefault, false, true);
-			sprite.x -= sprite.width * .5;
-			sprite.y -= sprite.height * .5;
-			sprite.angle = 45;
-			sprite.scale.x = 2;
-			sprite.scale.y = 2;
+			player = new FlxSprite(10, 300)
+			add(player)
 		
-			add(sprite)
+			soundBox = new FlxSprite(500, 200)
+			add(soundBox)
+			soundBox.facing = FlxObject.LEFT
+			
+			var sound:FlxSound = (new FlxSound).loadEmbedded(asteroids, true).proximity(500, 200, player, 300)		
+			FlxG.sounds.add(sound)
+			
+			sound.play()
 		}
 		
 		override public function update():void 
 		{			
-			if (FlxG.keys.pressed("RIGHT"))
-			{
-				sprite.facing = FlxObject.RIGHT;
-				FlxG.clearBitmapCache()
-			}
-			
-			if (FlxG.keys.pressed("LEFT"))
-			{
-				sprite.facing = FlxObject.LEFT;
-			}
-			
+			player.velocity.x = 0
+		
+			if (FlxG.keys.RIGHT) 
+				player.velocity.x = 100;
+			if (FlxG.keys.LEFT) 
+				player.velocity.x = -100;
 			
 			super.update();
 		}

@@ -314,7 +314,7 @@ Public
 		
 		Local sound:FlxSound
 		
-		For Local basic:FlxSound = EachIn sounds
+		For Local basic:FlxBasic = EachIn sounds
 			sound = FlxSound(basic)
 			
 			If (sound <> Null And (forceDestroy Or Not sound.survive)) Then
@@ -340,7 +340,7 @@ Public
 		
 		Local sound:FlxSound
 		
-		For Local basic:FlxSound = EachIn sounds
+		For Local basic:FlxBasic = EachIn sounds
 			sound = FlxSound(basic)
 			
 			If (sound <> Null And sound.exists And sound.active) Then
@@ -356,7 +356,7 @@ Public
 		
 		Local sound:FlxSound
 		
-		For Local basic:FlxSound = EachIn sounds
+		For Local basic:FlxBasic = EachIn sounds
 			sound = FlxSound(basic)
 			
 			If (sound <> Null And sound.exists) Then
@@ -417,7 +417,7 @@ Public
 		If (destroy) camera.Destroy()
 	End Function
 	
-	Function ResetCameras:Void(newCamera:FlxCamera = Null)
+	Function ResetCameras:Void(newCamera:FlxCamera = Null)	
 		Local cam:FlxCamera
 		Local i:Int = 0
 		Local l:Int = FlxG.cameras.Length()

@@ -16,7 +16,7 @@ Public
 		Stop()
 	End Method
 	
-	Method Load:FlxMusic(music:String, looped:Bool = False, autoDestroy:Bool = True)
+	Method Load:FlxSound(music:String, looped:Bool = False, autoDestroy:Bool = True)
 		Stop()
 		_CreateSound()
 		_filename = FlxAssetsManager.GetMusicPath(music)
@@ -26,7 +26,7 @@ Public
 		Return Self
 	End Method
 	
-	Method Play:Void(forceRestart:Bool)
+	Method Play:Void(forceRestart:Bool = False)
 		If (forceRestart) Then
 			Local oldAutoDestroy:Bool = autoDestroy
 			autoDestroy = False
@@ -76,7 +76,7 @@ Public
 	End Method
 	
 	Method _SetTransform:Void(volume:Float, pan:Float)
-		SetMusicVolume(_channel, volume)
+		SetMusicVolume(volume)
 	End Method
 
 End Class

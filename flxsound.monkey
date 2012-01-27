@@ -48,7 +48,7 @@ Private
 	
 	Field _radius:Float
 	
-	Field _pan:Float
+	Field _pan:Bool
 	
 	Field _fadeOutTimer:Float
 	
@@ -92,9 +92,9 @@ Public
 		Local updateNeeded:Bool = False
 		
 		If (_target <> Null) Then
-			radial = FlxU.GetDistance(_target.x, _target.y, x, y)
+			radial = FlxU.GetDistance(_target.x, _target.y, x, y) / _radius
 			If (radial < 0) radial = 0
-			If (radial > 1) radial = 1
+			If (radial > 1) radial = 1			
 			
 			If (_pan) Then
 				Local d:Float = (_target.x - x) / _radius
@@ -166,7 +166,7 @@ Public
 		Return Self
 	End Method
 	
-	Method Play:Void(forceRestart:Bool)
+	Method Play:Void(forceRestart:Bool = False)
 		If (forceRestart) Then
 			Local oldAutoDestroy:Bool = autoDestroy
 			autoDestroy = False
@@ -273,8 +273,10 @@ Public
 	End Method
 	
 	Method _SetTransform:Void(volume:Float, pan:Float)
-		SetChannelVolume(_channel, volume)
-		SetChannelPan(_channel, pan)
+		If (_channel >= 0) Then
+			SetChannelVolume(_channel, volume)
+			SetChannelPan(_channel, pan)
+		End If
 	End Method
 	
 	Method _CreateSound:Void()
@@ -288,7 +290,7 @@ Public
 		_volumeAdjust = 1.0
 		_looped = False
 		_target = Null
-		_radius = Null
+		_radius = 0
 		_pan = False
 		_fadeOutTimer = 0
 		_fadeOutTotal = 0
@@ -303,16 +305,14 @@ Public
 		autoDestroy = False
 	End Method
 	
-	Method _UpdateTransform:Void()
+	Method _UpdateTransform:Void()	
 		If (Not FlxG.mute) Then
 			_soundVolume = FlxG._volume * _volume * _volumeAdjust
 		Else
 			_soundVolume = 0
-		End If
+		End If		
 		
-		If (_channel >= 0) Then
-			_SetTransform(_soundVolume, _soundPan)
-		End If
+		_SetTransform(_soundVolume, _soundPan)
 	End Method
 	
 Private	

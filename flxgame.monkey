@@ -15,6 +15,8 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
+#HTML5_SUSPEND_ON_BLUR_ENABLED="true"
+
 Class FlxGame extends App
 
 	Field useSystemCursor:Bool
@@ -133,6 +135,21 @@ Public
 		FlxG.mouse.Draw()		
 								
 		Return 0	
+	End Method
+	
+	Method OnSuspend:Int()
+		ShowMouse()
+		FlxG.PauseSounds()
+		Return 0
+	End Method
+	
+	Method OnResume:Int()
+		If (Not _debuggerUp And useSystemCursor) Then
+			HideMouse()
+		End If
+		FlxG.ResetInput()
+		FlxG.ResumeSounds()
+		Return 0
 	End Method
 	
 	Method OnContentInit:Void()		
@@ -261,7 +278,8 @@ Private
 	Method _Update:Void()
 		FlxG.elapsed = FlxG.timeScale * ((Millisecs() - _lastMillisecs) / 1000.0)
 		_lastMillisecs = Millisecs()
-			
+		
+		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		
 		_state.Update()
 		FlxG.UpdateCameras()
