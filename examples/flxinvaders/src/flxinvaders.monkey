@@ -13,7 +13,7 @@ Import assets
 Class FlxInvaders Extends FlxGame
 	
 	Method New()		
-		Super.New(320, 240, PlayState._class)
+		Super.New(320, 240, PlayState.ClassObject)
 		ShowMouse()
 	End Method
 	

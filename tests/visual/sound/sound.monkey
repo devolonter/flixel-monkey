@@ -10,7 +10,7 @@ End Function
 Class Sprites Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, SpritesState._class, 1, 60)
+		Super.New(640, 480, SpritesState.ClassObject, 1, 60)
 	End Method
 	
 	Method OnContentInit:Void()
@@ -39,7 +39,7 @@ End Class
 
 Class SpritesState Extends FlxState
 	
-	Global _class:FlxClass = New SpritesStateClass()
+	Global ClassObject:FlxClass = New SpritesStateClass()
 	
 	Field soundBox:FlxSprite
 	Field player:FlxSprite

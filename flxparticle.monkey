@@ -4,7 +4,7 @@ Import flxsprite
 
 Class FlxParticle Extends FlxSprite
 
-	Global _class:FlxClass = New FlxParticleClass()
+	Global ClassObject:FlxClass = New FlxParticleClass()
 	
 	Field lifespan:Float
 	

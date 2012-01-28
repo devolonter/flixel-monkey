@@ -271,7 +271,7 @@ Public
 	End Function
 	
 	Function LoadSound:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = False, autoPlay:Bool = False)
-		Local s:FlxSound = FlxSound(sounds.Recycle(FlxSound._class))
+		Local s:FlxSound = FlxSound(sounds.Recycle(FlxSound.ClassObject))
 		
 		s.Load(sound, looped, autoDestroy)
 		s.Volume = volume		
@@ -600,7 +600,7 @@ Public
 		FlxG.globalSeed = Rnd(1, 10000000)
 		FlxG.worldBounds = New FlxRect(-10, -10, FlxG.width + 20, FlxG.height + 20)
 		FlxG.worldDivisions = 6
-		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay._class))
+		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.ClassObject))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
 	End Function
 	

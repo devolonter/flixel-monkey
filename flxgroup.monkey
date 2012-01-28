@@ -13,7 +13,7 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
-	Global _class:FlxClass = New FlxGroupClass()
+	Global ClassObject:FlxClass = New FlxGroupClass()
 
 	#Rem
 	summary:See detail.

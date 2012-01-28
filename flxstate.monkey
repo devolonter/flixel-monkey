@@ -4,7 +4,7 @@ Import flxgroup
 
 Class FlxState Extends FlxGroup Abstract
 
-	Global _class:FlxClass = new FlxStateClass()
+	Global ClassObject:FlxClass = new FlxStateClass()
 	
 	Method Create:Void()
 		

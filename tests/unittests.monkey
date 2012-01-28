@@ -289,7 +289,7 @@ Class FlxGroupRecycleUnitTest Extends FlxGroupUnitTestBase
 		
 		Local recycled:FlxBasic 
 		For Local i:Int = 0 To group.MaxSize - 1
-			recycled = group.Recycle(FlxBasic._class)
+			recycled = group.Recycle(FlxBasic.ClassObject)
 			If (Not UnitTest.AssertNotNull(recycled)) Return False
 			recycled.ID = i		
 		Next
@@ -303,17 +303,17 @@ Class FlxGroupRecycleUnitTest Extends FlxGroupUnitTestBase
 		group = New FlxGroup()
 		
 		For Local i:Int = 0 To 9
-			recycled = group.Recycle(FlxBasic._class)
+			recycled = group.Recycle(FlxBasic.ClassObject)
 			If (Not UnitTest.AssertNotNull(recycled)) Return False
 			recycled.ID = i		
 		Next
 		
-		recycled = group.Recycle(FlxBasic._class)
+		recycled = group.Recycle(FlxBasic.ClassObject)
 		If (Not UnitTest.AssertNotNull(recycled)) Return False		
 		If (Not UnitTest.AssertEqualsI(-1, recycled.ID)) Return False
 		
 		group.Members[5].Kill()
-		recycled = group.Recycle(FlxBasic._class)
+		recycled = group.Recycle(FlxBasic.ClassObject)
 		If (Not UnitTest.AssertNotNull(recycled)) Return False		
 		If (Not UnitTest.AssertEqualsI(5, recycled.ID)) Return False
 						
@@ -624,7 +624,7 @@ Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
 			i+=1
 		Next
 		
-		Local basic:FlxBasic = group.GetFirstAvailable(FlxBasic._class)
+		Local basic:FlxBasic = group.GetFirstAvailable(FlxBasic.ClassObject)
 		
 		If (UnitTest.AssertNotNull(basic) And UnitTest.AssertEqualsI(5, basic.ID)) Then
 			basic = group.GetFirstAvailable()
@@ -641,7 +641,7 @@ Class FlxGroupGetFirstAvailableUnitTest Extends FlxGroupUnitTestBase
 			object.ID = 11
 			object.Kill()
 			
-			object = FlxObject(group.GetFirstAvailable(FlxObject._class))
+			object = FlxObject(group.GetFirstAvailable(FlxObject.ClassObject))
 			Return (UnitTest.AssertNotNull(object) And UnitTest.AssertEqualsI(11, object.ID))	
 		End If
 		
@@ -908,7 +908,7 @@ End Class
 Class FlxGGetPluginUnitTest Implements IUnitTest
 	
 	Method Run:Bool()	
-		Return UnitTest.AssertNotNull(TimerManager(FlxG.GetPlugin(TimerManager._class)))			
+		Return UnitTest.AssertNotNull(TimerManager(FlxG.GetPlugin(TimerManager.ClassObject)))			
 	End Method
 
 	Method GetName:String()
@@ -921,7 +921,7 @@ Class FlxGRemovePluginUnitTest Implements IUnitTest
 	
 	Method Run:Bool()
 		Local oldL:Int = FlxG.plugins.Length()	
-		FlxG.RemovePlugin(FlxG.GetPlugin(TimerManager._class))
+		FlxG.RemovePlugin(FlxG.GetPlugin(TimerManager.ClassObject))
 		If (Not UnitTest.AssertEqualsI(oldL - 1, FlxG.plugins.Length())) Return False
 		FlxG.Init(Null, 0, 0, 0)
 		Return True				
@@ -937,7 +937,7 @@ Class FlxGRemovePluginTypeUnitTest Implements IUnitTest
 	
 	Method Run:Bool()
 		Local oldL:Int = FlxG.plugins.Length()	
-		FlxG.RemovePluginType(TimerManager._class)
+		FlxG.RemovePluginType(TimerManager.ClassObject)
 		If (Not UnitTest.AssertEqualsI(oldL -  1, FlxG.plugins.Length())) Return False
 		FlxG.Init(Null, 0, 0, 0)
 		Return True				
@@ -955,7 +955,7 @@ End Class
 Class TimeManagerUnitTest Implements IUnitTest
 	
 	Method Run:Bool()	
-		Local timeManager:TimerManager = TimerManager(FlxG.GetPlugin(TimerManager._class))
+		Local timeManager:TimerManager = TimerManager(FlxG.GetPlugin(TimerManager.ClassObject))
 		Local timer:FlxTimer = New FlxTimer()
 		
 		timeManager.Add(New FlxTimer())

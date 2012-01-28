@@ -9,7 +9,7 @@ Import system.flxassetsmanager
 
 Class FlxSound Extends FlxBasic
 	
-	Global _class:FlxSoundClass = New FlxSoundClass()
+	Global ClassObject:FlxSoundClass = New FlxSoundClass()
 
 	Field x:Float
 	

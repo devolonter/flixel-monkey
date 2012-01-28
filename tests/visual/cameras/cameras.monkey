@@ -10,7 +10,7 @@ End Function
 Class Cameras Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, CamerasState._class)	
+		Super.New(640, 480, CamerasState.ClassObject)	
 	End Method
 
 End Class
@@ -29,7 +29,7 @@ End Class
 
 Class CamerasState Extends FlxState
 
-	Global _class:FlxClass = new CamerasStateClass()
+	Global ClassObject:FlxClass = new CamerasStateClass()
 	
 	Field pink_camera:FlxCamera
 	Field red_camera:FlxCamera

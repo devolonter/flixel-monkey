@@ -10,7 +10,7 @@ End Function
 Class Sprites Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, SpritesState._class)
+		Super.New(640, 480, SpritesState.ClassObject)
 		FlxG.visualDebug = True
 	End Method
 
@@ -30,7 +30,7 @@ End Class
 
 Class SpritesState Extends FlxState
 
-	Global _class:FlxClass = new SpritesStateClass()
+	Global ClassObject:FlxClass = new SpritesStateClass()
 	
 	Field sprite:FlxSprite
 	

@@ -18,7 +18,7 @@ Class FlxBasic
 	
 	Global _VISIBLECOUNT:Int	
 	
-	Global _class:FlxClass = New FlxBasicClass()
+	Global ClassObject:FlxClass = New FlxBasicClass()
 	
 	Global ExistsComparator:FlxBasicComparator = new FlxBasicExistsComparator()
 	
