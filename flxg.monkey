@@ -126,6 +126,8 @@ Private
 	
 	Global _touch:Touch[_TOUCH_COUNT]
 	
+	Global _collideListener:FlxCollideProcessListener = New FlxCollideProcessListener()
+	
 
 Public
 	Function GetLibraryName:String()
@@ -498,6 +500,10 @@ Public
 		Return result
 	End Function
 	
+	Function Collide:Bool(objectOrGroup1:FlxBasic = Null, objectOrGroup2:FlxBasic, notifyCallback:FlxOverlapNotifyListener = Null)
+		Return	Overlap(objectOrGroup1, objectOrGroup2, notifyCallback, _collideListener)
+	End Function
+	
 	Function AddPlugin:FlxBasic(plugin:FlxBasic)
 		Local pluginList:Stack<FlxBasic> = FlxG.plugins
 		Local i:Int = 0
@@ -693,5 +699,14 @@ Public
 	Function TouchCount:Int()
 		Return _TOUCH_COUNT
 	End Function
+
+End Class
+
+Private
+Class FlxCollideProcessListener Implements FlxOverlapProcessListener
+	
+	Method OnOverlapProcess:Bool(object1:FlxObject, object2:FlxObject)
+		Return FlxObject.Separate(object1, object2)
+	End Method
 
 End Class

@@ -557,8 +557,8 @@ Public
 		If (obj1delta <> obj2delta) Then
 			Local obj1deltaAbs:Float = Abs(obj1delta)
 			Local obj2deltaAbs:Float = Abs(obj2delta)
-			Local obj1rect:FlxRect = New FlxRect(object1.x - Max(obj1delta, 0), object1.last.y, object1.width + obj1deltaAbs, object1.height)
-			Local obj2rect:FlxRect = New FlxRect(object2.x - Max(obj2delta, 0), object2.last.y, object2.width + obj2deltaAbs, object2.height)
+			Local obj1rect:FlxRect = New FlxRect(object1.x - Max(obj1delta, 0.0), object1.last.y, object1.width + obj1deltaAbs, object1.height)
+			Local obj2rect:FlxRect = New FlxRect(object2.x - Max(obj2delta, 0.0), object2.last.y, object2.width + obj2deltaAbs, object2.height)
 			
 			If (obj1rect.x + obj1rect.width > obj2rect.x And obj1rect.x < obj2rect.x + obj2rect.width And obj1rect.y + obj1rect.height > obj2rect.y And obj1rect.y < obj2rect.y + obj2rect.height) Then
 				Local maxOverlap:Float = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS
@@ -640,8 +640,8 @@ Public
 		If (obj1delta <> obj2delta) Then
 			Local obj1deltaAbs:Float = Abs(obj1delta)
 			Local obj2deltaAbs:Float = Abs(obj2delta)
-			Local obj1rect:FlxRect = New FlxRect(object1.x, object1.y - Max(obj1delta, 0), object1.width, object1.height + obj1deltaAbs)
-			Local obj2rect:FlxRect = New FlxRect(object2.x, object2.y - Max(obj2delta, 0), object2.width, object2.height +  + obj2deltaAbs)
+			Local obj1rect:FlxRect = New FlxRect(object1.x, object1.y - Max(obj1delta, 0.0), object1.width, object1.height + obj1deltaAbs)
+			Local obj2rect:FlxRect = New FlxRect(object2.x, object2.y - Max(obj2delta, 0.0), object2.width, object2.height +  + obj2deltaAbs)
 			
 			If (obj1rect.x + obj1rect.width > obj2rect.x And obj1rect.x < obj2rect.x + obj2rect.width And obj1rect.y + obj1rect.height > obj2rect.y And obj1rect.y < obj2rect.y + obj2rect.height) Then
 				Local maxOverlap:Float = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS
@@ -868,10 +868,10 @@ Private
 		End If
 	End Method
 	
-	Method _Sgn:Float(value:Float)
+	Function _Sgn:Float(value:Float)
 		If (value > 0) Return 1
 		Return -1
-	End Method
+	End function
 
 End Class
 
