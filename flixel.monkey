@@ -1,11 +1,13 @@
 Import flxbasic
 Import flxcamera
+Import flxemitter
 Import flxextern
 Import flxg
 Import flxgame
 Import flxgroup
 Import flxmusic
 Import flxobject
+Import flxparticle
 Import flxpath
 Import flxpoint
 Import flxrect

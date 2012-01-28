@@ -150,6 +150,11 @@ Public
 		Return Self
 	End Method
 	
+	Method LoadRotatedGraphic:FlxSprite(graphic:String, rotations:Int = 16, frame:Int = -1)
+		'TODO
+		Return Null
+	End Method
+	
 	Method MakeGraphic:FlxSprite(width:Int, height:Int, color:Int = FlxG.WHITE)
 		_pixels = Null
 		_bakedRotation = 0
