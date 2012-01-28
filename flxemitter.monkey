@@ -218,7 +218,7 @@ Public
 			particle.velocity.y = minParticleSpeed.y
 		End If
 		
-		particle.acceleration = gravity
+		particle.acceleration.y = gravity
 		
 		If (minRotation <> maxRotation) Then
 			particle.angularVelocity = minRotation + FlxG.Random() * (maxRotation - minRotation)
