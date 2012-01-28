@@ -529,26 +529,24 @@ Public
 		If (health <= 0) Kill()
 	End Method
 	
-	Method Separate:Bool(object1:FlxObject, object2:FlxObject)
+	Function Separate:Bool(object1:FlxObject, object2:FlxObject)
 		Local separatedX:Bool = SeparateX(object1, object2)
 		Local separatedY:Bool = SeparateY(object1, object2)
 		
 		Return separatedX Or separatedY
-	End Method
+	End Function
 	
-	Method SeparateX:Bool(object1:FlxObject, object2:FlxObject)
+	Function SeparateX:Bool(object1:FlxObject, object2:FlxObject)
 		Local obj1immovable:Bool = object1.immovable
 		Local obj2immovable:Bool = object2.immovable
 		
 		If (obj1immovable And obj2immovable) Return False
 		
 		If (FlxTilemap(object1) <> Null) Then
-			_separateXCallback.invoker = Self
 			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateXCallback)
 		End If
 		
 		If (FlxTilemap(object2) <> Null) Then
-			_separateXCallback.invoker = Self
 			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateXCallback, True)
 		End If
 		
@@ -619,21 +617,19 @@ Public
 		Else
 			Return False
 		End If
-	End Method
+	End Function
 	
-	Method SeparateY:Bool(object1:FlxObject, object2:FlxObject)
+	Function SeparateY:Bool(object1:FlxObject, object2:FlxObject)
 		Local obj1immovable:Bool = object1.immovable
 		Local obj2immovable:Bool = object2.immovable
 		
 		If (obj1immovable And obj2immovable) Return False
 		
 		If (FlxTilemap(object1) <> Null) Then
-			_separateYCallback.invoker = Self
 			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateYCallback)
 		End If
 		
 		If (FlxTilemap(object2) <> Null) Then
-			_separateYCallback.invoker = Self
 			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateYCallback, True)
 		End If
 		
@@ -712,7 +708,7 @@ Public
 		Else
 			Return False
 		End If		
-	End Method
+	End Function
 	
 	Method ToString:String()
 		Return "FlxObject"	
@@ -909,21 +905,17 @@ Class FlxObjectXComparator Implements FlxBasicComparator
 End Class
 
 Class FlxObjectSeparateX Implements FlxTilemapOverlapListener
-
-	Field invoker:FlxObject
 	
 	Method OnTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
-		invoker.SeparateX(object1, object2)
+		FlxObject.SeparateX(object1, object2)
 	End Method
 
 End Class
 
 Class FlxObjectSeparateY Implements FlxTilemapOverlapListener
 
-	Field invoker:FlxObject
-	
 	Method OnTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
-		invoker.SeparateY(object1, object2)
+		FlxObject.SeparateY(object1, object2)
 	End Method
 
 End Class
