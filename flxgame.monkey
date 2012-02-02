@@ -9,23 +9,30 @@ Import flxcamera
 Import flxtimer
 Import flxtext
 Import flxg
+Import flxu
 Import system.flxassetsmanager
 Import system.flxfont
 Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-#HTML5_SUSPEND_ON_BLUR_ENABLED="true"
+Import "data/flx_beep.mp3"
+
+'#HTML5_SUSPEND_ON_BLUR_ENABLED = "true"
 
 Class FlxGame extends App
 
+	Field useSoundHotKeys:Bool
+
 	Field useSystemCursor:Bool
+	
+	Field forceDebugger:Bool
 
 	Field _state:FlxState
 	
 	Field _requestedState:FlxState
 	
-	Field _requestedReset:Bool
+	Field _requestedReset:Bool	
 	
 	Field _debugger:FlxDebugger
 	
@@ -47,7 +54,7 @@ Class FlxGame extends App
 	
 	Field _replayCallback:FlxReplayListener
 
-Private	
+Private
 	Field _iState:FlxClass
 	
 	Field _created:Bool
@@ -55,6 +62,20 @@ Private
 	Field _lostFocus:Bool	
 	
 	Field _step:Int
+	
+	Field _soundTrayTimer:Float
+	
+	Field _soundTrayWidth:Float
+	
+	Field _soundTrayHeight:Float
+	
+	Field _soundTrayX:Float
+	
+	Field _soundTrayY:Float
+	
+	Field _soundTrayVisible:Bool
+	
+	Field _soundTrayLabel:FlxText
 	
 	Field _elapsed:Float
 	
@@ -65,9 +86,10 @@ Public
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
 		FlxG.framerate = framerate
 		
+		useSoundHotKeys = True
 		Self.useSystemCursor = useSystemCursor
 		If (Not useSystemCursor) HideMouse()
-		_debuggerUp = false
+		_debuggerUp = False
 		
 		_state = Null
 		
@@ -80,7 +102,14 @@ Public
 		_iState = initialState
 		_requestedState = Null
 		_requestedReset = True
-		_created = False				
+		_created = False
+		
+		_soundTrayTimer = 0
+		_soundTrayWidth = 160
+		_soundTrayHeight = 60
+		_soundTrayX = 0
+		_soundTrayY	= -_soundTrayHeight
+		_soundTrayVisible = False				
 	End Method
 	
 	Method OnCreate:Int()
@@ -99,13 +128,51 @@ Public
 		_InitData()		
 		_step = 1000.0 / FlxG.framerate
 		_elapsed = 1.0 / FlxG.framerate			
-		_Step()				
+		_Step()
+		
+		_soundTrayX	= (FlxG.width / 2) * FlxCamera.defaultZoom - (_soundTrayWidth / 2)
+		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
+		_soundTrayLabel.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER)
+		Return 0
+	End Method
+	
+	Method OnUpdate:Int()
+		If (useSoundHotKeys) Then
+			If (KeyHit(KEY_0)) Then
+				FlxG.mute = Not FlxG.mute
+				
+				If (FlxG.volumeHandler <> Null) Then
+					If (FlxG.mute) Then
+						FlxG.volumeHandler.OnVolumeChange(0)
+					Else
+						FlxG.volumeHandler.OnVolumeChange(FlxG.Volume())
+					End If
+				End If
+				
+				_ShowSoundTray()
+			End If
+		
+			If (KeyHit(KEY_MINUS)) Then
+				FlxG.mute = False
+				FlxG.Volume(FlxG.Volume() - .1)
+				_ShowSoundTray()
+			End If
+			
+			If (KeyHit(KEY_EQUALS)) Then
+				FlxG.mute = False
+				FlxG.Volume(FlxG.Volume() + .1)
+				_ShowSoundTray()
+			End If	
+		End If
+	
 		Return 0
 	End Method
 	
 	Method OnRender:Int()
-		'Elapsed in monkey very unstabled. Temporary elpased is constant... TODO!
+		'Elapsed in Monkey very unstabled. Temporary elpased is constant... TODO!
 		FlxG.elapsed = FlxG.timeScale * _elapsed
+		
+		_UpdateSoundTray()
 		_Step()			
 		
 		Cls(FlxG._bgColor.r, FlxG._bgColor.g, FlxG._bgColor.b)		
@@ -131,7 +198,49 @@ Public
 									
 			i+=1
 		Wend
+		
+		If (_soundTrayVisible) Then			
+			Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
+			If (FlxG.mute) globalVolume = 0
+			
+			Local bx:Int = 20
+			Local by:Int = 28
+			
+			If (FlxG._lastDrawingColor <> FlxG.WHITE) Then
+				SetColor(255, 255, 255)
+				FlxG._lastDrawingColor = FlxG.WHITE
+			End If
+			
+			PushMatrix()
+			Translate(_soundTrayX, _soundTrayY)
 
+			Local i:Int = 0
+			While (i < 10)
+				If (i < globalVolume) Then
+					If (FlxG._lastDrawingAlpha <> 1) Then
+						SetAlpha(1)
+						FlxG._lastDrawingAlpha = 1
+					End If
+					
+				Else
+					If (FlxG._lastDrawingAlpha <> .5) Then
+						SetAlpha(.5)
+						FlxG._lastDrawingAlpha = .5
+					End If
+				End If
+				
+				DrawRect(bx, by, 8, i * 2)				
+				
+				bx += 12
+				by -= 2
+				i += 1
+			Wend
+						
+			_soundTrayLabel.Draw()
+			
+			PopMatrix()
+		End If
+		
 		FlxG.mouse.Draw()		
 								
 		Return 0	
@@ -152,10 +261,20 @@ Public
 		Return 0
 	End Method
 	
-	Method OnContentInit:Void()		
+	Method OnContentInit:Void()
 	End Method
 	
 Private
+	Method _ShowSoundTray:Void(silent:Bool = False)
+		If (Not silent) Then
+			FlxG.Play(FlxG.DATA_PREFIX + "beep")
+		End If
+		
+		_soundTrayTimer = 1
+		_soundTrayY = 0
+		_soundTrayVisible = True
+	End Method
+
 	Method _SwitchState:Void()
 		FlxG.ResetCameras()
 		
@@ -267,6 +386,23 @@ Private
 		
 		If (_debugger <> Null) Then
 			'TODO
+		End If
+	End Method
+	
+	Method _UpdateSoundTray:Void()
+		If (Not _soundTrayVisible) Return
+	
+		If (_soundTrayTimer > 0) Then
+			_soundTrayTimer -= FlxG.elapsed
+		
+		ElseIf (_soundTrayY > -_soundTrayHeight)
+			_soundTrayY =_soundTrayY - (FlxG.elapsed * FlxG.height * 2)
+			
+			If (_soundTrayY <= -_soundTrayHeight) Then
+				_soundTrayVisible = False
+				
+				'TODO Save sound settings
+			End If
 		End If
 	End Method
 	
