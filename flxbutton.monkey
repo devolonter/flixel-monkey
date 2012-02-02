@@ -50,7 +50,7 @@ Private
 	Field _initialized:Bool
 	
 Public
-	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonUpListener, driver:FlxClass = Null)
+	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonUpListener = Null, driver:FlxClass = Null)
 		Super.New(x, y)
 		
 		If (label.Length() > 0) Then
@@ -203,6 +203,7 @@ Private
 					End If
 					
 					If (FlxG.mouse.JustReleased() And status = PRESSED) Then
+						status = NORMAL
 						click = True
 					End If
 					

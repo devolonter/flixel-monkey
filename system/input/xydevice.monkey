@@ -77,7 +77,7 @@ Public
 		If (point = Null) point = New FlxPoint()
 		
 		point.x = (_globalScreenPosition.x - camera.X) / (camera.Zoom * FlxG._deviceScaleFactorX)
-		point.y = (_globalScreenPosition.y - camera.y) / (camera.Zoom * FlxG._deviceScaleFactorY)
+		point.y = (_globalScreenPosition.y - camera.Y) / (camera.Zoom * FlxG._deviceScaleFactorY)
 		
 		Return point
 	End Method
