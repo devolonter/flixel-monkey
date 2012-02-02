@@ -626,8 +626,6 @@ Public
 		#If TARGET = "ios" Or TARGET = "android"
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_touch[i].Update(TouchX(i), TouchY(i))
-				
-				If (i <> _TOUCH_COUNT - 1 And Not _touch[i + 1].Used() And Not TouchDown(i + 1)) Exit
 			Next
 		#ElseIf TARGET = "xna" Or TARGET = "html5"
 			If (Not FlxG.mobile) Then

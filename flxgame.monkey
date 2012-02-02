@@ -291,8 +291,9 @@ Private
 		Next
 		
 		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "default", FlxG.DATA_PREFIX + "default.png")
-		
+		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "button", FlxG.DATA_PREFIX + "button.png")		
 		FlxAssetsManager.AddCursor(FlxG.DATA_PREFIX + "cursor", FlxG.DATA_PREFIX + "cursor.png")
+		FlxAssetsManager.AddSound(FlxG.DATA_PREFIX + "button", FlxG.DATA_PREFIX + "beep.mp3")
 		
 		Self.OnContentInit()
 	End Method

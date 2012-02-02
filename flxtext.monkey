@@ -60,6 +60,14 @@ Public
 		_ResetHelpers()
 	End Method
 	
+	Method SetWidth:Void(width:Float)
+		Self.width = width
+		frameWidth = Self.width
+		
+		_driver.Width = width
+		_ResetHelpers()
+	End Method
+	
 	Method Text:String() Property
 		Return _driver.Text
 	End Method

@@ -93,6 +93,10 @@ Public
 		_cursor.visible = False
 	End Method
 	
+	Method Visible:Bool() Property
+		Return _cursor.visible
+	End Method
+	
 	Method Load:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)		
 		If (cursor.Length() = 0) cursor = FlxG.DATA_PREFIX + "cursor"
 		
