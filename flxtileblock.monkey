@@ -7,7 +7,7 @@ Import flxg
 Class FlxTileblock Extends FlxSprite
 
 Private
-	Field _pixels:Image
+	Field _tilePixels:Image
 	
 	Field _stamps:Stack<FlxStamp>
 
@@ -22,8 +22,8 @@ Public
 	End Method
 	
 	Method Destroy:Void()
-		If (_pixels <> Null) Then
-			_pixels = Null
+		If (_tilePixels <> Null) Then
+			_tilePixels = Null
 		End If
 		
 		If (_stamps.Length() > 0) Then
@@ -43,28 +43,24 @@ Public
 	End Method
 	
 	Method LoadTiles:FlxTileblock(tileGraphic:String, tileWidth:Int = 0, tileHeight:Int = 0, empties:Int = 0)
-		If (tileGraphic = Null) Return Self
+		If (tileGraphic.Length() = 0) Return Self
 		
 		Local sprite:FlxSprite = (New FlxSprite()).LoadGraphic(tileGraphic, True, False, tileWidth, tileHeight)
 		Local spriteWidth:Int = sprite.width
 		Local spriteHeight:Int = sprite.height
 		Local total:Int = sprite.frames + empties
 		
-		_pixels = sprite.Pixels
-		
-		Local regen:Bool = False
+		_tilePixels = sprite.Pixels
 		
 		If (width Mod spriteWidth <> 0) Then
 			width = Int(width / spriteWidth + 1) * spriteWidth
-			regen = True
 		End If
 		
-		If (height Mod _spriteHeight <> 0) Then
+		If (height Mod spriteHeight <> 0) Then
 			height = Int(height / spriteHeight + 1) * spriteHeight
-			regen = True
 		End If
 		
-		If (regen) MakeGraphic(width, height, 0)		
+		If (_tilePixels <> Null) MakeGraphic(width, height, FlxG.WHITE)		
 		
 		Local row:Int = 0
 		Local column:Int
@@ -81,8 +77,8 @@ Public
 			column = 0
 					
 			While (column < widthInTiles)			
-				If (FlxG.Random() * _total > empties) Then
-					_stamps.Push(New FlxStamp(destinationX, destinationY, Int(FlxG.Random() * (_sprite.frames - 1))))
+				If (FlxG.Random() * total > empties) Then
+					_stamps.Push(New FlxStamp(destinationX, destinationY, Int(FlxG.Random() * (sprite.frames - 1))))
 				End If
 				
 				destinationX += spriteWidth
@@ -91,19 +87,21 @@ Public
 			
 			destinationY += spriteHeight
 			row += 1
-		Wend	
+		Wend
+		
+		Return Self	
 	End Method
 	
-	Method _DrawSurface:Void(x:Float, y:Float)
-		If (_pixels = Null) Return
-	
+	Method _DrawSurface:Void(x:Float, y:Float)		
+		If (_tilePixels = Null) Return
+			
 		Local i:Int = 0
 		Local l:Int = _stamps.Length()
 		Local stamp:FlxStamp
-		
+
 		While (i < l)
 			stamp = _stamps.Get(i)
-			DrawImage(_pixels, x + stamp.x, y + stamp.y, stamp.frame)
+			DrawImage(_tilePixels, x + stamp.x, y + stamp.y, stamp.frame)
 			i += 1
 		Wend
 	End Method
