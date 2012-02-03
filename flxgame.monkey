@@ -10,6 +10,7 @@ Import flxtimer
 Import flxtext
 Import flxg
 Import flxu
+Import flxtilemap
 Import system.flxassetsmanager
 Import system.flxfont
 Import system.flxdebugger
@@ -427,7 +428,9 @@ Private
 		Next
 		
 		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "default", FlxG.DATA_PREFIX + "default.png")
-		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "button", FlxG.DATA_PREFIX + "button.png")		
+		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "button", FlxG.DATA_PREFIX + "button.png")
+		FlxAssetsManager.AddImage(FlxTilemap.AUTOTILES, FlxTilemap.AUTOTILES + ".png")
+		FlxAssetsManager.AddImage(FlxTilemap.AUTOTILES_ALT, FlxTilemap.AUTOTILES_ALT + ".png")
 		FlxAssetsManager.AddCursor(FlxG.DATA_PREFIX + "cursor", FlxG.DATA_PREFIX + "cursor.png")
 		FlxAssetsManager.AddSound(FlxG.DATA_PREFIX + "beep", FlxG.DATA_PREFIX + "beep.mp3")
 		
