@@ -16,6 +16,7 @@ Import flxsound
 Import flxsprite
 Import flxstate
 Import flxtext
+Import flxtileblock
 Import flxtilemap
 Import flxtimer
 Import flxu

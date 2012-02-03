@@ -405,9 +405,9 @@ Public
 		_curAnim = Null
 		
 		If (_pixels <> Null) Then			
-			_curIndex = Int(FlxG.Random() * _pixels.Frames())
+			_curIndex = Int(FlxG.Random() * (_pixels.Frames() - 1))
 		Else
-			_curIndex = 1
+			_curIndex = 0
 		End If
 		
 		dirty = True		
