@@ -45,3 +45,9 @@ Interface FlxTileHitListener
 	Method OnTileHit:Void(tile:FlxTile, object:FlxObject)	
 
 End Interface
+
+Interface FlxTileOverlapChecker
+	
+	Method IsTileOverlap:Bool(object1:FlxObject, object2:FlxObject)
+
+End Interface

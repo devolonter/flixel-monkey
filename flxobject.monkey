@@ -15,6 +15,7 @@ Import flxg
 Import flxu
 
 Import system.flxcolor
+Import system.flxtile
 
 #Rem
 summary:This is the base class for most of the display objects (FlxSprite, FlxText, etc).
@@ -904,17 +905,17 @@ Class FlxObjectXComparator Implements FlxBasicComparator
 	
 End Class
 
-Class FlxObjectSeparateX Implements FlxTilemapOverlapListener
+Class FlxObjectSeparateX Implements FlxTileOverlapChecker
 	
-	Method IsTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
+	Method IsTileOverlap:Bool(object1:FlxObject, object2:FlxObject)
 		Return FlxObject.SeparateX(object1, object2)
 	End Method
 
 End Class
 
-Class FlxObjectSeparateY Implements FlxTilemapOverlapListener
+Class FlxObjectSeparateY Implements FlxTileOverlapChecker
 
-	Method IsTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
+	Method IsTileOverlap:Bool(object1:FlxObject, object2:FlxObject)
 		Return FlxObject.SeparateY(object1, object2)
 	End Method
 

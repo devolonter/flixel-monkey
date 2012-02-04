@@ -153,7 +153,7 @@ Public
 		Return False	
 	End Method
 	
-	Method OverlapsWithCallback:Bool(object:FlxObject, callback:FlxTilemapOverlapListener = Null, flipCallbackParams:Bool = False, position:FlxPoint = Null)
+	Method OverlapsWithCallback:Bool(object:FlxObject, callback:FlxTileOverlapChecker = Null, flipCallbackParams:Bool = False, position:FlxPoint = Null)
 		Local results:Bool = False
 		
 		Local lx:Float = x
@@ -197,9 +197,9 @@ Public
 					
 					If (callback <> Null) Then
 						If (flipCallbackParams) Then
-							overlapFound = callback.IsTilemapOverlap(object, tile)
+							overlapFound = callback.IsTileOverlap(object, tile)
 						Else
-							overlapFound = callback.IsTilemapOverlap(tile, object)
+							overlapFound = callback.IsTileOverlap(tile, object)
 						End If
 					Else
 						overlapFound = (object.x + object.width > tile.x And object.x < tile.x + tile.width And object.y + object.height > tile.y And object.y < tile.y + tile.height)
@@ -741,9 +741,3 @@ Private
 	End Method
 
 End Class
-
-Interface FlxTilemapOverlapListener
-	
-	Method IsTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
-
-End Interface
