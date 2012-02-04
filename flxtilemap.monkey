@@ -6,6 +6,7 @@ Import flxextern
 Import flxobject
 Import flxrect
 Import flxg
+Import flxcamera
 
 Import system.flxtile
 
@@ -89,6 +90,105 @@ Public
 	Method OverlapsWithCallback:Bool(object:FlxObject, callback:FlxTilemapOverlapListener = Null, flipCallbackParams:Bool = False, position:FlxPoint = Null)
 		'TODO
 		Return False	
+	End Method
+	
+	Method GetTileCoords:Stack<FlxPoint>(index:Int, midpoint:Bool = True)
+		Local array:Stack<FlxPoint> = Null
+		
+		Local point:FlxPoint
+		Local i:Int = 0
+		Local l:Int = widthInTiles * heightInTiles
+		
+		While (i < l)
+			If (_data[i] = index) Then
+				point = New FlxPoint(x + Int(i Mod widthInTiles) * _tileWidth, y + Int(i / widthInTiles) * _tileHeight)
+				
+				If (midpoint) Then
+					point.x += _tileWidth * .5
+					point.y += _tileHeight * .5
+				End If
+				
+				If (array = Null) array = New Stack<FlxPoint>()				
+				array.Push(point)
+			End If
+			
+			i += 1
+		Wend
+		
+		Return array
+	End Method
+	
+	Method SetTile:Bool(x:Int, y:Int, tile:Int, updateGraphics:Bool = True)
+		If (x >= widthInTiles Or y >= heightInTiles) Then
+			Return False
+		End If
+		
+		Return SetTileByIndex(y * widthInTiles + x, tile, updateGraphics)
+	End Method
+	
+	Method SetTileByIndex:Bool(index:Int, tile:Int, updateGraphics:Bool = True)
+		If (index >= _data.Length()) Return False
+				
+		_data[index] = tile
+		
+		If (Not updateGraphics) Return True
+		
+		If (auto = OFF) Then
+			_UpdateTile(index)
+			Return True
+		End If
+		
+		Local i:Int = 0
+		Local row:Int = Int(index / widthInTiles) - 1
+		Local rowLength:Int = row + 3
+		Local column:Int = index Mod widthInTiles - 1
+		Local columnHeight:Int = column + 3
+		
+		While (row < rowLength)
+			column = columnHeight - 3
+			
+			While (column < columnHeight)
+				If (row >= 0 And row < heightInTiles And column >= 0 And column < widthInTiles) Then
+					i = row * widthInTiles + column
+					_AutoTile(i)
+					_UpdateTile(i)
+				End If
+				
+				column += 1
+			Wend
+			
+			row += 1
+		Wend
+		
+		Return True
+	End Method
+	
+	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:FlxClass, range:Int = 1)
+		If (range <= 0) range = 1
+		
+		Local tileObject:FlxTile
+		Local i:Int = tile
+		Local l:Int = tile + range
+		
+		While (i < l)
+			tileObject = _tileObjects[i]
+			
+			tileObject.allowCollisions = allowCollisions
+			tileObject.callback = callback
+			tileObject.filter = callbackFilter
+			
+			i += 1
+		Wend
+	End Method
+	
+	Method Follow:Void(camera:FlxCamera = Null, border:Int = 0, updateWorld:Bool = True)
+		If (camera = Null) camera = FlxCamera
+		camera.SetBounds(x + border * _tileWidth, y + border * _tileHeight, width - border * _tileWidth * 2, height - border * _tileHeight * 2, updateWorld)
+	End Method
+	
+	Method GetBounds:FlxRect(bounds:FlxRect = Null)
+		If (bounds = Null) bounds = New FlxRect()		
+		Return bounds.Make(x, y, width, height)
 	End Method
 	
 	Method Ray:Bool(startPoint:FlxPoint, endPoint:FlxPoint, result:FlxPoint = Null, resolution:Float = 1)

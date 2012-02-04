@@ -6,7 +6,7 @@ Import flixel.flxtilemap
 
 Class FlxTile Extends FlxObject
 	
-	Field callback:FlxTileListener
+	Field callback:FlxTileHitListener
 	
 	Field filter:FlxClass
 	
@@ -40,7 +40,7 @@ Class FlxTile Extends FlxObject
 
 End Class
 
-Interface FlxTileListener
+Interface FlxTileHitListener
 
 	Method OnTileHit:Void(tile:FlxTile, object:FlxObject)	
 
