@@ -906,16 +906,16 @@ End Class
 
 Class FlxObjectSeparateX Implements FlxTilemapOverlapListener
 	
-	Method OnTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
-		FlxObject.SeparateX(object1, object2)
+	Method IsTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
+		Return FlxObject.SeparateX(object1, object2)
 	End Method
 
 End Class
 
 Class FlxObjectSeparateY Implements FlxTilemapOverlapListener
 
-	Method OnTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
-		FlxObject.SeparateY(object1, object2)
+	Method IsTilemapOverlap:Bool(object1:FlxObject, object2:FlxObject)
+		Return FlxObject.SeparateY(object1, object2)
 	End Method
 
 End Class
