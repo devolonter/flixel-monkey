@@ -243,12 +243,24 @@ Public
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_touch[i].Reset()
 			Next
-		#ElseIf TARGET = "xna" Or TARGET = "html5"
+			
+		#ElseIf TARGET = "html5" Or TARGET = "flash"
 			If (Not FlxG.mobile) Then
 				keys.Reset()
 			End If
-			
+				
 			_touch[0].Reset()
+		
+		#ElseIf TARGET = "xna"
+			If (Not FlxG.mobile) Then
+				keys.Reset()
+				_touch[0].Reset()
+			Else
+				For Local i:Int = 0 Until _TOUCH_COUNT
+					_touch[i].Reset()
+				Next
+			End If			
+			
 		#Else
 			keys.Reset()
 			_touch[0].Reset()			
@@ -627,12 +639,24 @@ Public
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_touch[i].Update(TouchX(i), TouchY(i))
 			Next
-		#ElseIf TARGET = "xna" Or TARGET = "html5"
+			
+		#ElseIf TARGET = "html5" Or TARGET = "flash"
 			If (Not FlxG.mobile) Then
 				FlxG.keys.Update()
 			End If
 			
 			_touch[0].Update(TouchX(), TouchY())
+			
+		#ElseIf TARGET = "xna"
+			If (Not FlxG.mobile) Then
+				FlxG.keys.Update()
+				_touch[0].Update(TouchX(), TouchY())
+			Else
+				For Local i:Int = 0 Until _TOUCH_COUNT
+					_touch[i].Update(TouchX(i), TouchY(i))
+				Next
+			End If
+					
 		#Else
 			FlxG.keys.Update()				
 			_touch[0].Update(TouchX(), TouchY())

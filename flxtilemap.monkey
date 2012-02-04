@@ -62,7 +62,7 @@ Public
 		_startingIndex = 0
 	End Method
 	
-	Method Destroy()
+	Method Destroy:Void()
 		_tiles = Null
 		
 		Local i:Int = 0
