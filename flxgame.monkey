@@ -78,9 +78,11 @@ Private
 	
 	Field _soundTrayLabel:FlxText
 	
-	Field _fps:Int
+	Field _fps:Int	
 	
 	Field _fpsCounter:Int
+	
+	Field _lastFpsCounter:Int
 	
 	Field _fpsTime:Int
 	
@@ -179,9 +181,14 @@ Public
 		If (_fps < 0) Then
 			_fpsTime = Millisecs()
 			_fps = FlxG.framerate
+			_lastFpsCounter = _fps
 		Else
 			If (Millisecs() - _fpsTime > 1000) Then
-				_fps = _fpsCounter * 5		
+				If (Abs(_lastFpsCounter - _fpsCounter) < 10) Then
+					_fps = _fpsCounter
+				End If
+				
+				_lastFpsCounter = _fpsCounter
 				_fpsCounter = 0
 				_fpsTime = Millisecs()
 			Else
