@@ -181,7 +181,7 @@ Public
 			_fps = FlxG.framerate
 		Else
 			If (Millisecs() - _fpsTime > 1000) Then
-				_fps = _fpsCounter			
+				_fps = _fpsCounter * 5		
 				_fpsCounter = 0
 				_fpsTime = Millisecs()
 			Else
@@ -189,6 +189,7 @@ Public
 			End If
 		End If
 	
+		'Real elapsed very unstable in Monkey. TODO!
 		FlxG.elapsed = FlxG.timeScale * (1.0 / _fps)	
 		
 		_UpdateSoundTray()
