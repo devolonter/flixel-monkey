@@ -16,6 +16,8 @@ Class FlxTilemapBuffer
 	
 	Field columns:Int
 	
+	Field dirty:Bool
+	
 	Method New(tileWidth:Float, tileHeight:Float, widthInTiles:Int, heightInTiles:Int, camera:FlxCamera = Null)
 		If (camera = Null) camera = FlxG.camera
 		
@@ -27,6 +29,8 @@ Class FlxTilemapBuffer
 		
 		width = columns * tileWidth		
 		height = rows * tileHeight
+		
+		dirty = True
 	End Method
 
 End Class

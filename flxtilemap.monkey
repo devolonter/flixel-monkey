@@ -12,6 +12,7 @@ Import flxbasic
 Import flxpath
 
 Import system.flxtile
+Import system.flxtilemapbuffer
 
 Import "data/flx_autotiles.png"
 Import "data/flx_autotiles_alt.png"
@@ -40,6 +41,8 @@ Private
 	Global _tileLoader:FlxTileLoader = New FlxTileLoader()
 
 	Field _tiles:Image
+	
+	Field _buffers:Stack<FlxTilemapBuffer>
 
 	Field _data:Int[]
 	
@@ -53,6 +56,18 @@ Private
 	
 	Field _startingIndex:Int = 0
 	
+	Field _camera:FlxCamera
+	
+	Field _buffer:FlxTilemapBuffer
+	
+	Field _screenXInTiles:Int
+	
+	Field _screenYInTiles:Int
+	
+	Field _screenRows:Int
+	
+	Field _screenColumns:Int
+	
 Public
 	Method New()
 		Super.New()
@@ -60,16 +75,20 @@ Public
 		widthInTiles = 0
 		heightInTiles = 0
 		totalTiles = 0
+		_buffers = New Stack<FlxTilemapBuffer>()
 		_tileWidth = 0
 		_tileHeight = 0
-		_tiles = Null
-		_tileObjects = Null
+		_tiles = Null		
 		immovable = True
 		_startingIndex = 0
+		_camera = Null
+		_buffer = Null
 	End Method
 	
 	Method Destroy:Void()
 		_tiles = Null
+		_camera = Null
+		_buffer = Null
 		
 		Local i:Int = 0
 		Local l:Int = _tileObjects.Length()
@@ -78,6 +97,8 @@ Public
 			_tileObjects[i].Destroy()
 			_tileObjects[i] = Null
 		Wend
+		
+		_buffers = Null
 		
 		Super.Destroy()
 	End Method
@@ -144,7 +165,6 @@ Public
 		
 		i = 0
 		Local l:Int = (_tiles.Width() / _tileWidth) * (_tiles.Height() / _tileHeight)		
-		Local ac
 		
 		If (auto > OFF) l += 1		
 		_tileObjects = _tileObjects.Resize(l)
@@ -178,9 +198,101 @@ Public
 			If (_flicker) Return
 		End If
 		
-		Local camera:FlxCamera = FlxG._currentCamera
+		_camera = FlxG._currentCamera
 		
-		'TODO
+		If (FlxG._currentCameraID >= _buffers.Length()) _buffers.Push(Null)
+		_buffer = _buffers.Get(FlxG._currentCameraID)
+		
+		If (_buffer = Null) Then
+			_buffer = New FlxTilemapBuffer(_tileWidth, _tileHeight, widthInTiles, heightInTiles, _camera)
+			_buffers.Set(FlxG._currentCameraID, _buffer)
+		End If
+		
+		If (Not _buffer.dirty) Then
+			_point.x = x - Int(_camera.scroll.x * scrollFactor.x) + _buffer.x
+			_point.y = y - Int(_camera.scroll.y * scrollFactor.y) + _buffer.y
+			
+			_buffer.dirty = _point.x > 0 Or _point.y > 0 Or _point.x + _buffer.width < _camera.Width Or _point.y + _buffer.height < _camera.Height
+		End If
+		
+		If (_buffer.dirty) Then		
+			_point.x = Int(_camera.scroll.x * scrollFactor.x) - x
+			_point.y = Int(_camera.scroll.y * scrollFactor.y) - y
+			
+			If (_point.x > 0) Then
+				_screenXInTiles = (_point.x + 0.0000001) / _tileWidth
+			Else
+				_screenXInTiles = (_point.x - 0.0000001) / _tileWidth			
+			End If
+			
+			If (_point.y > 0) Then
+				_screenYInTiles = (_point.y + 0.0000001) / _tileHeight
+			Else
+				_screenYInTiles = (_point.y - 0.0000001) / _tileHeight			
+			End If		
+			
+			If (_screenXInTiles < 0) _screenXInTiles = 0
+			If (_screenXInTiles > widthInTiles - _screenColumns) _screenXInTiles = widthInTiles - _screenColumns
+			If (_screenYInTiles < 0) _screenYInTiles = 0
+			If (_screenYInTiles > heightInTiles - _screenRows) _screenYInTiles = heightInTiles - _screenRows
+			
+			_buffer.x = _screenXInTiles * _tileWidth
+			_buffer.y = _screenXInTiles * _tileHeight
+		End If		
+
+		_point.x = x - Int(_camera.scroll.x * scrollFactor.x) + _buffer.x
+		_point.y = y - Int(_camera.scroll.y * scrollFactor.y) + _buffer.y
+		
+		If (_point.x > 0) Then
+			_point.x += 0.0000001
+		Else
+			_point.x -= 0.0000001			
+		End If
+		
+		If (_point.y > 0) Then
+			_point.y += 0.0000001
+		Else
+			_point.y -= 0.0000001			
+		End If
+		
+		PushMatrix()		
+			Translate(_point.x, _point.y)
+			
+			_screenRows = _buffer.rows
+			_screenColumns = _buffer.columns
+			
+			Local rowIndex:Int = _screenYInTiles * widthInTiles + _screenXInTiles			
+			Local row:Int = 0
+			Local column:Int
+			Local columnIndex:Int
+			Local tile:FlxTile
+			
+			_point.y = 0
+			
+			While (row < _screenRows)
+				columnIndex = rowIndex
+				column = 0
+				_point.x = 0
+				
+				While (column < _screenColumns)
+					_rect = _rects[columnIndex]
+					
+					If (_rect <> Null) Then
+						DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
+					End If
+					
+					_point.x += _tileWidth
+					column += 1
+					columnIndex += 1
+				Wend
+				
+				rowIndex += widthInTiles
+				_point.y += _tileHeight
+				row += 1
+			Wend
+		PopMatrix()		
+		
+		_VISIBLECOUNT += 1
 	End Method
 	
 	Method GetData:Int[](simple:Bool = False)
@@ -201,6 +313,16 @@ Public
 		Wend
 		
 		Return data
+	End Method
+	
+	Method SetDirty:Void(dirty:Bool = True)
+		Local i:Int = 0
+		Local l:Int = _buffers.Length()
+		
+		While (i < l)
+			_buffers.Get(i).dirty = dirty
+			i += 1
+		Wend
 	End Method
 	
 	Method FindPath:FlxPath(start:FlxPoint, endPoint:FlxPoint, simplify:Bool = True, raySimplify:Bool = False)
@@ -252,7 +374,7 @@ Public
 			Local basic:FlxBasic
 			Local i:Int = 0
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
-			Local l = members.Length()
+			Local l:Int = members.Length()
 			
 			While (i < l)
 				basic = members[i]
@@ -286,7 +408,7 @@ Public
 			Local basic:FlxBasic
 			Local i:Int = 0
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
-			Local l = members.Length()
+			Local l:Int = members.Length()
 			
 			While (i < l)
 				basic = members[i]
@@ -373,7 +495,7 @@ Public
 					End If
 					
 					If (overlapFound) Then
-						If (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object)) Then
+						If (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object))) Then
 							tile.mapIndex = rowStart + column
 							tile.callback.OnTileHit(tile, object)
 						End If
@@ -381,7 +503,7 @@ Public
 						results = True
 					End If
 					
-				ElseIf (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object))
+				ElseIf (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object))) Then
 					tile.mapIndex = rowStart + column
 					tile.callback.OnTileHit(tile, object)
 				End If
@@ -420,25 +542,25 @@ Public
 	End Method
 	
 	Method GetTileInstances:IntStack(index:Int)
-		Local array:IntStack = Null
+		Local elements:IntStack = Null
 		
 		Local i:Int = 0
 		Local l:Int = widthInTiles * heightInTiles
 		
 		While (i < l)
 			If (_data[i] = index) Then
-				If (array = Null) array = New IntStack()
-				array.Push(i)
+				If (elements = Null) elements = New IntStack()
+				elements.Push(i)
 			End If
 			
 			i += 1
 		Wend
 		
-		Return array
+		Return elements
 	End Method
 	
 	Method GetTileCoords:Stack<FlxPoint>(index:Int, midpoint:Bool = True)
-		Local array:Stack<FlxPoint> = Null
+		Local elements:Stack<FlxPoint> = Null
 		
 		Local point:FlxPoint
 		Local i:Int = 0
@@ -453,14 +575,14 @@ Public
 					point.y += _tileHeight * .5
 				End If
 				
-				If (array = Null) array = New Stack<FlxPoint>()				
-				array.Push(point)
+				If (elements = Null) elements = New Stack<FlxPoint>()				
+				elements.Push(point)
 			End If
 			
 			i += 1
 		Wend
 		
-		Return array
+		Return elements
 	End Method
 	
 	Method SetTile:Bool(x:Int, y:Int, tile:Int, updateGraphics:Bool = True)

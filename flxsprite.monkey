@@ -37,7 +37,9 @@ Class FlxSprite Extends FlxObject
 	
 	Field _color:FlxColor
 	
-	Field _mixedColor:FlxColor	
+	Field _mixedColor:FlxColor
+	
+	Field _camera:FlxCamera
 	
 Private
 	Global _graphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
@@ -121,6 +123,7 @@ Public
 		_color = Null
 		_surfaceColor = Null
 		_mixedColor = Null
+		_camera = Null
 	End Method
 	
 	Method LoadGraphic:FlxSprite(graphic:String, animated:Bool = False, reverse:Bool = False, width:Int = 0, height:Int = 0, unique:Bool = False)
@@ -185,15 +188,15 @@ Public
 		
 		If (dirty) _CalcFrame()
 		
-		Local camera:FlxCamera = FlxG._currentCamera		
+		_camera = FlxG._currentCamera		
 		
 		If (FlxG._lastDrawingBlend <> blend) Then
 			SetBlend(blend)
 			FlxG._lastDrawingBlend = blend
 		End If
 		
-		_point.x = x - int(camera.scroll.x * scrollFactor.x) - offset.x
-		_point.y = y - int(camera.scroll.y * scrollFactor.y) - offset.y
+		_point.x = x - int(_camera.scroll.x * scrollFactor.x) - offset.x
+		_point.y = y - int(_camera.scroll.y * scrollFactor.y) - offset.y
 		
 		If (_point.x > 0) Then
 			_point.x += 0.0000001
@@ -208,8 +211,8 @@ Public
 		End If
 	
 		If (_pixels <> Null) Then
-			If (camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_color, camera._GetColorObject())
+			If (_camera.Color <> FlxG.WHITE) Then
+				_mixedColor.MixRGB(_color, _camera._GetColorObject())
 				
 				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
 					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
@@ -222,8 +225,8 @@ Public
 				End If		
 			End If
 			
-			If (camera.Alpha < 1) Then
-				Local _mixedAlpha:Float = camera.Alpha * _alpha
+			If (_camera.Alpha < 1) Then
+				Local _mixedAlpha:Float = _camera.Alpha * _alpha
 				
 				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
 					SetAlpha(_mixedAlpha)
@@ -276,8 +279,8 @@ Public
 				PopMatrix()				
 			End If
 		Else		
-			If (camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_surfaceColor, camera._GetColorObject())
+			If (_camera.Color <> FlxG.WHITE) Then
+				_mixedColor.MixRGB(_surfaceColor, _camera._GetColorObject())
 				
 				If (_color.argb <> FlxG.WHITE) Then
 					_mixedColor.MixRGB(_color)					
@@ -303,8 +306,8 @@ Public
 				End If			
 			End If
 			
-			If (camera.Alpha < 1) Then
-				Local _mixedAlpha:Float = camera.Alpha * _alpha
+			If (_camera.Alpha < 1) Then
+				Local _mixedAlpha:Float = _camera.Alpha * _alpha
 				
 				If (_surfaceColor.a < 1) Then
 					_mixedAlpha *= _surfaceColor.a				
@@ -360,7 +363,7 @@ Public
 		End If
 		
 		_VISIBLECOUNT += 1;
-		If(FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(camera);
+		If(FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
 	End Method
 	
 	Method DrawFrame:Void(force:Bool = False)

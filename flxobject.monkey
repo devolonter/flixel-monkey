@@ -144,14 +144,14 @@ Class FlxObject Extends FlxBasic
 	
 	Field _point:FlxPoint
 	
+	Field _rect:FlxRect
+	
 Private
 	Global _separateXCallback:FlxObjectSeparateX = New FlxObjectSeparateX()
 	
 	Global _separateYCallback:FlxObjectSeparateY = New FlxObjectSeparateY()
 
-	Global _pZero:FlxPoint = New FlxPoint()	
-	
-	Field _rect:FlxRect	
+	Global _pZero:FlxPoint = New FlxPoint()		
 	
 	Field _pathNodeIndex:Int
 	
