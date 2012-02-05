@@ -514,7 +514,7 @@ Public
 		Return result
 	End Function
 	
-	Function Collide:Bool(objectOrGroup1:FlxBasic = Null, objectOrGroup2:FlxBasic, notifyCallback:FlxOverlapNotifyListener = Null)
+	Function Collide:Bool(objectOrGroup1:FlxBasic = Null, objectOrGroup2:FlxBasic = Null, notifyCallback:FlxOverlapNotifyListener = Null)
 		Return	Overlap(objectOrGroup1, objectOrGroup2, notifyCallback, _collideListener)
 	End Function
 	
