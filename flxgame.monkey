@@ -78,8 +78,6 @@ Private
 	
 	Field _soundTrayLabel:FlxText
 	
-	Field _targetElapsed:Float
-	
 	Field _fps:Int
 	
 	Field _fpsCounter:Int
@@ -134,7 +132,6 @@ Public
 		
 		_InitData()		
 		_step = 1000.0 / FlxG.framerate
-		_targetElapsed = 1.0 / FlxG.framerate
 		_fps = -1
 		_Step()
 		
@@ -144,7 +141,7 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()
+	Method OnUpdate:Int()	
 		#If TARGET <> "ios" Or TARGET <> "android"
 			If (useSoundHotKeys) Then
 				If (KeyHit(KEY_0)) Then
@@ -192,12 +189,7 @@ Public
 			End If
 		End If
 	
-		'Elapsed in Monkey very unstabled... TODO!
-		If (_fps = FlxG.framerate) Then
-			FlxG.elapsed = FlxG.timeScale * _targetElapsed
-		Else
-			FlxG.elapsed = FlxG.timeScale * (1.0 / _fps)
-		End If		
+		FlxG.elapsed = FlxG.timeScale * (1.0 / _fps)	
 		
 		_UpdateSoundTray()
 		_Step()			
@@ -274,9 +266,9 @@ Public
 		
 		FlxG.mouse.Draw()
 		
-		#If CONFIG = "debug"
+		'#If CONFIG = "debug"
 			DrawText("FPS: " + _fps, 10, 10)
-		#End		
+		'#End		
 								
 		Return 0	
 	End Method
