@@ -109,8 +109,8 @@ Public
 		_strings.Remove(string)
 	End Function
 	
-	Function GetStringPath:String(string:String)
-		Return _strings.Get(string)
+	Function GetString:String(string:String)
+		Return LoadString(_strings.Get(string))
 	End Function
 
 End Class
