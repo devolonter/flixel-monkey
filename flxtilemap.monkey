@@ -243,18 +243,6 @@ Public
 		_point.x = x - Int(_camera.scroll.x * scrollFactor.x) + _buffer.x
 		_point.y = y - Int(_camera.scroll.y * scrollFactor.y) + _buffer.y
 		
-		If (_point.x > 0) Then
-			_point.x += 0.0000001
-		Else
-			_point.x -= 0.0000001			
-		End If
-		
-		If (_point.y > 0) Then
-			_point.y += 0.0000001
-		Else
-			_point.y -= 0.0000001			
-		End If
-		
 		If (FlxG._lastDrawingBlend <> AlphaBlend) Then
 			SetBlend(AlphaBlend)
 			FlxG._lastDrawingBlend = AlphaBlend
