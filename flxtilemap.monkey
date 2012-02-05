@@ -208,6 +208,9 @@ Public
 			_buffers.Set(FlxG._currentCameraID, _buffer)
 		End If
 		
+		_screenRows = _buffer.rows
+		_screenColumns = _buffer.columns
+		
 		If (Not _buffer.dirty) Then
 			_point.x = x - Int(_camera.scroll.x * scrollFactor.x) + _buffer.x
 			_point.y = y - Int(_camera.scroll.y * scrollFactor.y) + _buffer.y
@@ -229,7 +232,7 @@ Public
 				_screenYInTiles = (_point.y + 0.0000001) / _tileHeight
 			Else
 				_screenYInTiles = (_point.y - 0.0000001) / _tileHeight			
-			End If		
+			End If					
 			
 			If (_screenXInTiles < 0) _screenXInTiles = 0
 			If (_screenXInTiles > widthInTiles - _screenColumns) _screenXInTiles = widthInTiles - _screenColumns
@@ -237,7 +240,7 @@ Public
 			If (_screenYInTiles > heightInTiles - _screenRows) _screenYInTiles = heightInTiles - _screenRows
 			
 			_buffer.x = _screenXInTiles * _tileWidth
-			_buffer.y = _screenXInTiles * _tileHeight
+			_buffer.y = _screenYInTiles * _tileHeight
 		End If		
 
 		_point.x = x - Int(_camera.scroll.x * scrollFactor.x) + _buffer.x
@@ -261,10 +264,7 @@ Public
 		End If
 		
 		PushMatrix()		
-			Translate(_point.x, _point.y)
-			
-			_screenRows = _buffer.rows
-			_screenColumns = _buffer.columns
+			Translate( _point.x, _point.y)			
 			
 			Local rowIndex:Int = _screenYInTiles * widthInTiles + _screenXInTiles			
 			Local row:Int = 0
