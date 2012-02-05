@@ -189,6 +189,8 @@ Public
 		
 		While(i < l)
 			FlxG._currentCamera = FlxG.cameras.Get(i)
+			FlxG._currentCameraID = i
+			
 			If (FlxG._currentCamera = Null Or Not FlxG._currentCamera.exists Or Not FlxG._currentCamera.visible) Continue
 			
 			FlxG._currentCamera.DrawFX() 'not realy draw. Only calculation

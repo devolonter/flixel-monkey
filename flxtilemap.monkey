@@ -9,6 +9,7 @@ Import flxg
 Import flxcamera
 Import flxgroup
 Import flxbasic
+Import flxpath
 
 Import system.flxtile
 
@@ -36,6 +37,8 @@ Class FlxTilemap Extends FlxObject
 	Field totalTiles:Int
 	
 Private
+	Global _tileLoader:FlxTileLoader = New FlxTileLoader()
+
 	Field _tiles:Image
 
 	Field _data:Int[]
@@ -77,6 +80,170 @@ Public
 		Wend
 		
 		Super.Destroy()
+	End Method
+	
+	Method LoadMap:FlxTilemap(mapData:String, tileGraphic:String, tileWidth:Int = 0, tileHeight:Int = 0, autoTile:Int = OFF, startIndex:Int = 0, drawIndex:Int = 1, collideIndex:Int = 1)
+		auto = autoTile
+		_startingIndex = startIndex
+		
+		Local columns:String[]
+		Local rows:String[] = mapData.Split("~n")
+		Local row:Int = 0
+		Local column:Int 
+		Local data:IntStack = New IntStack()
+		
+		heightInTiles = rows.Length()
+		
+		While (row < heightInTiles)
+			columns = rows[row].Split(",")
+			
+			If (columns.Length() <= 1) Then
+				heightInTiles = heightInTiles - 1
+				Continue
+			End If
+			
+			If (widthInTiles = 0) Then
+				widthInTiles = columns.Length()
+			End If
+			
+			column = 0
+			
+			While (column < widthInTiles)
+				data.Push(Int(columns[column]))
+				column += 1
+			Wend
+			
+			row += 1
+		Wend
+		
+		_data = data.ToArray()
+		
+		Local i:Int
+		
+		totalTiles = widthInTiles * heightInTiles
+		
+		If (auto > OFF) Then
+			_startingIndex = 1
+			drawIndex = 1
+			collideIndex = 1
+			i = 0
+			
+			While (i < totalTiles)
+				_AutoTile(i)
+				i += 1
+			Wend
+		End If
+		
+		_tiles = FlxG.AddBitmap(tileGraphic, _tileLoader)
+		
+		_tileWidth = tileWidth		
+		If (_tileWidth = 0) _tileWidth = _tiles.Height()
+		
+		_tileHeight = tileHeight
+		If (_tileHeight = 0) _tileHeight = _tileWidth
+		
+		i = 0
+		Local l:Int = (_tiles.Width() / _tileWidth) * (_tiles.Height() / _tileHeight)		
+		Local ac
+		
+		If (auto > OFF) l += 1		
+		_tileObjects = _tileObjects.Resize(l)
+		
+		While (i < l)
+			If (i >= collideIndex) Then
+				_tileObjects[i] = New FlxTile(Self, i, _tileWidth, _tileHeight, (i >= drawIndex), allowCollisions)
+			Else
+				_tileObjects[i] = New FlxTile(Self, i, _tileWidth, _tileHeight, (i >= drawIndex), NONE)
+			End If
+			
+			i += 1
+		Wend
+		
+		width = widthInTiles * _tileWidth
+		height = heightInTiles * _tileHeight
+		_rects = _rects.Resize(totalTiles)
+		i = 0
+		
+		While (i < totalTiles)
+			_UpdateTile(i)
+			i += 1
+		Wend
+		
+		Return Self
+	End Method
+	
+	Method Draw:Void()
+		If (_flickerTimer <> 0) Then
+			_flicker = Not _flicker
+			If (_flicker) Return
+		End If
+		
+		Local camera:FlxCamera = FlxG._currentCamera
+		
+		'TODO
+	End Method
+	
+	Method GetData:Int[](simple:Bool = False)
+		If (Not simple) Return _data
+		
+		Local i:Int = 0
+		Local l:Int = _data.Length()
+		Local data:Int[l]
+		
+		While (i < l)
+			If (_tileObjects[_data[i]].allowCollisions > 0) Then
+				data[i] = 1
+			Else
+				data[i] = 0
+			End If
+			
+			i += 1			
+		Wend
+		
+		Return data
+	End Method
+	
+	Method FindPath:FlxPath(start:FlxPoint, endPoint:FlxPoint, simplify:Bool = True, raySimplify:Bool = False)
+		Local startIndex:Int = Int((start.y - y) / _tileHeight) * widthInTiles + Int((start.x - x) / _tileWidth)
+		Local endIndex:Int = Int((endPoint.y - y) / _tileHeight) * widthInTiles + Int((endPoint.x - x) / _tileWidth)
+		
+		If (_tileObjects[_data[startIndex]].allowCollisions > 0 Or _tileObjects[_data[endIndex]].allowCollisions > 0) Then
+			Return Null
+		End If
+		
+		Local distances:Int[] = _ComputePathDistance(startIndex, endIndex)		
+		If (distances.Length() = 0) Return Null
+		
+		Local points:IntStack = New IntStack()
+		_WalkPath(distances, endIndex, points)
+		
+		Local node:FlxPoint
+		
+		node = points.Top()
+		node.x = start.x
+		node.y = start.y
+		
+		node = points.Get(0)
+		node.x = endPoint.x
+		node.y = endPoint.y
+		
+		If (simplify) _SimplifyPath(points)
+		If (raySimplify) _RaySimplifyPath(points)
+		
+		Local path:FlxPath = New FlxPath()
+		Local i:Int = points.length() - 1
+		
+		While (i >= 0)
+			node = points.Get(i)
+			
+			If (node <> Null) Then
+				path.AddPoint(node, true)
+			End If
+			
+			i -= 1
+		Wend
+		
+		Return path
 	End Method
 
 	Method Overlaps:Bool(objectOrGroup:FlxBasic, inScreenSpace:Bool = False, camera:FlxCamera = Null)
@@ -460,6 +627,55 @@ Public
 	End Method
 	
 Private
+	Method _SimplifyPath:Void(points:Stack<FlxPoint>)
+		Local deltaPrevious:Float
+		Local deltaNext:Float
+		Local last:FlxPoint = points.Get(0)
+		Local node:FlxPoint
+		Local nextPoint:FlxPoint
+		Local i:Int = 1
+		Local l:Int = points.Length() - 1
+		
+		While (i < l)
+			node = points.Get(i)
+			nextPoint = points.Get(i + 1)
+			
+			deltaPrevious = (node.x - last.x) / (node.y - last.y)
+			deltaNext = (node.x - nextPoint.x) / (node.y - nextPoint.y)
+			
+			If (last.x = nextPoint.x Or last.y = nextPoint.y Or deltaPrevious = deltaNext) Then
+				points.Set(i, Null)
+			Else
+				last = node
+			End If
+			
+			i += 1
+		Wend
+	End Method
+	
+	Method _RaySimplifyPath:Void(points:Stack<FlxPoint>)
+		Local source:FlxPoint = points.Get(0)
+		Local lastIndex:Int = -1
+		Local node:FlxPoint
+		Local i:Int = 1
+		Local l:Int = points.Length()
+		
+		While (i < l)
+			node = points.Get(i)
+			i += 1
+			
+			If (node = Null) Continue
+			
+			If (Ray(source, node, _point)) Then
+				If (lastIndex >= 0) points.Set(lastIndex, Null)
+			Else
+				source = points.Get(lastIndex)		
+			End If
+			
+			lastIndex = i - 1
+		Wend
+	End Method
+
 	Method _ComputePathDistance:Int[](startIndex:Int, endIndex:Int)
 		Local mapSize:Int = widthInTiles * heightInTiles
 		Local distances:Int[mapSize]
@@ -738,6 +954,15 @@ Private
 		End If
 		
 		_rects[index] = New FlxRect(rx, ry, _tileWidth, _tileHeight)
+	End Method
+
+End Class
+
+Private
+Class FlxTileLoader Extends FlxResourceLoader<Image>
+
+	Method Load:Image(name:String)
+		Return LoadImage(FlxAssetsManager.GetImagePath(name))	
 	End Method
 
 End Class

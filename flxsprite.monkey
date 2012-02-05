@@ -72,7 +72,7 @@ Private
 	
 	Field _halfWidth:Float
 	
-	Field _halfHeight:Float	
+	Field _halfHeight:Float
 
 Public
 	Method New(x:Float = 0, y:Float = 0, simpleGraphic:String = "")
