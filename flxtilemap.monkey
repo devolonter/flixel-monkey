@@ -279,6 +279,10 @@ Public
 					
 					If (_rect <> Null) Then
 						DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
+						
+						If (FlxG.visualDebug And Not ignoreDrawDebug) Then
+							'TODO
+						End If
 					End If
 					
 					_point.x += _tileWidth
@@ -1060,7 +1064,7 @@ Private
 	End Method
 
 	Method _UpdateTile:Void(index:Int)
-		Local tile:FlxTile = _tileObjects.Get(index)
+		Local tile:FlxTile = _tileObjects[_data[index]]
 		
 		If (tile = Null Or Not tile.visible) Then
 			_rects[index] = Null
