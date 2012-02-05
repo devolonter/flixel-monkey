@@ -213,8 +213,14 @@ Public
 		Local i:Int = 0
 		Local l:Int = FlxG.cameras.Length()		
 		
-		While(i < l)
+		While(i < l)		
 			FlxG._currentCamera = FlxG.cameras.Get(i)
+			
+			If (Not FlxG._currentCamera.active) Then
+				i+=1
+				Continue
+			End If
+			
 			FlxG._currentCameraID = i
 			
 			If (FlxG._currentCamera = Null Or Not FlxG._currentCamera.exists Or Not FlxG._currentCamera.visible) Continue

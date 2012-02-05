@@ -134,6 +134,8 @@ Public
 		_fxShakeOffset = New FlxPoint()
 		_fxShakeDirection = 0
 		
+		active = True
+		
 		_fill = New FlxColor(0)			
 	End Method
 	
