@@ -212,7 +212,7 @@ Public
 	
 		If (_pixels <> Null) Then
 			If (_camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_color, _camera._GetColorObject())
+				_mixedColor.MixRGB(_color, _camera._color)
 				
 				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
 					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
@@ -280,7 +280,7 @@ Public
 			End If
 		Else		
 			If (_camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_surfaceColor, _camera._GetColorObject())
+				_mixedColor.MixRGB(_surfaceColor, _camera._color)
 				
 				If (_color.argb <> FlxG.WHITE) Then
 					_mixedColor.MixRGB(_color)					

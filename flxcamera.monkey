@@ -37,6 +37,8 @@ Class FlxCamera Extends FlxBasic
 	
 	Field scroll:FlxPoint
 	
+	Field _color:FlxColor
+	
 Private
 	Const _MIN_FLOAT_VALUE:Float = .0000001
 
@@ -58,9 +60,7 @@ Private
 
 	Field _zoom:Float
 	
-	Field _point:FlxPoint
-	
-	Field _color:FlxColor
+	Field _point:FlxPoint	
 	
 	Field _alpha:Float
 		
@@ -512,11 +512,7 @@ Public
 			Fill(((alphaComponent * _fxFadeAlpha) Shl 24) + (_fxFadeColor & $00FFFFFF))	
 		End If
 	End Method
-	
-	Method _GetColorObject:FlxColor()
-		Return Self._color
-	End Method
-	
+
 	Method ToString:String()
 		Return "FlxCamera"	
 	End Method	

@@ -135,7 +135,7 @@ Public
 			Local camera:FlxCamera = FlxG.camera
 		
 			If (camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_shadow, camera._GetColorObject())
+				_mixedColor.MixRGB(_shadow, camera._color)
 				
 				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
 					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
