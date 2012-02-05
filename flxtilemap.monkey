@@ -1105,7 +1105,7 @@ Private
 Class FlxTileLoader Extends FlxResourceLoader<Image>
 
 	Method Load:Image(name:String)
-		Return LoadImage(FlxAssetsManager.GetImagePath(name))	
+		Return LoadImage(FlxAssetsManager.GetImagePath(name), 1, Image.XYPadding)	
 	End Method
 
 End Class
