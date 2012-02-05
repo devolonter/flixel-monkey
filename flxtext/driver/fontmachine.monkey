@@ -45,7 +45,7 @@ Import "../../data/flx_system_machine_font_23.txt"
 Import "../../data/flx_system_machine_font_24_P_1.png"
 Import "../../data/flx_system_machine_font_24.txt"
 
-Global FONTMACHINE_TEXT_DRIVER:FlxClass = New FlxFMDriverClass()
+Global FontmachineTextDriver:FlxClass = New FlxFMDriverClass()
 
 Class FlxTextFontMachineDriver Extends FlxTextDriver
 

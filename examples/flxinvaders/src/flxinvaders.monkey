@@ -19,7 +19,7 @@ Class FlxInvaders Extends FlxGame
 	
 	Method OnContentInit:Void()
 		FlxTextAngelFontDriver.Init()
-		FlxText.SetDefaultDriver(ANGELFONT_TEXT_DRIVER)
+		FlxText.SetDefaultDriver(AngelfontTextDriver)
 		
 		'Register assets
 		FlxAssetsManager.AddImage(Assets.IMAGE_PLAYER_SHIP, "ship.png")

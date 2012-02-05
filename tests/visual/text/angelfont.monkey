@@ -16,7 +16,7 @@ Class AngelFont Extends FlxGame
 	
 	Method OnContentInit:Void()
 		FlxTextAngelFontDriver.Init()
-		FlxText.SetDefaultDriver(ANGELFONT_TEXT_DRIVER)
+		FlxText.SetDefaultDriver(AngelfontTextDriver)
 	End Method
 
 End Class

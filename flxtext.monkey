@@ -26,7 +26,7 @@ Class FlxText Extends FlxSprite
 	Const SYSTEM_FONT:String = "system"
 	
 Private
-	Global _defaultDriver:FlxClass = NATIVE_TEXT_DRIVER
+	Global _defaultDriver:FlxClass = NativeTextDriver
 	Field _driver:FlxTextDriver
 	Field _shadow:FlxColor
 

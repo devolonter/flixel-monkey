@@ -20,7 +20,7 @@ Import "../../data/flx_system_font_15.png"
 Import "../../data/flx_system_font_16.png"
 Import "../../data/flx_system_font_17.png"
 
-Global NATIVE_TEXT_DRIVER:FlxClass = New FlxNFDriverClass()
+Global NativeTextDriver:FlxClass = New FlxNFDriverClass()
 
 Class FlxTextNativeDriver Extends FlxTextDriver
 
