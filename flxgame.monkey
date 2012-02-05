@@ -78,7 +78,13 @@ Private
 	
 	Field _soundTrayLabel:FlxText
 	
-	Field _elapsed:Float
+	Field _targetElapsed:Float
+	
+	Field _fps:Int
+	
+	Field _fpsCounter:Int
+	
+	Field _fpsTime:Int
 	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
@@ -87,7 +93,7 @@ Public
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
 		FlxG.framerate = framerate
 		
-		useSoundHotKeys = True
+		useSoundHotKeys = Not IsMobile()
 		Self.useSystemCursor = useSystemCursor
 		If (Not useSystemCursor) HideMouse()
 		_debuggerUp = False
@@ -128,7 +134,8 @@ Public
 		
 		_InitData()		
 		_step = 1000.0 / FlxG.framerate
-		_elapsed = 1.0 / FlxG.framerate			
+		_targetElapsed = 1.0 / FlxG.framerate
+		_fps = -1
 		_Step()
 		
 		_soundTrayX	= (FlxG.width / 2) * FlxCamera.defaultZoom - (_soundTrayWidth / 2)
@@ -138,40 +145,59 @@ Public
 	End Method
 	
 	Method OnUpdate:Int()
-		If (useSoundHotKeys) Then
-			If (KeyHit(KEY_0)) Then
-				FlxG.mute = Not FlxG.mute
-				
-				If (FlxG.volumeHandler <> Null) Then
-					If (FlxG.mute) Then
-						FlxG.volumeHandler.OnVolumeChange(0)
-					Else
-						FlxG.volumeHandler.OnVolumeChange(FlxG.Volume())
+		#If TARGET <> "ios" Or TARGET <> "android"
+			If (useSoundHotKeys) Then
+				If (KeyHit(KEY_0)) Then
+					FlxG.mute = Not FlxG.mute
+					
+					If (FlxG.volumeHandler <> Null) Then
+						If (FlxG.mute) Then
+							FlxG.volumeHandler.OnVolumeChange(0)
+						Else
+							FlxG.volumeHandler.OnVolumeChange(FlxG.Volume())
+						End If
 					End If
+					
+					_ShowSoundTray()
+				End If
+			
+				If (KeyHit(KEY_MINUS)) Then
+					FlxG.mute = False
+					FlxG.Volume(FlxG.Volume() - .1)
+					_ShowSoundTray()
 				End If
 				
-				_ShowSoundTray()
+				If (KeyHit(KEY_EQUALS)) Then
+					FlxG.mute = False
+					FlxG.Volume(FlxG.Volume() + .1)
+					_ShowSoundTray()
+				End If	
 			End If
-		
-			If (KeyHit(KEY_MINUS)) Then
-				FlxG.mute = False
-				FlxG.Volume(FlxG.Volume() - .1)
-				_ShowSoundTray()
-			End If
-			
-			If (KeyHit(KEY_EQUALS)) Then
-				FlxG.mute = False
-				FlxG.Volume(FlxG.Volume() + .1)
-				_ShowSoundTray()
-			End If	
-		End If
+		#End
 	
 		Return 0
 	End Method
 	
 	Method OnRender:Int()
-		'Elapsed in Monkey very unstabled. Temporary elpased is constant... TODO!
-		FlxG.elapsed = FlxG.timeScale * _elapsed
+		If (_fps < 0) Then
+			_fpsTime = Millisecs()
+			_fps = FlxG.framerate
+		Else
+			If (Millisecs() - _fpsTime > 1000) Then
+				_fps = _fpsCounter			
+				_fpsCounter = 0
+				_fpsTime = Millisecs()
+			Else
+				_fpsCounter += 1
+			End If
+		End If
+	
+		'Elapsed in Monkey very unstabled... TODO!
+		If (_fps = FlxG.framerate) Then
+			FlxG.elapsed = FlxG.timeScale * _targetElapsed
+		Else
+			FlxG.elapsed = FlxG.timeScale * (1.0 / _fps)
+		End If		
 		
 		_UpdateSoundTray()
 		_Step()			
@@ -202,49 +228,55 @@ Public
 			i+=1
 		Wend
 		
-		If (_soundTrayVisible) Then			
-			Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
-			If (FlxG.mute) globalVolume = 0
-			
-			Local bx:Int = 20
-			Local by:Int = 28
-			
-			If (FlxG._lastDrawingColor <> FlxG.WHITE) Then
-				SetColor(255, 255, 255)
-				FlxG._lastDrawingColor = FlxG.WHITE
-			End If
-			
-			PushMatrix()
-			Translate(_soundTrayX, _soundTrayY)
-
-			Local i:Int = 0
-			While (i < 10)
-				If (i < globalVolume) Then
-					If (FlxG._lastDrawingAlpha <> 1) Then
-						SetAlpha(1)
-						FlxG._lastDrawingAlpha = 1
-					End If
-					
-				Else
-					If (FlxG._lastDrawingAlpha <> .5) Then
-						SetAlpha(.5)
-						FlxG._lastDrawingAlpha = .5
-					End If
+		#If TARGET <> "ios" Or TARGET <> "android"
+			If (_soundTrayVisible) Then			
+				Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
+				If (FlxG.mute) globalVolume = 0
+				
+				Local bx:Int = 20
+				Local by:Int = 28
+				
+				If (FlxG._lastDrawingColor <> FlxG.WHITE) Then
+					SetColor(255, 255, 255)
+					FlxG._lastDrawingColor = FlxG.WHITE
 				End If
 				
-				DrawRect(bx, by, 8, i * 2)				
-				
-				bx += 12
-				by -= 2
-				i += 1
-			Wend
+				PushMatrix()
+				Translate(_soundTrayX, _soundTrayY)
+	
+				Local i:Int = 0
+				While (i < 10)
+					If (i < globalVolume) Then
+						If (FlxG._lastDrawingAlpha <> 1) Then
+							SetAlpha(1)
+							FlxG._lastDrawingAlpha = 1
+						End If
 						
-			_soundTrayLabel.Draw()
-			
-			PopMatrix()
-		End If
+					Else
+						If (FlxG._lastDrawingAlpha <> .5) Then
+							SetAlpha(.5)
+							FlxG._lastDrawingAlpha = .5
+						End If
+					End If
+					
+					DrawRect(bx, by, 8, i * 2)				
+					
+					bx += 12
+					by -= 2
+					i += 1
+				Wend
+							
+				_soundTrayLabel.Draw()
+				
+				PopMatrix()
+			End If
+		#End
 		
-		FlxG.mouse.Draw()		
+		FlxG.mouse.Draw()
+		
+		#If CONFIG = "debug"
+			DrawText("FPS: " + _fps, 10, 10)
+		#End		
 								
 		Return 0	
 	End Method
