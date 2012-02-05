@@ -265,7 +265,7 @@ Public
 			FlxG._lastDrawingColor = _camera.Color
 		End If
 		
-		Local alpha:Float = _camera.Color.a * _camera.Alpha
+		Local alpha:Float = _camera._color.a * _camera.Alpha
 		
 		If (FlxG._lastDrawingAlpha <> alpha) Then
 			SetAlpha(alpha)
