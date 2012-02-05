@@ -255,6 +255,23 @@ Public
 			_point.y -= 0.0000001			
 		End If
 		
+		If (FlxG._lastDrawingBlend <> AlphaBlend) Then
+			SetBlend(AlphaBlend)
+			FlxG._lastDrawingBlend = AlphaBlend
+		End If
+		
+		If (FlxG._lastDrawingColor <> _camera.Color) Then
+			SetColor(_camera._color.r, _camera._color.g, _camera._color.b)
+			FlxG._lastDrawingColor = _camera.Color
+		End If
+		
+		Local alpha:Float = _camera.Color.a * _camera.Alpha
+		
+		If (FlxG._lastDrawingAlpha <> alpha) Then
+			SetAlpha(alpha)
+			FlxG._lastDrawingAlpha = alpha
+		End If
+		
 		PushMatrix()		
 			Translate(_point.x, _point.y)
 			
