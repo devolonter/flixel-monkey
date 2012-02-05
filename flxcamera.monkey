@@ -196,6 +196,7 @@ Public
 				Local targetX:Float
 				Local targetY:Float
 				
+				#Rem if there is no effect then remove this
 				If (target.x > 0) Then
 					targetX = target.x + 0.0000001	
 				Else
@@ -207,6 +208,7 @@ Public
 				Else
 					targetY = target.y - 0.0000001
 				End If
+				#End
 				
 				edge = targetX - deadzone.x
 				If (scroll.x > edge) scroll.x = edge
@@ -289,6 +291,7 @@ Public
 	End Method
 	
 	Method FocusOn:Void(point:FlxPoint)
+		#Rem if there is no effect then remove this
 		If (point.x > 0) Then
 			point.x += 0.0000001	
 		Else
@@ -300,6 +303,7 @@ Public
 		Else
 			point.y -= 0.0000001	 
 		End If
+		#End
 		
 		scroll.Make(point.x - _width * .5, point.y - _height * .5)		
 	End Method

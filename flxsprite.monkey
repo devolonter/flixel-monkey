@@ -198,6 +198,7 @@ Public
 		_point.x = x - int(_camera.scroll.x * scrollFactor.x) - offset.x
 		_point.y = y - int(_camera.scroll.y * scrollFactor.y) - offset.y
 		
+		#Rem if there is no effect then remove this
 		If (_point.x > 0) Then
 			_point.x += 0.0000001
 		Else
@@ -209,6 +210,7 @@ Public
 		Else
 			_point.y -= 0.0000001			
 		End If
+		#End
 	
 		If (_pixels <> Null) Then
 			If (_camera.Color <> FlxG.WHITE) Then

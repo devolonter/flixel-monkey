@@ -97,6 +97,7 @@ Class FlxG
 		
 	Global framerate:Int	
 	
+	'If this value > 1.5 FlxTilemap draw with artefacts in flash and html5. TODO!
 	Global _deviceScaleFactorX:Float = 1	
 	
 	Global _deviceScaleFactorY:Float = 1
