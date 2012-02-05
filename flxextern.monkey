@@ -2,7 +2,11 @@ Strict
 
 Import flxbasic
 
-Import "native/flixel.${TARGET}.${LANG}"
+#if TARGET="glfw" And HOST="macos"
+	Import "native/flixel.${TARGET}.macos.${LANG}"
+#Else
+	Import "native/flixel.${TARGET}.${LANG}"
+#End
 
 #If TARGET = "html5"
 	Import "data/flx_empty_cursor.png" 
