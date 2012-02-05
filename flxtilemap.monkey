@@ -222,10 +222,6 @@ Public
 			_point.x = Int(_camera.scroll.x * scrollFactor.x) - x
 			_point.y = Int(_camera.scroll.y * scrollFactor.y) - y
 			
-			_screenXInTiles = _point.x / _tileWidth
-			_screenYInTiles = (_point.y - 0.0000001) / _tileHeight
-			
-			#Rem if there is no effect then remove this
 			If (_point.x > 0) Then
 				_screenXInTiles = (_point.x + 0.0000001) / _tileWidth
 			Else
@@ -236,8 +232,7 @@ Public
 				_screenYInTiles = (_point.y + 0.0000001) / _tileHeight
 			Else
 				_screenYInTiles = (_point.y - 0.0000001) / _tileHeight			
-			End If
-			#end				
+			End If					
 			
 			If (_screenXInTiles < 0) _screenXInTiles = 0
 			If (_screenXInTiles > widthInTiles - _screenColumns) _screenXInTiles = widthInTiles - _screenColumns

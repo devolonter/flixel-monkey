@@ -132,7 +132,6 @@ Public
 			_point.x = node.x - Int(camera.scroll.x * debugScrollFactor.x)
 			_point.y = node.y - Int(camera.scroll.y * debugScrollFactor.y)
 			
-			#Rem if there is no effect then remove this
 			If (_point.x > 0) Then
 				_point.x = Int(_point.x + 0.0000001)
 			Else
@@ -144,7 +143,6 @@ Public
 			Else
 				_point.y = Int(_point.y - 0.0000001)			
 			End If
-			#End
 			
 			Local nodeSize:Int = 2
 			If (i = 0 Or i = l - 1) nodeSize *= 2
@@ -194,7 +192,6 @@ Public
 			_point.x = nextNode.x - Int(camera.scroll.x * debugScrollFactor.x)
 			_point.y = nextNode.y - Int(camera.scroll.y * debugScrollFactor.y)
 			
-			#Rem if there is no effect then remove this
 			If (_point.x > 0) Then
 				_point.x = Int(_point.x + 0.0000001)
 			Else
@@ -205,8 +202,7 @@ Public
 				_point.y = Int(_point.y + 0.0000001)
 			Else
 				_point.y = Int(_point.y - 0.0000001)			
-			End If
-			#End	
+			End If		
 			
 			DrawLine(fromX, fromY, _point.x, _point.y)
 			

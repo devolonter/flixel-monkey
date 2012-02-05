@@ -258,7 +258,6 @@ Public
 		Local boundingBoxX:Float = x - Int(camera.scroll.x * scrollFactor.x)		
 		Local boundingBoxY:Float = y - Int(camera.scroll.y * scrollFactor.y)
 		
-		#Rem if there is no effect then remove this
 		If (boundingBoxX > 0) Then
 			boundingBoxX += 0.0000001
 		Else
@@ -270,7 +269,6 @@ Public
 		Else
 			boundingBoxY -= 0.0000001
 		End If
-		#end
 		
 		Local boundingBoxWidth:Int
 		Local boundingBoxHeight:Int
@@ -420,7 +418,6 @@ Public
 		point.x = x - Int(camera.scroll.x * scrollFactor.x)
 		point.y = y - Int(camera.scroll.y * scrollFactor.y)
 		
-		#Rem if there is no effect then remove this
 		If (point.x > 0) Then
 			point.x += 0.0000001
 		Else
@@ -432,7 +429,6 @@ Public
 		Else
 			point.y -= 0.0000001			
 		End If
-		#End
 		
 		Return (objectScreenPos.x + object.width > _point.x) And (objectScreenPos.x < _point.x + width) And
 			(objectScreenPos.y + object.height > _point.y) And (objectScreenPos.y < _point.y + height)
@@ -466,7 +462,6 @@ Public
 		point.x = x - Int(camera.scroll.x * scrollFactor.x)
 		point.y = y - Int(camera.scroll.y * scrollFactor.y)
 		
-		#Rem if there is no effect then remove this
 		If (point.x > 0) Then
 			point.x += 0.0000001
 		Else
@@ -478,7 +473,6 @@ Public
 		Else
 			point.y -= 0.0000001			
 		End If
-		#End
 		
 		Return point
 	End Method
