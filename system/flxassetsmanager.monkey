@@ -8,14 +8,17 @@ Import flixel.system.flxfont
 Class FlxAssetsManager
 
 Private
-	Global _fonts:StringMap<FlxFont>[] = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
+	Global _fonts:StringMap<FlxFont>[]
 	Global _images:StringMap<String>
 	Global _sounds:StringMap<String>
 	Global _music:StringMap<String>
-	Global _cursors:StringMap<String>	
+	Global _cursors:StringMap<String>
+	Global _strings:StringMap<String>
 	
 Public	
 	Function Init:Void()
+		_fonts = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
+	
 		Local l:Int = _fonts.Length()
 		For Local i:Int = 0 Until l
 			_fonts[i] = New StringMap<FlxFont>()
@@ -25,6 +28,7 @@ Public
 		_sounds = New StringMap<String>()
 		_music = New StringMap<String>()
 		_cursors = New StringMap<String>()
+		_strings = New StringMap<String>()
 	End Function
 	
 	Function AddFont:FlxFont(name:String, driver:Int = FlxText.DRIVER_NATIVE)
@@ -95,6 +99,18 @@ Public
 	
 	Function GetCursorPath:String(cursor:String)
 		Return _cursors.Get(cursor)
+	End Function
+	
+	Function AddString:Void(string:String, path:String)
+		_strings.Set(string, path)
+	End Function
+	
+	Function RemoveString:Void(string:String)
+		_strings.Remove(string)
+	End Function
+	
+	Function GetStringPath:String(string:String)
+		Return _strings.Get(string)
 	End Function
 
 End Class
