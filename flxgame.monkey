@@ -274,9 +274,9 @@ Public
 		
 		FlxG.mouse.Draw()
 		
-		'#If CONFIG = "debug"
+		#If CONFIG = "debug"
 			DrawText("FPS: " + _fps, 10, 10)
-		'#End		
+		#End		
 								
 		Return 0	
 	End Method

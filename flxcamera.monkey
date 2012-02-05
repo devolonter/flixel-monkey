@@ -153,7 +153,7 @@ Public
 	
 	Method Lock:Void()
 		If (_clipped) Then
-			SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)			
+			SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)	
 		End If
 				
 		PushMatrix()
@@ -183,8 +183,12 @@ Public
 			DrawRect(0, 0, _width, _height)			
 		End If
 		
-		PopMatrix()
+		PopMatrix()		
 		_fill.SetARGB(0)
+		
+		If (_clipped) Then
+			SetScissor(0, 0, FlxG.deviceWidth, FlxG.deviceHeight)
+		End If
 	End Method
 	
 	Method Update:Void()
@@ -378,11 +382,7 @@ Public
 		_x = x
 		_realX = _x * FlxG._deviceScaleFactorX
 		
-		If (x <> 0) Then
-			_clipped = True			
-		Else
-			_clipped = False	
-		End If
+		_clipped = _IsClipped()
 	End Method
 	
 	Method Y:Float() Property
@@ -393,11 +393,7 @@ Public
 		_y = y
 		_realY = _y * FlxG._deviceScaleFactorY
 		
-		If (y <> 0) Then
-			_clipped = True
-		Else
-			_clipped = False	
-		End If
+		_clipped = _IsClipped()
 	End Method
 	
 	Method Width:Float() Property
@@ -408,11 +404,7 @@ Public
 		_width = width
 		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
 		
-		If (_realWidth <> FlxG.deviceWidth) Then
-			_clipped = True
-		Else
-			_clipped = False
-		End If
+		_clipped = _IsClipped()
 	End Method
 	
 	Method Height:Float() Property
@@ -423,11 +415,7 @@ Public
 		_height = height
 		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
 		
-		If (_realHeight <> FlxG.deviceHeight) Then
-			_clipped = True
-		Else
-			_clipped = False
-		End If
+		_clipped = _IsClipped()
 	End Method
 	
 	Method Zoom:Float() Property
@@ -515,7 +503,12 @@ Public
 
 	Method ToString:String()
 		Return "FlxCamera"	
-	End Method	
+	End Method
+	
+Private
+	Method _IsClipped:Bool()
+		Return _realX <> 0 Or _realY <> 0 Or _realWidth <> FlxG.deviceWidth Or _realHeight <> FlxG.deviceHeight
+	End Method
 
 End Class
 
