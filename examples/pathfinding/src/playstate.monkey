@@ -1,7 +1,5 @@
 Strict
 
-'Original source: http://code.google.com/p/mightiesthero-flash-game-dev-tips/source/browse/FlxPathFinding/src/PlayState.as
-
 Import flixel
 Import assets
 
@@ -50,6 +48,9 @@ Class PlayState Extends FlxState
 		
 		btnResetUnit = New FlxButton(320, 50, "Reset Unit", New BtnResetUnitClickListener(Self))
 		Add(btnResetUnit)
+		
+		legends = New FlxText(320, 90, 80, "Click in map to place or remove tile~n~nLegends:~nRed:Unit~nYellow:Goal~nBlue:Wall~nWhite:Path")
+		Add(legends)
 	End Method
 	
 	Method Draw:Void()
