@@ -98,6 +98,8 @@ Public
 				_tileObjects[i].Destroy()
 				_tileObjects[i] = Null
 			End If
+			
+			i += 1
 		Wend
 		
 		_buffers = Null
