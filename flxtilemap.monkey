@@ -94,8 +94,10 @@ Public
 		Local l:Int = _tileObjects.Length()
 		
 		While (i < l)
-			_tileObjects[i].Destroy()
-			_tileObjects[i] = Null
+			If (_tileObjects[i] <> Null) Then
+				_tileObjects[i].Destroy()
+				_tileObjects[i] = Null
+			End If
 		Wend
 		
 		_buffers = Null
