@@ -640,6 +640,8 @@ Public
 		#If TARGET = "ios" Or TARGET = "android"
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_touch[i].Update(TouchX(i), TouchY(i))
+				
+				If (i > 0 And Not _touch[i].Used) Exit
 			Next
 			
 		#ElseIf TARGET = "html5" Or TARGET = "flash"
@@ -656,6 +658,8 @@ Public
 			Else
 				For Local i:Int = 0 Until _TOUCH_COUNT
 					_touch[i].Update(TouchX(i), TouchY(i))
+					
+					If (i > 0 And Not _touch[i].Used) Exit
 				Next
 			End If
 					

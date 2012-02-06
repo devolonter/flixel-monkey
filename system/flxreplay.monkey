@@ -134,7 +134,7 @@ Public
 			Local touchXYRecord:XYRecord
 		
 			For Local i:Int = 0 Until touchCount
-				If (i > 0 And Not FlxG.Touch(i).Used()) Exit
+				If (i > 0 And Not FlxG.Touch(i).Used) Exit
 			
 				touchXYRecord = FlxG.Touch(i).RecordXY()
 			
@@ -167,7 +167,7 @@ Public
 				Local touchXYRecord:XYRecord
 			
 				For Local i:Int = 0 Until touchCount
-					If (i > 0 And Not FlxG.Touch(i).Used()) Exit
+					If (i > 0 And Not FlxG.Touch(i).Used) Exit
 					
 					touchXYRecord = FlxG.Touch(i).RecordXY()
 				
