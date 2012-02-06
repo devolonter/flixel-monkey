@@ -268,6 +268,10 @@ Public
 			_touch[0].Reset()			
 		#End
 		
+		#If TARGET = "android"
+			keys.Reset()
+		#End
+		
 		mouse.Reset()
 	End Function
 	
@@ -662,6 +666,10 @@ Public
 		#Else
 			FlxG.keys.Update()				
 			_touch[0].Update(TouchX(), TouchY())
+		#End
+		
+		#If TARGET = "android"
+			FlxG.keys.Update()
 		#End
 		
 		If (Not _game._debuggerUp Or Not _game._debugger.hasMouse) Then

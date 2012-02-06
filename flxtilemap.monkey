@@ -264,7 +264,7 @@ Public
 		End If
 		
 		PushMatrix()		
-			Translate( _point.x, _point.y)			
+			Translate( _point.x, _point.y)	
 			
 			Local rowIndex:Int = _screenYInTiles * widthInTiles + _screenXInTiles			
 			Local row:Int = 0

@@ -145,15 +145,50 @@ Public
 							
 				If (i <> touchCount - 1 And Not FlxG.Touch(i + 1).Used()) Exit
 			Next
-		#ElseIf TARGET = "xna" Or TARGET = "html5"
+			
+		#ElseIf TARGET = "html5" Or TARGET = "flash"
 			If (Not FlxG.mobile) Then
 				keysRecord = FlxG.keys.RecordKeys(keysRecord)	
 			End If
+			
+		#ElseIf TARGET = "xna"
+			If (Not FlxG.mobile) Then				
+				Local touchXYRecord:XYRecord = FlxG.Touch(0).RecordXY()
+			
+				If (touchXYRecord <> Null) Then
+					If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
+					touchRecord.Insert(0, touchXYRecord)
+				End If
+				
+				keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
+				keysRecord = FlxG.keys.RecordKeys(keysRecord)
+			Else
+				Local touchCount:Int = FlxG.TouchCount()
+				Local touchXYRecord:XYRecord
+			
+				For Local i:Int = 0 Until touchCount
+					touchXYRecord = FlxG.Touch(i).RecordXY()
+				
+					If (touchXYRecord <> Null) Then
+						If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
+						touchRecord.Insert(i, touchXYRecord)
+					End If
+					
+					keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
+								
+					If (i <> touchCount - 1 And Not FlxG.Touch(i + 1).Used()) Exit
+				Next
+			End If
+				
 		#Else
 			keysRecord = FlxG.keys.RecordKeys(keysRecord)		
 		#End
 		
-		#If TARGET = "html5" Or TARGET = "xna" Or TARGET = "glfw"
+		#If TARGET = "android"
+			keysRecord = FlxG.keys.RecordKeys(keysRecord)
+		#End
+		
+		#If TARGET = "html5" Or TARGET = "glfw"
 			Local touchXYRecord:XYRecord = FlxG.Touch(0).RecordXY()
 			
 			If (touchXYRecord <> Null) Then
