@@ -123,23 +123,8 @@ Public
 	End Method
 	
 	Method OnCreate:Int()
-		SetUpdateRate(FlxG.framerate)
-		Seed = SystemMillisecs()
-		
-		FlxG.deviceWidth = DeviceWidth()
-		FlxG.deviceHeight = DeviceHeight()
-		
-		If (useVirtualResolution) Then
-			FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
-			FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)
-		Else
-			FlxG._deviceScaleFactorX = 1
-			FlxG._deviceScaleFactorY = 1
-		End If
-		
+		_Reset()		
 		_InitData()		
-		_step = 1000.0 / FlxG.framerate
-		_fps = -1
 		_Step()
 		
 		_soundTrayX	= (FlxG.width / 2) * FlxCamera.defaultZoom - (_soundTrayWidth / 2)
@@ -339,6 +324,7 @@ Private
 			_requestedState = FlxState(_iState.CreateInstance())
 			_replayTimer = 0
 			_replayCancelKeys = []
+			_Reset()
 			FlxG.Reset()		
 		End If
 		
@@ -457,6 +443,25 @@ Private
 		FlxG.UpdatePlugins()		
 		_state.Update()
 		FlxG.UpdateCameras()
+	End Method
+	
+	Method _Reset:Void()
+		SetUpdateRate(FlxG.framerate)
+		Seed = SystemMillisecs()
+		
+		FlxG.deviceWidth = DeviceWidth()
+		FlxG.deviceHeight = DeviceHeight()
+		
+		If (useVirtualResolution) Then
+			FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
+			FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)
+		Else
+			FlxG._deviceScaleFactorX = 1
+			FlxG._deviceScaleFactorY = 1
+		End If
+		
+		_step = 1000.0 / FlxG.framerate
+		_fps = -1
 	End Method
 	
 	Method _InitData:Void()

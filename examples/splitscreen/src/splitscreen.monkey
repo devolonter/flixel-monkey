@@ -8,7 +8,6 @@ Class SplitScreen Extends FlxGame
 
 	Method New()
 		Super.New(400, 300, PlayState.ClassObject)
-		useVirtualResolution = False
 	End Method
 	
 	Method OnContentInit:Void()
