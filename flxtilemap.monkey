@@ -373,7 +373,7 @@ Public
 		Local distances:Int[] = _ComputePathDistance(startIndex, endIndex)		
 		If (distances.Length() = 0) Return Null
 		
-		Local points:Stack<Int> = New Stack<Int>()
+		Local points:Stack<FlxPoint> = New Stack<FlxPoint>()
 		_WalkPath(distances, endIndex, points)
 		
 		Local node:FlxPoint
@@ -390,7 +390,7 @@ Public
 		If (raySimplify) _RaySimplifyPath(points)
 		
 		Local path:FlxPath = New FlxPath()
-		Local i:Int = points.length() - 1
+		Local i:Int = points.Length() - 1
 		
 		While (i >= 0)
 			node = points.Get(i)
@@ -970,7 +970,7 @@ Private
 	End Method
 
 	Method _WalkPath:Void(data:Int[], start:Int, points:Stack<FlxPoint>)
-		points.Push(New FlxPoint(x + Int(start Mod widthInTiles) * _tileWidth + _tileWidth * .5, y + Int(start Mod widthInTiles) * _tileHeight + _tileHeight * .5))		
+		points.Push(New FlxPoint(x + Int(start Mod widthInTiles) * _tileWidth + _tileWidth * .5, y + Int(start / widthInTiles) * _tileHeight + _tileHeight * .5))		
 		If (data[start] = 0) Return
 		
 		Local left:Bool = start Mod widthInTiles > 0
@@ -1017,7 +1017,7 @@ Private
 			End If
 		End If
 		
-		If (up And Right) Then
+		If (up And right) Then
 			i = start - widthInTiles + 1
 			
 			If (data[i] >= 0 And data[i] < current) Then
