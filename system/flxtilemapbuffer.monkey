@@ -41,16 +41,28 @@ Class FlxTilemapBuffer
 		Local scaledTileWidth:Float = tileWidth * camera.Zoom * FlxG._deviceScaleFactorX
 		Local scaledTileHeight:Float = tileHeight * camera.Zoom * FlxG._deviceScaleFactorY
 		Local roundScaledTileWidth:Float = FlxU.Round(scaledTileWidth)
-		Local roundScaledTileHeight:Float = FlxU.Round(scaledTileHeight)
+		Local roundScaledTileHeight:Float = FlxU.Round(scaledTileHeight)		
 		
-		If (roundScaledTileWidth - scaledTileWidth > 0) Then
-			scaleFixX = roundScaledTileWidth / scaledTileWidth
+		If (Abs(roundScaledTileWidth - scaledTileWidth) > 0) Then
+			roundScaledTileWidth += 1
+			
+			If (roundScaledTileWidth - scaledTileWidth > 0) Then
+				scaleFixX = roundScaledTileWidth / scaledTileWidth
+			Else
+				scaleFixX = scaledTileWidth / roundScaledTileWidth
+			End If
 		Else
 			scaleFixX = 1
 		End If
 		
-		If (roundScaledTileHeight - scaledTileHeight > 0) Then
-			scaleFixY = roundScaledTileHeight / scaledTileHeight
+		If (Abs(roundScaledTileHeight - scaledTileHeight) > 0) Then
+			roundScaledTileHeight += 1
+			
+			If (roundScaledTileHeight - scaledTileHeight > 0) Then
+				scaleFixY = roundScaledTileHeight / scaledTileHeight
+			Else
+				scaleFixY = scaledTileHeight / roundScaledTileHeight
+			End If
 		Else
 			scaleFixY = 1
 		End If
