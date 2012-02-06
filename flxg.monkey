@@ -49,10 +49,6 @@ Class FlxG
 	
 	Global deviceHeight:Int
 	
-	Global targetWidth:Int
-	
-	Global targetHeight:Int
-	
 	Global width:Int
 	
 	Global height:Int

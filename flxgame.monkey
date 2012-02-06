@@ -27,6 +27,8 @@ Class FlxGame extends App
 
 	Field useSystemCursor:Bool
 	
+	Field useVirtualResolution:Bool
+	
 	Field forceDebugger:Bool
 
 	Field _state:FlxState
@@ -126,11 +128,13 @@ Public
 		FlxG.deviceWidth = DeviceWidth()
 		FlxG.deviceHeight = DeviceHeight()
 		
-		If (FlxG.targetWidth = 0) FlxG.targetWidth = FlxG.width
-		If (FlxG.targetHeight = 0) FlxG.targetHeight = FlxG.height
-		
-		FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.targetWidth)
-		FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.targetHeight)	
+		If (useVirtualResolution) Then
+			FlxG._deviceScaleFactorX = FlxG.deviceWidth / FlxG.width
+			FlxG._deviceScaleFactorY = FlxG.deviceHeight / FlxG.height
+		Else
+			FlxG._deviceScaleFactorX = 1
+			FlxG._deviceScaleFactorY = 1
+		End If
 		
 		_InitData()		
 		_step = 1000.0 / FlxG.framerate
