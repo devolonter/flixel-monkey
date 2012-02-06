@@ -77,6 +77,8 @@ Class PlayState Extends FlxState
 		If (FlxG.keys.JustPressed(KEY_W) And player2.IsTouching(FlxObject.FLOOR)) Then
 			player2.velocity.y -= player2.maxVelocity.y / 1.5
 		End If
+		
+		If (FlxG.keys.JustPressed(KEY_ESCAPE)) Error ""
 			
 		Super.Update()
 	End Method
