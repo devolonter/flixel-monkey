@@ -111,7 +111,7 @@ Public
 		Local rows:String[] = mapData.Split("~n")
 		Local row:Int = 0
 		Local column:Int 
-		Local data:IntStack = New IntStack()
+		Local data:Stack<Int> = New Stack<Int>()
 		
 		heightInTiles = rows.Length()
 		
@@ -373,7 +373,7 @@ Public
 		Local distances:Int[] = _ComputePathDistance(startIndex, endIndex)		
 		If (distances.Length() = 0) Return Null
 		
-		Local points:IntStack = New IntStack()
+		Local points:Stack<Int> = New Stack<Int>()
 		_WalkPath(distances, endIndex, points)
 		
 		Local node:FlxPoint
@@ -578,15 +578,15 @@ Public
 		Return _data[index]
 	End Method
 	
-	Method GetTileInstances:IntStack(index:Int)
-		Local elements:IntStack = Null
+	Method GetTileInstances:Stack<Int>(index:Int)
+		Local elements:Stack<Int> = Null
 		
 		Local i:Int = 0
 		Local l:Int = widthInTiles * heightInTiles
 		
 		While (i < l)
 			If (_data[i] = index) Then
-				If (elements = Null) elements = New IntStack()
+				If (elements = Null) elements = New Stack<Int>()
 				elements.Push(i)
 			End If
 			
@@ -853,8 +853,8 @@ Private
 		distances[startIndex] = 0
 		
 		Local distance:Int = 1
-		Local neighbors:IntStack = New IntStack([startIndex])
-		Local current:IntStack
+		Local neighbors:Stack<Int> = New Stack<Int>([startIndex])
+		Local current:Stack<Int>
 		Local currentIndex:Int
 		Local left:Bool
 		Local right:Bool
@@ -865,7 +865,7 @@ Private
 		
 		While (neighbors.Length() > 0)
 			current = neighbors
-			neighbors = New IntStack()
+			neighbors = New Stack<Int>()
 			
 			i = 0
 			currentLength = current.Length()
