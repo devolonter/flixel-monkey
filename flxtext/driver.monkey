@@ -27,6 +27,8 @@ Public
 	
 	Method Text:Void(text:String) Property
 		_text = text
+		Reset()
+		
 		If (_width <> 0) _ParseText()
 	End Method
 	
@@ -47,7 +49,7 @@ Public
 		_fontFamily = fontFamily	
 		Reset()
 		
-		If (_text <> Null And _text.Length > 0) _ParseText()
+		If (_text.Length > 0) _ParseText()
 	End Method
 	
 	Method Font:String() Property
@@ -58,7 +60,7 @@ Public
 		_size = size
 		Reset()
 		
-		If (_text <> Null And _text.Length > 0) _ParseText()
+		If (_text.Length > 0) _ParseText()
 	End Method	
 	
 	Method Size:Int() Property

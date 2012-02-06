@@ -313,7 +313,7 @@ Public
 		SetAlpha(1)
 	End Method
 	
-	Method FollowPath:Void(path:FlxPath, speed:Float = 100, mode:Int = PATH_FORWARD, autoRotate:Bool = False)
+	Method FollowPath:Void(path:FlxPath, speed:Float = 100, mode:Int = PATH_FORWARD, autoRotate:Bool = False)		
 		If (path.nodes.Length() <= 0) Then
 			FlxG.Log("WARNING: Paths need at least one node in them to be followed.")
 			Return
