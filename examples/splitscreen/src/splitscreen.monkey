@@ -7,7 +7,7 @@ Import assets
 Class SplitScreen Extends FlxGame
 
 	Method New()
-		Super.New(800, 600, PlayState.ClassObject)
+		Super.New(400, 300, PlayState.ClassObject)
 	End Method
 	
 	Method OnContentInit:Void()

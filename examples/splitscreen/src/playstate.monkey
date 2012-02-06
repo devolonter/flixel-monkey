@@ -60,7 +60,7 @@ Class PlayState Extends FlxState
 			player1.acceleration.x = player1.maxVelocity.x * 4
 		End If
 		
-		If (FlxG.keys.Up And player1.IsTouching(FlxObject.FLOOR)) Then
+		If (FlxG.keys.JustPressed(KEY_UP) And player1.IsTouching(FlxObject.FLOOR)) Then
 			player1.velocity.y -= player1.maxVelocity.y / 1.5
 		End If
 		
@@ -74,7 +74,7 @@ Class PlayState Extends FlxState
 			player2.acceleration.x = player2.maxVelocity.x * 4
 		End If
 		
-		If (FlxG.keys.W And player2.IsTouching(FlxObject.FLOOR)) Then
+		If (FlxG.keys.JustPressed(KEY_W) And player2.IsTouching(FlxObject.FLOOR)) Then
 			player2.velocity.y -= player2.maxVelocity.y / 1.5
 		End If
 			
