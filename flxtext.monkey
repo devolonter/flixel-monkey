@@ -81,7 +81,7 @@ Public
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.Size = FlxAssetsManager.GetValidFontSize(_driver.Font, size, _driver.ID)
+		_driver.Size = FlxAssetsManager.FlxAssetsManager.GetFont(_driver.Font, _driver.ID).GetValidSize(size)
 		
 		Self.height = _driver.GetTextHeight()
 		frameHeight = Self.height
