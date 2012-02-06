@@ -517,7 +517,7 @@ Public
 				
 				If (tile.allowCollisions) Then
 					tile.x = lx + column * _tileWidth
-					tile.y = ly + y + row * _tileHeight
+					tile.y = ly + row * _tileHeight
 					tile.last.x = tile.x - deltaX
 					tile.last.y = tile.y - deltaY
 					

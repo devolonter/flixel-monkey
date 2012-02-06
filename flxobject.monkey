@@ -696,7 +696,7 @@ Public
 					object1.x += object2.x - object2.last.x
 				End If
 				
-			ElseIf (Not obj2immovable) Then
+			ElseIf (Not obj2immovable) Then				
 				object2.y += overlap
 				object2.velocity.y = obj1v - obj2v * object2.elasticity
 				
