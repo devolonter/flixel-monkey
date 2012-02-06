@@ -1,8 +1,6 @@
 Strict
 
-#Rem
-	Original source: http://code.google.com/p/mightiesthero-flash-game-dev-tips/source/browse/FlxPathFinding/src/PlayState.as
-#End
+'Original source: http://code.google.com/p/mightiesthero-flash-game-dev-tips/source/browse/FlxPathFinding/src/PlayState.as
 
 Import flixel
 Import assets

@@ -21,6 +21,6 @@ Class Touch Extends XYDevice
 	
 	Method JustReleased:Bool() Property
 		Return Super.JustReleased(KEY_TOUCH0 + index)
-	End Method
+	End Method	
 	
 End Class

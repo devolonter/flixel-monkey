@@ -134,6 +134,8 @@ Public
 			Local touchXYRecord:XYRecord
 		
 			For Local i:Int = 0 Until touchCount
+				If (i > 0 And Not FlxG.Touch(i).Used()) Exit
+			
 				touchXYRecord = FlxG.Touch(i).RecordXY()
 			
 				If (touchXYRecord <> Null) Then
@@ -142,8 +144,6 @@ Public
 				End If
 				
 				keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
-							
-				If (i <> touchCount - 1 And Not FlxG.Touch(i + 1).Used()) Exit
 			Next
 			
 		#ElseIf TARGET = "html5" Or TARGET = "flash"
@@ -167,6 +167,8 @@ Public
 				Local touchXYRecord:XYRecord
 			
 				For Local i:Int = 0 Until touchCount
+					If (i > 0 And Not FlxG.Touch(i).Used()) Exit
+					
 					touchXYRecord = FlxG.Touch(i).RecordXY()
 				
 					If (touchXYRecord <> Null) Then
@@ -175,8 +177,6 @@ Public
 					End If
 					
 					keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
-								
-					If (i <> touchCount - 1 And Not FlxG.Touch(i + 1).Used()) Exit
 				Next
 			End If
 				
