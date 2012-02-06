@@ -24,7 +24,7 @@ Class FlxButton Extends FlxSprite
 	
 	Field labelOffset:FlxPoint
 	
-	Field onUp:FlxButtonUpListener
+	Field onUp:FlxButtonClickListener
 	
 	Field onDown:FlxButtonDownListener
 	
@@ -50,7 +50,7 @@ Private
 	Field _initialized:Bool
 	
 Public
-	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonUpListener = Null, driver:FlxClass = Null)
+	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonClickListener = Null, driver:FlxClass = Null)
 		Super.New(x, y)
 		
 		If (label.Length() > 0) Then
@@ -239,7 +239,7 @@ Private
 			
 			If (click) Then
 				If (onUp <> Null) Then
-					onUp.OnButtonUp()
+					onUp.OnButtonClick()
 				End If
 				
 				If (soundUp <> Null) Then
@@ -267,9 +267,9 @@ Private
 
 End Class
 
-Interface FlxButtonUpListener
+Interface FlxButtonClickListener
 	
-	Method OnButtonUp:Void()
+	Method OnButtonClick:Void()
 
 End Interface
 
