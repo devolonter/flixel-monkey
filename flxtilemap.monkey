@@ -274,31 +274,59 @@ Public
 			
 			_point.y = 0
 			
-			While (row < _screenRows)
-				columnIndex = rowIndex
-				column = 0
-				_point.x = 0
-				
-				While (column < _screenColumns)
-					_rect = _rects[columnIndex]
+			If (_buffer.scaleFixX = 1 Or _buffer.scaleFixY = 1) Then
+				While (row < _screenRows)
+					columnIndex = rowIndex
+					column = 0
+					_point.x = 0
 					
-					If (_rect <> Null) Then
-						DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
+					While (column < _screenColumns)
+						_rect = _rects[columnIndex]
 						
-						If (FlxG.visualDebug And Not ignoreDrawDebug) Then
-							'TODO
+						If (_rect <> Null) Then
+							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
+							
+							If (FlxG.visualDebug And Not ignoreDrawDebug) Then
+								'TODO
+							End If
 						End If
-					End If
+						
+						_point.x += _tileWidth
+						column += 1
+						columnIndex += 1
+					Wend
 					
-					_point.x += _tileWidth
-					column += 1
-					columnIndex += 1
+					rowIndex += widthInTiles
+					_point.y += _tileHeight
+					row += 1
 				Wend
-				
-				rowIndex += widthInTiles
-				_point.y += _tileHeight
-				row += 1
-			Wend
+			Else
+				While (row < _screenRows)
+					columnIndex = rowIndex
+					column = 0
+					_point.x = 0
+					
+					While (column < _screenColumns)
+						_rect = _rects[columnIndex]
+						
+						If (_rect <> Null) Then
+							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height, 0, _buffer.scaleFixX, _buffer.scaleFixY)
+							
+							If (FlxG.visualDebug And Not ignoreDrawDebug) Then
+								'TODO
+							End If
+						End If
+						
+						_point.x += _tileWidth
+						column += 1
+						columnIndex += 1
+					Wend
+					
+					rowIndex += widthInTiles
+					_point.y += _tileHeight
+					row += 1
+				Wend
+			End If
 		PopMatrix()		
 		
 		_VISIBLECOUNT += 1

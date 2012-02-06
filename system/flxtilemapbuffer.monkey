@@ -1,6 +1,8 @@
 Strict
 
 Import flixel.flxcamera
+Import flixel.flxg
+Import flixel.flxu
 
 Class FlxTilemapBuffer
 	
@@ -18,6 +20,10 @@ Class FlxTilemapBuffer
 	
 	Field dirty:Bool
 	
+	Field scaleFixX:Float
+	
+	Field scaleFixY:Float
+	
 	Method New(tileWidth:Float, tileHeight:Float, widthInTiles:Int, heightInTiles:Int, camera:FlxCamera = Null)
 		If (camera = Null) camera = FlxG.camera
 		
@@ -31,6 +37,23 @@ Class FlxTilemapBuffer
 		height = rows * tileHeight
 		
 		dirty = True
+		
+		Local scaledTileWidth:Float = tileWidth * camera.Zoom * FlxG._deviceScaleFactorX
+		Local scaledTileHeight:Float = tileHeight * camera.Zoom * FlxG._deviceScaleFactorY
+		Local roundScaledTileWidth:Float = FlxU.Round(scaledTileWidth)
+		Local roundScaledTileHeight:Float = FlxU.Round(scaledTileHeight)
+		
+		If (roundScaledTileWidth - scaledTileWidth > 0) Then
+			scaleFixX = roundScaledTileWidth / scaledTileWidth
+		Else
+			scaleFixX = 1
+		End If
+		
+		If (roundScaledTileHeight - scaledTileHeight > 0) Then
+			scaleFixY = roundScaledTileHeight / scaledTileHeight
+		Else
+			scaleFixY = 1
+		End If
 	End Method
 
 End Class
