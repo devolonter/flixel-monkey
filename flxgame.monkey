@@ -97,6 +97,7 @@ Public
 		
 		useSoundHotKeys = Not IsMobile()
 		Self.useSystemCursor = useSystemCursor
+		useVirtualResolution = True
 		If (Not useSystemCursor) HideMouse()
 		_debuggerUp = False
 		
