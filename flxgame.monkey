@@ -129,8 +129,8 @@ Public
 		FlxG.deviceHeight = DeviceHeight()
 		
 		If (useVirtualResolution) Then
-			FlxG._deviceScaleFactorX = FlxG.deviceWidth / FlxG.width
-			FlxG._deviceScaleFactorY = FlxG.deviceHeight / FlxG.height
+			FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
+			FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)
 		Else
 			FlxG._deviceScaleFactorX = 1
 			FlxG._deviceScaleFactorY = 1
