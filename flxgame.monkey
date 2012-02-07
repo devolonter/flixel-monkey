@@ -149,9 +149,7 @@ Public
 	End Method
 	
 	Method OnRender:Int()
-		If (Not _replaying) Then
-			_rendersCounter.Update()
-		End If
+		_rendersCounter.Update()
 		
 		If (Not _updatesLoopUsed) Then
 			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _rendersCounter.FPS)
