@@ -236,6 +236,8 @@ Public
 			Return
 		End If
 		
+		FlxG.Elapsed = _frames[_marker].elapsed
+		
 		If (_frames[_marker].frame <> frame) Then
 			frame += 1
 			Return
@@ -244,9 +246,7 @@ Public
 		frame += 1
 		
 		Local fr:FrameRecord = _frames[_marker]
-		_marker += 1
-		
-		FlxG.Elapsed = fr.elapsed
+		_marker += 1		
 		
 		If (fr.keys <> Null) FlxG.Keys.PlaybackKeys(fr.keys)
 		If (fr.mouse <> Null) FlxG.Mouse.PlaybackXY(fr.mouse)
