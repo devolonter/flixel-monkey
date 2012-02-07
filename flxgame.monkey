@@ -82,7 +82,9 @@ Private
 	
 	Field _updatesCounter:FlxFPSCounter
 	
-	Field _rendersCounter:FlxFPSCounter	
+	Field _rendersCounter:FlxFPSCounter
+	
+	Field _updatesLoopUsed:Bool
 	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
@@ -132,22 +134,26 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()
+	Method OnUpdate:Int()	
 		If (_rendersCounter.FPS >= 0 And _rendersCounter.FPS < 30) Then
 			_updatesCounter.Update()
 			
 			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _updatesCounter.FPS)		
-			_Step()	
+			_Step()
+			
+			_updatesLoopUsed = True
+		Else
+			_updatesLoopUsed = False
 		End If	
 		Return 0
 	End Method
 	
 	Method OnRender:Int()
-		If (Not _replaying) Then	
+		If (Not _replaying) Then
 			_rendersCounter.Update()
-		End If						
+		End If
 		
-		If (_rendersCounter.FPS >= 30) Then
+		If (Not _updatesLoopUsed) Then
 			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _rendersCounter.FPS)
 			_Step()
 		End If			
