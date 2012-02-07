@@ -134,25 +134,23 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()	
-		If (_rendersCounter.FPS >= 0 And _rendersCounter.FPS < FlxG.Framerate - 10) Then
-			_updatesCounter.Update()
-			
+	Method OnUpdate:Int()
+		_updatesCounter.Update()
+		
+		If (_updatesLoopUsed Or (_rendersCounter.FPS >= 0 And _rendersCounter.FPS < FlxG.Framerate - 10)) Then			
 			'Real elapsed time very unstable in Monkey. TODO!
 			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _updatesCounter.FPS)		
 			_Step()
 			
 			_updatesLoopUsed = True
-		Else
-			_updatesLoopUsed = False
 		End If	
 		Return 0
 	End Method
 	
-	Method OnRender:Int()
-		_rendersCounter.Update()
-		
+	Method OnRender:Int()		
 		If (Not _updatesLoopUsed) Then
+			_rendersCounter.Update()
+			
 			'Real elapsed time very unstable in Monkey. TODO!
 			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _rendersCounter.FPS)
 			_Step()
@@ -463,6 +461,7 @@ Private
 		
 		_updatesCounter.Reset()
 		_rendersCounter.Reset()
+		_updatesLoopUsed = False
 	End Method
 	
 	Method _InitData:Void()
