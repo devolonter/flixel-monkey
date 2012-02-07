@@ -236,26 +236,17 @@ Public
 			Return
 		End If
 		
-		Local frameElapsed:Float = _frames[_marker].elapsed
-		
-		If (frameElapsed > FlxG.Elapsed) Then
-			Local waitTime:Int = Millisecs() + (frameElapsed - FlxG.Elapsed) * 1000
-					
-			While (waitTime > Millisecs())
-			Wend	
-		End If
-		
-		FlxG.Elapsed = frameElapsed	
-		
 		If (_frames[_marker].frame <> frame) Then
 			frame += 1
 			Return
 		End If
-		
+	
 		frame += 1
 		
 		Local fr:FrameRecord = _frames[_marker]
 		_marker += 1
+		
+		FlxG.Elapsed = fr.elapsed
 		
 		If (fr.keys <> Null) FlxG.Keys.PlaybackKeys(fr.keys)
 		If (fr.mouse <> Null) FlxG.Mouse.PlaybackXY(fr.mouse)
