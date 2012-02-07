@@ -135,7 +135,7 @@ Public
 	End Method
 	
 	Method OnUpdate:Int()	
-		If (_rendersCounter.FPS >= 0 And _rendersCounter.FPS < 30) Then
+		If (_rendersCounter.FPS >= 0 And _rendersCounter.FPS < FlxG.Framerate - 10) Then
 			_updatesCounter.Update()
 			
 			'Real elapsed time very unstable in Monkey. TODO!
