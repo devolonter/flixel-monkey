@@ -24,6 +24,7 @@ Import plugin.timermanager
 Import plugin.debugpathdisplay
 
 Alias AccelInput = accel.Accel
+Alias MouseInput = mouse.Mouse
 Alias TouchInput = touch.Touch
 Alias JoystickInput = joystick.Joystick
 
@@ -87,7 +88,7 @@ Class FlxG
 	
 	Global Keys:Keyboard
 	
-	Global Mouse:Mouse
+	Global Mouse:MouseInput
 	
 	Global Music:FlxMusic
 	
@@ -167,17 +168,17 @@ Public
 	#End
 	
 	Function LoadReplay:Void(data:String, state:FlxState = Null, cancelKeys:Int[] = [], timeout:Float = 0, callback:FlxReplayListener = Null)
-		_game._replay.Load(data)
+		_Game._replay.Load(data)
 		If (state = Null) Then
 			FlxG.ResetGame()
 		Else
 			FlxG.SwitchState(state)
 		End If
 		
-		_game._replayCancelKeys = cancelKeys
-		_game._replayTimer = timeout * 1000
-		_game._replayCallback = callback
-		_game._replayRequested = True
+		_Game._replayCancelKeys = cancelKeys
+		_Game._replayTimer = timeout * 1000
+		_Game._replayCallback = callback
+		_Game._replayRequested = True
 	End Function
 	
 	Function ReloadReplay:Void(standardMode:Bool = True)
@@ -187,7 +188,7 @@ Public
 			FlxG.ResetState()
 		End If
 		
-		If (_game._replay.frameCount > 0) _game._replayRequested = True
+		If (_Game._replay.frameCount > 0) _Game._replayRequested = True
 	End Function	
 	
 	Function StopReplay:Void()
@@ -207,25 +208,25 @@ Public
 			FlxG.ResetState()
 		End If
 		
-		_game._recordingRequested = True
+		_Game._recordingRequested = True
 	End Function
 	
 	Function StopRecording:String()
-		_game._recording = False
+		_Game._recording = False
 		
-		If (_game._debugger <> Null) Then
+		If (_Game._debugger <> Null) Then
 			'TODO
 		End if
 		
-		Return _game._replay.Save()
+		Return _Game._replay.Save()
 	End Function
 	
 	Function ResetState:Void()
-		_game._requestedState = FlxState(_game._state.GetClass().CreateInstance())
+		_Game._requestedState = FlxState(_Game._state.GetClass().CreateInstance())
 	End Function
 	
 	Function ResetGame:Void()
-		_game._requestedReset = True
+		_Game._requestedReset = True
 	End Function
 	
 	Function ResetInput:Void()
@@ -556,7 +557,7 @@ Public
 	End Function
 	
 	Function RemovePlugin:FlxBasic(plugin:FlxBasic)
-		plugins.RemoveEach(plugin)
+		Plugins.RemoveEach(plugin)
 		Return plugin
 	End Function
 	
@@ -598,7 +599,7 @@ Public
 		
 		FlxG.Accel = New AccelInput()
 		FlxG.Keys = New Keyboard()
-		FlxG.Mouse = New Mouse()
+		FlxG.Mouse = New MouseInput()
 		
 		For Local i:Int = 0 Until _JOY_UNITS_COUNT
 			_Joystick[i] = New JoystickInput(i)
