@@ -238,16 +238,14 @@ Public
 		
 		Local frameElapsed:Float = _frames[_marker].elapsed
 		
-		If (FlxG.Elapsed < frameElapsed) Then
+		If (frameElapsed > FlxG.Elapsed) Then
 			Local waitTime:Int = Millisecs() + (frameElapsed - FlxG.Elapsed) * 1000
 					
 			While (waitTime > Millisecs())
-			Wend
-			
-			FlxG.Elapsed = frameElapsed			
-		Else
-			FlxG.Elapsed -= (FlxG.Elapsed - frameElapsed)			
+			Wend	
 		End If
+		
+		FlxG.Elapsed = frameElapsed	
 		
 		If (_frames[_marker].frame <> frame) Then
 			frame += 1
