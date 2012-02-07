@@ -80,7 +80,13 @@ Private
 	
 	Field _soundTrayLabel:FlxText
 	
-	Field _lastUpdateTime:Int
+	Field _fps:Int	
+	
+	Field _fpsCounter:Int
+	
+	Field _lastFpsCounter:Int
+	
+	Field _fpsTime:Int
 	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
@@ -127,13 +133,7 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()
-		If (_lastUpdateTime <> 0) Then
-			FlxG.Elapsed = FlxG.TimeScale * ((Millisecs() - _lastUpdateTime) / 1000.0)
-		End If
-		
-		_lastUpdateTime = Millisecs()
-		
+	Method OnUpdate:Int()	
 		#If TARGET <> "ios" Or TARGET <> "android"
 			If (useSoundHotKeys) Then
 				If (KeyHit(KEY_0)) Then
@@ -162,15 +162,36 @@ Public
 					_ShowSoundTray()
 				End If	
 			End If
-		#End			
-		
-		_UpdateSoundTray()
-		_Step()
+		#End
 	
 		Return 0
 	End Method
 	
-	Method OnRender:Int()	
+	Method OnRender:Int()
+		If (_fps < 0) Then
+			_fpsTime = Millisecs()
+			_fps = FlxG.Framerate
+			_lastFpsCounter = _fps
+		Else
+			If (Millisecs() - _fpsTime > 1000) Then
+				If (Abs(_lastFpsCounter - _fpsCounter) < 10) Then
+					_fps = _fpsCounter
+				End If
+				
+				_lastFpsCounter = _fpsCounter
+				_fpsCounter = 0
+				_fpsTime = Millisecs()
+			Else
+				_fpsCounter += 1
+			End If
+		End If
+	
+		'Real elapsed very unstable in Monkey. TODO!
+		FlxG.Elapsed = FlxG.TimeScale * (1.0 / _fps)	
+		
+		_UpdateSoundTray()
+		_Step()			
+		
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
 		
@@ -248,7 +269,11 @@ Public
 		#End
 		
 		FlxG.Mouse.Draw()
-										
+		
+		#If CONFIG = "debug"
+			DrawText("FPS: " + _fps, 10, 10)
+		#End		
+								
 		Return 0	
 	End Method
 	
@@ -436,7 +461,7 @@ Private
 		End If
 		
 		_step = 1000.0 / FlxG.Framerate
-		_lastUpdateTime = 0
+		_fps = -1
 	End Method
 	
 	Method _InitData:Void()
