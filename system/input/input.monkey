@@ -8,19 +8,19 @@ Import flixel.system.replay.keyrecord
 Class Input Abstract	
 	
 Private
-	Global _map:InputState[KEY_TOUCH0 + 32]
+	Global _Map:InputState[KEY_TOUCH0 + 32]
 	
 	Field _from:Int
 	Field _to:Int
 	
 Public
 	Method New(fromKey:Int, toKey:Int)
-		If (_map[0] = Null) Then
+		If (_Map[0] = Null) Then
 			Local i:Int = 0			
-			Local l:Int = _map.Length()		
+			Local l:Int = _Map.Length()		
 			
 			While (i < l)
-				_map[i] = New InputState()
+				_Map[i] = New InputState()
 				i += 1
 			Wend
 		End If
@@ -34,7 +34,7 @@ Public
 		Local is:InputState
 		
 		While (i < _to)
-			is = _map[i]
+			is = _Map[i]
 			
 			If (KeyDown(i)) Then
 				If (is.last < 1) Then
@@ -64,7 +64,7 @@ Public
 		Local is:InputState
 		 	
 		While (i < _to)
-			is = _map[i]			
+			is = _Map[i]			
 			is.current = 0
 			is.last = 0
 			i += 1
@@ -88,19 +88,19 @@ Public
 	End Method
 	
 	Method Pressed:Bool(key:Int)
-		Return _map[key].current > 0
+		Return _Map[key].current > 0
 	End Method
 	
 	Method JustPressed:Bool(key:Int)
-		Return _map[key].current = 2
+		Return _Map[key].current = 2
 	End Method
 	
 	Method JustReleased:Bool(key:Int)
-		Return _map[key].current = -1
+		Return _Map[key].current = -1
 	End Method
 	
 	Method Used:Bool(key:Int)
-		Return _map[key].current <> 0
+		Return _Map[key].current <> 0
 	End Method
 	
 	Method RecordKeys:Stack<KeyRecord>(data:Stack<KeyRecord> = Null)
@@ -108,7 +108,7 @@ Public
 		Local is:InputState
 		
 		While (i < _to)
-			is = _map[i]
+			is = _Map[i]
 			i += 1
 			
 			If (is.current = 0) Continue
@@ -130,7 +130,7 @@ Public
 		
 		While (i < l)
 			kr = record.Get(i)
-			_map[kr.code].current = kr.value
+			_Map[kr.code].current = kr.value
 			i += 1
 		Wend
 	End Method
@@ -139,7 +139,7 @@ Public
 		Local i:Int = _from
 		 	
 		While (i < _to)
-			If (_map[i].current > 0) Return True
+			If (_Map[i].current > 0) Return True
 			i += 1
 		Wend
 		
@@ -150,7 +150,7 @@ Public
 		Local i:Int = _from
 		 	
 		While (i < _to)
-			_map[i] = Null
+			_Map[i] = Null
 			i += 1
 		Wend
 		

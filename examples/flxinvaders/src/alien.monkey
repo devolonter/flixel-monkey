@@ -37,7 +37,7 @@ Public
 	End Method
 	
 	Method Update:Void()		
-		If (y > FlxG.height * .35) _shotClock -= FlxG.elapsed
+		If (y > FlxG.Height * .35) _shotClock -= FlxG.Elapsed
 		
 		If (_shotClock <= 0) Then
 			ResetShotClock()

@@ -26,7 +26,7 @@ Class FlxText Extends FlxSprite
 	Const SYSTEM_FONT:String = "system"
 	
 Private
-	Global _defaultDriver:FlxClass = NativeTextDriver
+	Global _DefaultDriver:FlxClass = NativeTextDriver
 	Field _driver:FlxTextDriver
 	Field _shadow:FlxColor
 
@@ -39,7 +39,7 @@ Public
 		_color = New FlxColor()
 		_shadow = New FlxColor(0)	
 		
-		If (driver = Null) driver =	_defaultDriver
+		If (driver = Null) driver =	_DefaultDriver
 		_driver = FlxTextDriver(driver.CreateInstance())
 		
 		Self.width = width
@@ -130,18 +130,18 @@ Public
 	
 	Method _DrawSurface:Void(x:Float, y:Float)	
 		If (_shadow.argb <> 0) Then
-			Local oldColor:Int = FlxG._lastDrawingColor
-			Local oldAlpha:Int = FlxG._lastDrawingAlpha
-			Local camera:FlxCamera = FlxG.camera
+			Local oldColor:Int = FlxG._LastDrawingColor
+			Local oldAlpha:Int = FlxG._LastDrawingAlpha
+			Local camera:FlxCamera = FlxG.Camera
 		
 			If (camera.Color <> FlxG.WHITE) Then
 				_mixedColor.MixRGB(_shadow, camera._color)
 				
-				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
 					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
 				End If				
 			Else
-				If (FlxG._lastDrawingColor <> _shadow.argb) Then
+				If (FlxG._LastDrawingColor <> _shadow.argb) Then
 					SetColor(_shadow.r, _shadow.g, _shadow.b)
 				End If		
 			End If
@@ -149,11 +149,11 @@ Public
 			If (camera.Alpha < 1) Then
 				Local _mixedAlpha:Float = camera.Alpha * _shadow.a
 				
-				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
 					SetAlpha(_mixedAlpha)					
 				End If
 			Else
-				If (FlxG._lastDrawingAlpha <> _shadow.a) Then
+				If (FlxG._LastDrawingAlpha <> _shadow.a) Then
 					SetAlpha(_shadow.a)					
 				End If
 			End If					
@@ -168,7 +168,7 @@ Public
 	End Method
 	
 	Function SetDefaultDriver:Void(driver:FlxClass)
-		_defaultDriver = driver
+		_DefaultDriver = driver
 	End Function
 	
 	Method ToString:String()

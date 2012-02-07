@@ -26,7 +26,7 @@ Class PlayState Extends FlxState
 	Field legends:FlxText
 			
 	Method Create:Void()
-		FlxG.mouse.Show()
+		FlxG.Mouse.Show()
 	
 		map = New FlxTilemap()
 		map.LoadMap(FlxAssetsManager.GetString(Assets.MAP), Assets.TILES, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF, 1)
@@ -66,9 +66,9 @@ Class PlayState Extends FlxState
 		
 		Super.Update()
 		
-		If (FlxG.mouse.JustPressed() And action = ACTION_IDLE) Then
-			Local mx:Int = FlxG.mouse.screenX / TILE_WIDTH
-			Local my:Int = FlxG.mouse.screenY / TILE_HEIGHT
+		If (FlxG.Mouse.JustPressed() And action = ACTION_IDLE) Then
+			Local mx:Int = FlxG.Mouse.screenX / TILE_WIDTH
+			Local my:Int = FlxG.Mouse.screenY / TILE_HEIGHT
 			
 			map.SetTile(mx, my, 1 - map.GetTile(mx, my))
 		End If

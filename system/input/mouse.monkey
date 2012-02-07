@@ -14,9 +14,9 @@ Import "../../data/flx_cursor.png"
 Class Mouse Extends XYDevice
 
 Private
-	Global _cursorsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
+	Global _CursorsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
 	
-	Global _cursorLoader:FlxCursorLoader = New FlxCursorLoader()	
+	Global _CursorLoader:FlxCursorLoader = New FlxCursorLoader()	
 	
 	Field _cursor:FlxCursor
 	
@@ -30,11 +30,11 @@ Public
 	Method Destroy:Void()
 		Super.Destroy()
 		
-		For Local cur:Image = EachIn _cursorsManager.Resources.Values()
+		For Local cur:Image = EachIn _CursorsManager.Resources.Values()
 			cur.Discard()
 		Next
 		
-		_cursorsManager.Clear()
+		_CursorsManager.Clear()
 		
 		If (_cursor <> Null) _cursor.Destroy()
 		_cursor = Null
@@ -77,7 +77,7 @@ Public
 	End Method
 	
 	Method Show:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)
-		If (FlxG.mobile) Return
+		If (FlxG.Mobile) Return
 		If (_cursor = Null) _cursor = New FlxCursor()
 		
 		HideMouse()
@@ -101,21 +101,21 @@ Public
 	Method Load:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)		
 		If (cursor.Length() = 0) cursor = FlxG.DATA_PREFIX + "cursor"
 		
-		_cursor.pixels = _cursorsManager.GetResource(cursor, _cursorLoader)
+		_cursor.pixels = _CursorsManager.GetResource(cursor, _CursorLoader)
 		_cursor.pixels.SetHandle(xOffset, yOffset)
 	End Method
 	
 	Method Unload:Void(cursor:String = "")
 		If (_cursor <> Null) Then		
 			If (cursor.Length() = 0) Then	
-				For Local cur:Image = EachIn _cursorsManager.Resources.Values()
+				For Local cur:Image = EachIn _CursorsManager.Resources.Values()
 					cur.Discard()
 				Next
 				
-				_cursorsManager.Clear()
+				_CursorsManager.Clear()
 			Else
-				_cursorsManager.GetResource(cursor, _cursorLoader).Discard()
-				_cursorsManager.RemoveResource(cursor)
+				_CursorsManager.GetResource(cursor, _CursorLoader).Discard()
+				_CursorsManager.RemoveResource(cursor)
 			End If
 			
 			_cursor = Null
@@ -125,19 +125,19 @@ Public
 	Method Draw:Void()
 		If (Not _cursor.visible) Return
 		
-		If (FlxG._lastDrawingBlend <> AlphaBlend) Then
+		If (FlxG._LastDrawingBlend <> AlphaBlend) Then
 			SetBlend(AlphaBlend)
-			FlxG._lastDrawingBlend = AlphaBlend
+			FlxG._LastDrawingBlend = AlphaBlend
 		End If
 		
-		If (FlxG._lastDrawingColor <> FlxG.WHITE) Then
+		If (FlxG._LastDrawingColor <> FlxG.WHITE) Then
 			SetColor(255, 255, 255)
-			FlxG._lastDrawingColor = FlxG.WHITE
+			FlxG._LastDrawingColor = FlxG.WHITE
 		End If
 		
-		If (FlxG._lastDrawingAlpha <> 1) Then
+		If (FlxG._LastDrawingAlpha <> 1) Then
 			SetAlpha(1)
-			FlxG._lastDrawingAlpha = 1
+			FlxG._LastDrawingAlpha = 1
 		End If
 		
 		If (_cursor.scale = 1) Then
@@ -151,8 +151,8 @@ Public
 	End Method
 	
 	Method _UpdateXY:Void()	
-		_cursor.x = _globalScreenPosition.x / FlxG._deviceScaleFactorX
-		_cursor.y = _globalScreenPosition.y / FlxG._deviceScaleFactorY
+		_cursor.x = _globalScreenPosition.x / FlxG._DeviceScaleFactorX
+		_cursor.y = _globalScreenPosition.y / FlxG._DeviceScaleFactorY
 		
 		Super._UpdateXY()
 	End Method

@@ -50,8 +50,8 @@ Global AngelfontTextDriver:FlxClass = New FlxAFDriverClass()
 Class FlxTextAngelFontDriver Extends FlxTextDriver	
 
 Private
-	Global _fontLoader:FlxAFDriverLoader = New FlxAFDriverLoader()
-	Global _fontsManager:FlxResourcesManager<AngelFont> = New FlxResourcesManager<AngelFont>()
+	Global _FontLoader:FlxAFDriverLoader = New FlxAFDriverLoader()
+	Global _FontsManager:FlxResourcesManager<AngelFont> = New FlxResourcesManager<AngelFont>()
 	
 	Field _font:AngelFont
 	Field _fontHeight:Int	
@@ -93,10 +93,10 @@ Public
 	End Method			
 
 	Method Reset:Void()
-		_fontLoader.fontFamily = _fontFamily
-		_fontLoader.fontSize = _size
+		_FontLoader.fontFamily = _fontFamily
+		_FontLoader.fontSize = _size
 		
-		_font = _fontsManager.GetResource(_fontFamily + _size, _fontLoader)	
+		_font = _FontsManager.GetResource(_fontFamily + _size, _FontLoader)	
 		
 		If (_text.Length() > 0) Then
 			_fontHeight = _font.TextHeight(_text) * 1.5

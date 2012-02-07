@@ -11,7 +11,7 @@ Class Objects Extends FlxGame
 	
 	Method New()
 		Super.New(640, 480, ObjectsState.ClassObject)
-		FlxG.visualDebug = True
+		FlxG.VisualDebug = True
 	End Method
 
 End Class
@@ -45,21 +45,21 @@ Class ObjectsState Extends FlxState
 		
 		blocks1 = New FlxGroup()
 		For Local i:Int = 0 Until 5
-			block = New FlxObject(50 + i * 50, FlxG.height / 2 - 50, 50, 50)			
+			block = New FlxObject(50 + i * 50, FlxG.Height / 2 - 50, 50, 50)			
 			blocks1.Add(block)
 		Next		
 		Add(blocks1)
 		
 		blocks2 = New FlxGroup()
 		For Local i:Int = 0 Until 3
-			block = New FlxObject(FlxG.width - 100 - i * 50, FlxG.height / 2 + 50, 50, 50)
+			block = New FlxObject(FlxG.Width - 100 - i * 50, FlxG.Height / 2 + 50, 50, 50)
 			blocks2.Add(block)
 		Next
 		Add(blocks2)
 		
 		floor = New FlxGroup()
 		For Local i:Int = 0 Until 16
-			block = New FlxObject(0 + i * 40, FlxG.height - 40, 40, 40)	
+			block = New FlxObject(0 + i * 40, FlxG.Height - 40, 40, 40)	
 			floor.Add(block)	
 		Next
 		Add(floor)
@@ -72,11 +72,11 @@ Class ObjectsState Extends FlxState
 		Next
 		Add(sky)
 		
-		player = New FlxObject(FlxG.width / 2 - 15, FlxG.height - 70, 30, 30)
+		player = New FlxObject(FlxG.Width / 2 - 15, FlxG.Height - 70, 30, 30)
 		Add(player)		
 		
-		FlxG.camera.Follow(player, FlxCamera.STYLE_PLATFORMER)
-		FlxG.camera.deadzone.y = FlxG.height - 70
+		FlxG.Camera.Follow(player, FlxCamera.STYLE_PLATFORMER)
+		FlxG.Camera.deadzone.y = FlxG.Height - 70
 	End Method
 	
 	Method Update:Void()	

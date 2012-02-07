@@ -53,7 +53,7 @@ Class SpritesState Extends FlxState
 		soundBox.Facing = FlxObject.LEFT
 		
 		Local sound:FlxSound = (New FlxSound).Load("main", True).Proximity(500, 200, player, 300)		
-		FlxG.sounds.Add(sound)
+		FlxG.Sounds.Add(sound)
 		
 		sound.Play()
 	End Method
@@ -61,10 +61,10 @@ Class SpritesState Extends FlxState
 	Method Update:Void()
 		player.velocity.x = 0
 		
-		If (FlxG.keys.Right Or (FlxG.Touch().Pressed And FlxG.Touch().screenX > FlxG.width / 2)) player.velocity.x = 100
-		If (FlxG.keys.Left Or  (FlxG.Touch().Pressed And FlxG.Touch().screenX < FlxG.width / 2)) player.velocity.x = -100
+		If (FlxG.Keys.Right Or (FlxG.Touch().Pressed And FlxG.Touch().screenX > FlxG.Width / 2)) player.velocity.x = 100
+		If (FlxG.Keys.Left Or  (FlxG.Touch().Pressed And FlxG.Touch().screenX < FlxG.Width / 2)) player.velocity.x = -100
 		
-		If (FlxG.keys.Escape) Error ""
+		If (FlxG.Keys.Escape) Error ""
 	
 		Super.Update()
 	End Method

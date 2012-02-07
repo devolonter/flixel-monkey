@@ -893,10 +893,10 @@ End Class
 Class FlxGAddPluginUnitTest Implements IUnitTest
 	
 	Method Run:Bool()
-		Local oldL:Int = FlxG.plugins.Length()	
+		Local oldL:Int = FlxG.Plugins.Length()	
 		FlxG.AddPlugin(New TimerManager())
 		FlxG.AddPlugin(New TimerManager())
-		Return UnitTest.AssertEqualsI(oldL, FlxG.plugins.Length())			
+		Return UnitTest.AssertEqualsI(oldL, FlxG.Plugins.Length())			
 	End Method
 
 	Method GetName:String()
@@ -920,9 +920,9 @@ End Class
 Class FlxGRemovePluginUnitTest Implements IUnitTest
 	
 	Method Run:Bool()
-		Local oldL:Int = FlxG.plugins.Length()	
+		Local oldL:Int = FlxG.Plugins.Length()	
 		FlxG.RemovePlugin(FlxG.GetPlugin(TimerManager.ClassObject))
-		If (Not UnitTest.AssertEqualsI(oldL - 1, FlxG.plugins.Length())) Return False
+		If (Not UnitTest.AssertEqualsI(oldL - 1, FlxG.Plugins.Length())) Return False
 		FlxG.Init(Null, 0, 0, 0)
 		Return True				
 	End Method
@@ -936,9 +936,9 @@ End Class
 Class FlxGRemovePluginTypeUnitTest Implements IUnitTest
 	
 	Method Run:Bool()
-		Local oldL:Int = FlxG.plugins.Length()	
+		Local oldL:Int = FlxG.Plugins.Length()	
 		FlxG.RemovePluginType(TimerManager.ClassObject)
-		If (Not UnitTest.AssertEqualsI(oldL -  1, FlxG.plugins.Length())) Return False
+		If (Not UnitTest.AssertEqualsI(oldL -  1, FlxG.Plugins.Length())) Return False
 		FlxG.Init(Null, 0, 0, 0)
 		Return True				
 	End Method

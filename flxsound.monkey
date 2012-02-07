@@ -30,7 +30,7 @@ Class FlxSound Extends FlxBasic
 Private
 	Const _CHANNELS_COUNT:Int = 32
 
-	Global _usedChannels:Bool[_CHANNELS_COUNT]
+	Global _UsedChannels:Bool[_CHANNELS_COUNT]
 
 	Field _sound:Sound
 	
@@ -75,7 +75,7 @@ Public
 		End If	
 		
 		If (_channel >= 0) Then
-			_usedChannels[_channel] = False
+			_UsedChannels[_channel] = False
 		End If
 		
 		_channel = -1
@@ -113,7 +113,7 @@ Public
 		End If
 		
 		If (_fadeOutTimer > 0) Then
-			_fadeOutTimer -= FlxG.elapsed
+			_fadeOutTimer -= FlxG.Elapsed
 			
 			If (_fadeOutTimer <= 0) Then
 				If (_pauseOnFadeOut) Then
@@ -128,7 +128,7 @@ Public
 			
 			updateNeeded = True
 		ElseIf (_fadeInTimer > 0) Then
-			_fadeInTimer -= FlxG.elapsed
+			_fadeInTimer -= FlxG.Elapsed
 			
 			fade = _fadeInTimer / _fadeInTotal
 			If (fade < 0) fade = 0
@@ -224,7 +224,7 @@ Public
 	
 		If (_channel >= 0) Then
 			StopChannel(_channel)
-			_usedChannels[_channel] = False
+			_UsedChannels[_channel] = False
 			_channel = -1			
 			active = False
 			
@@ -307,8 +307,8 @@ Public
 	End Method
 	
 	Method _UpdateTransform:Void()	
-		If (Not FlxG.mute) Then
-			_soundVolume = FlxG._volume * _volume * _volumeAdjust
+		If (Not FlxG.Mute) Then
+			_soundVolume = FlxG._Volume * _volume * _volumeAdjust
 		Else
 			_soundVolume = 0
 		End If		
@@ -321,7 +321,7 @@ Private
 		Local i:Int = 0
 		
 		While (i < _CHANNELS_COUNT)
-			If (Not _usedChannels[i]) Return i
+			If (Not _UsedChannels[i]) Return i
 			i += 1
 		Wend
 		

@@ -141,10 +141,10 @@ Class FlxU
 	
 	Function ComputeVelocity:Float(velocity:Float, acceleration:Float = 0, drag:Float = 0, max:Float = 10000)
 		If (acceleration <> 0) Then
-			velocity += acceleration * FlxG.elapsed
+			velocity += acceleration * FlxG.Elapsed
 						
 		ElseIf (drag <> 0) Then
-			drag *= FlxG.elapsed
+			drag *= FlxG.Elapsed
 			
 			If (velocity - drag > 0) Then
 				velocity -= drag			

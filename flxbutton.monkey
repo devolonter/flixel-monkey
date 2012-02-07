@@ -175,8 +175,8 @@ Public
 	
 Private
 	Method _UpdateButton:Void()
-		If (FlxG.mobile Or FlxG.mouse.Visible) Then
-			Local cameras:Stack<FlxCamera> = FlxG.cameras
+		If (FlxG.Mobile Or FlxG.Mouse.Visible) Then
+			Local cameras:Stack<FlxCamera> = FlxG.Cameras
 			Local camera:FlxCamera
 			Local i:Int = 0
 			Local l:Int = cameras.Length()
@@ -185,12 +185,12 @@ Private
 			
 			While (i < l)
 				camera = cameras.Get(i)
-				FlxG.mouse.GetWorldPosition(camera, _point)
+				FlxG.Mouse.GetWorldPosition(camera, _point)
 				
 				If (OverlapsPoint(_point, True, camera)) Then
 					offAll = False
 					
-					If (FlxG.mouse.JustPressed()) Then
+					If (FlxG.Mouse.JustPressed()) Then
 						status = PRESSED
 						
 						If (onDown <> Null) Then
@@ -202,7 +202,7 @@ Private
 						End If
 					End If
 					
-					If (FlxG.mouse.JustReleased() And status = PRESSED) Then
+					If (FlxG.Mouse.JustReleased() And status = PRESSED) Then
 						status = NORMAL
 						click = True
 					End If

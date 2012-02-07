@@ -116,7 +116,7 @@ Public
 	
 	Method DrawDebug:Void(camera:FlxCamera = Null)
 		If (nodes.Length() <= 0) Return
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 	
 		Local node:FlxPoint
 		Local nextNode:FlxPoint
@@ -161,9 +161,9 @@ Public
 			
 			SetAlpha(.5)		
 			
-			If (FlxG._lastDrawingColor <> _debugNodeColor.argb) Then
+			If (FlxG._LastDrawingColor <> _debugNodeColor.argb) Then
 				SetColor(_debugNodeColor.r, _debugNodeColor.g, _debugNodeColor.b)
-				FlxG._lastDrawingColor = _debugNodeColor.argb
+				FlxG._LastDrawingColor = _debugNodeColor.argb
 			End If
 			
 			DrawRect(_point.x - nodeSize * 0.5, _point.y - nodeSize * 0.5, nodeSize, nodeSize)
@@ -181,9 +181,9 @@ Public
 			
 			SetAlpha(linealpha)
 			
-			If (FlxG._lastDrawingColor <> _debugNodeColor.argb) Then
+			If (FlxG._LastDrawingColor <> _debugNodeColor.argb) Then
 				SetColor(_debugNodeColor.r, _debugNodeColor.g, _debugNodeColor.b)
-				FlxG._lastDrawingColor = _debugNodeColor.argb
+				FlxG._LastDrawingColor = _debugNodeColor.argb
 			End If
 			
 			fromX = _point.x

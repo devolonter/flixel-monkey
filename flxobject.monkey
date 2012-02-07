@@ -220,11 +220,11 @@ Public
 	End Method
 	
 	Method PreUpdate:Void()
-		_ACTIVECOUNT += 1
+		_ActiveCount += 1
 		
 		If (_flickerTimer <> 0) Then
 			If (_flickerTimer > 0) Then
-				_flickerTimer -= FlxG.elapsed				
+				_flickerTimer -= FlxG.Elapsed				
 				If (_flickerTimer <= 0) Then
 					_flickerTimer = 0
 					_flicker = False
@@ -248,10 +248,10 @@ Public
 	End Method
 	
 	Method Draw:Void()
-		If (Not OnScreen(FlxG._currentCamera)) Return
+		If (Not OnScreen(FlxG._CurrentCamera)) Return
 		
-		_VISIBLECOUNT += 1
-		If (FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._currentCamera)	
+		_VisibleCount += 1
+		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._CurrentCamera)	
 	End Method
 	
 	Method DrawDebug:Void(camera:FlxCamera = Null)
@@ -300,9 +300,9 @@ Public
 		
 		SetAlpha(.5)
 		
-		If (FlxG._lastDrawingColor <> _debugBoundingBoxColor.argb) Then
+		If (FlxG._LastDrawingColor <> _debugBoundingBoxColor.argb) Then
 			SetColor(_debugBoundingBoxColor.r, _debugBoundingBoxColor.g, _debugBoundingBoxColor.b)
-			FlxG._lastDrawingColor = _debugBoundingBoxColor.argb
+			FlxG._LastDrawingColor = _debugBoundingBoxColor.argb
 		End If
 		
 		DrawLine(boundingBoxX, boundingBoxY, boundingBoxX + boundingBoxWidth, boundingBoxY)
@@ -372,7 +372,7 @@ Public
 				(object.y + object.height > y) And (object.y < y + height)
 		End If
 		
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 		Local objectScreenPos:FlxPoint = object.GetScreenXY(Null, camera)		
 		GetScreenXY(_point, camera)
 		
@@ -412,7 +412,7 @@ Public
 				(object.y + object.height > y) And (object.y < y + height)
 		End If
 		
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 		Local objectScreenPos:FlxPoint = object.GetScreenXY(Null, camera)
 		
 		point.x = x - Int(camera.scroll.x * scrollFactor.x)
@@ -439,7 +439,7 @@ Public
 			Return (point.x > x) And (point.x < x + width) And (point.y > y) And (point.y < y + height)
 		End If
 		
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 		
 		Local x:Float = point.x - camera.scroll.x
 		Local y:Float = point.y - camera.scroll.y
@@ -449,7 +449,7 @@ Public
 	End Method	
 	
 	Method OnScreen:Bool(camera:FlxCamera = Null)
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 		
 		GetScreenXY(_point, camera)
 		Return (_point.x + width > 0) And (_point.x < camera.Width) And (_point.y + height > 0) And (_point.y < camera.Height)
@@ -457,7 +457,7 @@ Public
 	
 	Method GetScreenXY:FlxPoint(point:FlxPoint = Null, camera:FlxCamera = Null)
 		If (point = Null) point = New FlxPoint()
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 		
 		point.x = x - Int(camera.scroll.x * scrollFactor.x)
 		point.y = y - Int(camera.scroll.y * scrollFactor.y)
@@ -722,18 +722,18 @@ Private
 		
 		velocityDelta = (FlxU.ComputeVelocity(angularVelocity, angularAcceleration, angularDrag, maxAngular) - angularVelocity) / 2
 		angularVelocity += velocityDelta
-		angle += angularVelocity * FlxG.elapsed
+		angle += angularVelocity * FlxG.Elapsed
 		angularVelocity += velocityDelta
 		
 		velocityDelta = (FlxU.ComputeVelocity(velocity.x, acceleration.x, drag.x, maxVelocity.x) - velocity.x) / 2
 		velocity.x += velocityDelta
-		delta = velocity.x * FlxG.elapsed
+		delta = velocity.x * FlxG.Elapsed
 		velocity.x += velocityDelta
 		x += delta
 		
 		velocityDelta = (FlxU.ComputeVelocity(velocity.y, acceleration.y, drag.y, maxVelocity.y) - velocity.y) / 2
 		velocity.y += velocityDelta
-		delta = velocity.y * FlxG.elapsed
+		delta = velocity.y * FlxG.Elapsed
 		velocity.y += velocityDelta
 		y += delta
 	End Method
@@ -812,13 +812,13 @@ Private
 		Local verticalOnly:Bool = (_pathMode & PATH_VERTICAL_ONLY) > 0
 		
 		If (horizontalOnly) Then
-			If (Abs(deltaX) < pathSpeed * FlxG.elapsed) node = _AdvancePath()
+			If (Abs(deltaX) < pathSpeed * FlxG.Elapsed) node = _AdvancePath()
 			
 		ElseIf (verticalOnly) Then
-			If (Abs(deltaY) < pathSpeed * FlxG.elapsed) node = _AdvancePath()
+			If (Abs(deltaY) < pathSpeed * FlxG.Elapsed) node = _AdvancePath()
 			
 		Else
-			If (Sqrt(deltaX * deltaX + deltaY * deltaY) < pathSpeed * FlxG.elapsed) Then
+			If (Sqrt(deltaX * deltaX + deltaY * deltaY) < pathSpeed * FlxG.Elapsed) Then
 				node = _AdvancePath()		
 			End If
 		End If

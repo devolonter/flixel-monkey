@@ -75,7 +75,7 @@ Class CameraFXState Extends FlxState
 		End If
 		
 		If (KeyHit(KEY_SPACE)) Then
-			FlxG.camera.StopFX()
+			FlxG.Camera.StopFX()
 		End If
 	
 		Super.Update()

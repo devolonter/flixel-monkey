@@ -93,7 +93,7 @@ Public
 		_lostFocus = False		
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
-		FlxG.framerate = framerate
+		FlxG.Framerate = framerate
 		
 		useSoundHotKeys = Not IsMobile()
 		Self.useSystemCursor = useSystemCursor
@@ -127,7 +127,7 @@ Public
 		_InitData()		
 		_Step()
 		
-		_soundTrayX	= (FlxG.width / 2) * FlxCamera.defaultZoom - (_soundTrayWidth / 2)
+		_soundTrayX	= (FlxG.Width / 2) * FlxCamera.DefaultZoom - (_soundTrayWidth / 2)
 		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
 		_soundTrayLabel.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER)
 		Return 0
@@ -137,13 +137,13 @@ Public
 		#If TARGET <> "ios" Or TARGET <> "android"
 			If (useSoundHotKeys) Then
 				If (KeyHit(KEY_0)) Then
-					FlxG.mute = Not FlxG.mute
+					FlxG.Mute = Not FlxG.Mute
 					
-					If (FlxG.volumeHandler <> Null) Then
-						If (FlxG.mute) Then
-							FlxG.volumeHandler.OnVolumeChange(0)
+					If (FlxG.VolumeHandler <> Null) Then
+						If (FlxG.Mute) Then
+							FlxG.VolumeHandler.OnVolumeChange(0)
 						Else
-							FlxG.volumeHandler.OnVolumeChange(FlxG.Volume())
+							FlxG.VolumeHandler.OnVolumeChange(FlxG.Volume())
 						End If
 					End If
 					
@@ -151,13 +151,13 @@ Public
 				End If
 			
 				If (KeyHit(KEY_MINUS)) Then
-					FlxG.mute = False
+					FlxG.Mute = False
 					FlxG.Volume(FlxG.Volume() - .1)
 					_ShowSoundTray()
 				End If
 				
 				If (KeyHit(KEY_EQUALS)) Then
-					FlxG.mute = False
+					FlxG.Mute = False
 					FlxG.Volume(FlxG.Volume() + .1)
 					_ShowSoundTray()
 				End If	
@@ -170,7 +170,7 @@ Public
 	Method OnRender:Int()
 		If (_fps < 0) Then
 			_fpsTime = Millisecs()
-			_fps = FlxG.framerate
+			_fps = FlxG.Framerate
 			_lastFpsCounter = _fps
 		Else
 			If (Millisecs() - _fpsTime > 1000) Then
@@ -187,39 +187,39 @@ Public
 		End If
 	
 		'Real elapsed very unstable in Monkey. TODO!
-		FlxG.elapsed = FlxG.timeScale * (1.0 / _fps)	
+		FlxG.Elapsed = FlxG.TimeScale * (1.0 / _fps)	
 		
 		_UpdateSoundTray()
 		_Step()			
 		
-		Cls(FlxG._bgColor.r, FlxG._bgColor.g, FlxG._bgColor.b)		
-		Scale(FlxG._deviceScaleFactorX, FlxG._deviceScaleFactorY)		
+		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
+		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
 		
-		FlxG._lastDrawingColor = FlxG.WHITE
-		FlxG._lastDrawingBlend = GetBlend()
-		FlxG._lastDrawingAlpha = GetAlpha()
-		FlxG._currentCamera = Null
+		FlxG._LastDrawingColor = FlxG.WHITE
+		FlxG._LastDrawingBlend = GetBlend()
+		FlxG._LastDrawingAlpha = GetAlpha()
+		FlxG._CurrentCamera = Null
 		
 		Local i:Int = 0
-		Local l:Int = FlxG.cameras.Length()		
+		Local l:Int = FlxG.Cameras.Length()		
 		
 		While(i < l)		
-			FlxG._currentCamera = FlxG.cameras.Get(i)
+			FlxG._CurrentCamera = FlxG.Cameras.Get(i)
 			
-			If (Not FlxG._currentCamera.active) Then
+			If (Not FlxG._CurrentCamera.active) Then
 				i+=1
 				Continue
 			End If
 			
-			FlxG._currentCameraID = i
+			FlxG._CurrentCameraID = i
 			
-			If (FlxG._currentCamera = Null Or Not FlxG._currentCamera.exists Or Not FlxG._currentCamera.visible) Continue
+			If (FlxG._CurrentCamera = Null Or Not FlxG._CurrentCamera.exists Or Not FlxG._CurrentCamera.visible) Continue
 			
-			FlxG._currentCamera.DrawFX() 'not realy draw. Only calculation
-			FlxG._currentCamera.Lock()			
+			FlxG._CurrentCamera.DrawFX() 'not realy draw. Only calculation
+			FlxG._CurrentCamera.Lock()			
 			_state.Draw()
 			FlxG.DrawPlugins()			
-			FlxG._currentCamera.Unlock()
+			FlxG._CurrentCamera.Unlock()
 									
 			i+=1
 		Wend
@@ -227,14 +227,14 @@ Public
 		#If TARGET <> "ios" Or TARGET <> "android"
 			If (_soundTrayVisible) Then			
 				Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
-				If (FlxG.mute) globalVolume = 0
+				If (FlxG.Mute) globalVolume = 0
 				
 				Local bx:Int = 20
 				Local by:Int = 28
 				
-				If (FlxG._lastDrawingColor <> FlxG.WHITE) Then
+				If (FlxG._LastDrawingColor <> FlxG.WHITE) Then
 					SetColor(255, 255, 255)
-					FlxG._lastDrawingColor = FlxG.WHITE
+					FlxG._LastDrawingColor = FlxG.WHITE
 				End If
 				
 				PushMatrix()
@@ -243,15 +243,15 @@ Public
 				Local i:Int = 0
 				While (i < 10)
 					If (i < globalVolume) Then
-						If (FlxG._lastDrawingAlpha <> 1) Then
+						If (FlxG._LastDrawingAlpha <> 1) Then
 							SetAlpha(1)
-							FlxG._lastDrawingAlpha = 1
+							FlxG._LastDrawingAlpha = 1
 						End If
 						
 					Else
-						If (FlxG._lastDrawingAlpha <> .5) Then
+						If (FlxG._LastDrawingAlpha <> .5) Then
 							SetAlpha(.5)
-							FlxG._lastDrawingAlpha = .5
+							FlxG._LastDrawingAlpha = .5
 						End If
 					End If
 					
@@ -268,7 +268,7 @@ Public
 			End If
 		#End
 		
-		FlxG.mouse.Draw()
+		FlxG.Mouse.Draw()
 		
 		#If CONFIG = "debug"
 			DrawText("FPS: " + _fps, 10, 10)
@@ -330,7 +330,7 @@ Private
 		
 		If (_recordingRequested) Then
 			_recordingRequested = False
-			_replay.Create(FlxG.globalSeed)
+			_replay.Create(FlxG.GlobalSeed)
 			_recording = True
 			
 			If (_debugger <> Null) Then
@@ -341,7 +341,7 @@ Private
 		ElseIf (_replayRequested)
 			_replayRequested = False
 			_replay.Rewind()
-			FlxG.globalSeed = _replay.seed
+			FlxG.GlobalSeed = _replay.seed
 			
 			If (_debugger <> Null) Then
 				'TODO
@@ -352,7 +352,7 @@ Private
 		
 		If (_state <> _requestedState) _SwitchState()
 		
-		FlxBasic._ACTIVECOUNT = 0
+		FlxBasic._ActiveCount = 0
 		
 		If (_replaying) Then		
 			If (_replayCancelKeys.Length() > 0 And Not KeyDown(192) And Not KeyDown(220)) Then
@@ -425,10 +425,10 @@ Private
 		If (Not _soundTrayVisible) Return
 	
 		If (_soundTrayTimer > 0) Then
-			_soundTrayTimer -= FlxG.elapsed
+			_soundTrayTimer -= FlxG.Elapsed
 		
 		ElseIf (_soundTrayY > -_soundTrayHeight)
-			_soundTrayY =_soundTrayY - (FlxG.elapsed * FlxG.height * 2)
+			_soundTrayY =_soundTrayY - (FlxG.Elapsed * FlxG.Height * 2)
 			
 			If (_soundTrayY <= -_soundTrayHeight) Then
 				_soundTrayVisible = False
@@ -446,21 +446,21 @@ Private
 	End Method
 	
 	Method _Reset:Void()
-		SetUpdateRate(FlxG.framerate)
+		SetUpdateRate(FlxG.Framerate)
 		Seed = SystemMillisecs()
 		
-		FlxG.deviceWidth = DeviceWidth()
-		FlxG.deviceHeight = DeviceHeight()
+		FlxG.DeviceWidth = DeviceWidth()
+		FlxG.DeviceHeight = DeviceHeight()
 		
 		If (useVirtualResolution) Then
-			FlxG._deviceScaleFactorX = FlxG.deviceWidth / Float(FlxG.width)
-			FlxG._deviceScaleFactorY = FlxG.deviceHeight / Float(FlxG.height)
+			FlxG._DeviceScaleFactorX = FlxG.DeviceWidth / Float(FlxG.Width)
+			FlxG._DeviceScaleFactorY = FlxG.DeviceHeight / Float(FlxG.Height)
 		Else
-			FlxG._deviceScaleFactorX = 1
-			FlxG._deviceScaleFactorY = 1
+			FlxG._DeviceScaleFactorX = 1
+			FlxG._DeviceScaleFactorY = 1
 		End If
 		
-		_step = 1000.0 / FlxG.framerate
+		_step = 1000.0 / FlxG.Framerate
 		_fps = -1
 	End Method
 	

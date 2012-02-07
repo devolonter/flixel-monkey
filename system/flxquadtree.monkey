@@ -13,7 +13,7 @@ Class FlxQuadTree Extends FlxRect
 	
 	Const B_LIST:Int = 1
 	
-	Global divisions:Int
+	Global Divisions:Int
 	
 Private
 	Field _canSubdivide:Bool
@@ -26,7 +26,7 @@ Private
 	
 	Field _tailB:FlxList
 	
-	Global _min:Int
+	Global _Min:Int
 	
 	Field _northWestTree:FlxQuadTree
 	
@@ -52,41 +52,41 @@ Private
 	
 	Field _midpointY:Float
 	
-	Global _object:FlxObject
+	Global _Object:FlxObject
 	
-	Global _objectLeftEdge:Float
+	Global _ObjectLeftEdge:Float
 	
-	Global _objectTopEdge:Float
+	Global _ObjectTopEdge:Float
 	
-	Global _objectRightEdge:Float
+	Global _ObjectRightEdge:Float
 	
-	Global _objectBottomEdge:Float
+	Global _ObjectBottomEdge:Float
 	
-	Global _list:Int
+	Global _List:Int
 	
-	Global _useBothLists:Bool
+	Global _UseBothLists:Bool
 	
-	Global _processingCallback:FlxOverlapProcessListener
+	Global _ProcessingCallback:FlxOverlapProcessListener
 	
-	Global _notifyCallback:FlxOverlapNotifyListener
+	Global _NotifyCallback:FlxOverlapNotifyListener
 	
-	Global _iterator:FlxList
+	Global _Iterator:FlxList
 	
-	Global _objectHullX:Float
+	Global _ObjectHullX:Float
 	
-	Global _objectHullY:Float
+	Global _ObjectHullY:Float
 	
-	Global _objectHullWidth:Float
+	Global _ObjectHullWidth:Float
 	
-	Global _objectHullHeight:Float
+	Global _ObjectHullHeight:Float
 	
-	Global _checkObjectHullX:Float
+	Global _CheckObjectHullX:Float
 	
-	Global _checkObjectHullY:Float
+	Global _CheckObjectHullY:Float
 	
-	Global _checkObjectHullWidth:Float
+	Global _CheckObjectHullWidth:Float
 	
-	Global _checkObjectHullHeight:Float
+	Global _CheckObjectHullHeight:Float
 
 Public
 	Method New(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
@@ -131,10 +131,10 @@ Public
 				Wend
 			End If
 		Else
-			_min = (width + height) / (2 * divisions)
+			_Min = (width + height) / (2 * Divisions)
 		End If
 		
-		_canSubdivide = (width > _min Or height > _min)
+		_canSubdivide = (width > _Min Or height > _Min)
 		
 		_northWestTree = Null
 		_northEastTree = Null
@@ -172,9 +172,9 @@ Public
 		If (_southWestTree <> Null) _southWestTree.Destroy()
 		_southWestTree = Null
 		
-		_object = Null
-		_processingCallback = Null
-		_notifyCallback = Null
+		_Object = Null
+		_ProcessingCallback = Null
+		_NotifyCallback = Null
 	End Method
 	
 	Method Load:Void(objectOrGroup1:FlxBasic, objectOrGroup2:FlxBasic = Null, notifyCallback:FlxOverlapNotifyListener, processCallback:FlxOverlapProcessListener = Null)
@@ -182,17 +182,17 @@ Public
 		
 		If (objectOrGroup2 <> Null) Then
 			Add(objectOrGroup2, B_LIST)
-			_useBothLists = True
+			_UseBothLists = True
 		Else
-			_useBothLists = False
+			_UseBothLists = False
 		End If
 		
-		_notifyCallback = notifyCallback
-		_processingCallback = processCallback
+		_NotifyCallback = notifyCallback
+		_ProcessingCallback = processCallback
 	End Method
 	
 	Method Add:Void(objectOrGroup:FlxBasic, list:Int)
-		_list = list
+		_List = list
 		
 		If (FlxGroup(objectOrGroup) <> Null) Then
 			Local i:Int = 0
@@ -208,13 +208,13 @@ Public
 						Add(basic, list)
 						
 					ElseIf (FlxObject(basic) <> Null)
-						_object = FlxObject(basic)
+						_Object = FlxObject(basic)
 						
-						If (_object.exists And _object.allowCollisions) Then
-							_objectLeftEdge = _object.x
-							_objectTopEdge = _object.y
-							_objectRightEdge = _object.x + _object.width
-							_objectBottomEdge = _object.y + _object.height
+						If (_Object.exists And _Object.allowCollisions) Then
+							_ObjectLeftEdge = _Object.x
+							_ObjectTopEdge = _Object.y
+							_ObjectRightEdge = _Object.x + _Object.width
+							_ObjectBottomEdge = _Object.y + _Object.height
 							_AddObject()
 						End If
 					End If
@@ -222,13 +222,13 @@ Public
 				i += 1
 			Wend
 		Else
-			_object = FlxObject(objectOrGroup)
+			_Object = FlxObject(objectOrGroup)
 			
-			If (_object.exists And _object.allowCollisions) Then
-				_objectLeftEdge = _object.x
-				_objectTopEdge = _object.y
-				_objectRightEdge = _object.x + _object.width
-				_objectBottomEdge = _object.y + _object.height
+			If (_Object.exists And _Object.allowCollisions) Then
+				_ObjectLeftEdge = _Object.x
+				_ObjectTopEdge = _Object.y
+				_ObjectRightEdge = _Object.x + _Object.width
+				_ObjectBottomEdge = _Object.y + _Object.height
 				_AddObject()
 			End If
 		End If
@@ -242,15 +242,15 @@ Public
 			iterator = _headA
 			
 			While (iterator <> Null)
-				_object = iterator.object
+				_Object = iterator.object
 				
-				If (_useBothLists) Then
-					_iterator = _headB
+				If (_UseBothLists) Then
+					_Iterator = _headB
 				Else
-					_iterator = iterator.nextLink
+					_Iterator = iterator.nextLink
 				End If
 				
-				If (_object.exists And _object.allowCollisions > 0 And _iterator <> Null And _iterator.object <> Null And _iterator.object.exists And _OverlapNode()) Then
+				If (_Object.exists And _Object.allowCollisions > 0 And _Iterator <> Null And _Iterator.object <> Null And _Iterator.object.exists And _OverlapNode()) Then
 					overlapProcessed = True					
 				End If
 				
@@ -279,13 +279,13 @@ Public
 
 Private	
 	Method _AddObject:Void()
-		If (Not _canSubdivide Or (_leftEdge >= _objectLeftEdge And _rightEdge <= _objectRightEdge And _topEdge >= _objectTopEdge And _bottomEdge <= _objectBottomEdge)) Then
+		If (Not _canSubdivide Or (_leftEdge >= _ObjectLeftEdge And _rightEdge <= _ObjectRightEdge And _topEdge >= _ObjectTopEdge And _bottomEdge <= _ObjectBottomEdge)) Then
 			_AddToList()
 			Return	
 		End If
 		
-		If (_objectLeftEdge > _leftEdge And _objectRightEdge < _midpointX) Then
-			If (_objectTopEdge > _topEdge And _objectBottomEdge < _midpointY) Then
+		If (_ObjectLeftEdge > _leftEdge And _ObjectRightEdge < _midpointX) Then
+			If (_ObjectTopEdge > _topEdge And _ObjectBottomEdge < _midpointY) Then
 				If (_northWestTree = Null) Then
 					_northWestTree = New FlxQuadTree(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
 				End If
@@ -294,7 +294,7 @@ Private
 				Return
 			End If
 			
-			If (_objectTopEdge > _midpointY And _objectBottomEdge < _bottomEdge) Then
+			If (_ObjectTopEdge > _midpointY And _ObjectBottomEdge < _bottomEdge) Then
 				If (_southWestTree = Null) Then
 					_southWestTree = New FlxQuadTree(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
 				End If
@@ -304,8 +304,8 @@ Private
 			End If
 		End If
 		
-		If (_objectLeftEdge > _midpointX And _objectRightEdge < _rightEdge) Then
-			If (_objectTopEdge > _topEdge And _objectBottomEdge < _midpointY) Then
+		If (_ObjectLeftEdge > _midpointX And _ObjectRightEdge < _rightEdge) Then
+			If (_ObjectTopEdge > _topEdge And _ObjectBottomEdge < _midpointY) Then
 				If (_northEastTree = Null) Then
 					_northEastTree = New FlxQuadTree(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
 				End If
@@ -314,7 +314,7 @@ Private
 				Return
 			End If
 			
-			If (_objectTopEdge > _midpointY And _objectBottomEdge < _bottomEdge) Then
+			If (_ObjectTopEdge > _midpointY And _ObjectBottomEdge < _bottomEdge) Then
 				If (_southEastTree = Null) Then
 					_southEastTree = New FlxQuadTree(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
 				End If
@@ -324,7 +324,7 @@ Private
 			End If
 		End If
 		
-		If (_objectRightEdge > _leftEdge And _objectLeftEdge < _midpointX And _objectBottomEdge > _topEdge And _objectTopEdge < _midpointY) Then
+		If (_ObjectRightEdge > _leftEdge And _ObjectLeftEdge < _midpointX And _ObjectBottomEdge > _topEdge And _ObjectTopEdge < _midpointY) Then
 			If (_northWestTree = Null) Then
 				_northWestTree = New FlxQuadTree(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
 			End If
@@ -332,7 +332,7 @@ Private
 			_northWestTree._AddObject()
 		End If
 		
-		If (_objectRightEdge > _midpointX And _objectLeftEdge < _rightEdge And _objectBottomEdge > _topEdge And _objectTopEdge < _midpointY) Then
+		If (_ObjectRightEdge > _midpointX And _ObjectLeftEdge < _rightEdge And _ObjectBottomEdge > _topEdge And _ObjectTopEdge < _midpointY) Then
 			If (_northEastTree = Null) Then
 				_northEastTree = New FlxQuadTree(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
 			End If
@@ -340,7 +340,7 @@ Private
 			_northEastTree._AddObject()
 		End If
 		
-		If (_objectRightEdge > _midpointX And _objectLeftEdge < _rightEdge And _objectBottomEdge > _midpointY And _objectTopEdge < _bottomEdge) Then
+		If (_ObjectRightEdge > _midpointX And _ObjectLeftEdge < _rightEdge And _ObjectBottomEdge > _midpointY And _ObjectTopEdge < _bottomEdge) Then
 			If (_southEastTree = Null) Then
 				_southEastTree = New FlxQuadTree(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
 			End If
@@ -348,7 +348,7 @@ Private
 			_southEastTree._AddObject()
 		End If
 		
-		If (_objectRightEdge > _leftEdge And _objectLeftEdge < _midpointX And _objectBottomEdge > _midpointY And _objectTopEdge < _bottomEdge) Then
+		If (_ObjectRightEdge > _leftEdge And _ObjectLeftEdge < _midpointX And _ObjectBottomEdge > _midpointY And _ObjectTopEdge < _bottomEdge) Then
 			If (_southWestTree = Null) Then
 				_southWestTree = New FlxQuadTree(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
 			End If
@@ -360,14 +360,14 @@ Private
 	Method _AddToList:Void()
 		Local ot:FlxList
 		
-		If (_list = A_LIST) Then
+		If (_List = A_LIST) Then
 			If (_tailA.object <> Null) Then
 				ot = _tailA
 				_tailA = New FlxList()
 				ot.nextLink = _tailA
 			End If
 			
-			_tailA.object = _object
+			_tailA.object = _Object
 		Else
 			If (_tailB.object <> Null) Then
 				ot = _tailB
@@ -375,7 +375,7 @@ Private
 				ot.nextLink = _tailB
 			End If
 			
-			_tailB.object = _object
+			_tailB.object = _Object
 		End If
 		
 		If (Not _canSubdivide) Return
@@ -390,83 +390,83 @@ Private
 		Local overlapProcessed:Bool = False
 		Local checkObject:FlxObject
 		
-		While (_iterator <> Null)
-			If (Not _object.exists Or _object.allowCollisions <= 0) Exit
+		While (_Iterator <> Null)
+			If (Not _Object.exists Or _Object.allowCollisions <= 0) Exit
 			
-			checkObject = _iterator.object
+			checkObject = _Iterator.object
 			
-			If (_object = checkObject Or Not checkObject.exists Or checkObject.allowCollisions <= 0) Then
-				_iterator = _iterator.nextLink
+			If (_Object = checkObject Or Not checkObject.exists Or checkObject.allowCollisions <= 0) Then
+				_Iterator = _Iterator.nextLink
 				Continue
 			End If
 			
-			If (_object.x < _object.last.x) Then
-				_objectHullX = _object.x
+			If (_Object.x < _Object.last.x) Then
+				_ObjectHullX = _Object.x
 			Else
-				_objectHullX = _object.last.x
+				_ObjectHullX = _Object.last.x
 			End If
 			
-			If (_object.y < _object.last.y) Then
-				_objectHullY = _object.y
+			If (_Object.y < _Object.last.y) Then
+				_ObjectHullY = _Object.y
 			Else
-				_objectHullY = _object.last.y
+				_ObjectHullY = _Object.last.y
 			End If
 			
-			_objectHullWidth = _object.x - _object.last.x
+			_ObjectHullWidth = _Object.x - _Object.last.x
 			
-			If (_objectHullWidth > 0) Then
-				_objectHullWidth = _object.width + _objectHullWidth
+			If (_ObjectHullWidth > 0) Then
+				_ObjectHullWidth = _Object.width + _ObjectHullWidth
 			Else
-				_objectHullWidth = _object.width - _objectHullWidth
+				_ObjectHullWidth = _Object.width - _ObjectHullWidth
 			End If
 			
-			_objectHullHeight = _object.y - _object.last.y
+			_ObjectHullHeight = _Object.y - _Object.last.y
 			
-			If (_objectHullHeight > 0) Then
-				_objectHullHeight = _object.height + _objectHullHeight
+			If (_ObjectHullHeight > 0) Then
+				_ObjectHullHeight = _Object.height + _ObjectHullHeight
 			Else
-				_objectHullHeight = _object.height - _objectHullHeight
+				_ObjectHullHeight = _Object.height - _ObjectHullHeight
 			End If
 			
 			If (checkObject.x < checkObject.last.x) Then
-				_checkObjectHullX = checkObject.x
+				_CheckObjectHullX = checkObject.x
 			Else
-				_checkObjectHullX = checkObject.last.x
+				_CheckObjectHullX = checkObject.last.x
 			End If
 			
 			If (checkObject.y < checkObject.last.y) Then
-				_checkObjectHullY = checkObject.y
+				_CheckObjectHullY = checkObject.y
 			Else
-				_checkObjectHullY = checkObject.last.y
+				_CheckObjectHullY = checkObject.last.y
 			End If
 			
-			_checkObjectHullWidth = checkObject.x - checkObject.last.x
+			_CheckObjectHullWidth = checkObject.x - checkObject.last.x
 			
-			If (_checkObjectHullWidth > 0) Then
-				_checkObjectHullWidth = checkObject.width + _checkObjectHullWidth
+			If (_CheckObjectHullWidth > 0) Then
+				_CheckObjectHullWidth = checkObject.width + _CheckObjectHullWidth
 			Else
-				_checkObjectHullWidth = checkObject.width - _checkObjectHullWidth
+				_CheckObjectHullWidth = checkObject.width - _CheckObjectHullWidth
 			End If
 			
-			_checkObjectHullHeight = checkObject.y - checkObject.last.y
+			_CheckObjectHullHeight = checkObject.y - checkObject.last.y
 			
-			If (_checkObjectHullHeight > 0) Then
-				_checkObjectHullHeight = checkObject.height + _checkObjectHullHeight
+			If (_CheckObjectHullHeight > 0) Then
+				_CheckObjectHullHeight = checkObject.height + _CheckObjectHullHeight
 			Else
-				_checkObjectHullHeight = checkObject.height - _checkObjectHullHeight
+				_CheckObjectHullHeight = checkObject.height - _CheckObjectHullHeight
 			End If
 			
-			If (_objectHullX + _objectHullWidth > _checkObjectHullX And _objectHullX < _checkObjectHullX + _checkObjectHullWidth And _objectHullY + _objectHullHeight > _checkObjectHullY And _objectHullY < _checkObjectHullY + _checkObjectHullHeight) Then
-				If (_processingCallback = Null Or _processingCallback.OnOverlapProcess(_object, checkObject)) Then
+			If (_ObjectHullX + _ObjectHullWidth > _CheckObjectHullX And _ObjectHullX < _CheckObjectHullX + _CheckObjectHullWidth And _ObjectHullY + _ObjectHullHeight > _CheckObjectHullY And _ObjectHullY < _CheckObjectHullY + _CheckObjectHullHeight) Then
+				If (_ProcessingCallback = Null Or _ProcessingCallback.OnOverlapProcess(_Object, checkObject)) Then
 					overlapProcessed = True
 				End If
 				
-				If (overlapProcessed And _notifyCallback <> Null) Then
-					_notifyCallback.OnOverlapNotify(_object, checkObject)
+				If (overlapProcessed And _NotifyCallback <> Null) Then
+					_NotifyCallback.OnOverlapNotify(_Object, checkObject)
 				End If
 			End If
 			
-			_iterator = _iterator.nextLink
+			_Iterator = _Iterator.nextLink
 		Wend
 		
 		Return overlapProcessed

@@ -42,7 +42,7 @@ Class FlxSprite Extends FlxObject
 	Field _camera:FlxCamera
 	
 Private
-	Global _graphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
+	Global _GraphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
 
 	Field _animations:StringMap<FlxAnim>
 	
@@ -129,12 +129,12 @@ Public
 	Method LoadGraphic:FlxSprite(graphic:String, animated:Bool = False, reverse:Bool = False, width:Int = 0, height:Int = 0, unique:Bool = False)
 		_bakedRotation = 0
 		
-		_graphicLoader.name = graphic
-		_graphicLoader.animated = animated
-		_graphicLoader.width = width
-		_graphicLoader.height = height
+		_GraphicLoader.name = graphic
+		_GraphicLoader.animated = animated
+		_GraphicLoader.width = width
+		_GraphicLoader.height = height
 		
-		_pixels = FlxG.AddBitmap(graphic, _graphicLoader, unique)
+		_pixels = FlxG.AddBitmap(graphic, _GraphicLoader, unique)
 		
 		If (reverse) Then
 			_flipped = True
@@ -184,15 +184,15 @@ Public
 			If (_flicker) Return
 		End If
 		
-		If (Not OnScreen(FlxG._currentCamera)) Return
+		If (Not OnScreen(FlxG._CurrentCamera)) Return
 		
 		If (dirty) _CalcFrame()
 		
-		_camera = FlxG._currentCamera		
+		_camera = FlxG._CurrentCamera		
 		
-		If (FlxG._lastDrawingBlend <> blend) Then
+		If (FlxG._LastDrawingBlend <> blend) Then
 			SetBlend(blend)
-			FlxG._lastDrawingBlend = blend
+			FlxG._LastDrawingBlend = blend
 		End If
 		
 		_point.x = x - int(_camera.scroll.x * scrollFactor.x) - offset.x
@@ -214,28 +214,28 @@ Public
 			If (_camera.Color <> FlxG.WHITE) Then
 				_mixedColor.MixRGB(_color, _camera._color)
 				
-				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
 					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-					FlxG._lastDrawingColor = _mixedColor.argb
+					FlxG._LastDrawingColor = _mixedColor.argb
 				End If				
 			Else
-				If (FlxG._lastDrawingColor <> _color.argb) Then
+				If (FlxG._LastDrawingColor <> _color.argb) Then
 					SetColor(_color.r, _color.g, _color.b)
-					FlxG._lastDrawingColor = _color.argb
+					FlxG._LastDrawingColor = _color.argb
 				End If		
 			End If
 			
 			If (_camera.Alpha < 1) Then
 				Local _mixedAlpha:Float = _camera.Alpha * _alpha
 				
-				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
 					SetAlpha(_mixedAlpha)
-					FlxG._lastDrawingAlpha = _mixedAlpha					
+					FlxG._LastDrawingAlpha = _mixedAlpha					
 				End If
 			Else
-				If (FlxG._lastDrawingAlpha <> _alpha) Then
+				If (FlxG._LastDrawingAlpha <> _alpha) Then
 					SetAlpha(_alpha)
-					FlxG._lastDrawingAlpha = _alpha					
+					FlxG._LastDrawingAlpha = _alpha					
 				End If
 			End If
 			
@@ -286,22 +286,22 @@ Public
 					_mixedColor.MixRGB(_color)					
 				End If
 				
-				If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
 					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-					FlxG._lastDrawingColor = _mixedColor.argb
+					FlxG._LastDrawingColor = _mixedColor.argb
 				End If
 			Else
 				If (_color.argb <> FlxG.WHITE) Then
 					_mixedColor.MixRGB(_surfaceColor, _color)
 					
-					If (FlxG._lastDrawingColor <> _mixedColor.argb) Then
+					If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
 						SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-						FlxG._lastDrawingColor = _mixedColor.argb
+						FlxG._LastDrawingColor = _mixedColor.argb
 					End If
 				Else
-					If (FlxG._lastDrawingColor <> _surfaceColor.argb) Then
+					If (FlxG._LastDrawingColor <> _surfaceColor.argb) Then
 						SetColor(_surfaceColor.r, _surfaceColor.g, _surfaceColor.b)
-						FlxG._lastDrawingColor = _surfaceColor.argb
+						FlxG._LastDrawingColor = _surfaceColor.argb
 					End If						
 				End If			
 			End If
@@ -313,22 +313,22 @@ Public
 					_mixedAlpha *= _surfaceColor.a				
 				End If
 				
-				If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
 					SetAlpha(_mixedAlpha)
-					FlxG._lastDrawingAlpha = _mixedAlpha					
+					FlxG._LastDrawingAlpha = _mixedAlpha					
 				End If
 			Else
 				If (_surfaceColor.a < 1) Then
 					Local _mixedAlpha:Float = _surfaceColor.a * _alpha
 					
-					If (FlxG._lastDrawingAlpha <> _mixedAlpha) Then
+					If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
 						SetAlpha(_mixedAlpha)
-						FlxG._lastDrawingAlpha = _mixedAlpha	
+						FlxG._LastDrawingAlpha = _mixedAlpha	
 					End If
 				Else
-					If (FlxG._lastDrawingAlpha <> _alpha) Then
+					If (FlxG._LastDrawingAlpha <> _alpha) Then
 						SetAlpha(_alpha)
-						FlxG._lastDrawingAlpha = _alpha		
+						FlxG._LastDrawingAlpha = _alpha		
 					End If	
 				End If				
 			End If
@@ -362,8 +362,8 @@ Public
 			End If		
 		End If
 		
-		_VISIBLECOUNT += 1;
-		If(FlxG.visualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
+		_VisibleCount += 1;
+		If(FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
 	End Method
 	
 	Method DrawFrame:Void(force:Bool = False)
@@ -489,7 +489,7 @@ Public
 	End Method	
 	
 	Method OnScreen:Bool(camera:FlxCamera)
-		If (camera = Null) camera = FlxG.camera	
+		If (camera = Null) camera = FlxG.Camera	
 		GetScreenXY(_point, camera)
 		
 		_point.x = _point.x - offset.x
@@ -541,7 +541,7 @@ Private
 			If (oldIndex <> _curIndex) dirty = True
 		
 		ElseIf (_curAnim <> Null And _curAnim.delay > 0 And (_curAnim.looped Or Not finished))
-			_frameTimer += FlxG.elapsed
+			_frameTimer += FlxG.Elapsed
 			While (_frameTimer > _curAnim.delay)
 				_frameTimer -= _curAnim.delay
 				

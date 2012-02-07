@@ -12,7 +12,7 @@ Class PlayState Extends FlxState
 	Field player2:FlxSprite
 	
 	Method Create:Void()
-		FlxG.mouse.Show()
+		FlxG.Mouse.Show()
 		
 		level = New FlxTilemap()
 		level.LoadMap(FlxAssetsManager.GetString(Assets.LEVEL_DATA), FlxTilemap.AUTOTILES, 0, 0, FlxTilemap.AUTO)
@@ -32,19 +32,19 @@ Class PlayState Extends FlxState
 		player2.drag.x = player1.maxVelocity.x * 4
 		Add(player2)
 		
-		Local cam:FlxCamera = New FlxCamera(0, 0, FlxG.width / 2, FlxG.height)
+		Local cam:FlxCamera = New FlxCamera(0, 0, FlxG.Width / 2, FlxG.Height)
 		cam.BgColor = $FFFDCBCB
 		cam.Follow(player2)
 		cam.SetBounds(0, 0, level.width, level.height)	
 		FlxG.AddCamera(cam)
 		
-		cam= New FlxCamera(FlxG.width / 2, 0, FlxG.width / 2, FlxG.height)
+		cam= New FlxCamera(FlxG.Width / 2, 0, FlxG.Width / 2, FlxG.Height)
 		cam.BgColor = $FFCBCBFD
 		cam.Follow(player1)
 		cam.SetBounds(0, 0, level.width, level.height)		
 		FlxG.AddCamera(cam)
 		
-		FlxG.camera.active = False
+		FlxG.Camera.active = False
 	End Method
 	
 	Method Update:Void()
@@ -52,33 +52,33 @@ Class PlayState Extends FlxState
 	
 		player1.acceleration.x = 0
 		
-		If (FlxG.keys.Left) Then
+		If (FlxG.Keys.Left) Then
 			player1.acceleration.x = -player1.maxVelocity.x * 4
 		End If
 		
-		If (FlxG.keys.Right) Then
+		If (FlxG.Keys.Right) Then
 			player1.acceleration.x = player1.maxVelocity.x * 4
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_UP) And player1.IsTouching(FlxObject.FLOOR)) Then
+		If (FlxG.Keys.JustPressed(KEY_UP) And player1.IsTouching(FlxObject.FLOOR)) Then
 			player1.velocity.y -= player1.maxVelocity.y / 1.5
 		End If
 		
 		player2.acceleration.x = 0
 		
-		If (FlxG.keys.A) Then
+		If (FlxG.Keys.A) Then
 			player2.acceleration.x = -player2.maxVelocity.x * 4
 		End If
 		
-		If (FlxG.keys.D) Then
+		If (FlxG.Keys.D) Then
 			player2.acceleration.x = player2.maxVelocity.x * 4
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_W) And player2.IsTouching(FlxObject.FLOOR)) Then
+		If (FlxG.Keys.JustPressed(KEY_W) And player2.IsTouching(FlxObject.FLOOR)) Then
 			player2.velocity.y -= player2.maxVelocity.y / 1.5
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_ESCAPE)) Error ""
+		If (FlxG.Keys.JustPressed(KEY_ESCAPE)) Error ""
 			
 		Super.Update()
 	End Method

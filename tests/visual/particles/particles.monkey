@@ -28,7 +28,7 @@ Class EmitterState Extends FlxState
 	Field whitePixel:FlxParticle
 	
 	Method Create:Void()		
-		theEmitter = New FlxEmitter(FlxG.width / 2 - 50, FlxG.height / 2, 200)		
+		theEmitter = New FlxEmitter(FlxG.Width / 2 - 50, FlxG.Height / 2, 200)		
 		theEmitter.SetXSpeed(100, 200)
 		theEmitter.SetYSpeed( -50, 50)
 		theEmitter.bounce = .8
@@ -47,14 +47,14 @@ Class EmitterState Extends FlxState
 		
 		collisionGroup = New FlxGroup()
 		
-		wall= New FlxSprite(FlxG.width / 2 + 50, FlxG.height / 2 - 50)
+		wall= New FlxSprite(FlxG.Width / 2 + 50, FlxG.Height / 2 - 50)
 		wall.MakeGraphic(10, 100, $FF555555)
 		wall.visible = False
 		wall.Solid = False
 		wall.immovable = True
 		
-		floor = New FlxSprite(10, FlxG.height - 50)
-		floor.MakeGraphic(FlxG.width - 20, 10, $FF555555)
+		floor = New FlxSprite(10, FlxG.Height - 50)
+		floor.MakeGraphic(FlxG.Width - 20, 10, $FF555555)
 		floor.visible = False
 		floor.Solid = False
 		floor.immovable = True
@@ -66,7 +66,7 @@ Class EmitterState Extends FlxState
 	End Method
 	
 	Method Update:Void()
-		If (FlxG.keys.JustPressed(KEY_G) Or FlxG.Touch().JustPressed) Then
+		If (FlxG.Keys.JustPressed(KEY_G) Or FlxG.Touch().JustPressed) Then
 			If (theEmitter.gravity = 0) Then
 				theEmitter.gravity = 200
 			Else
@@ -74,7 +74,7 @@ Class EmitterState Extends FlxState
 			End If
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_W) Or FlxG.Touch(1).JustPressed) Then
+		If (FlxG.Keys.JustPressed(KEY_W) Or FlxG.Touch(1).JustPressed) Then
 			If (Not wall.visible) Then
 				wall.Solid = True
 				wall.visible = True
@@ -84,7 +84,7 @@ Class EmitterState Extends FlxState
 			End If
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_F) Or FlxG.Touch(2).JustPressed) Then
+		If (FlxG.Keys.JustPressed(KEY_F) Or FlxG.Touch(2).JustPressed) Then
 			If (Not floor.visible) Then
 				floor.Solid = True
 				floor.visible = True

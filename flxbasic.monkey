@@ -14,9 +14,9 @@ as do the plugins.  Has no size, position or graphical data.
 #End
 Class FlxBasic
 
-	Global _ACTIVECOUNT:Int
+	Global _ActiveCount:Int
 	
-	Global _VISIBLECOUNT:Int	
+	Global _VisibleCount:Int	
 	
 	Global ClassObject:FlxClass = New FlxBasicClass()
 	
@@ -88,7 +88,7 @@ Class FlxBasic
 	Pre-update is called right before [a #Update]Update()[/a] on each object in the game loop.
 	#End
 	Method PreUpdate:Void()
-		_ACTIVECOUNT+=1
+		_ActiveCount+=1
 	End Method
 	
 	#Rem
@@ -110,7 +110,7 @@ Class FlxBasic
 	Overriding [a #Draw]Draw()[/a] is rarely necessary, but can be very useful.
 	#End
 	Method Draw:Void()		
-		_VISIBLECOUNT+=1
+		_VisibleCount+=1
 	End Method
 	
 	#Rem

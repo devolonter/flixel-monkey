@@ -162,7 +162,7 @@ Public
 				
 				_quantity = 0
 			Else
-				_timer += FlxG.elapsed
+				_timer += FlxG.Elapsed
 				
 				While (frequency > 0 And _timer > frequency And on)
 					_timer -= frequency

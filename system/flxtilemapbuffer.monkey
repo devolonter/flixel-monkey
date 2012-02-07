@@ -25,7 +25,7 @@ Class FlxTilemapBuffer
 	Field scaleFixY:Float
 	
 	Method New(tileWidth:Float, tileHeight:Float, widthInTiles:Int, heightInTiles:Int, camera:FlxCamera = Null)
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 		
 		columns = Ceil(camera.Width / tileWidth) + 1
 		If (columns > widthInTiles) columns = widthInTiles
@@ -38,8 +38,8 @@ Class FlxTilemapBuffer
 		
 		dirty = True
 		
-		Local scaledTileWidth:Float = tileWidth * camera.Zoom * FlxG._deviceScaleFactorX
-		Local scaledTileHeight:Float = tileHeight * camera.Zoom * FlxG._deviceScaleFactorY
+		Local scaledTileWidth:Float = tileWidth * camera.Zoom * FlxG._DeviceScaleFactorX
+		Local scaledTileHeight:Float = tileHeight * camera.Zoom * FlxG._DeviceScaleFactorY
 		Local roundScaledTileWidth:Float = FlxU.Round(scaledTileWidth)
 		Local roundScaledTileHeight:Float = FlxU.Round(scaledTileHeight)		
 		

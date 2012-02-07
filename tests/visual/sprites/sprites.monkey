@@ -11,7 +11,7 @@ Class Sprites Extends FlxGame
 	
 	Method New()
 		Super.New(640, 480, SpritesState.ClassObject)
-		FlxG.visualDebug = True
+		FlxG.VisualDebug = True
 	End Method
 
 End Class
@@ -35,7 +35,7 @@ Class SpritesState Extends FlxState
 	Field sprite:FlxSprite
 	
 	Method Create:Void()		
-		sprite = New FlxSprite(FlxG.width / 2, FlxG.height / 2)
+		sprite = New FlxSprite(FlxG.Width / 2, FlxG.Height / 2)
 		sprite.LoadGraphic("flx_default", False, True)
 		sprite.x -= sprite.width *.5
 		sprite.y -= sprite.height *.5
@@ -47,11 +47,11 @@ Class SpritesState Extends FlxState
 	End Method
 	
 	Method Update:Void()
-		If (FlxG.keys.JustPressed(KEY_RIGHT)) Then
+		If (FlxG.Keys.JustPressed(KEY_RIGHT)) Then
 			sprite.Facing = FlxObject.RIGHT
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_LEFT)) Then
+		If (FlxG.Keys.JustPressed(KEY_LEFT)) Then
 			sprite.Facing = FlxObject.LEFT
 		End If
 	

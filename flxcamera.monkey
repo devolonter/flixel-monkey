@@ -27,7 +27,7 @@ Class FlxCamera Extends FlxBasic
 	
 	Const SHAKE_VERTICAL_ONLY:Int  = 2
 	
-	Global defaultZoom:Float		
+	Global DefaultZoom:Float		
 	
 	Field target:FlxObject
 	
@@ -155,7 +155,7 @@ Public
 	
 	Method Lock:Void()
 		If (_clipped) Then
-			SetScissor(_realX + _fxShakeOffset.x * FlxG._deviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._deviceScaleFactorY, _realWidth, _realHeight)	
+			SetScissor(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY, _realWidth, _realHeight)	
 		End If
 				
 		PushMatrix()
@@ -163,23 +163,23 @@ Public
 		Translate(_x + _fxShakeOffset.x, _y + _fxShakeOffset.y)		
 		Scale(_scaleX, _scaleY)		
 		
-		If (_clipped Or _bgColor.argb <> FlxG._bgColor.argb) 
+		If (_clipped Or _bgColor.argb <> FlxG._BgColor.argb) 
 			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
 			DrawRect(0, 0, _width, _height)
-			FlxG._lastDrawingColor = _bgColor.argb
+			FlxG._LastDrawingColor = _bgColor.argb
 		End If	
 	End Method
 	
 	Method Unlock:Void()		
 		If (_fill.argb <> 0) Then
-			If (_fill.argb <> FlxG._lastDrawingColor) Then				
+			If (_fill.argb <> FlxG._LastDrawingColor) Then				
 				SetColor(_fill.r, _fill.g, _fill.b)
-				FlxG._lastDrawingColor = _fill.argb				
+				FlxG._LastDrawingColor = _fill.argb				
 			End if
 			
-			If (FlxG._lastDrawingAlpha <> _fill.a) Then
+			If (FlxG._LastDrawingAlpha <> _fill.a) Then
 				SetAlpha(_fill.a)
-				FlxG._lastDrawingAlpha = _fill.a			
+				FlxG._LastDrawingAlpha = _fill.a			
 			End If
 			
 			DrawRect(0, 0, _width, _height)			
@@ -189,7 +189,7 @@ Public
 		_fill.SetARGB(0)
 		
 		If (_clipped) Then
-			SetScissor(0, 0, FlxG.deviceWidth, FlxG.deviceHeight)
+			SetScissor(0, 0, FlxG.DeviceWidth, FlxG.DeviceHeight)
 		End If
 	End Method
 	
@@ -234,7 +234,7 @@ Public
 		End If
 		
 		If (_fxFlashAlpha > 0) Then			
-			_fxFlashAlpha -= FlxG.elapsed / _fxFlashDuration
+			_fxFlashAlpha -= FlxG.Elapsed / _fxFlashDuration
 			
 			If (_fxFlashAlpha <= 0 And _fxFlashComplete <> Null) Then
 				_fxFlashComplete.OnFlashComplete()
@@ -242,7 +242,7 @@ Public
 		End If
 		
 		If (_fxFadeAlpha > 0 And _fxFadeAlpha < 1) Then
-			_fxFadeAlpha += FlxG.elapsed / _fxFadeDuration
+			_fxFadeAlpha += FlxG.Elapsed / _fxFadeDuration
 						
 			If (_fxFadeAlpha >= 1) Then
 				_fxFadeAlpha = 1				
@@ -251,7 +251,7 @@ Public
 		End If
 		
 		If (_fxShakeDuration > 0) Then
-			_fxShakeDuration -= FlxG.elapsed
+			_fxShakeDuration -= FlxG.Elapsed
 			If (_fxShakeDuration <= 0) Then
 				_fxShakeOffset.Make()
 								
@@ -313,7 +313,7 @@ Public
 	Method SetBounds:Void(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0, updateWorld:Bool = False)
 		If (bounds = Null) bounds = New FlxRect()		
 		bounds.Make(x, y, width, height)
-		If (updateWorld) FlxG.worldBounds.CopyFrom(bounds)
+		If (updateWorld) FlxG.WorldBounds.CopyFrom(bounds)
 		Update()
 	End Method	
 	
@@ -382,7 +382,7 @@ Public
 	
 	Method X:Void(x:Float) Property
 		_x = x
-		_realX = _x * FlxG._deviceScaleFactorX
+		_realX = _x * FlxG._DeviceScaleFactorX
 		
 		_clipped = _IsClipped()
 	End Method
@@ -393,7 +393,7 @@ Public
 	
 	Method Y:Void(y:Float) Property
 		_y = y
-		_realY = _y * FlxG._deviceScaleFactorY
+		_realY = _y * FlxG._DeviceScaleFactorY
 		
 		_clipped = _IsClipped()
 	End Method
@@ -404,7 +404,7 @@ Public
 	
 	Method Width:Void(width:Float) Property
 		_width = width
-		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
+		_realWidth = Min(Float(FlxG.DeviceWidth), Floor(_width * _scaleX * FlxG._DeviceScaleFactorX))
 		
 		_clipped = _IsClipped()
 	End Method
@@ -415,7 +415,7 @@ Public
 	
 	Method Height:Void(height:Float) Property
 		_height = height
-		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
+		_realHeight = Min(Float(FlxG.DeviceHeight), Floor(_height * _scaleY * FlxG._DeviceScaleFactorY))
 		
 		_clipped = _IsClipped()
 	End Method
@@ -426,7 +426,7 @@ Public
 	
 	Method Zoom:Void(zoom:Float) Property
 		If (zoom = 0) Then
-			_zoom = FlxCamera.defaultZoom
+			_zoom = FlxCamera.DefaultZoom
 		Else
 			_zoom = zoom
 		End If
@@ -473,8 +473,8 @@ Public
 	Method SetScale:Void(x:Float, y:Float)
 		_scaleX = x
 		_scaleY = y
-		_realWidth = Min(Float(FlxG.deviceWidth), Floor(_width * _scaleX * FlxG._deviceScaleFactorX))
-		_realHeight = Min(Float(FlxG.deviceHeight), Floor(_height * _scaleY * FlxG._deviceScaleFactorY))
+		_realWidth = Min(Float(FlxG.DeviceWidth), Floor(_width * _scaleX * FlxG._DeviceScaleFactorX))
+		_realHeight = Min(Float(FlxG.DeviceHeight), Floor(_height * _scaleY * FlxG._DeviceScaleFactorY))
 	End Method
 	
 	Method Fill:Void(color:Int, blendAlpha:Bool = True)	
@@ -509,7 +509,7 @@ Public
 	
 Private
 	Method _IsClipped:Bool()
-		Return _realX <> 0 Or _realY <> 0 Or _realWidth <> FlxG.deviceWidth Or _realHeight <> FlxG.deviceHeight
+		Return _realX <> 0 Or _realY <> 0 Or _realWidth <> FlxG.DeviceWidth Or _realHeight <> FlxG.DeviceHeight
 	End Method
 
 End Class

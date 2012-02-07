@@ -25,9 +25,9 @@ Global NativeTextDriver:FlxClass = New FlxNFDriverClass()
 Class FlxTextNativeDriver Extends FlxTextDriver
 
 Private
-	Global _fontLoader:FlxNFDriverLoader = New FlxNFDriverLoader()
-	Global _fontsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
-	Global _defaultFont:Image
+	Global _FontLoader:FlxNFDriverLoader = New FlxNFDriverLoader()
+	Global _FontsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
+	Global _DefaultFont:Image
 	
 	Field _font:Image
 	Field _fontHeight:Int
@@ -42,7 +42,7 @@ Public
 	End Method
 	
 	Method Draw:Void(x:Float, y:Float)
-		_defaultFont = GetFont()
+		_DefaultFont = GetFont()
 		SetFont(_font)
 		
 		If (_countLines <= 1) Then
@@ -53,7 +53,7 @@ Public
 			Next
 		End If
 		
-		SetFont(_defaultFont)	
+		SetFont(_DefaultFont)	
 	End Method
 	
 	Method Destroy:Void()
@@ -62,10 +62,10 @@ Public
 	End Method			
 
 	Method Reset:Void()
-		_fontLoader.fontFamily = _fontFamily
-		_fontLoader.fontSize = _size
+		_FontLoader.fontFamily = _fontFamily
+		_FontLoader.fontSize = _size
 		
-		_font = _fontsManager.GetResource(_fontFamily + _size, _fontLoader)		
+		_font = _FontsManager.GetResource(_fontFamily + _size, _FontLoader)		
 		_fontHeight = _font.Height()
 	End Method
 

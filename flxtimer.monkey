@@ -40,7 +40,7 @@ Public
 	End Method
 	
 	Method Update:Void()
-		_timeCounter += FlxG.elapsed
+		_timeCounter += FlxG.Elapsed
 		
 		While (_timeCounter >= time And Not paused And Not finished)
 			_timeCounter -= time

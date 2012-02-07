@@ -88,7 +88,7 @@ Public
 		If (frameCount <= 0) Return ""
 		
 		Local output:StringStack = New StringStack()		
-		output.Push(FlxG.globalSeed + "~n")	
+		output.Push(FlxG.GlobalSeed + "~n")	
 		
 		Local i:Int = 0
 		While (i < frameCount)
@@ -108,11 +108,11 @@ Public
 		Local mouseRecord:XYRecord
 		
 		#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
-			accelRecord = FlxG.accel.RecordXYZ()
+			accelRecord = FlxG.Accel.RecordXYZ()
 		#End		
 		
 		#If TARGET = "xna" Or TARGET = "glfw"
-			If (Not FlxG.mobile) Then
+			If (Not FlxG.Mobile) Then
 				Local joyCount:Int = FlxG.JoystickCount()
 				Local joyXYZRecord:XYZRecord[]
 			
@@ -147,12 +147,12 @@ Public
 			Next
 			
 		#ElseIf TARGET = "html5" Or TARGET = "flash"
-			If (Not FlxG.mobile) Then
-				keysRecord = FlxG.keys.RecordKeys(keysRecord)	
+			If (Not FlxG.Mobile) Then
+				keysRecord = FlxG.Keys.RecordKeys(keysRecord)	
 			End If
 			
 		#ElseIf TARGET = "xna"
-			If (Not FlxG.mobile) Then				
+			If (Not FlxG.Mobile) Then				
 				Local touchXYRecord:XYRecord = FlxG.Touch(0).RecordXY()
 			
 				If (touchXYRecord <> Null) Then
@@ -161,7 +161,7 @@ Public
 				End If
 				
 				keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
-				keysRecord = FlxG.keys.RecordKeys(keysRecord)
+				keysRecord = FlxG.Keys.RecordKeys(keysRecord)
 			Else
 				Local touchCount:Int = FlxG.TouchCount()
 				Local touchXYRecord:XYRecord
@@ -181,11 +181,11 @@ Public
 			End If
 				
 		#Else
-			keysRecord = FlxG.keys.RecordKeys(keysRecord)		
+			keysRecord = FlxG.Keys.RecordKeys(keysRecord)		
 		#End
 		
 		#If TARGET = "android"
-			keysRecord = FlxG.keys.RecordKeys(keysRecord)
+			keysRecord = FlxG.Keys.RecordKeys(keysRecord)
 		#End
 		
 		#If TARGET = "html5" Or TARGET = "glfw"
@@ -199,8 +199,8 @@ Public
 			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
 		#End 
 		
-		mouseRecord = FlxG.mouse.RecordXY()
-		keysRecord = FlxG.mouse.RecordKeys(keysRecord)
+		mouseRecord = FlxG.Mouse.RecordXY()
+		keysRecord = FlxG.Mouse.RecordKeys(keysRecord)
 		
 		If (keysRecord = Null And mouseRecord = Null And joystickRecord = Null And touchRecord = Null And accelRecord = Null) Then
 			frame += 1
@@ -235,8 +235,8 @@ Public
 		Local fr:FrameRecord = _frames[_marker]
 		_marker += 1
 		
-		If (fr.keys <> Null) FlxG.keys.PlaybackKeys(fr.keys)
-		If (fr.mouse <> Null) FlxG.mouse.PlaybackXY(fr.mouse)
+		If (fr.keys <> Null) FlxG.Keys.PlaybackKeys(fr.keys)
+		If (fr.mouse <> Null) FlxG.Mouse.PlaybackXY(fr.mouse)
 		
 		If (fr.joystick <> Null) Then
 			Local i:Int = 0
@@ -263,7 +263,7 @@ Public
 			Wend			
 		End If
 		
-		If (fr.accel <> Null) FlxG.accel.PlaybackXYZ(fr.accel)
+		If (fr.accel <> Null) FlxG.Accel.PlaybackXYZ(fr.accel)
 	End Method
 	
 	Method Rewind:Void()

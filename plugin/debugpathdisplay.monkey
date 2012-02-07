@@ -24,7 +24,7 @@ Public
 	End Method
 	
 	Method Draw:Void()
-		If (Not FlxG.visualDebug Or ignoreDrawDebug) Return
+		If (Not FlxG.VisualDebug Or ignoreDrawDebug) Return
 		
 		Local i:Int = _paths.Length() - 1
 		Local path:FlxPath

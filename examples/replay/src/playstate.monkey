@@ -38,7 +38,7 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 		thePlayer.y = 200
 		Add(thePlayer)
 		
-		hintText = New FlxText(0, 268, FlxG.width)
+		hintText = New FlxText(0, 268, FlxG.Width)
 		hintText.Color = $FF000000
 		hintText.Alignment = FlxText.ALIGN_CENTER
 		Add(hintText)
@@ -51,15 +51,15 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 		
 		thePlayer.acceleration.x = 0
 		
-		If (FlxG.keys.Left) Then
+		If (FlxG.Keys.Left) Then
 			thePlayer.acceleration.x -= thePlayer.drag.x
 		End If
 		
-		If (FlxG.keys.Right) Then
+		If (FlxG.Keys.Right) Then
 			thePlayer.acceleration.x = thePlayer.drag.x
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_X) And Not thePlayer.velocity.y) Then
+		If (FlxG.Keys.JustPressed(KEY_X) And Not thePlayer.velocity.y) Then
 			thePlayer.velocity.y = -200
 		End If
 		
@@ -67,7 +67,7 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 			StartRecord()
 		End If
 		
-		If (FlxG.keys.JustPressed(KEY_R) And PlayState.recording) Then
+		If (FlxG.Keys.JustPressed(KEY_R) And PlayState.recording) Then
 			StartPlay()
 		End If
 		
@@ -76,13 +76,13 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 		theCursor.scale.x = 1
 		theCursor.scale.y = 1
 		
-		If (FlxG.mouse.Pressed()) Then
+		If (FlxG.Mouse.Pressed()) Then
 			theCursor.scale.x = 2
 			theCursor.scale.y = 2
 		End If
 		
-		theCursor.x = FlxG.mouse.screenX
-		theCursor.y = FlxG.mouse.screenY
+		theCursor.x = FlxG.Mouse.screenX
+		theCursor.y = FlxG.Mouse.screenY
 	End Method
 	
 	Method Init:Void()

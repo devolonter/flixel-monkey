@@ -19,7 +19,7 @@ Class FlxParticle Extends FlxSprite
 	Method Update:Void()
 		If (lifespan <= 0) Return
 		
-		lifespan -= FlxG.elapsed
+		lifespan -= FlxG.Elapsed
 		
 		If (lifespan <=0) Then
 			Kill() 		

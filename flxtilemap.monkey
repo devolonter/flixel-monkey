@@ -38,7 +38,7 @@ Class FlxTilemap Extends FlxObject
 	Field totalTiles:Int
 	
 Private
-	Global _tileLoader:FlxTileLoader = New FlxTileLoader()
+	Global _TileLoader:FlxTileLoader = New FlxTileLoader()
 
 	Field _tiles:Image
 	
@@ -159,7 +159,7 @@ Public
 			Wend
 		End If
 		
-		_tiles = FlxG.AddBitmap(tileGraphic, _tileLoader)
+		_tiles = FlxG.AddBitmap(tileGraphic, _TileLoader)
 		
 		_tileWidth = tileWidth		
 		If (_tileWidth = 0) _tileWidth = _tiles.Height()
@@ -202,14 +202,14 @@ Public
 			If (_flicker) Return
 		End If
 		
-		_camera = FlxG._currentCamera
+		_camera = FlxG._CurrentCamera
 		
-		If (FlxG._currentCameraID >= _buffers.Length()) _buffers.Push(Null)
-		_buffer = _buffers.Get(FlxG._currentCameraID)
+		If (FlxG._CurrentCameraID >= _buffers.Length()) _buffers.Push(Null)
+		_buffer = _buffers.Get(FlxG._CurrentCameraID)
 		
 		If (_buffer = Null) Then
 			_buffer = New FlxTilemapBuffer(_tileWidth, _tileHeight, widthInTiles, heightInTiles, _camera)
-			_buffers.Set(FlxG._currentCameraID, _buffer)
+			_buffers.Set(FlxG._CurrentCameraID, _buffer)
 		End If
 		
 		_screenRows = _buffer.rows
@@ -250,21 +250,21 @@ Public
 		_point.x = x - Int(_camera.scroll.x * scrollFactor.x) + _buffer.x
 		_point.y = y - Int(_camera.scroll.y * scrollFactor.y) + _buffer.y
 		
-		If (FlxG._lastDrawingBlend <> AlphaBlend) Then
+		If (FlxG._LastDrawingBlend <> AlphaBlend) Then
 			SetBlend(AlphaBlend)
-			FlxG._lastDrawingBlend = AlphaBlend
+			FlxG._LastDrawingBlend = AlphaBlend
 		End If
 		
-		If (FlxG._lastDrawingColor <> _camera.Color) Then
+		If (FlxG._LastDrawingColor <> _camera.Color) Then
 			SetColor(_camera._color.r, _camera._color.g, _camera._color.b)
-			FlxG._lastDrawingColor = _camera.Color
+			FlxG._LastDrawingColor = _camera.Color
 		End If
 		
 		Local alpha:Float = _camera._color.a * _camera.Alpha
 		
-		If (FlxG._lastDrawingAlpha <> alpha) Then
+		If (FlxG._LastDrawingAlpha <> alpha) Then
 			SetAlpha(alpha)
-			FlxG._lastDrawingAlpha = alpha
+			FlxG._LastDrawingAlpha = alpha
 		End If
 		
 		PushMatrix()		
@@ -290,7 +290,7 @@ Public
 						If (_rect <> Null) Then
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
 							
-							If (FlxG.visualDebug And Not ignoreDrawDebug) Then
+							If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
 								'TODO
 							End If
 						End If
@@ -316,7 +316,7 @@ Public
 						If (_rect <> Null) Then
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height, 0, _buffer.scaleFixX, _buffer.scaleFixY)
 							
-							If (FlxG.visualDebug And Not ignoreDrawDebug) Then
+							If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
 								'TODO
 							End If
 						End If
@@ -333,7 +333,7 @@ Public
 			End If
 		PopMatrix()		
 		
-		_VISIBLECOUNT += 1
+		_VisibleCount += 1
 	End Method
 	
 	Method GetData:Int[](simple:Bool = False)
@@ -564,7 +564,7 @@ Public
 			Return _tileObjects[_data[Int(Int((point.y - y) / _tileHeight) * widthInTiles + (point.x - x) / _tileWidth)]].allowCollisions > 0
 		End If
 		
-		If (camera = Null) camera = FlxG.camera
+		If (camera = Null) camera = FlxG.Camera
 		
 		point.x -= camera.scroll.x
 		point.y -= camera.scroll.y

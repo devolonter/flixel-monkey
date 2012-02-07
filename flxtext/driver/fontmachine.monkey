@@ -50,8 +50,8 @@ Global FontmachineTextDriver:FlxClass = New FlxFMDriverClass()
 Class FlxTextFontMachineDriver Extends FlxTextDriver
 
 Private
-	Global _fontLoader:FlxFMDriverLoader = New FlxFMDriverLoader()
-	Global _fontsManager:FlxResourcesManager<BitmapFont> = New FlxResourcesManager<BitmapFont>()
+	Global _FontLoader:FlxFMDriverLoader = New FlxFMDriverLoader()
+	Global _FontsManager:FlxResourcesManager<BitmapFont> = New FlxResourcesManager<BitmapFont>()
 	
 	Field _font:BitmapFont
 	Field _fontHeight:Int
@@ -95,10 +95,10 @@ Public
 	End Method			
 
 	Method Reset:Void()
-		_fontLoader.fontFamily = _fontFamily
-		_fontLoader.fontSize = _size
+		_FontLoader.fontFamily = _fontFamily
+		_FontLoader.fontSize = _size
 		
-		_font = _fontsManager.GetResource(_fontFamily + _size, _fontLoader)		
+		_font = _FontsManager.GetResource(_fontFamily + _size, _FontLoader)		
 		_fontHeight = _font.GetFontHeight()	
 	End Method
 	

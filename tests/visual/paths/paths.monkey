@@ -11,7 +11,7 @@ Class Paths Extends FlxGame
 	
 	Method New()
 		Super.New(640, 480, PathsState.ClassObject)
-		FlxG.visualDebug = True	
+		FlxG.VisualDebug = True	
 	End Method
 
 End Class
