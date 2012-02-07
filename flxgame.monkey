@@ -80,13 +80,9 @@ Private
 	
 	Field _soundTrayLabel:FlxText
 	
-	Field _fps:Int	
+	Field _updatesCounter:FlxFPSCounter
 	
-	Field _fpsCounter:Int
-	
-	Field _lastFpsCounter:Int
-	
-	Field _fpsTime:Int
+	Field _rendersCounter:FlxFPSCounter	
 	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
@@ -119,7 +115,10 @@ Public
 		_soundTrayHeight = 60
 		_soundTrayX = 0
 		_soundTrayY	= -_soundTrayHeight
-		_soundTrayVisible = False				
+		_soundTrayVisible = False
+		
+		_updatesCounter = New FlxFPSCounter()
+		_rendersCounter = New FlxFPSCounter()				
 	End Method
 	
 	Method OnCreate:Int()
@@ -133,63 +132,25 @@ Public
 		Return 0
 	End Method
 	
+	Method OnUpdate:Int()
+		If (_rendersCounter.FPS >= 0 And _rendersCounter.FPS < 30) Then
+			_updatesCounter.Update()
+			
+			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _updatesCounter.FPS)		
+			_Step()	
+		End If	
+		Return 0
+	End Method
+	
 	Method OnRender:Int()
 		If (Not _replaying) Then	
-			If (_fps < 0) Then
-				_fpsTime = Millisecs()
-				_fps = FlxG.Framerate
-				_lastFpsCounter = _fps
-			Else
-				If (Millisecs() - _fpsTime > 1000) Then
-					If (Abs(_lastFpsCounter - _fpsCounter) < 10) Then
-						_fps = _fpsCounter
-					End If
-					
-					_lastFpsCounter = _fpsCounter
-					_fpsCounter = 0
-					_fpsTime = Millisecs()
-				Else
-					_fpsCounter += 1
-				End If
-			End If
-		End If
-	
-		'Real elapsed very unstable in Monkey. TODO!
-		FlxG.Elapsed = FlxG.TimeScale * (1.0 / _fps)
+			_rendersCounter.Update()
+		End If						
 		
-		#If TARGET <> "ios" Or TARGET <> "android"
-			If (useSoundHotKeys) Then
-				If (KeyHit(KEY_0)) Then
-					FlxG.Mute = Not FlxG.Mute
-					
-					If (FlxG.VolumeHandler <> Null) Then
-						If (FlxG.Mute) Then
-							FlxG.VolumeHandler.OnVolumeChange(0)
-						Else
-							FlxG.VolumeHandler.OnVolumeChange(FlxG.Volume())
-						End If
-					End If
-					
-					_ShowSoundTray()
-				End If
-			
-				If (KeyHit(KEY_MINUS)) Then
-					FlxG.Mute = False
-					FlxG.Volume(FlxG.Volume() - .1)
-					_ShowSoundTray()
-				End If
-				
-				If (KeyHit(KEY_EQUALS)) Then
-					FlxG.Mute = False
-					FlxG.Volume(FlxG.Volume() + .1)
-					_ShowSoundTray()
-				End If	
-			End If
-			
-			_UpdateSoundTray()
-		#End		
-		
-		_Step()			
+		If (_rendersCounter.FPS >= 30) Then
+			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _rendersCounter.FPS)
+			_Step()
+		End If			
 		
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
@@ -271,7 +232,7 @@ Public
 		
 		#If CONFIG = "debug"
 			SetColor(255, 255, 255)
-			DrawText("FPS: " + _fps, 10, 10)
+			DrawText("FPS: " + _renderFPS, 10, 10)
 		#End		
 								
 		Return 0	
@@ -319,6 +280,38 @@ Private
 	End Method
 
 	Method _Step:Void()
+		#If TARGET <> "ios" Or TARGET <> "android"
+			If (useSoundHotKeys) Then
+				If (KeyHit(KEY_0)) Then
+					FlxG.Mute = Not FlxG.Mute
+					
+					If (FlxG.VolumeHandler <> Null) Then
+						If (FlxG.Mute) Then
+							FlxG.VolumeHandler.OnVolumeChange(0)
+						Else
+							FlxG.VolumeHandler.OnVolumeChange(FlxG.Volume())
+						End If
+					End If
+					
+					_ShowSoundTray()
+				End If
+			
+				If (KeyHit(KEY_MINUS)) Then
+					FlxG.Mute = False
+					FlxG.Volume(FlxG.Volume() - .1)
+					_ShowSoundTray()
+				End If
+				
+				If (KeyHit(KEY_EQUALS)) Then
+					FlxG.Mute = False
+					FlxG.Volume(FlxG.Volume() + .1)
+					_ShowSoundTray()
+				End If	
+			End If
+			
+			_UpdateSoundTray()
+		#End
+	
 		If (_requestedReset) Then
 			_requestedReset = False
 			_requestedState = FlxState(_iState.CreateInstance())
@@ -461,7 +454,9 @@ Private
 		End If
 		
 		_step = 1000.0 / FlxG.Framerate
-		_fps = -1
+		
+		_updatesCounter.Reset()
+		_rendersCounter.Reset()
 	End Method
 	
 	Method _InitData:Void()
@@ -486,4 +481,50 @@ Private
 		
 		Self.OnContentInit()
 	End Method
+End Class
+
+Private
+Class FlxFPSCounter
+	
+	Field FPS:Int	
+
+Private	
+	Field _FPSCounter:Int
+	
+	Field _lastFPSCounter:Int
+	
+	Field _lastUpdateTime:Int
+	
+Public
+	Method New()
+		Reset()
+	End Method
+	
+	Method Update:Void()
+		If (FPS < 0) Then
+			_lastUpdateTime = Millisecs()
+			FPS = FlxG.Framerate
+			_lastFPSCounter = FPS
+		Else
+			If (Millisecs() - _lastUpdateTime > 1000) Then
+				If (Abs(_lastFPSCounter - _FPSCounter) < 10) Then
+					FPS = _FPSCounter
+				End If
+				
+				_lastFPSCounter = _FPSCounter
+				_FPSCounter = 0
+				_lastUpdateTime = Millisecs()
+			Else
+				_FPSCounter += 1
+			End If
+		End If
+	End Method
+	
+	Method Reset:Void()
+		FPS = -1
+		_FPSCounter = 0
+		_lastFPSCounter = 0
+		_lastUpdateTime = 0
+	End Method
+
 End Class
