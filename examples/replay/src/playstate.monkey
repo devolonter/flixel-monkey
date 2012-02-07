@@ -71,8 +71,6 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 			StartPlay()
 		End If
 		
-		Super.Update()
-		
 		theCursor.scale.x = 1
 		theCursor.scale.y = 1
 		
@@ -83,6 +81,8 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 		
 		theCursor.x = FlxG.Mouse.screenX
 		theCursor.y = FlxG.Mouse.screenY
+		
+		Super.Update()		
 	End Method
 	
 	Method Init:Void()

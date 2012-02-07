@@ -138,6 +138,7 @@ Public
 		If (_rendersCounter.FPS >= 0 And _rendersCounter.FPS < 30) Then
 			_updatesCounter.Update()
 			
+			'Real elapsed time very unstable in Monkey. TODO!
 			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _updatesCounter.FPS)		
 			_Step()
 			
@@ -152,6 +153,7 @@ Public
 		_rendersCounter.Update()
 		
 		If (Not _updatesLoopUsed) Then
+			'Real elapsed time very unstable in Monkey. TODO!
 			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _rendersCounter.FPS)
 			_Step()
 		End If			
@@ -236,7 +238,7 @@ Public
 		
 		#If CONFIG = "debug"
 			SetColor(255, 255, 255)
-			DrawText("FPS: " + _renderFPS, 10, 10)
+			DrawText("FPS: " + _rendersCounter.FPS, 10, 10)
 		#End		
 								
 		Return 0	
