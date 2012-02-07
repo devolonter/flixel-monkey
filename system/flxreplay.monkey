@@ -1,5 +1,7 @@
 Strict
 
+Import mojo
+
 Import flixel.flxg
 Import replay.keyrecord
 Import replay.xyrecord
@@ -226,13 +228,25 @@ Public
 		End If
 	End Method
 	
-	Method PlayNextFrame:Void()
-		FlxG.Elapsed = elapsed		
+	Method PlayNextFrame:Void()				
 		FlxG.ResetInput()
 		
 		If (_marker >= frameCount) Then
 			finished = True
 			Return
+		End If
+		
+		Local frameElapsed:Float = _frames[_marker].elapsed
+		
+		If (FlxG.Elapsed < frameElapsed) Then
+			Local waitTime:Int = Millisecs() + (frameElapsed - FlxG.Elapsed) * 1000
+					
+			While (waitTime > Millisecs())
+			Wend
+			
+			FlxG.Elapsed = frameElapsed			
+		Else
+			FlxG.Elapsed -= (FlxG.Elapsed - frameElapsed)			
 		End If
 		
 		If (_frames[_marker].frame <> frame) Then
