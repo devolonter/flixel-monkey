@@ -77,6 +77,7 @@ Public
 	End Method
 	
 	Method Show:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)
+		If (FlxG.mobile) Return
 		If (_cursor = Null) _cursor = New FlxCursor()
 		
 		HideMouse()
