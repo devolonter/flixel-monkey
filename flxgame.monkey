@@ -133,7 +133,30 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()	
+	Method OnRender:Int()
+		If (Not _replaying) Then	
+			If (_fps < 0) Then
+				_fpsTime = Millisecs()
+				_fps = FlxG.Framerate
+				_lastFpsCounter = _fps
+			Else
+				If (Millisecs() - _fpsTime > 1000) Then
+					If (Abs(_lastFpsCounter - _fpsCounter) < 10) Then
+						_fps = _fpsCounter
+					End If
+					
+					_lastFpsCounter = _fpsCounter
+					_fpsCounter = 0
+					_fpsTime = Millisecs()
+				Else
+					_fpsCounter += 1
+				End If
+			End If
+		
+			'Real elapsed very unstable in Monkey. TODO!
+			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _fps)
+		End If
+		
 		#If TARGET <> "ios" Or TARGET <> "android"
 			If (useSoundHotKeys) Then
 				If (KeyHit(KEY_0)) Then
@@ -162,34 +185,10 @@ Public
 					_ShowSoundTray()
 				End If	
 			End If
-		#End
-	
-		Return 0
-	End Method
-	
-	Method OnRender:Int()
-		If (_fps < 0) Then
-			_fpsTime = Millisecs()
-			_fps = FlxG.Framerate
-			_lastFpsCounter = _fps
-		Else
-			If (Millisecs() - _fpsTime > 1000) Then
-				If (Abs(_lastFpsCounter - _fpsCounter) < 10) Then
-					_fps = _fpsCounter
-				End If
-				
-				_lastFpsCounter = _fpsCounter
-				_fpsCounter = 0
-				_fpsTime = Millisecs()
-			Else
-				_fpsCounter += 1
-			End If
-		End If
-	
-		'Real elapsed very unstable in Monkey. TODO!
-		FlxG.Elapsed = FlxG.TimeScale * (1.0 / _fps)	
+			
+			_UpdateSoundTray()
+		#End		
 		
-		_UpdateSoundTray()
 		_Step()			
 		
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		

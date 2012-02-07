@@ -14,6 +14,10 @@ Class FlxReplay
 	
 	Field frameCount:Int
 	
+	Field elapsed:Float
+	
+	Field lastElapsed:Float
+	
 	Field finished:Bool
 	
 Private
@@ -28,6 +32,8 @@ Public
 		seed = 0
 		frame = 0
 		frameCount = 0
+		elapsed = 0
+		lastElapsed = 0
 		finished = False
 		_frames = []
 		_capacity = 0
@@ -202,14 +208,17 @@ Public
 		mouseRecord = FlxG.Mouse.RecordXY()
 		keysRecord = FlxG.Mouse.RecordKeys(keysRecord)
 		
-		If (keysRecord = Null And mouseRecord = Null And joystickRecord = Null And touchRecord = Null And accelRecord = Null) Then
+		elapsed = FlxG.Elapsed
+		
+		If (keysRecord = Null And mouseRecord = Null And joystickRecord = Null And touchRecord = Null And accelRecord = Null And lastElapsed = elapsed) Then
 			frame += 1
 			Return
 		End If
 		
-		_frames[frameCount] = (New FrameRecord()).Create(frame, keysRecord, mouseRecord, joystickRecord, touchRecord, accelRecord)
+		_frames[frameCount] = (New FrameRecord()).Create(frame, elapsed, keysRecord, mouseRecord, joystickRecord, touchRecord, accelRecord)
 		frame += 1
 		frameCount += 1
+		lastElapsed = elapsed
 		
 		If (frameCount >= _capacity) Then
 			_capacity *= 2
@@ -217,7 +226,8 @@ Public
 		End If
 	End Method
 	
-	Method PlayNextFrame:Void()			
+	Method PlayNextFrame:Void()
+		FlxG.Elapsed = elapsed		
 		FlxG.ResetInput()
 		
 		If (_marker >= frameCount) Then
