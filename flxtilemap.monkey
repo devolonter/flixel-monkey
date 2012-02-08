@@ -305,15 +305,19 @@ Public
 					row += 1
 				Wend
 			Else
-				While (row < _screenRows)
-					columnIndex = rowIndex
-					column = 0
-					_point.x = 0
+				row = _screenRows - 1
+				_point.y = row * _tileHeight
+				rowIndex += widthInTiles * (_screenRows - 1)
+			
+				While (row >= 0)
+					columnIndex = rowIndex + (_screenColumns - 1)
+					column = _screenColumns - 1
+					_point.x = column * _tileWidth
 					
-					While (column < _screenColumns)
+					While (column >= 0)
 						_rect = _rects[columnIndex]
 						
-						If (_rect <> Null) Then
+						If (_rect <> Null) Then						
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height, 0, _buffer.scaleFixX, _buffer.scaleFixY)
 							
 							If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
@@ -321,14 +325,14 @@ Public
 							End If
 						End If
 						
-						_point.x += _tileWidth
-						column += 1
-						columnIndex += 1
+						_point.x -= _tileWidth
+						column -= 1
+						columnIndex -= 1
 					Wend
 					
-					rowIndex += widthInTiles
-					_point.y += _tileHeight
-					row += 1
+					rowIndex -= widthInTiles
+					_point.y -= _tileHeight
+					row -= 1
 				Wend
 			End If
 		PopMatrix()		
