@@ -216,12 +216,7 @@ Public
 			End If
 		#End
 		
-		FlxG.Mouse.Draw()
-		
-		'#If CONFIG = "debug"
-			SetColor(255, 255, 255)
-			DrawText("FPS: " + _updatesCounter.FPS, 10, 10)
-		'#End	
+		FlxG.Mouse.Draw()		
 								
 		Return 0	
 	End Method
