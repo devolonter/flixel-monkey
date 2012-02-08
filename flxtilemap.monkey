@@ -307,12 +307,12 @@ Public
 			Else
 				row = _screenRows - 1
 				_point.y = row * _tileHeight
-				rowIndex += widthInTiles * (_screenRows - 1)
+				rowIndex += widthInTiles * row
 			
 				While (row >= 0)
-					columnIndex = rowIndex + (_screenColumns - 1)
-					column = _screenColumns - 1
+					column = _screenColumns - 1					
 					_point.x = column * _tileWidth
+					columnIndex = rowIndex + column
 					
 					While (column >= 0)
 						_rect = _rects[columnIndex]
