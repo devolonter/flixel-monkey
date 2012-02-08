@@ -255,6 +255,8 @@ Public
 	End Method
 	
 	Method DrawDebug:Void(camera:FlxCamera = Null)
+		If (camera = Null) camera = FlxG.Camera
+	
 		Local boundingBoxX:Float = x - Int(camera.scroll.x * scrollFactor.x)		
 		Local boundingBoxY:Float = y - Int(camera.scroll.y * scrollFactor.y)
 		
