@@ -599,22 +599,22 @@ Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 		If (Not animated) Then
 			Return image
 		Else
-			Local oneRow:Bool = False
-			Local frames:Int = 1
+			Local frames:Int
 			
-			If (width = 0) Then
-				width = image.Height()
-				oneRow = True
-			End If
-			
-			If (height = 0) Then
+			If (width = 0 And height = 0) Then
+				width = image.Height()			
+			ElseIf (width = 0) Then
+				width = height			
+			Else
 				height = width
 			End If
 			
-			If (oneRow) Then
+			If (height = 0) Then
 				frames = Ceil(image.Width() / width)
 			Else
 				frames = Ceil((image.Width() * image.Height()) / (width * height))
+				Print width
+				Print height
 			End If
 			
 			Return image.GrabImage(0, 0, width, height, frames)
