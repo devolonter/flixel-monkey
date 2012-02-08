@@ -613,8 +613,6 @@ Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 				frames = Ceil(image.Width() / width)
 			Else
 				frames = Ceil((image.Width() * image.Height()) / (width * height))
-				Print width
-				Print height
 			End If
 			
 			Return image.GrabImage(0, 0, width, height, frames)
