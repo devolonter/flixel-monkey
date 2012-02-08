@@ -82,10 +82,6 @@ Private
 	
 	Field _updatesCounter:FlxFPSCounter
 	
-	Field _rendersCounter:FlxFPSCounter
-	
-	Field _updatesLoopUsed:Bool
-	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
 		_lostFocus = False		
@@ -119,8 +115,7 @@ Public
 		_soundTrayY	= -_soundTrayHeight
 		_soundTrayVisible = False
 		
-		_updatesCounter = New FlxFPSCounter()
-		_rendersCounter = New FlxFPSCounter()				
+		_updatesCounter = New FlxFPSCounter()			
 	End Method
 	
 	Method OnCreate:Int()
@@ -137,25 +132,14 @@ Public
 	Method OnUpdate:Int()
 		_updatesCounter.Update()
 		
-		If (_updatesLoopUsed Or _updatesCounter.FPS - _rendersCounter.FPS > 10) Then			
-			'Real elapsed time very unstable in Monkey. TODO!
-			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _updatesCounter.FPS)		
-			_Step()			
-			_updatesLoopUsed = True
-		End If
+		'Real elapsed time very unstable in Monkey. TODO!
+		FlxG.Elapsed = FlxG.TimeScale * (1.0 / _updatesCounter.FPS)		
+		_Step()			
 		
 		Return 0
 	End Method
 	
-	Method OnRender:Int()
-		_rendersCounter.Update()
-			
-		If (Not _updatesLoopUsed) Then			
-			'Real elapsed time very unstable in Monkey. TODO!
-			FlxG.Elapsed = FlxG.TimeScale * (1.0 / _rendersCounter.FPS)
-			_Step()
-		End If			
-		
+	Method OnRender:Int()		
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
 		
@@ -234,19 +218,10 @@ Public
 		
 		FlxG.Mouse.Draw()
 		
-		#Rem
-		#If CONFIG = "debug"
+		'#If CONFIG = "debug"
 			SetColor(255, 255, 255)
-			DrawText("Renders: " + _rendersCounter.FPS, 10, 10)
-			DrawText("Updates: " + _updatesCounter.FPS, 10, 25)
-			
-			If (_updatesLoopUsed) Then
-				DrawText("Updates loop: ENABLED", 10, 40)
-			Else
-				DrawText("Updates loop: DISABLED", 10, 40)
-			End If
-		#End
-		#End	
+			DrawText("FPS: " + _updatesCounter.FPS, 10, 10)
+		'#End	
 								
 		Return 0	
 	End Method
@@ -474,8 +449,6 @@ Private
 	
 	Method _ResetFPSCounters:Void()
 		_updatesCounter.Reset()
-		_rendersCounter.Reset()
-		_updatesLoopUsed = False
 	End Method
 	
 	Method _InitData:Void()
@@ -506,43 +479,24 @@ Private
 Class FlxFPSCounter
 	
 	Field FPS:Int
-	
-	Field realFPS:Int	
 
 Private	
 	Field _FPSCounter:Int	
 	
 	Field _lastUpdateTime:Int
-	
-	Field _isReset:Bool
-	
+
 Public
 	Method New()
 		Reset()
 	End Method
 	
-	Method Update:Void()			
-		If (_isReset) Then
-			If (_FPSCounter = 2) Then
-				_lastUpdateTime = Millisecs()
-				
-			ElseIf (_FPSCounter = 3) Then
-				Local deltaTime:Int = Millisecs() - _lastUpdateTime
-							
-				If (deltaTime > 0) Then			
-					FPS = 1000 / deltaTime
-				End If
-
-				_lastUpdateTime = Millisecs()
-				_isReset = False
-				_FPSCounter = 0	
-			End If
-		Else
-			If (Millisecs() - _lastUpdateTime >= 1000) Then
-				FPS = _FPSCounter
-				_lastUpdateTime = Millisecs()
-				_FPSCounter = 0
-			End If
+	Method Update:Void()
+		If (_lastUpdateTime = 0) Then
+			_lastUpdateTime = Millisecs()	
+		ElseIf (Millisecs() - _lastUpdateTime >= 1000) Then
+			FPS = _FPSCounter
+			_lastUpdateTime = Millisecs()
+			_FPSCounter = 0
 		End If
 		
 		_FPSCounter += 1
@@ -550,10 +504,8 @@ Public
 	
 	Method Reset:Void()
 		FPS = FlxG.Framerate
-		realFPS = FPS
 		_FPSCounter = 0
 		_lastUpdateTime = 0
-		_isReset = True
 	End Method
 
 End Class
