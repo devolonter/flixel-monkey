@@ -80,8 +80,6 @@ Private
 	
 	Field _soundTrayLabel:FlxText
 	
-	Field _updatesCounter:FlxFPSCounter
-	
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
 		_lostFocus = False		
@@ -113,9 +111,7 @@ Public
 		_soundTrayHeight = 60
 		_soundTrayX = 0
 		_soundTrayY	= -_soundTrayHeight
-		_soundTrayVisible = False
-		
-		_updatesCounter = New FlxFPSCounter()			
+		_soundTrayVisible = False		
 	End Method
 	
 	Method OnCreate:Int()
@@ -129,11 +125,9 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()
-		_updatesCounter.Update()
-		
+	Method OnUpdate:Int()		
 		'Real elapsed time very unstable in Monkey. TODO!
-		FlxG.Elapsed = FlxG.TimeScale * (1.0 / _updatesCounter.FPS)		
+		FlxG.Elapsed = FlxG.TimeScale * (1.0 / FlxG.Framerate)		
 		_Step()			
 		
 		Return 0
@@ -233,7 +227,6 @@ Public
 		End If
 		FlxG.ResetInput()
 		FlxG.ResumeSounds()
-		_ResetFPSCounters()
 		Return 0
 	End Method
 	
@@ -261,7 +254,6 @@ Private
 		
 		_state = _requestedState
 		_state.Create()
-		_ResetFPSCounters()
 	End Method
 
 	Method _Step:Void()
@@ -439,11 +431,6 @@ Private
 		End If
 		
 		_step = 1000.0 / FlxG.Framerate
-		_ResetFPSCounters()
-	End Method
-	
-	Method _ResetFPSCounters:Void()
-		_updatesCounter.Reset()
 	End Method
 	
 	Method _InitData:Void()

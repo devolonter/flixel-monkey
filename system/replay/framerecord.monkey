@@ -8,8 +8,6 @@ Class FrameRecord
 
 	Field frame:Int
 	
-	Field elapsed:Float
-	
 	Field keys:Stack<KeyRecord>
 	
 	Field mouse:XYRecord
@@ -26,9 +24,8 @@ Class FrameRecord
 		mouse = Null	
 	End Method
 	
-	Method Create:FrameRecord(frame:Int, elapsed:Float, keys:Stack<KeyRecord> = Null, mouse:XYRecord = Null, joystick:Stack<XYZRecord[]> = Null, touch:Stack<XYRecord> = Null, accel:XYZRecord = Null)
+	Method Create:FrameRecord(frame:Int, keys:Stack<KeyRecord> = Null, mouse:XYRecord = Null, joystick:Stack<XYZRecord[]> = Null, touch:Stack<XYRecord> = Null, accel:XYZRecord = Null)
 		Self.frame = frame
-		Self.elapsed = elapsed
 		Self.keys = keys
 		Self.mouse = mouse
 		Self.joystick = joystick
@@ -51,7 +48,7 @@ Class FrameRecord
 	End Method
 	
 	Method Save:StringStack(output:StringStack)			
-		output.Push(frame + ":" + elapsed + "k")
+		output.Push(frame + ":" + "k")
 		
 		If (keys <> Null) Then
 			Local key:KeyRecord
@@ -130,10 +127,7 @@ Class FrameRecord
 		
 		Local tmpArray:String[] = data.Split("k")
 		
-		Local frameData:String[] = tmpArray[0].Split(":")
-		
-		frame = Int(frameData[0])
-		elapsed = Float(frameData[1])
+		frame = Int(tmpArray[0])
 		
 		tmpArray = tmpArray[1].Split("m")
 		
