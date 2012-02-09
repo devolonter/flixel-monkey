@@ -789,6 +789,46 @@ Public
 		Return True
 	End Method
 	
+	Function ArrayToCSV:String(data:Int[], width:Int, invert:Bool = False)
+		Local row:Int = 0
+		Local column:Int
+		Local csv:StringStack = New StringStack()
+		Local height:Int = data.Length() / width
+		Local index:Int
+		
+		While (row < height)
+			column = 0
+			
+			While (column < width)
+				index = data[row * width + column]
+				
+				If (invert) Then
+					If (index = 0) Then
+						index = 1
+					Else
+						index = 0
+					End If
+				End If
+				
+				If (column = 0) Then
+					If (row = 0) Then
+						csv.Push(index)
+					Else
+						csv.Push("~n" + index)					
+					End If
+				Else
+					csv.Push(", " + index)
+				End If
+				
+				column += 1
+			Wend
+			
+			row += 1
+		Wend
+		
+		Return csv.Join("")
+	End Function
+	
 	Method ToString:String()
 		Return "FlxTilemap"
 	End Method

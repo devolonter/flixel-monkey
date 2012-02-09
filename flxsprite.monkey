@@ -605,7 +605,7 @@ Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 				width = image.Height()			
 			ElseIf (width = 0) Then
 				width = height			
-			Else
+			ElseIf (height = 0) Then
 				height = width
 			End If
 			
