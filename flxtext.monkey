@@ -36,7 +36,6 @@ Public
 		
 		Pixels = Null
 		
-		_color = New FlxColor()
 		_shadow = New FlxColor(0)	
 		
 		If (driver = Null) driver =	_DefaultDriver
@@ -48,6 +47,14 @@ Public
 		_driver.Width = width
 		SetFormat(SYSTEM_FONT)
 		Text = text		
+	End Method
+	
+	Method Destroy:Void()
+		_driver.Destroy()
+		_driver = Null
+		_shadow = Null
+	
+		Super.Destroy()
 	End Method
 	
 	Method SetFormat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
@@ -90,14 +97,6 @@ Public
 	
 	Method Size:Int() Property
 		Return _driver.Size
-	End Method
-	
-	Method Color:Int() Property
-		Return _color.argb
-	End Method
-	
-	Method Color:Void(color:Int) Property
-		_color.SetARGB(color)
 	End Method
 	
 	Method Font:String() Property

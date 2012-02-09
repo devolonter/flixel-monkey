@@ -467,6 +467,7 @@ Public
 	End Method
 	
 	Method Alpha:Void(alpha:Float) Property
+		If (alpha < 0) alpha = 0		
 		_alpha = alpha 
 	End Method
 	
@@ -605,7 +606,7 @@ Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 				width = image.Height()			
 			ElseIf (width = 0) Then
 				width = height			
-			ElseIf (height = 0) Then
+			Else
 				height = width
 			End If
 			

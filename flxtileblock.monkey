@@ -97,26 +97,7 @@ Public
 			
 		Local i:Int = 0
 		Local l:Int = _stamps.Length()
-		Local stamp:FlxStamp
-		
-		Local camera:FlxCamera = FlxG._CurrentCamera
-		
-		If (FlxG._LastDrawingBlend <> AlphaBlend) Then
-			SetBlend(AlphaBlend)
-			FlxG._LastDrawingBlend = AlphaBlend
-		End If
-		
-		If (FlxG._LastDrawingColor <> camera.Color) Then
-			SetColor(camera._color.r, camera._color.g, camera._color.b)
-			FlxG._LastDrawingColor = camera.Color
-		End If
-		
-		Local alpha:Float = camera._color.a * camera.Alpha
-		
-		If (FlxG._LastDrawingAlpha <> alpha) Then
-			SetAlpha(alpha)
-			FlxG._LastDrawingAlpha = alpha
-		End If
+		Local stamp:FlxStamp		
 
 		While (i < l)
 			stamp = _stamps.Get(i)
