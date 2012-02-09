@@ -46,9 +46,7 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 		Init()
 	End Method
 	
-	Method Update:Void()
-		FlxG.Collide(simpleTilemap, thePlayer)
-		
+	Method Update:Void()		
 		thePlayer.acceleration.x = 0
 		
 		If (FlxG.Keys.Left) Then
@@ -82,7 +80,9 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 		theCursor.x = FlxG.Mouse.screenX
 		theCursor.y = FlxG.Mouse.screenY
 		
-		Super.Update()		
+		Super.Update()
+		
+		FlxG.Collide(simpleTilemap, thePlayer)		
 	End Method
 	
 	Method Init:Void()

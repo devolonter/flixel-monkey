@@ -45,8 +45,6 @@ Class PlayState Extends FlxState
 	End Method
 	
 	Method Update:Void()		
-		FlxG.Collide(player, collisionMap)
-		
 		highlightBox.x = Floor(FlxG.Mouse.x / TILE_WIDTH) * TILE_WIDTH
 		highlightBox.y = Floor(FlxG.Mouse.y / TILE_HEIGHT) * TILE_HEIGHT
 		
@@ -58,6 +56,8 @@ Class PlayState Extends FlxState
 		_UpdatePlayer()
 		
 		Super.Update()
+		
+		FlxG.Collide(player, collisionMap)
 	End Method
 	
 	Method Draw:Void()
