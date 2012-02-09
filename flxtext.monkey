@@ -131,10 +131,9 @@ Public
 		If (_shadow.argb <> 0) Then
 			Local oldColor:Int = FlxG._LastDrawingColor
 			Local oldAlpha:Int = FlxG._LastDrawingAlpha
-			Local camera:FlxCamera = FlxG.Camera
 		
-			If (camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_shadow, camera._color)
+			If (_camera.Color <> FlxG.WHITE) Then
+				_mixedColor.MixRGB(_shadow, _camera._color)
 				
 				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
 					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
@@ -145,8 +144,8 @@ Public
 				End If		
 			End If
 			
-			If (camera.Alpha < 1) Then
-				Local _mixedAlpha:Float = camera.Alpha * _shadow.a
+			If (_camera.Alpha < 1) Then
+				Local _mixedAlpha:Float = _camera.Alpha * _shadow.a
 				
 				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
 					SetAlpha(_mixedAlpha)					
