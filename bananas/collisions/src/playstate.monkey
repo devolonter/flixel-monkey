@@ -332,7 +332,6 @@ Class BtnGroupCollisionlickListener Extends BtnClickListener
 
 End Class
 
-
 Class BtnClickListener Implements FlxButtonClickListener
 
 	Field state:PlayState
