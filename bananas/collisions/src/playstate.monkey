@@ -106,7 +106,6 @@ Class PlayState Extends FlxState
 	
 		If (topText.Alpha > 0) Then
 			topText.Alpha -= .01
-			If (topText.Alpha < 0) topText.Alpha = 0
 		End If
 	
 		If (rising) Then
