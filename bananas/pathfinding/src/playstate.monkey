@@ -61,9 +61,7 @@ Class PlayState Extends FlxState
 		End If
 	End Method
 	
-	Method Update:Void()
-		FlxG.Collide(unit, map)
-	
+	Method Update:Void()	
 		If (FlxG.Keys.JustPressed(KEY_ESCAPE)) Error ""
 		
 		If (FlxG.Mouse.JustPressed() And action = ACTION_IDLE) Then
@@ -77,7 +75,9 @@ Class PlayState Extends FlxState
 			StopUnit 		
 		End If		
 		
-		Super.Update()	
+		Super.Update()
+		
+		FlxG.Collide(unit, map)	
 	End Method
 	
 	Method MoveToGoal:Void()

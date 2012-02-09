@@ -136,6 +136,8 @@ Class PlayState Extends FlxState
 			If (crate.y > FlxG.Height) crate.y = -10
 		Next
 		
+		Super.Update()
+		
 		If (collideGroups) Then
 			FlxG.Collide(crateStormGroup, crateStormGroup2)
 		End If
@@ -146,9 +148,7 @@ Class PlayState Extends FlxState
 				
 		If (isFlxRiderOn) Then
 			FlxG.Collide(elevator, flixelRider)		
-		End If
-	
-		Super.Update()
+		End If		
 	End Method
 	
 	Method OnFlixelRider:Void()

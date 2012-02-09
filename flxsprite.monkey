@@ -612,6 +612,7 @@ Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 			
 			If (height = 0) Then
 				frames = Ceil(image.Width() / width)
+				height = width
 			Else
 				frames = Ceil((image.Width() * image.Height()) / (width * height))
 			End If

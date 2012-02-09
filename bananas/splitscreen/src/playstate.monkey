@@ -47,9 +47,7 @@ Class PlayState Extends FlxState
 		FlxG.Camera.active = False
 	End Method
 	
-	Method Update:Void()
-		FlxG.Collide()
-	
+	Method Update:Void()	
 		player1.acceleration.x = 0
 		
 		If (FlxG.Keys.Left) Then
@@ -81,6 +79,8 @@ Class PlayState Extends FlxState
 		If (FlxG.Keys.JustPressed(KEY_ESCAPE)) Error ""
 			
 		Super.Update()
+		
+		FlxG.Collide()
 	End Method
 
 End Class
