@@ -61,8 +61,6 @@ Private
 	Field _iState:FlxClass
 	
 	Field _created:Bool
-
-	Field _lostFocus:Bool	
 	
 	Field _step:Int
 	
@@ -81,19 +79,27 @@ Private
 	Field _soundTrayLabel:FlxText
 	
 Public
-	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)				
-		_lostFocus = False		
+	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)		
+		_soundTrayTimer = 0
+		_soundTrayWidth = 160
+		_soundTrayHeight = 60
+		_soundTrayX = 0
+		_soundTrayY	= -_soundTrayHeight
+		_soundTrayVisible = False
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
 		FlxG.Framerate = framerate
 		
+		_state = Null
+		
 		useSoundHotKeys = Not IsMobile()
 		Self.useSystemCursor = useSystemCursor
 		useVirtualResolution = True
-		If (Not useSystemCursor) HideMouse()
-		_debuggerUp = False
 		
-		_state = Null
+		If (Not useSystemCursor) HideMouse()
+		
+		forceDebugger = False
+		_debuggerUp = False		
 		
 		_replay = New FlxReplay()
 		_replayRequested = False
@@ -104,14 +110,7 @@ Public
 		_iState = initialState
 		_requestedState = Null
 		_requestedReset = True
-		_created = False
-		
-		_soundTrayTimer = 0
-		_soundTrayWidth = 160
-		_soundTrayHeight = 60
-		_soundTrayX = 0
-		_soundTrayY	= -_soundTrayHeight
-		_soundTrayVisible = False		
+		_created = False		
 	End Method
 	
 	Method OnCreate:Int()
@@ -125,11 +124,7 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()
-		If (FlxG.Framerate <> UpdateRate()) Then
-			SetUpdateRate(FlxG.Framerate)
-		End If
-		
+	Method OnUpdate:Int()		
 		'Real elapsed time very unstable in Monkey. TODO!
 		FlxG.Elapsed = FlxG.TimeScale * (1.0 / FlxG.Framerate)		
 		_Step()			
@@ -137,7 +132,9 @@ Public
 		Return 0
 	End Method
 	
-	Method OnRender:Int()		
+	Method OnRender:Int()
+		FlxBasic._VisibleCount = 0
+			
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
 		
@@ -226,9 +223,10 @@ Public
 	End Method
 	
 	Method OnResume:Int()
-		If (Not _debuggerUp And useSystemCursor) Then
+		If (Not _debuggerUp And Not useSystemCursor) Then
 			HideMouse()
 		End If
+		
 		FlxG.ResetInput()
 		FlxG.ResumeSounds()
 		Return 0
@@ -250,9 +248,16 @@ Private
 
 	Method _SwitchState:Void()
 		FlxG.ResetCameras()
+		FlxG.ResetInput()
+		FlxG.DestroySounds()
+		FlxG.ClearBitmapCache()
+		
+		If (_debugger <> Null) Then
+			'TODO!
+		End If		
 		
 		Local timeManager:TimerManager = FlxTimer.Manager()
-		If (timeManager <> Null) timeManager.Clear()
+		If (timeManager <> Null) timeManager.Clear()		
 		
 		If (_state <> Null) _state.Destroy()		
 		
@@ -261,6 +266,10 @@ Private
 	End Method
 
 	Method _Step:Void()
+		If (FlxG.Framerate <> UpdateRate()) Then
+			SetUpdateRate(FlxG.Framerate)
+		End If
+	
 		#If TARGET <> "ios" Or TARGET <> "android"
 			If (useSoundHotKeys) Then
 				If (KeyHit(KEY_0)) Then
@@ -417,6 +426,10 @@ Private
 		FlxG.UpdatePlugins()		
 		_state.Update()
 		FlxG.UpdateCameras()
+		
+		If (_debuggerUp) Then
+			'TODO!
+		End If
 	End Method
 	
 	Method _Reset:Void()
