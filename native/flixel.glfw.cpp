@@ -1,6 +1,7 @@
 
 #include <time.h>
 #include <math.h>
+#include <Shellapi.h>
 
 class flixel {
 
@@ -26,6 +27,11 @@ public:
 	
 	static bool isMobile() {
 		return false;
+	}
+	
+	static void openURL(String url) {
+		LPCSTR request = url.ToCString<char>();
+		ShellExecute(HWND_DESKTOP, "open", request, NULL, NULL, SW_SHOWNORMAL);
 	}
 	
 };

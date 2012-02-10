@@ -71,5 +71,22 @@ Class FlxArray<T>
 			i += 1	
 		Wend	
 	End Method
+	
+	Method Format:String()
+		If (data.Length() = 0) Return ""
+				
+		Local result:StringStack = New StringStack()
+		result.Push(data[0])
+		
+		Local i:Int = 1
+		Local l:Int = data.Length()
+		
+		While (i < l)
+			result.Push("," + data[i])
+			i += 1
+		Wend
+		
+		Return result.Join("")
+	End Method
 
 End Class

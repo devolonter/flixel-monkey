@@ -6,18 +6,29 @@ Import flxextern
 Import flxpoint
 Import flxg
 
+Alias MonkeyAbs = monkey.math.Abs
+Alias MonkeyFloor = monkey.math.Floor
+Alias MonkeyCeil = monkey.math.Ceil
+Alias MonkeyMin = monkey.math.Min
+Alias MonkeyMax = monkey.math.Max
+Alias NativeOpenURL = flxextern.OpenURL
+
 Class FlxU
 
+	Function OpenURL:Void(url:String)
+		NativeOpenURL(url)
+	End Function
+
 	Function Abs:Float(value:Float)
-		Return monkey.math.Abs(value)		
+		Return MonkeyAbs(value)		
 	End Function
 	
 	Function Floor:Float(value:Float)
-		Return monkey.math.Floor(value)
+		Return MonkeyFloor(value)
 	End Function
 	
 	Function Ceil:Float(value:Float)
-		Return monkey.math.Ceil(value)
+		Return MonkeyCeil(value)
 	End Function
 	
 	Function Round:Float(value:Float)		
@@ -29,11 +40,11 @@ Class FlxU
 	End Function
 	
 	Function Min:Float(number1:Float, number2:Float)
-		Return monkey.math.Min(number1, number2)
+		Return MonkeyMin(number1, number2)
 	End Function
 	
 	Function Max:Float(number1:Float, number2:Float)
-		Return monkey.math.Max(number1, number2)
+		Return MonkeyMax(number1, number2)
 	End Function
 	
 	Function Bound:Float(value:Float, min:Float, max:Float)
@@ -130,13 +141,129 @@ Class FlxU
 	End Function
 	
 	Function GetRGBA:Float[](color:Int, resluts:Float[] = [])
-		If (resluts.Length <> 4) resluts = resluts.Resize(4)
+		If (resluts.Length() <> 4) resluts = resluts.Resize(4)
 		
 		resluts[0] = (color Shr 16) & $FF
 		resluts[1] = (color Shr 8) & $FF
 		resluts[2] = color & $FF
 		resluts[3] = Float((color Shr 24) & $FF) / 255
 		Return resluts
+	End Function
+	
+	Function GetHSB:Float[](color:Int, resluts:Float[] = [])
+		If (resluts.Length() <> 4) resluts = resluts.Resize(4)
+		
+		Local red:Float = Float((color Shr 16) & $FF) / 255
+		Local green:Float = Float((color Shr 8) & $FF) / 255
+		Local blue:Float = Float(color & $FF) / 255
+		
+		Local m:Float = MonkeyMax(red, green)
+		Local dmax:Float = MonkeyMax(m, blue)
+		m = MonkeyMin(red, green)
+		Local dmin:Float = MonkeyMin(m, blue)
+		Local range:Float = dmax - dmin
+		
+		resluts[2] = dmax
+		resluts[1] = 0
+		resluts[0] = 0
+		
+		If (dmax <> 0) resluts[1] = range / dmax
+		
+		If (resluts[1] <> 0) Then
+			If (red = dmax) Then
+				resluts[0] = (green - blue) / range
+			
+			ElseIf (green = dmax) Then
+				resluts[0] = 2 + (blue - red) / range
+				
+			ElseIf (blue = dmax) Then
+				resluts[0] = 4 + (red - green) / range
+			End If
+			
+			resluts[0] *= 60			
+			If (resluts[0] < 0) resluts[0] += 360
+		End If
+		
+		resluts[3] = Float((color Shr 24) & $FF) / 255
+		
+		Return resluts
+	End Function
+	
+	Function FromatTime:String(seconds:Float, showMS:Bool = False)
+		Local timeString:StringStack = New StringStack()
+		timeString.Push(Int(seconds / 60) + ":")
+		
+		Local timeStringHepler:Int = Int(seconds) Mod 60
+		
+		If (timeStringHepler < 10) Then
+			timeString.Push("0")
+		End If
+		
+		timeString.Push(timeStringHepler)
+		
+		If (showMS) Then
+			timeString.Push(".")
+			timeStringHepler = (seconds - Int(seconds)) * 100
+			
+			If (timeStringHepler < 10) Then
+				timeString.Push("0")
+			End If
+			
+			timeString.Push(timeStringHepler)
+		End If
+		
+		Return timeString.Join("")
+	End Function
+	
+	Function FromatMoney:String(amount:Float, showDecimal:Bool = True, englishStyle:Bool = True)
+		Local helper:Int
+		Local intAmount:Int = amount
+		Local comma:String = ""
+		Local result:String = ""
+		Local zeroes:String = ""
+		
+		While (intAmount > 0)
+			If (result.Length() > 0 And comma.Length() <= 0) Then
+				If (englishStyle) Then
+					comma = ","
+				Else
+					comma = "."
+				End If
+			End If
+			
+			helper = intAmount - Int(intAmount / 1000) * 1000
+			intAmount /= 1000
+			
+			zeroes = ""
+			
+			If (intAmount > 0) Then
+				If (helper < 100) Then
+					zeroes = "0"
+				End If
+				
+				If (helper < 10) Then
+					zeroes = "00"
+				End If
+			End If
+			
+			result = zeroes + helper + comma + result
+		Wend
+		
+		If (showDecimal) Then
+			intAmount = Int(amount * 100) - (Int(amount) * 100)
+			
+			If (englishStyle) Then
+				result += "." + intAmount
+			Else
+				result += "," + intAmount
+			End If
+			
+			If (amount < 10) Then
+				result += "0"
+			End If
+		End If
+		
+		Return result
 	End Function
 	
 	Function ComputeVelocity:Float(velocity:Float, acceleration:Float = 0, drag:Float = 0, max:Float = 10000)
@@ -232,7 +359,7 @@ Class FlxU
 		
 		Local c1:Float = PI * .25
 		Local c2:Float = 3 * c1		
-		Local ay:Float = Abs(y)
+		Local ay:Float = MonkeyAbs(y)
 		Local angle:Float = 0
 		
 		If (x >= 0) Then

@@ -1,8 +1,6 @@
 Strict
 
-Import flxbasic
-
-#if TARGET="glfw" And HOST="macos"
+#if TARGET = "glfw" And HOST = "macos"
 	Import "native/flixel.${TARGET}.macos.${LANG}"
 #Else
 	Import "native/flixel.${TARGET}.${LANG}"
@@ -19,11 +17,19 @@ Extern
 	Function HideMouse:Void() = "flixel::hideMouse"
 	Function ShowMouse:Void() = "flixel::showMouse"
 	Function IsMobile:Bool() = "flixel::isMobile"
+	Function OpenURL:Void(url:String) = "flixel::openURL"
+#ElseIf TARGET = "xna"
+	Function SystemMillisecs:Int() = "flixel.functions.systemMillisecs"
+	Function HideMouse:Void() = "flixel.functions.hideMouse"
+	Function ShowMouse:Void() = "flixel.functions.showMouse"
+	Function IsMobile:Bool() = "flixel.functions.isMobile"
+	Function OpenURL:Void(url:String) = "flixel.functions.openURL"
 #Else
 	Function SystemMillisecs:Int() = "flixel.systemMillisecs"
 	Function HideMouse:Void() = "flixel.hideMouse"
 	Function ShowMouse:Void() = "flixel.showMouse"
 	Function IsMobile:Bool() = "flixel.isMobile"
+	Function OpenURL:Void(url:String) = "flixel.openURL"
 #End
 
 Public
