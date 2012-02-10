@@ -50,6 +50,18 @@ Class FlxG
 	
 	Const BLACK:Int = $FF000000
 	
+	Global Paused:Bool
+	
+#If CONFIG = "debug"
+	Global Debug:Bool = True
+#Else
+	Global Debug:Bool = False
+#End
+	
+	Global Elapsed:Float
+	
+	Global TimeScale:Float
+
 	Global DeviceWidth:Int
 	
 	Global DeviceHeight:Int
@@ -61,21 +73,9 @@ Class FlxG
 	Global WorldBounds:FlxRect
 	
 	Global WorldDivisions:Int
-			
-	Global Cameras:Stack<FlxCamera>
-	
-	Global Camera:FlxCamera
-	
-	Global Plugins:Stack<FlxBasic>
-	
-	Global VolumeHandler:FlxVolumeChangeListener
-	
-	Global Elapsed:Float
-	
-	Global TimeScale:Float
 	
 	Global VisualDebug:Bool
-
+	
 	Global Mobile:Bool
 	
 	Global GlobalSeed:Int
@@ -83,6 +83,10 @@ Class FlxG
 	Global Scores:Stack<String>	
 	
 	Global Score:Int
+	
+	Global Levels:Stack<String>	
+	
+	Global Level:Int	
 	
 	Global Accel:AccelInput	
 	
@@ -95,8 +99,16 @@ Class FlxG
 	Global Sounds:FlxGroup
 	
 	Global Mute:Bool
+	
+	Global Cameras:Stack<FlxCamera>
+	
+	Global Camera:FlxCamera
+	
+	Global Plugins:Stack<FlxBasic>
+	
+	Global VolumeHandler:FlxVolumeChangeListener	
 		
-	Global Framerate:Int	
+	Global Framerate:Int
 	
 	Global _DeviceScaleFactorX:Float = 1	
 	
@@ -140,6 +152,24 @@ Public
 	Function Log:Void(data:String)
 		Print data
 		'TODO
+	End Function
+	
+	Function FullScreen:Void()
+		Local fsw:Int = Min(Float(FlxG.DeviceWidth), FlxG.Width * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorX)
+		Local fsh:Int = Min(Float(FlxG.DeviceHeight), FlxG.Height * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorY)
+		
+		Local i:Int = 0
+		Local l:Int = FlxG.Cameras.Length()
+		Local cam:FlxCamera
+		
+		While (i < l)
+			cam = FlxG.Cameras.Get(i)
+			
+			cam.X += (FlxG.DeviceWidth - fsw) / 2
+			cam.Y += (FlxG.DeviceHeight - fsh) / 2
+			
+			i += 1
+		Wend
 	End Function
 	
 	Function Random:Float()
@@ -611,14 +641,18 @@ Public
 		
 		FlxG.Mobile = IsMobile()
 		
-		FlxG.Scores = New Stack<String>()		
+		FlxG.Scores = New Stack<String>()
+		FlxG.Levels = New Stack<String>()
+		FlxG.VisualDebug = False	
 	End Function
 	
 	Function Reset:Void()
 		FlxG.ClearBitmapCache()
 		FlxG.ResetInput()
 		FlxG.DestroySounds(True)
+		FlxG.Levels.Clear()
 		FlxG.Scores.Clear()
+		FlxG.Level = 0		
 		FlxG.Score = 0	
 		FlxG.TimeScale = 1
 		FlxG.Elapsed = 0 

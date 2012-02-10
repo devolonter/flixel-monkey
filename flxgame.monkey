@@ -125,7 +125,11 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()		
+	Method OnUpdate:Int()
+		If (FlxG.Framerate <> UpdateRate()) Then
+			SetUpdateRate(FlxG.Framerate)
+		End If
+		
 		'Real elapsed time very unstable in Monkey. TODO!
 		FlxG.Elapsed = FlxG.TimeScale * (1.0 / FlxG.Framerate)		
 		_Step()			
