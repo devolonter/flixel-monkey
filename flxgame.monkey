@@ -62,7 +62,13 @@ Private
 	
 	Field _created:Bool
 	
-	Field _step:Int
+	Field _total:Int
+	
+	Field _accumulator:Float	
+	
+	Field _step:Float
+	
+	Field _maxAccumulation:Float
 	
 	Field _soundTrayTimer:Float
 	
@@ -78,8 +84,10 @@ Private
 	
 	Field _soundTrayLabel:FlxText
 	
+	Field _updaterate:Int
+
 Public
-	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, framerate:Int = 60, useSystemCursor:Bool = False)		
+	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)		
 		_soundTrayTimer = 0
 		_soundTrayWidth = 160
 		_soundTrayHeight = 60
@@ -89,6 +97,8 @@ Public
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
 		FlxG.Framerate = framerate
+		FlxG.Updaterate = updaterate
+		_total = 0
 		
 		_state = Null
 		
@@ -113,8 +123,7 @@ Public
 		_created = False		
 	End Method
 	
-	Method OnCreate:Int()
-		_Reset()		
+	Method OnCreate:Int()	
 		_InitData()		
 		_Step()
 		
@@ -124,96 +133,69 @@ Public
 		Return 0
 	End Method
 	
-	Method OnUpdate:Int()		
-		'Real elapsed time very unstable in Monkey. TODO!
-		FlxG.Elapsed = FlxG.TimeScale * (1.0 / FlxG.Framerate)		
-		_Step()			
-		
-		Return 0
-	End Method
-	
 	Method OnRender:Int()
-		FlxBasic._VisibleCount = 0
-			
-		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
-		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
-		
-		FlxG._LastDrawingColor = FlxG.WHITE
-		FlxG._LastDrawingBlend = GetBlend()
-		FlxG._LastDrawingAlpha = GetAlpha()
-		FlxG._CurrentCamera = Null
-		
-		Local i:Int = 0
-		Local l:Int = FlxG.Cameras.Length()		
-		
-		While(i < l)		
-			FlxG._CurrentCamera = FlxG.Cameras.Get(i)
-			
-			If (Not FlxG._CurrentCamera.active) Then
-				i+=1
-				Continue
-			End If
-			
-			FlxG._CurrentCameraID = i
-			
-			If (FlxG._CurrentCamera = Null Or Not FlxG._CurrentCamera.exists Or Not FlxG._CurrentCamera.visible) Continue
-			
-			FlxG._CurrentCamera.DrawFX() 'not realy draw. Only calculation
-			FlxG._CurrentCamera.Lock()			
-			_state.Draw()
-			FlxG.DrawPlugins()			
-			FlxG._CurrentCamera.Unlock()
-									
-			i+=1
-		Wend
+		If (FlxG.Framerate <> UpdateRate() Or _updaterate <> FlxG.Updaterate) Then			
+			_ResetFramerate()
+		End If
+	
+		Local mark:Int = Millisecs()
+		Local elapsedMS:Int = mark - _total
+		_total = mark		
 		
 		#If TARGET <> "ios" Or TARGET <> "android"
-			If (_soundTrayVisible) Then			
-				Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
-				If (FlxG.Mute) globalVolume = 0
-				
-				Local bx:Int = 20
-				Local by:Int = 28
-				
-				If (FlxG._LastDrawingColor <> FlxG.WHITE) Then
-					SetColor(255, 255, 255)
-					FlxG._LastDrawingColor = FlxG.WHITE
-				End If
-				
-				PushMatrix()
-				Translate(_soundTrayX, _soundTrayY)
-	
-				Local i:Int = 0
-				While (i < 10)
-					If (i < globalVolume) Then
-						If (FlxG._LastDrawingAlpha <> 1) Then
-							SetAlpha(1)
-							FlxG._LastDrawingAlpha = 1
-						End If
-						
-					Else
-						If (FlxG._LastDrawingAlpha <> .5) Then
-							SetAlpha(.5)
-							FlxG._LastDrawingAlpha = .5
+			If (useSoundHotKeys) Then
+				If (KeyHit(KEY_0)) Then
+					FlxG.Mute = Not FlxG.Mute
+					
+					If (FlxG.VolumeHandler <> Null) Then
+						If (FlxG.Mute) Then
+							FlxG.VolumeHandler.OnVolumeChange(0)
+						Else
+							FlxG.VolumeHandler.OnVolumeChange(FlxG.Volume())
 						End If
 					End If
 					
-					DrawRect(bx, by, 8, i * 2)				
-					
-					bx += 12
-					by -= 2
-					i += 1
-				Wend
-							
-				_soundTrayLabel.Draw()
+					_ShowSoundTray()
+				End If
+			
+				If (KeyHit(KEY_MINUS)) Then
+					FlxG.Mute = False
+					FlxG.Volume(FlxG.Volume() - .1)
+					_ShowSoundTray()
+				End If
 				
-				PopMatrix()
+				If (KeyHit(KEY_EQUALS)) Then
+					FlxG.Mute = False
+					FlxG.Volume(FlxG.Volume() + .1)
+					_ShowSoundTray()
+				End If
 			End If
+			
+			_UpdateSoundTray(elapsedMS)
 		#End
 		
-		FlxG.Mouse.Draw()		
-								
-		Return 0	
+		If (_debugger <> Null) Then
+			'TODO!			
+		Else
+			
+			_accumulator += elapsedMS
+			
+			if (_accumulator > _maxAccumulation) Then
+				_accumulator = _maxAccumulation
+			End If			
+						
+			While (_accumulator >= _step)
+				_Step()
+				_accumulator -= _step
+			Wend
+
+		End If
+	
+		FlxBasic._VisibleCount = 0
+			
+		_Draw()
+		
+		Return 0
 	End Method
 	
 	Method OnSuspend:Int()
@@ -263,45 +245,13 @@ Private
 		
 		_state = _requestedState
 		_state.Create()
+		
+		If (FlxG.Framerate <> UpdateRate() Or _updaterate <> FlxG.Updaterate) Then						
+			_ResetFramerate()
+		End If
 	End Method
 
-	Method _Step:Void()
-		If (FlxG.Framerate <> UpdateRate()) Then
-			SetUpdateRate(FlxG.Framerate)
-		End If
-	
-		#If TARGET <> "ios" Or TARGET <> "android"
-			If (useSoundHotKeys) Then
-				If (KeyHit(KEY_0)) Then
-					FlxG.Mute = Not FlxG.Mute
-					
-					If (FlxG.VolumeHandler <> Null) Then
-						If (FlxG.Mute) Then
-							FlxG.VolumeHandler.OnVolumeChange(0)
-						Else
-							FlxG.VolumeHandler.OnVolumeChange(FlxG.Volume())
-						End If
-					End If
-					
-					_ShowSoundTray()
-				End If
-			
-				If (KeyHit(KEY_MINUS)) Then
-					FlxG.Mute = False
-					FlxG.Volume(FlxG.Volume() - .1)
-					_ShowSoundTray()
-				End If
-				
-				If (KeyHit(KEY_EQUALS)) Then
-					FlxG.Mute = False
-					FlxG.Volume(FlxG.Volume() + .1)
-					_ShowSoundTray()
-				End If	
-			End If
-			
-			_UpdateSoundTray()
-		#End
-	
+	Method _Step:Void()	
 		If (_requestedReset) Then
 			_requestedReset = False
 			_requestedState = FlxState(_iState.CreateInstance())
@@ -404,14 +354,14 @@ Private
 		End If
 	End Method
 	
-	Method _UpdateSoundTray:Void()
+	Method _UpdateSoundTray:Void(ms:Int)
 		If (Not _soundTrayVisible) Return
 	
 		If (_soundTrayTimer > 0) Then
-			_soundTrayTimer -= FlxG.Elapsed
+			_soundTrayTimer -= ms / 1000.0
 		
 		ElseIf (_soundTrayY > -_soundTrayHeight)
-			_soundTrayY =_soundTrayY - (FlxG.Elapsed * FlxG.Height * 2)
+			_soundTrayY =_soundTrayY - (ms / 1000.0 * FlxG.Height * 2)
 			
 			If (_soundTrayY <= -_soundTrayHeight) Then
 				_soundTrayVisible = False
@@ -421,7 +371,9 @@ Private
 		End If
 	End Method
 	
-	Method _Update:Void()			
+	Method _Update:Void()
+		FlxG.Elapsed = FlxG.TimeScale * (_step / 1000.0)
+				
 		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		
 		_state.Update()
@@ -432,8 +384,91 @@ Private
 		End If
 	End Method
 	
+	Method _Draw:Void()
+		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
+		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
+		
+		FlxG._LastDrawingColor = FlxG.WHITE
+		FlxG._LastDrawingBlend = GetBlend()
+		FlxG._LastDrawingAlpha = GetAlpha()
+		FlxG._CurrentCamera = Null
+		
+		Local i:Int = 0
+		Local l:Int = FlxG.Cameras.Length()		
+		
+		While(i < l)		
+			FlxG._CurrentCamera = FlxG.Cameras.Get(i)
+			
+			If (Not FlxG._CurrentCamera.active) Then
+				i+=1
+				Continue
+			End If
+			
+			FlxG._CurrentCameraID = i
+			
+			If (FlxG._CurrentCamera = Null Or Not FlxG._CurrentCamera.exists Or Not FlxG._CurrentCamera.visible) Continue
+			
+			FlxG._CurrentCamera.DrawFX() 'not realy draw. Only calculation
+			FlxG._CurrentCamera.Lock()			
+			_state.Draw()
+			FlxG.DrawPlugins()			
+			FlxG._CurrentCamera.Unlock()
+									
+			i+=1
+		Wend
+		
+		#If TARGET <> "ios" Or TARGET <> "android"
+			If (_soundTrayVisible) Then			
+				Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
+				If (FlxG.Mute) globalVolume = 0
+				
+				Local bx:Int = 20
+				Local by:Int = 28
+				
+				If (FlxG._LastDrawingColor <> FlxG.WHITE) Then
+					SetColor(255, 255, 255)
+					FlxG._LastDrawingColor = FlxG.WHITE
+				End If
+				
+				PushMatrix()
+				Translate(_soundTrayX, _soundTrayY)
+	
+				Local i:Int = 0
+				While (i < 10)
+					If (i < globalVolume) Then
+						If (FlxG._LastDrawingAlpha <> 1) Then
+							SetAlpha(1)
+							FlxG._LastDrawingAlpha = 1
+						End If
+						
+					Else
+						If (FlxG._LastDrawingAlpha <> .5) Then
+							SetAlpha(.5)
+							FlxG._LastDrawingAlpha = .5
+						End If
+					End If
+					
+					DrawRect(bx, by, 8, i * 2)				
+					
+					bx += 12
+					by -= 2
+					i += 1
+				Wend
+							
+				_soundTrayLabel.Draw()
+				
+				PopMatrix()
+			End If
+		#End
+		
+		FlxG.Mouse.Draw()		
+	End Method
+	
 	Method _Reset:Void()
-		SetUpdateRate(FlxG.Framerate)
+		If (FlxG.Framerate <> UpdateRate() Or _updaterate <> FlxG.Updaterate) Then			
+			_ResetFramerate()
+		End If
+				
 		Seed = SystemMillisecs()
 		
 		FlxG.DeviceWidth = DeviceWidth()
@@ -445,9 +480,20 @@ Private
 		Else
 			FlxG._DeviceScaleFactorX = 1
 			FlxG._DeviceScaleFactorY = 1
+		End If		
+	End Method
+	
+	Method _ResetFramerate:Void()
+		SetUpdateRate(FlxG.Framerate)
+
+		_step = 1000.0 / FlxG.Updaterate		
+		_maxAccumulation = 2000.0 / FlxG.Framerate - 1
+		
+		If (_maxAccumulation < _step) Then
+			_maxAccumulation = _step
 		End If
 		
-		_step = 1000.0 / FlxG.Framerate
+		_updaterate = FlxG.Updaterate
 	End Method
 	
 	Method _InitData:Void()

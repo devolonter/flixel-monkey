@@ -110,6 +110,8 @@ Class FlxG
 		
 	Global Framerate:Int
 	
+	Global Updaterate:Int
+	
 	Global _DeviceScaleFactorX:Float = 1	
 	
 	Global _DeviceScaleFactorY:Float = 1
