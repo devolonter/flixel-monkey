@@ -2,8 +2,6 @@
 #include <time.h>
 #include <math.h>
 
-#include <Foundation/Foundation.h>
-
 class flixel {
 
 public:
