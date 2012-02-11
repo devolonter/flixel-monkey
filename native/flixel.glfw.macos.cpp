@@ -2,6 +2,8 @@
 #include <time.h>
 #include <math.h>
 
+#include <Foundation/Foundation.h>
+
 class flixel {
 
 public:
@@ -9,7 +11,7 @@ public:
 	static int systemMillisecs() {
 		double n;
 		time_t t;
-		struct tm * timeinfo;		
+		struct tm *timeinfo;		
 		time(&t);
 		timeinfo = localtime(&t);
 		int seconds = (timeinfo->tm_sec + timeinfo->tm_min * 60 + timeinfo->tm_hour * 3600);
@@ -26,6 +28,12 @@ public:
 	
 	static bool isMobile() {
 		return false;
+	}
+	
+	static void openURL(String url) {
+		String command = "open ";
+		command += url;
+		system(command.ToCString<char>());
 	}
 	
 };

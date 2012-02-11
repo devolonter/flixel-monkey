@@ -23,7 +23,7 @@ Public
 		b = rgb & $FF		
 		a = 1
 		
-		Self.argb = ($FF Shl 24) | (rgb & $00FFFFFF)		
+		Self.argb = rgb | ($FF Shl 24)		
 	End Method
 	
 	Method MixRGB:Void(fore:FlxColor)

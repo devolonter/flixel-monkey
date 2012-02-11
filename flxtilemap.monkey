@@ -274,7 +274,6 @@ Public
 			Local row:Int = 0
 			Local column:Int
 			Local columnIndex:Int
-			Local tile:FlxTile
 			
 			_point.y = 0
 			
