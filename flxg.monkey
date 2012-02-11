@@ -524,7 +524,7 @@ Public
 		Return FlxG.Camera.BgColor
 	End Function
 	
-	Function BgColor:Void(color:Int)
+	Function SetBgColor:Void(color:Int)
 		Local i:Int = 0
 		Local l:Int = FlxG.Cameras.Length()
 		
