@@ -53,7 +53,7 @@ Class FlxGame extends App
 	
 	Field _replayCancelKeys:Int[]
 	
-	Field _replayTimer:Int
+	Field _replayTimer:Float
 	
 	Field _replayCallback:FlxReplayListener
 
