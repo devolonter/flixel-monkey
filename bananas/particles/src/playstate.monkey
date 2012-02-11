@@ -23,6 +23,8 @@ Class PlayState Extends FlxState
 	Field topText:FlxText
 			
 	Method Create:Void()
+		FlxG.Framerate = 60
+	
 		theEmiter = New FlxEmitter(10, FlxG.Height / 2, 200)
 		
 		theEmiter.SetXSpeed(100, 200)

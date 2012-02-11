@@ -18,7 +18,11 @@ Class PlayState Extends FlxState Implements FlxReplayListener
 	Global recording:Bool = False
 	Global replaying:Bool = False	
 			
-	Method Create:Void()	
+	Method Create:Void()
+		#If TARGET <> "html5"
+			FlxG.Framerate = 60
+		#End
+		
 		simpleTilemap = New FlxTilemap()
 		simpleTilemap.LoadMap(FlxAssetsManager.GetString(Assets.MAP), Assets.TILES, 0, 0, FlxTilemap.AUTO)
 		simpleTilemap.y -= 15

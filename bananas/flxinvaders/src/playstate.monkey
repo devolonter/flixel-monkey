@@ -22,6 +22,8 @@ Class PlayState Extends FlxState Implements FlxOverlapNotifyListener
 	Field scoresLabel:FlxText
 	
 	Method Create:Void()
+		FlxG.Framerate = 60
+	
 		If (FlxG.Scores.Length() = 0) Then
 			FlxG.Scores.Insert(0, "WELCOME TO FLX INVADERS")
 		End If

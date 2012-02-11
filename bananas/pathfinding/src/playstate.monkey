@@ -26,6 +26,8 @@ Class PlayState Extends FlxState
 	Field legends:FlxText
 			
 	Method Create:Void()
+		FlxG.Framerate = 60
+	
 		FlxG.Mouse.Show()
 	
 		map = New FlxTilemap()

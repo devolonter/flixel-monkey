@@ -85,6 +85,8 @@ Private
 	Field _soundTrayLabel:FlxText
 	
 	Field _updaterate:Int
+	
+	Field _framerate:Int
 
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)		
@@ -134,7 +136,7 @@ Public
 	End Method
 	
 	Method OnRender:Int()
-		If (FlxG.Framerate <> UpdateRate() Or _updaterate <> FlxG.Updaterate) Then			
+		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
 			_ResetFramerate()
 		End If
 	
@@ -176,8 +178,7 @@ Public
 		
 		If (_debugger <> Null) Then
 			'TODO!			
-		Else
-			
+		Else			
 			_accumulator += elapsedMS
 			
 			if (_accumulator > _maxAccumulation) Then
@@ -188,7 +189,6 @@ Public
 				_Step()
 				_accumulator -= _step
 			Wend
-
 		End If
 	
 		FlxBasic._VisibleCount = 0
@@ -246,7 +246,7 @@ Private
 		_state = _requestedState
 		_state.Create()
 		
-		If (FlxG.Framerate <> UpdateRate() Or _updaterate <> FlxG.Updaterate) Then						
+		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then						
 			_ResetFramerate()
 		End If
 	End Method
@@ -465,7 +465,7 @@ Private
 	End Method
 	
 	Method _Reset:Void()
-		If (FlxG.Framerate <> UpdateRate() Or _updaterate <> FlxG.Updaterate) Then			
+		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
 			_ResetFramerate()
 		End If
 				
@@ -494,6 +494,7 @@ Private
 		End If
 		
 		_updaterate = FlxG.Updaterate
+		_framerate = FlxG.Framerate
 	End Method
 	
 	Method _InitData:Void()

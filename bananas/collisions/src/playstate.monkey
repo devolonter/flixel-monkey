@@ -36,6 +36,10 @@ Class PlayState Extends FlxState
 	Field rising:Bool = True
 			
 	Method Create:Void()
+		#If TARGET <> "html5"
+			FlxG.Framerate = 60
+		#End
+	
 		elevator = New FlxSprite((FlxG.Width / 2) - 100, 250, Assets.ELEVATOR)
 		elevator.maxVelocity.y = 300
 		elevator.immovable = True

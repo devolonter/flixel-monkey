@@ -22,6 +22,8 @@ Class PlayState Extends FlxState
 	Field helperTxt:FlxText
 			
 	Method Create:Void()
+		FlxG.Framerate = 60
+	
 		collisionMap = New FlxTilemap()
 		collisionMap.LoadMap(FlxAssetsManager.GetString(Assets.AUTO_MAP), Assets.AUTO_TILES, 
 							TILE_WIDTH, TILE_HEIGHT, FlxTilemap.AUTO)
