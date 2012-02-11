@@ -30,7 +30,7 @@ Alias JoystickInput = joystick.Joystick
 
 Class FlxG
 
-	Const LIBRARY_NAME:String = "Monkey Flixel"
+	Const LIBRARY_NAME:String = "flixel-monkey"
 	
 	Const LIBRARY_MAJOR_VERSION:Int = 1
 	
