@@ -490,7 +490,7 @@ Public
 		dirty = True
 	End Method	
 	
-	Method OnScreen:Bool(camera:FlxCamera)
+	Method OnScreen:Bool(camera:FlxCamera = Null)
 		If (camera = Null) camera = FlxG.Camera	
 		GetScreenXY(_point, camera)
 		
