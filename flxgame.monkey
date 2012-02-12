@@ -422,7 +422,7 @@ Private
 		Wend
 		
 		#If TARGET <> "ios" Or TARGET <> "android"
-			If (FlxG.Mobile) Then
+			If (Not FlxG.Mobile) Then
 				_DrawSoundTray()
 				FlxG.Mouse.Draw()
 			End If
