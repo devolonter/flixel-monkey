@@ -10,7 +10,16 @@ Class FlxMusic Extends FlxSound
 Private
 	Field _filename:String
 	
-Public	
+	Field _oldMusicVolume:Float
+	
+Public
+	Method Update:Void()
+		If (_oldMusicVolume <> FlxG._Volume) Then
+			_UpdateTransform()
+			_oldMusicVolume = FlxG._Volume
+		End If			
+	End Method
+
 	Method Kill:Void()
 		Super.Kill()
 		Stop()

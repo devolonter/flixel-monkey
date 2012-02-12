@@ -60,6 +60,8 @@ Private
 	
 	Field _fadeInTotal:Float
 	
+	Field _oldVolume:Float
+	
 Public
 	Method New()
 		Super.New()
@@ -138,6 +140,12 @@ Public
 		End If
 		
 		_volumeAdjust = radial * fade
+		
+		If (_oldVolume <> FlxG._Volume) Then
+			_UpdateTransform()			
+			_oldVolume = FlxG._Volume
+			updateNeeded = True
+		End If
 		
 		If (updateNeeded) _UpdateTransform()
 	End Method
@@ -313,6 +321,7 @@ Public
 			_soundVolume = 0
 		End If		
 		
+		If (_soundVolume < 0) _soundVolume = 0
 		_SetTransform(_soundVolume, _soundPan)
 	End Method
 	
