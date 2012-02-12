@@ -422,20 +422,33 @@ Private
 		Wend
 		
 		#If TARGET <> "ios" Or TARGET <> "android"
-			If (_soundTrayVisible) Then			
+			If (_soundTrayVisible) Then		
 				Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
-				If (FlxG.Mute) globalVolume = 0
+				If (FlxG.Mute) globalVolume = 0				
 				
-				Local bx:Int = 20
-				Local by:Int = 28
-				
-				If (FlxG._LastDrawingColor <> FlxG.WHITE) Then
-					SetColor(255, 255, 255)
-					FlxG._LastDrawingColor = FlxG.WHITE
+				If (useVirtualResolution) Then
+					Scale(1, 1)
 				End If
 				
 				PushMatrix()
 				Translate(_soundTrayX, _soundTrayY)
+				
+				If (FlxG._LastDrawingAlpha <> .5) Then
+					SetAlpha(.5)
+					FlxG._LastDrawingAlpha = .5
+				End If
+				
+				If (FlxG._LastDrawingColor <> FlxG.BLACK) Then
+					SetColor(0, 0, 0)
+				End If				
+				
+				DrawRect(0, 0, _soundTrayWidth, _soundTrayHeight)
+				
+				SetColor(255, 255, 255)
+				FlxG._LastDrawingColor = FlxG.WHITE
+				
+				Local bx:Int = 20
+				Local by:Int = 28
 	
 				Local i:Int = 0
 				While (i < 10)
