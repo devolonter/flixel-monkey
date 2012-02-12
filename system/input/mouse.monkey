@@ -140,14 +140,12 @@ Public
 			FlxG._LastDrawingAlpha = 1
 		End If
 		
-		If (_cursor.scale = 1) Then
-			DrawImage(_cursor.pixels, _cursor.x, _cursor.y)
-		Else
-			PushMatrix()
-				Scale(_cursor.scale, _cursor.scale)
-				DrawImage(_cursor.pixels, _cursor.x, _cursor.y)
-			PopMatrix()
-		End If
+		Translate(_cursor.x, _cursor.y)
+		
+		PushMatrix()
+			Scale(_cursor.scale * FlxG.Camera.Zoom, _cursor.scale * FlxG.Camera.Zoom)
+			DrawImage(_cursor.pixels, 0, 0)
+		PopMatrix()
 	End Method
 	
 	Method _UpdateXY:Void()	

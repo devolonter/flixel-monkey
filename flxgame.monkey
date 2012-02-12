@@ -422,10 +422,11 @@ Private
 		Wend
 		
 		#If TARGET <> "ios" Or TARGET <> "android"
-			_DrawSoundTray()
-		#End
-		
-		FlxG.Mouse.Draw()		
+			If (FlxG.Mobile) Then
+				_DrawSoundTray()
+				FlxG.Mouse.Draw()
+			End If
+		#End	
 	End Method
 	
 	Method _DrawSoundTray:Void()
@@ -434,7 +435,8 @@ Private
 			If (FlxG.Mute) globalVolume = 0			
 			
 			PushMatrix()
-			Scale(1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX), 1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorY))
+			
+			Scale(1 / FlxG._DeviceScaleFactorX, 1 / FlxG._DeviceScaleFactorY)
 			Translate(_soundTrayX, _soundTrayY)
 			
 			If (FlxG._LastDrawingAlpha <> .5) Then
