@@ -129,7 +129,7 @@ Public
 		_InitData()		
 		_Step()
 		
-		_soundTrayX	= (FlxG.Width / 2) * FlxCamera.DefaultZoom - (_soundTrayWidth / 2)
+		_soundTrayX	= (FlxG.Width / 2) * FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX - (_soundTrayWidth / 2) + FlxG.Camera.X
 		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
 		_soundTrayLabel.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER)
 		Return 0
@@ -356,6 +356,19 @@ Private
 		If (_debugger <> Null) Then
 			'TODO
 		End If
+	End Method	
+	
+	Method _Update:Void()
+		FlxG.Elapsed = FlxG.TimeScale * (_step / 1000.0)
+				
+		FlxG.UpdateSounds()	
+		FlxG.UpdatePlugins()		
+		_state.Update()
+		FlxG.UpdateCameras()
+		
+		If (_debuggerUp) Then
+			'TODO!
+		End If
 	End Method
 	
 	Method _UpdateSoundTray:Void(ms:Int)
@@ -375,21 +388,10 @@ Private
 		End If
 	End Method
 	
-	Method _Update:Void()
-		FlxG.Elapsed = FlxG.TimeScale * (_step / 1000.0)
-				
-		FlxG.UpdateSounds()	
-		FlxG.UpdatePlugins()		
-		_state.Update()
-		FlxG.UpdateCameras()
-		
-		If (_debuggerUp) Then
-			'TODO!
-		End If
-	End Method
-	
 	Method _Draw:Void()
-		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)		
+		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+		
+		PushMatrix()	
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
 		
 		FlxG._LastDrawingColor = FlxG.WHITE
@@ -421,64 +423,66 @@ Private
 			i+=1
 		Wend
 		
+		PopMatrix()
+		
 		#If TARGET <> "ios" Or TARGET <> "android"
-			If (_soundTrayVisible) Then		
-				Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
-				If (FlxG.Mute) globalVolume = 0				
-				
-				If (useVirtualResolution) Then
-					Scale(1, 1)
-				End If
-				
-				PushMatrix()
-				Translate(_soundTrayX, _soundTrayY)
-				
-				If (FlxG._LastDrawingAlpha <> .5) Then
-					SetAlpha(.5)
-					FlxG._LastDrawingAlpha = .5
-				End If
-				
-				If (FlxG._LastDrawingColor <> FlxG.BLACK) Then
-					SetColor(0, 0, 0)
-				End If				
-				
-				DrawRect(0, 0, _soundTrayWidth, _soundTrayHeight)
-				
-				SetColor(255, 255, 255)
-				FlxG._LastDrawingColor = FlxG.WHITE
-				
-				Local bx:Int = 20
-				Local by:Int = 28
-	
-				Local i:Int = 0
-				While (i < 10)
-					If (i < globalVolume) Then
-						If (FlxG._LastDrawingAlpha <> 1) Then
-							SetAlpha(1)
-							FlxG._LastDrawingAlpha = 1
-						End If
-						
-					Else
-						If (FlxG._LastDrawingAlpha <> .5) Then
-							SetAlpha(.5)
-							FlxG._LastDrawingAlpha = .5
-						End If
-					End If
-					
-					DrawRect(bx, by, 8, i * 2)				
-					
-					bx += 12
-					by -= 2
-					i += 1
-				Wend
-							
-				_soundTrayLabel.Draw()
-				
-				PopMatrix()
-			End If
+			_DrawSoundTray()
 		#End
 		
 		FlxG.Mouse.Draw()		
+	End Method
+	
+	Method _DrawSoundTray:Void()
+		If (_soundTrayVisible) Then		
+			Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
+			If (FlxG.Mute) globalVolume = 0				
+			
+			PushMatrix()
+			Translate(_soundTrayX, _soundTrayY)
+			
+			If (FlxG._LastDrawingAlpha <> .5) Then
+				SetAlpha(.5)
+				FlxG._LastDrawingAlpha = .5
+			End If
+			
+			If (FlxG._LastDrawingColor <> FlxG.BLACK) Then
+				SetColor(0, 0, 0)
+			End If				
+			
+			DrawRect(0, 0, _soundTrayWidth, _soundTrayHeight)
+			
+			SetColor(255, 255, 255)
+			FlxG._LastDrawingColor = FlxG.WHITE
+			
+			Local bx:Int = 20
+			Local by:Int = 28
+
+			Local i:Int = 0
+			While (i < 10)
+				If (i < globalVolume) Then
+					If (FlxG._LastDrawingAlpha <> 1) Then
+						SetAlpha(1)
+						FlxG._LastDrawingAlpha = 1
+					End If
+					
+				Else
+					If (FlxG._LastDrawingAlpha <> .5) Then
+						SetAlpha(.5)
+						FlxG._LastDrawingAlpha = .5
+					End If
+				End If
+				
+				DrawRect(bx, by, 8, i * 2)				
+				
+				bx += 12
+				by -= 2
+				i += 1
+			Wend
+						
+			_soundTrayLabel.Draw()
+			
+			PopMatrix()
+		End If
 	End Method
 	
 	Method _Reset:Void()
