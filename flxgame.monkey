@@ -431,11 +431,10 @@ Private
 	Method _DrawSoundTray:Void()
 		If (_soundTrayVisible) Then		
 			Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
-			If (FlxG.Mute) globalVolume = 0				
-			
-			Scale(1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX), 1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorY))
+			If (FlxG.Mute) globalVolume = 0			
 			
 			PushMatrix()
+			Scale(1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX), 1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorY))
 			Translate(_soundTrayX, _soundTrayY)
 			
 			If (FlxG._LastDrawingAlpha <> .5) Then
