@@ -62,7 +62,7 @@ Public
 		Local maxSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MaxSize
 		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_machine_font_"
 		
-		Local angelSystemFont:FlxFont = FlxAssetsManager.AddFont("system", FlxText.DRIVER_FONTMACHINE)
+		Local angelSystemFont:FlxFont = FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT, FlxText.DRIVER_FONTMACHINE)
 		
 		For Local size:Int = minSize To maxSize
 			angelSystemFont.SetPath(size, fontPathPrefix +  size + ".txt")

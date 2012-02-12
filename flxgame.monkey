@@ -135,15 +135,7 @@ Public
 		Return 0
 	End Method
 	
-	Method OnRender:Int()
-		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
-			_ResetFramerate()
-		End If
-	
-		Local mark:Int = Millisecs()
-		Local elapsedMS:Int = mark - _total
-		_total = mark		
-		
+	Method OnUpdate:Int()
 		#If TARGET <> "ios" Or TARGET <> "android"
 			If (useSoundHotKeys) Then
 				If (KeyHit(KEY_0)) Then
@@ -173,8 +165,20 @@ Public
 				End If
 			End If
 			
-			_UpdateSoundTray(elapsedMS)
+			_UpdateSoundTray(_step)
 		#End
+		
+		Return 0
+	End Method
+	
+	Method OnRender:Int()
+		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
+			_ResetFramerate()
+		End If
+	
+		Local mark:Int = Millisecs()
+		Local elapsedMS:Int = mark - _total
+		_total = mark	
 		
 		If (_debugger <> Null) Then
 			'TODO!			
