@@ -389,9 +389,7 @@ Private
 	End Method
 	
 	Method _Draw:Void()
-		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
-		
-		PushMatrix()	
+		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)	
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
 		
 		FlxG._LastDrawingColor = FlxG.WHITE
@@ -423,8 +421,6 @@ Private
 			i+=1
 		Wend
 		
-		PopMatrix()
-		
 		#If TARGET <> "ios" Or TARGET <> "android"
 			_DrawSoundTray()
 		#End
@@ -436,6 +432,8 @@ Private
 		If (_soundTrayVisible) Then		
 			Local globalVolume:Int = FlxU.Round(FlxG.Volume() * 10)
 			If (FlxG.Mute) globalVolume = 0				
+			
+			Scale(1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX), 1 / (FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorY))
 			
 			PushMatrix()
 			Translate(_soundTrayX, _soundTrayY)
