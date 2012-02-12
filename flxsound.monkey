@@ -60,7 +60,7 @@ Private
 	
 	Field _fadeInTotal:Float
 	
-	Field _oldVolume:Float
+	Field _oldMute:Bool
 	
 Public
 	Method New()
@@ -141,9 +141,9 @@ Public
 		
 		_volumeAdjust = radial * fade
 		
-		If (_oldVolume <> FlxG._Volume) Then
+		If (_oldMute <> FlxG.Mute) Then
 			_UpdateTransform()			
-			_oldVolume = FlxG._Volume
+			_oldMute = FlxG.Mute
 			updateNeeded = True
 		End If
 		

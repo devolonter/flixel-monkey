@@ -357,6 +357,14 @@ Public
 				VolumeHandler.OnVolumeChange(_Volume)
 			End If
 		End If
+		
+		If (Music <> Null And Music.active) Then
+			Music._UpdateTransform()
+		End If
+		
+		For Local basic:FlxBasic = EachIn Sounds
+			FlxSound(basic)._UpdateTransform()
+		Next
 	End Function
 	
 	Function DestroySounds:Void(forceDestroy:Bool = False)
