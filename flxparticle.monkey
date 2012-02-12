@@ -13,7 +13,7 @@ Class FlxParticle Extends FlxSprite
 	Method New()
 		Super.New()
 		lifespan = 0
-		friction = 0
+		friction = 500
 	End Method
 	
 	Method Update:Void()
