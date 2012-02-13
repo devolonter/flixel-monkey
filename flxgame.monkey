@@ -238,7 +238,6 @@ Private
 		FlxG.ResetCameras()
 		FlxG.ResetInput()
 		FlxG.DestroySounds()
-		FlxG.ClearBitmapCache()
 		
 		If (_debugger <> Null) Then
 			'TODO!
@@ -392,7 +391,7 @@ Private
 	
 	Method _Draw:Void()
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)	
-		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)		
+		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)
 		
 		FlxG._LastDrawingColor = FlxG.WHITE
 		FlxG._LastDrawingBlend = GetBlend()
