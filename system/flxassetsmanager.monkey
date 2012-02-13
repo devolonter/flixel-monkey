@@ -65,8 +65,8 @@ Public
 		Return _Images.Get(name)
 	End Function
 	
-	Function AllImages:MapValues()
-		Return _Images.Values()
+	Function AllImages:MapKeys()
+		Return _Images.Keys()
 	End Function
 	
 	Function AddSound:Void(name:String, path:String)
@@ -81,8 +81,8 @@ Public
 		Return _Sounds.Get(name)
 	End Function
 	
-	Function AllSounds:MapValues()
-		Return _Sounds.Values()
+	Function AllSounds:MapKeys()
+		Return _Sounds.Keys()
 	End Function
 	
 	Function AddMusic:Void(name:String, path:String)
@@ -97,8 +97,8 @@ Public
 		Return _Music.Get(name)
 	End Function
 	
-	Function AllMusic:MapValues()
-		Return _Music.Values()
+	Function AllMusic:MapKeys()
+		Return _Music.Keys()
 	End Function
 	
 	Function AddCursor:Void(cursor:String, path:String)
@@ -113,8 +113,8 @@ Public
 		Return _Cursors.Get(cursor)
 	End Function
 	
-	Function AllCursors:MapValues()
-		Return _Cursors.Values()
+	Function AllCursors:MapKeys()
+		Return _Cursors.Keys()
 	End Function
 	
 	Function AddString:Void(string:String, path:String)
@@ -129,8 +129,8 @@ Public
 		Return LoadString(_Strings.Get(string))
 	End Function
 	
-	Function AllStrings:MapValues()
-		Return _Cursors.Values()
+	Function AllStrings:MapKeys()
+		Return _Cursors.Keys()
 	End Function
 
 End Class
