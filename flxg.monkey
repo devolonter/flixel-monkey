@@ -323,10 +323,10 @@ Public
 		FlxG.Music.Play()
 	End Function
 	
-	Function LoadSound:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = False, autoPlay:Bool = False)
+	Function LoadSound:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = False, autoPlay:Bool = False, stopPrevious:Bool = True)
 		Local s:FlxSound = FlxSound(Sounds.Recycle(FlxSound.ClassObject))
 		
-		s.Load(sound, looped, autoDestroy)
+		s.Load(sound, looped, autoDestroy, stopPrevious)
 		s.Volume = volume		
 		If (autoPlay) s.Play()
 				
@@ -334,7 +334,9 @@ Public
 	End Function
 	
 	Function Play:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = True)
-		Return FlxG.LoadSound(sound, volume, looped, autoDestroy, True)
+		Local s:FlxSound = FlxG.LoadSound(sound, volume, looped, autoDestroy, True, False)
+		s.exists = False
+		Return s
 	End Function
 	
 	Function Volume:Float()

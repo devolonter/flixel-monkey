@@ -32,7 +32,7 @@ Class FlxSound Extends FlxBasic
 Private
 	Const _CHANNELS_COUNT:Int = 32
 
-	Global _UsedChannels:Bool[_CHANNELS_COUNT]
+	Global _NextChannel:Int = 0
 	
 	Global _SoundLoader:FlxSoundLoader = New FlxSoundLoader()
 
@@ -74,8 +74,7 @@ Public
 	
 	Method Destroy:Void()
 		Kill()		
-		_sound = Null		
-		_channel = -1
+		_sound = Null
 		_target = Null
 		
 		Super.Destroy()
@@ -150,8 +149,13 @@ Public
 		Stop()
 	End Method
 	
-	Method Load:FlxSound(sound:String, looped:Bool = False, autoDestroy:Bool = False)
-		Stop()
+	Method Load:FlxSound(sound:String, looped:Bool = False, autoDestroy:Bool = False, stopPrevious:Bool = True)
+		If (stopPrevious) Then
+			Stop()
+		Else
+			_channel = _GetFreeChannel()
+		End If
+		
 		_CreateSound()
 		_sound = FlxG.AddSound(sound, _SoundLoader)
 		_looped = looped
@@ -227,7 +231,6 @@ Public
 	
 		If (_channel >= 0) Then
 			StopChannel(_channel)
-			_UsedChannels[_channel] = False
 			_channel = -1			
 			active = False
 			
@@ -344,16 +347,11 @@ Private
 				i += 1
 			Wend	
 		Else
-			While (i < _CHANNELS_COUNT)
-				If (Not _UsedChannels[i])
-					_UsedChannels[i] = True
-					Return i
-				End If				
-				i += 1
-			Wend
-		End If		
+			_NextChannel += 1		
+			If (_NextChannel >= _CHANNELS_COUNT) _NextChannel = 0
+			Return _NextChannel
+		End If
 		
-		FlxG.Log("All channels occupied!")
 		Return -1
 	End Method	
 

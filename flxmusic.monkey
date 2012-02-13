@@ -16,7 +16,7 @@ Public
 		Stop()
 	End Method
 	
-	Method Load:FlxSound(music:String, looped:Bool = False, autoDestroy:Bool = True)
+	Method Load:FlxSound(music:String, looped:Bool = False, autoDestroy:Bool = True, stopPrevious:Bool = True)
 		Stop()
 		_CreateSound()
 		_filename = FlxAssetsManager.GetMusicPath(music)
