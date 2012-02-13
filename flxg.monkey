@@ -131,8 +131,6 @@ Class FlxG
 	Global _LastDrawingBlend:Int
 	
 	Global _CurrentCamera:FlxCamera
-	
-	Global _CurrentCameraID:Int
 
 Private
 	Const _JOY_UNITS_COUNT:Int = 4

@@ -410,8 +410,6 @@ Private
 				Continue
 			End If
 			
-			FlxG._CurrentCameraID = i
-			
 			If (FlxG._CurrentCamera = Null Or Not FlxG._CurrentCamera.exists Or Not FlxG._CurrentCamera.visible) Continue
 			
 			FlxG._CurrentCamera.DrawFX() 'not realy draw. Only calculation
