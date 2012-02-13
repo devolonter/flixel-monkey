@@ -65,7 +65,7 @@ Public
 		Return _Images.Get(name)
 	End Function
 	
-	Function AllImages:MapKeys()
+	Function AllImages:MapKeys<String, String>()
 		Return _Images.Keys()
 	End Function
 	
@@ -81,7 +81,7 @@ Public
 		Return _Sounds.Get(name)
 	End Function
 	
-	Function AllSounds:MapKeys()
+	Function AllSounds:MapKeys<String, String>()
 		Return _Sounds.Keys()
 	End Function
 	
@@ -97,7 +97,7 @@ Public
 		Return _Music.Get(name)
 	End Function
 	
-	Function AllMusic:MapKeys()
+	Function AllMusic:MapKeys<String, String>()
 		Return _Music.Keys()
 	End Function
 	
@@ -113,7 +113,7 @@ Public
 		Return _Cursors.Get(cursor)
 	End Function
 	
-	Function AllCursors:MapKeys()
+	Function AllCursors:MapKeys<String, String>()
 		Return _Cursors.Keys()
 	End Function
 	
@@ -129,7 +129,7 @@ Public
 		Return LoadString(_Strings.Get(string))
 	End Function
 	
-	Function AllStrings:MapKeys()
+	Function AllStrings:MapKeys<String, String>()
 		Return _Cursors.Keys()
 	End Function
 
