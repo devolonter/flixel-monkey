@@ -122,7 +122,9 @@ Class FlxG
 	
 	Global _Volume:Float
 	
-	Global _Cache:FlxResourcesManager<Image>
+	Global _BitmapCache:FlxResourcesManager<Image>
+	
+	Global _SoundCache:FlxResourcesManager<Sound>
 	
 	Global _LastDrawingColor:Int
 	
@@ -425,7 +427,7 @@ Public
 	End Function
 	
 	Function CheckBitmapCache:Bool(key:String)
-		Return _Cache.CheckResource(key)
+		Return _BitmapCache.CheckResource(key)
 	End Function
 	
 	Function AddBitmap:Image(graphic:String, graphicLoader:FlxResourceLoader<Image>, unique:Bool = False, key:String = "")
@@ -445,17 +447,31 @@ Public
 			End If
 		End If
 		
-		Return _Cache.GetResource(key, graphicLoader)
+		Return _BitmapCache.GetResource(key, graphicLoader)
 	End Function
 	
 	Function ClearBitmapCache:Void()
-		If (_Cache = Null) _Cache = New FlxResourcesManager<Image>()
+		If (_BitmapCache = Null) _BitmapCache = New FlxResourcesManager<Image>()
 		
-		For Local image:Image = EachIn _Cache.Resources.Values()
+		For Local image:Image = EachIn _BitmapCache.Resources.Values()
 			If (image <> Null) image.Discard()
 		Next
 		
-		_Cache.Clear()
+		_BitmapCache.Clear()
+	End Function
+	
+	Function AddSound:Sound(sound:String, soundLoader:FlxResourceLoader<Sound>)		
+		Return _SoundCache.GetResource(sound, soundLoader)
+	End Function
+	
+	Function ClearSoundCache:Void()
+		If (_SoundCache = Null) _SoundCache = New FlxResourcesManager<Sound>()
+		
+		For Local sound:Sound = EachIn _SoundCache.Resources.Values()
+			If (sound <> Null) sound.Discard()
+		Next
+		
+		_SoundCache.Clear()
 	End Function
 	
 	Function State:FlxState()
@@ -656,6 +672,7 @@ Public
 	
 	Function Reset:Void()
 		FlxG.ClearBitmapCache()
+		FlxG.ClearSoundCache()
 		FlxG.ResetInput()
 		FlxG.DestroySounds(True)
 		FlxG.Levels.Clear()

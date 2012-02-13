@@ -5,7 +5,9 @@ Import mojo.audio
 Import flxbasic
 Import flxobject
 Import flxu
+Import flxg
 Import system.flxassetsmanager
+Import system.flxresourcesmanager
 
 Class FlxSound Extends FlxBasic
 	
@@ -31,6 +33,8 @@ Private
 	Const _CHANNELS_COUNT:Int = 32
 
 	Global _UsedChannels:Bool[_CHANNELS_COUNT]
+	
+	Global _SoundLoader:FlxSoundLoader = New FlxSoundLoader()
 
 	Field _sound:Sound
 	
@@ -69,12 +73,8 @@ Public
 	End Method
 	
 	Method Destroy:Void()
-		Kill()
-		
-		If (_sound <> Null) Then
-			_sound.Discard()
-			_sound = Null
-		End If	
+		Kill()		
+		_sound = Null
 		
 		If (_channel >= 0) Then
 			_UsedChannels[_channel] = False
@@ -158,7 +158,7 @@ Public
 	Method Load:FlxSound(sound:String, looped:Bool = False, autoDestroy:Bool = False)
 		Stop()
 		_CreateSound()
-		_sound = LoadSound(FlxAssetsManager.GetSoundPath(sound))
+		_sound = FlxG.AddSound(sound, _SoundLoader)
 		_looped = looped
 		_UpdateTransform()
 		If (_sound <> Null) exists = True		
@@ -355,6 +355,14 @@ Class FlxSoundClass Implements FlxClass
 	
 	Method InstanceOf:Bool(object:Object)
 		Return (FlxSound(object) <> Null)
+	End Method
+	
+End Class
+
+Class FlxSoundLoader Extends FlxResourceLoader<Sound>
+
+	Method Load:Sound(name:String)
+		Return LoadSound(FlxAssetsManager.GetSoundPath(name))
 	End Method
 	
 End Class
