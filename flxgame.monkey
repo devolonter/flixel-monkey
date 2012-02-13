@@ -92,7 +92,7 @@ Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)		
 		_soundTrayTimer = 0
 		_soundTrayWidth = 160
-		_soundTrayHeight = 60
+		_soundTrayHeight = 45
 		_soundTrayX = 0
 		_soundTrayY	= -_soundTrayHeight
 		_soundTrayVisible = False
@@ -130,8 +130,10 @@ Public
 		_Step()
 		
 		_soundTrayX	= (FlxG.Width / 2) * FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX - (_soundTrayWidth / 2) + FlxG.Camera.X
+		#Rem
 		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
 		_soundTrayLabel.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER)
+		#End
 		Return 0
 	End Method
 	
@@ -478,7 +480,7 @@ Private
 				i += 1
 			Wend
 						
-			_soundTrayLabel.Draw()
+			'_soundTrayLabel.Draw()
 			
 			PopMatrix()
 		End If
