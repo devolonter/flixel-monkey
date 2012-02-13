@@ -75,7 +75,7 @@ Public
 		Return "FlxMusic"
 	End Method
 	
-	Function ValidFileExt:String()
+	Function GetValidExt:String()
 		#If TARGET = "glfw"
 			Return "wav"
 		#ElseIf TARGET = "html5"

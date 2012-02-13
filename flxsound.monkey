@@ -281,7 +281,7 @@ Public
 		Return "FlxSound"
 	End Method
 	
-	Function ValidFileExt:String()
+	Function GetValidExt:String()
 		#If TARGET = "glfw" Or TARGET = "xna"
 			Return "wav"
 		#ElseIf TARGET = "html5"

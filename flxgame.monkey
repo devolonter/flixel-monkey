@@ -26,8 +26,6 @@ Import plugin.timermanager
 	Import "data/flx_beep.mp3"
 #End
 
-Import "data/flx_beep.m4a"
-
 Class FlxGame extends App
 
 	Field useSoundHotKeys:Bool
@@ -542,7 +540,7 @@ Private
 		FlxAssetsManager.AddImage(FlxTilemap.AUTOTILES_ALT, FlxTilemap.AUTOTILES_ALT + ".png")
 		FlxAssetsManager.AddCursor(FlxG.DATA_PREFIX + "cursor", FlxG.DATA_PREFIX + "cursor.png")
 		
-		FlxAssetsManager.AddSound(FlxG.DATA_PREFIX + "beep", FlxG.DATA_PREFIX + "beep." + FlxSound.ValidFileExt())
+		FlxAssetsManager.AddSound(FlxG.DATA_PREFIX + "beep", FlxG.DATA_PREFIX + "beep." + FlxSound.GetValidExt())
 		
 		Self.OnContentInit()
 	End Method
