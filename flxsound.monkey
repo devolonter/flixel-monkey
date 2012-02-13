@@ -343,10 +343,20 @@ Private
 	Method _GetFreeChannel:Int()
 		Local i:Int = 0
 		
-		While (i < _CHANNELS_COUNT)
-			If (Not _UsedChannels[i]) Return i
-			i += 1
-		Wend
+		If (ChannelState(0) >= 0) Then
+			While (i < _CHANNELS_COUNT)
+				If (ChannelState(i) = 0) Return i				
+				i += 1
+			Wend	
+		Else
+			While (i < _CHANNELS_COUNT)
+				If (Not _UsedChannels[i])
+					_UsedChannels[i] = True
+					Return i
+				End If				
+				i += 1
+			Wend
+		End If		
 		
 		FlxG.Log("All channels occupied!")
 		Return -1
