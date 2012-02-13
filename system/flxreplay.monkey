@@ -90,7 +90,7 @@ Public
 		If (frameCount <= 0) Return ""
 		
 		Local output:StringStack = New StringStack()		
-		output.Push(FlxG.GlobalSeed + "~n")	
+		output.Push(seed + "~n")	
 		
 		Local i:Int = 0
 		While (i < frameCount)
