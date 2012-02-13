@@ -87,6 +87,7 @@ Public
 		_alpha = 1
 		_color = New FlxColor(FlxG.WHITE)
 		blend = AlphaBlend
+		cameras = Null
 		
 		finished = False
 		_facing = RIGHT
@@ -185,11 +186,12 @@ Public
 			If (_flicker) Return
 		End If
 		
-		If (Not OnScreen(FlxG._CurrentCamera)) Return
+		_camera = FlxG._CurrentCamera
 		
-		If (dirty) _CalcFrame()
+		If (cameras <> Null And Not cameras.Contains(_camera)) Return
+		If (Not OnScreen(_camera)) Return
 		
-		_camera = FlxG._CurrentCamera		
+		If (dirty) _CalcFrame()		
 		
 		If (FlxG._LastDrawingBlend <> blend) Then
 			SetBlend(blend)

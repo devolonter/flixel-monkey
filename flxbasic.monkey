@@ -58,6 +58,8 @@ Class FlxBasic
 	#End
 	Field alive:Bool
 	
+	Field cameras:Set<FlxCamera>
+	
 	#Rem
 	summary:Setting this to true will prevent the object from appearing when the visual debug mode in the debugger overlay is toggled on.
 	#End

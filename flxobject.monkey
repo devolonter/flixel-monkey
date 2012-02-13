@@ -214,6 +214,7 @@ Public
 		_point = Null
 		_rect = Null
 		last = Null
+		cameras = Null
 		If (path <> Null) path.Destroy()
 		path = Null		
 		_debugBoundingBoxColor = Null	
@@ -248,6 +249,7 @@ Public
 	End Method
 	
 	Method Draw:Void()
+		If (cameras <> Null And Not cameras.Contains(FlxG._CurrentCamera)) Return	
 		If (Not OnScreen(FlxG._CurrentCamera)) Return
 		
 		_VisibleCount += 1

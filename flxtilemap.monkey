@@ -80,6 +80,7 @@ Public
 		_tileHeight = 0
 		_tiles = Null		
 		immovable = True
+		cameras = Null
 		_startingIndex = 0
 		_camera = Null
 		_buffer = Null
@@ -203,6 +204,8 @@ Public
 		End If
 		
 		_camera = FlxG._CurrentCamera
+		
+		If (cameras <> Null And Not cameras.Contains(_camera)) Return
 		
 		If (FlxG._CurrentCameraID >= _buffers.Length()) _buffers.Push(Null)
 		_buffer = _buffers.Get(FlxG._CurrentCameraID)
