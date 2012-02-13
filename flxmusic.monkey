@@ -75,6 +75,20 @@ Public
 		Return "FlxMusic"
 	End Method
 	
+	Function ValidFileExt:String()
+		#If TARGET = "glfw"
+			Return "wav"
+		#ElseIf TARGET = "html5"
+			If (IsIE()) Then
+				Return "mp3"
+			Else
+				Return "ogg"
+			End If
+		#Else
+			Return "mp3"
+		#End
+	End Function
+	
 	Method _SetTransform:Void(volume:Float, pan:Float)
 		SetMusicVolume(volume)
 	End Method

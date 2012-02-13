@@ -32,6 +32,10 @@ Extern
 	Function OpenURL:Void(url:String) = "flixel.openURL"
 #End
 
+#If TARGET = "html5"
+	Function IsIE:Bool() = "flixel.isIE"
+#End
+
 Public
 
 Interface FlxClass

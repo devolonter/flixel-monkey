@@ -281,6 +281,20 @@ Public
 		Return "FlxSound"
 	End Method
 	
+	Function ValidFileExt:String()
+		#If TARGET = "glfw" Or TARGET = "xna"
+			Return "wav"
+		#ElseIf TARGET = "html5"
+			If (IsIE()) Then
+				Return "mp3"
+			Else
+				Return "ogg"
+			End If
+		#Else
+			Return "mp3"
+		#End
+	End Function
+	
 	Method _SetTransform:Void(volume:Float, pan:Float)
 		If (_channel >= 0) Then
 			SetChannelVolume(_channel, volume)

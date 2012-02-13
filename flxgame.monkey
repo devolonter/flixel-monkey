@@ -17,9 +17,16 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-Import "data/flx_beep.mp3"
+#If TARGET = "glfw" Or TARGET = "xna"
+	Import "data/flx_beep.wav"
+#ElseIf TARGET = "html5"
+	Import "data/flx_beep.ogg"
+	Import "data/flx_beep.mp3"
+#Else
+	Import "data/flx_beep.mp3"
+#End
 
-'#HTML5_SUSPEND_ON_BLUR_ENABLED = "true"
+Import "data/flx_beep.m4a"
 
 Class FlxGame extends App
 
@@ -534,7 +541,8 @@ Private
 		FlxAssetsManager.AddImage(FlxTilemap.AUTOTILES, FlxTilemap.AUTOTILES + ".png")
 		FlxAssetsManager.AddImage(FlxTilemap.AUTOTILES_ALT, FlxTilemap.AUTOTILES_ALT + ".png")
 		FlxAssetsManager.AddCursor(FlxG.DATA_PREFIX + "cursor", FlxG.DATA_PREFIX + "cursor.png")
-		FlxAssetsManager.AddSound(FlxG.DATA_PREFIX + "beep", FlxG.DATA_PREFIX + "beep.mp3")
+		
+		FlxAssetsManager.AddSound(FlxG.DATA_PREFIX + "beep", FlxG.DATA_PREFIX + "beep." + FlxSound.ValidFileExt())
 		
 		Self.OnContentInit()
 	End Method
