@@ -74,12 +74,7 @@ Public
 	
 	Method Destroy:Void()
 		Kill()		
-		_sound = Null
-		
-		If (_channel >= 0) Then
-			_UsedChannels[_channel] = False
-		End If
-		
+		_sound = Null		
 		_channel = -1
 		_target = Null
 		
@@ -152,7 +147,7 @@ Public
 	
 	Method Kill:Void()
 		Super.Kill()		
-		If (_channel > 0) Stop()
+		Stop()
 	End Method
 	
 	Method Load:FlxSound(sound:String, looped:Bool = False, autoDestroy:Bool = False)
