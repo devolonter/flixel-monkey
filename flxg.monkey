@@ -80,11 +80,11 @@ Class FlxG
 	
 	Global GlobalSeed:Int
 	
-	Global Scores:Stack<String>	
+	Global Scores:Stack<Int>	
 	
 	Global Score:Int
 	
-	Global Levels:Stack<String>	
+	Global Levels:Stack<Int>	
 	
 	Global Level:Int	
 	
@@ -649,8 +649,8 @@ Public
 		
 		FlxG.Mobile = IsMobile()
 		
-		FlxG.Scores = New Stack<String>()
-		FlxG.Levels = New Stack<String>()
+		FlxG.Scores = New Stack<Int>()
+		FlxG.Levels = New Stack<Int>()
 		FlxG.VisualDebug = False	
 	End Function
 	

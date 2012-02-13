@@ -57,7 +57,7 @@ Public
 		Super.Destroy()
 	End Method
 	
-	Method SetFormat:Void(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
+	Method SetFormat:FlxText(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
 		_driver.SetFormat(font, FlxAssetsManager.GetFont(font, _driver.ID).GetValidSize(size), alignment)
 		Self.Color = color
 		Shadow = shadowColor		
@@ -65,6 +65,8 @@ Public
 		Self.height = _driver.GetTextHeight()
 		frameHeight = Self.height
 		_ResetHelpers()
+		
+		Return Self
 	End Method
 	
 	Method SetWidth:Void(width:Float)
