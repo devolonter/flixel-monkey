@@ -205,14 +205,14 @@ Public
 		
 		_camera = FlxG._CurrentCamera
 		
-		If (cameras <> Null And Not cameras.Contains(_camera)) Return
+		If (cameras <> Null And Not cameras.Contains(_camera.ID)) Return
 		
-		If (FlxG._CurrentCameraID >= _buffers.Length()) _buffers.Push(Null)
+		If (_camera.ID >= _buffers.Length()) _buffers.Push(Null)
 		_buffer = _buffers.Get(_camera.ID)
 		
 		If (_buffer = Null) Then
 			_buffer = New FlxTilemapBuffer(_tileWidth, _tileHeight, widthInTiles, heightInTiles, _camera)
-			_buffers.Set(FlxG._CurrentCameraID, _buffer)
+			_buffers.Set(_camera.ID, _buffer)
 		End If
 		
 		_screenRows = _buffer.rows

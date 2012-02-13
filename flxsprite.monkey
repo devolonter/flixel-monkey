@@ -188,7 +188,7 @@ Public
 		
 		_camera = FlxG._CurrentCamera
 		
-		If (cameras <> Null And Not cameras.Contains(_camera)) Return
+		If (cameras <> Null And Not cameras.Contains(_camera.ID)) Return
 		If (Not OnScreen(_camera)) Return
 		
 		If (dirty) _CalcFrame()		
