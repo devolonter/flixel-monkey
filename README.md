@@ -19,7 +19,7 @@ Install
 	* Optionally. Do git **submodule update --init** to get bananas
 	
 * For users without git:
-	* Download archive [monkey-flixel-latest-stable.zip](https://github.com/devolonter/flixel-monkey/monkey-flixel-latest-stable.zip) or [monkey-flixel-latest-stable-full.zip](https://github.com/devolonter/flixel-monkey/monkey-flixel-latest-stable-full.zip)(with bananas) from downloads directory 
+	* Download archive [monkey-flixel-lastest-stable.zip](https://github.com/devolonter/flixel-monkey/monkey-flixel-lastest-stable.zip) or [monkey-flixel-lastest-stable-full.zip](https://github.com/devolonter/flixel-monkey/monkey-flixel-lastest-stable-full.zip)(with bananas) from downloads directory 
 	* Extract archive into the Monkey modules directory
 	
 Upgrade to new version
