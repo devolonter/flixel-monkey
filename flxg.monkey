@@ -674,9 +674,9 @@ Public
 	
 	Function Reset:Void()
 		FlxG.ClearBitmapCache()
-		FlxG.ClearSoundCache()
-		FlxG.ResetInput()
 		FlxG.DestroySounds(True)
+		FlxG.ClearSoundCache()
+		FlxG.ResetInput()		
 		FlxG.Levels.Clear()
 		FlxG.Scores.Clear()
 		FlxG.Level = 0		
