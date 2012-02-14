@@ -5,11 +5,11 @@ Import input
 Class Keyboard Extends Input
 
 	Method New()
-		#If TARGET <> "android"
-			Super.New(KEY_BACKSPACE, KEY_QUOTES)
-		#Else
-			Super.New(KEY_ESCAPE, KEY_ESCAPE)
-		#End
+	#If TARGET <> "android"
+		Super.New(KEY_BACKSPACE, KEY_QUOTES)
+	#Else
+		Super.New(KEY_ESCAPE, KEY_ESCAPE)
+	#End
 	End Method
 	
 	Method Escape:Bool() Property

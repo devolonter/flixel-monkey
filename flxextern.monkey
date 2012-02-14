@@ -38,10 +38,10 @@ Extern
 
 Public
 
-Interface FlxClass
+	Interface FlxClass
+		
+		Method CreateInstance:Object()
+		
+		Method InstanceOf:Bool(object:Object)
 	
-	Method CreateInstance:Object()
-	
-	Method InstanceOf:Bool(object:Object)
-
-End Interface
+	End Interface

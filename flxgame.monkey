@@ -143,37 +143,37 @@ Public
 	End Method
 	
 	Method OnUpdate:Int()
-		#If TARGET <> "ios" Or TARGET <> "android"
-			If (useSoundHotKeys) Then
-				If (KeyHit(KEY_0)) Then
-					FlxG.Mute = Not FlxG.Mute
-					
-					If (FlxG.VolumeHandler <> Null) Then
-						If (FlxG.Mute) Then
-							FlxG.VolumeHandler.OnVolumeChange(0)
-						Else
-							FlxG.VolumeHandler.OnVolumeChange(FlxG.Volume())
-						End If
+	#If TARGET <> "ios" Or TARGET <> "android"
+		If (useSoundHotKeys) Then
+			If (KeyHit(KEY_0)) Then
+				FlxG.Mute = Not FlxG.Mute
+				
+				If (FlxG.VolumeHandler <> Null) Then
+					If (FlxG.Mute) Then
+						FlxG.VolumeHandler.OnVolumeChange(0)
+					Else
+						FlxG.VolumeHandler.OnVolumeChange(FlxG.Volume())
 					End If
-					
-					_ShowSoundTray()
-				End If
-			
-				If (KeyHit(KEY_MINUS)) Then
-					FlxG.Mute = False
-					FlxG.Volume(FlxG.Volume() - .1)
-					_ShowSoundTray()
 				End If
 				
-				If (KeyHit(KEY_EQUALS)) Then
-					FlxG.Mute = False
-					FlxG.Volume(FlxG.Volume() + .1)
-					_ShowSoundTray()
-				End If
+				_ShowSoundTray()
+			End If
+		
+			If (KeyHit(KEY_MINUS)) Then
+				FlxG.Mute = False
+				FlxG.Volume(FlxG.Volume() - .1)
+				_ShowSoundTray()
 			End If
 			
-			_UpdateSoundTray(_step)
-		#End
+			If (KeyHit(KEY_EQUALS)) Then
+				FlxG.Mute = False
+				FlxG.Volume(FlxG.Volume() + .1)
+				_ShowSoundTray()
+			End If
+		End If
+		
+		_UpdateSoundTray(_step)
+	#End
 		
 		Return 0
 	End Method
@@ -425,12 +425,12 @@ Private
 			i+=1
 		Wend
 		
-		#If TARGET <> "ios" Or TARGET <> "android"
-			If (Not FlxG.Mobile) Then
-				_DrawSoundTray()
-				FlxG.Mouse.Draw()
-			End If
-		#End	
+	#If TARGET <> "ios" Or TARGET <> "android"
+		If (Not FlxG.Mobile) Then
+			_DrawSoundTray()
+			FlxG.Mouse.Draw()
+		End If
+	#End	
 	End Method
 	
 	Method _DrawSoundTray:Void()
