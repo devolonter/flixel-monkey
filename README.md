@@ -2,7 +2,6 @@ Flixel For Monkey
 =================
 
 This is a port of flixel to the Monkey language.
-
 The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam 'Atomic' Saltsman.
 
 Requirements
@@ -19,7 +18,7 @@ Install
 	* Optionally. Do git **submodule update --init** to get bananas
 	
 * For users without git:
-	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip)(with bananas) from downloads directory 
+	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads directory 
 	* Extract archive into the Monkey modules directory
 	
 Upgrade to new version
