@@ -262,50 +262,22 @@ Public
 	End Function
 	
 	Function ResetInput:Void()
-		#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
-			Accel.Reset()
-		#End				
+		For Local i:Int = 0 Until _JOY_UNITS_COUNT
+			_Joystick[i].Reset()
+		Next
 		
-		#If TARGET = "xna" Or TARGET = "glfw"
-			If (Not FlxG.Mobile) Then
-				For Local i:Int = 0 Until _JOY_UNITS_COUNT
-					_Joystick[i].Reset()
-				Next
-			End If
-		#End
+		For Local i:Int = 0 Until _TOUCH_COUNT
+			_Touch[i].Reset()
+		Next
 		
-		#If TARGET = "ios" Or TARGET = "android"
-			For Local i:Int = 0 Until _TOUCH_COUNT
-				_Touch[i].Reset()
-			Next
-			
-		#ElseIf TARGET = "html5" Or TARGET = "flash"
-			If (Not FlxG.Mobile) Then
-				Keys.Reset()
-			End If
-				
-			_Touch[0].Reset()
-		
-		#ElseIf TARGET = "xna"
-			If (Not FlxG.Mobile) Then
-				Keys.Reset()
-				_Touch[0].Reset()
-			Else
-				For Local i:Int = 0 Until _TOUCH_COUNT
-					_Touch[i].Reset()
-				Next
-			End If			
-			
-		#Else
-			Keys.Reset()
-			_Touch[0].Reset()			
-		#End
-		
-		#If TARGET = "android"
-			Keys.Reset()
-		#End
-		
+		Accel.Reset()		
 		Mouse.Reset()
+		
+	#If TARGET <> "android"
+		Keys.Reset()
+	#Else
+		Keys.Reset(KEY_BACKSPACE, KEY_QUOTES)
+	#End
 	End Function
 	
 	Function PlayMusic:Void(music:String, volume:Float = 1.0)
@@ -691,52 +663,52 @@ Public
 	End Function
 	
 	Function UpdateInput:Void()
-		#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
-			Accel.Update(AccelX(), AccelY(), AccelZ())
-		#End		
+	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
+		Accel.Update(AccelX(), AccelY(), AccelZ())
+	#End		
+	
+	#If TARGET = "xna" Or TARGET = "glfw"
+		If (Not FlxG.Mobile) Then
+			For Local i:Int = 0 Until _JOY_UNITS_COUNT
+				_Joystick[i].Update()
+			Next
+		End If
+	#End
+	
+	#If TARGET = "ios" Or TARGET = "android"
+		For Local i:Int = 0 Until _TOUCH_COUNT
+			_Touch[i].Update(TouchX(i), TouchY(i))
+			
+			If (i > 0 And Not _Touch[i].Used) Exit
+		Next
 		
-		#If TARGET = "xna" Or TARGET = "glfw"
-			If (Not FlxG.Mobile) Then
-				For Local i:Int = 0 Until _JOY_UNITS_COUNT
-					_Joystick[i].Update()
-				Next
-			End If
-		#End
+	#ElseIf TARGET = "html5" Or TARGET = "flash"
+		If (Not FlxG.Mobile) Then
+			Keys.Update()
+		End If
 		
-		#If TARGET = "ios" Or TARGET = "android"
+		_Touch[0].Update(TouchX(), TouchY())
+		
+	#ElseIf TARGET = "xna"
+		If (Not FlxG.Mobile) Then
+			Keys.Update()
+			_Touch[0].Update(TouchX(), TouchY())
+		Else
 			For Local i:Int = 0 Until _TOUCH_COUNT
 				_Touch[i].Update(TouchX(i), TouchY(i))
 				
 				If (i > 0 And Not _Touch[i].Used) Exit
 			Next
-			
-		#ElseIf TARGET = "html5" Or TARGET = "flash"
-			If (Not FlxG.Mobile) Then
-				Keys.Update()
-			End If
-			
-			_Touch[0].Update(TouchX(), TouchY())
-			
-		#ElseIf TARGET = "xna"
-			If (Not FlxG.Mobile) Then
-				Keys.Update()
-				_Touch[0].Update(TouchX(), TouchY())
-			Else
-				For Local i:Int = 0 Until _TOUCH_COUNT
-					_Touch[i].Update(TouchX(i), TouchY(i))
-					
-					If (i > 0 And Not _Touch[i].Used) Exit
-				Next
-			End If
-					
-		#Else
-			Keys.Update()				
-			_Touch[0].Update(TouchX(), TouchY())
-		#End
-		
-		#If TARGET = "android"
-			Keys.Update()
-		#End
+		End If
+				
+	#Else
+		Keys.Update()				
+		_Touch[0].Update(TouchX(), TouchY())
+	#End
+	
+	#If TARGET = "android"
+		Keys.Update()
+	#End
 		
 		If (Not _Game._debuggerUp Or Not _Game._debugger.hasMouse) Then
 			Mouse.Update(MouseX(), MouseY())

@@ -71,6 +71,18 @@ Public
 		Wend
 	End Method
 	
+	Method Reset:Void(fromKey:Int, toKey:Int)
+		Local i:Int = fromKey
+		Local is:InputState
+		 	
+		While (i < toKey)
+			is = _Map[i]			
+			is.current = 0
+			is.last = 0
+			i += 1
+		Wend
+	End Method
+	
 	Method Pressed:Bool()
 		Return False
 	End Method
