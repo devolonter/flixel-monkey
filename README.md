@@ -12,25 +12,25 @@ Monkey v53 or higher
 Install
 -------
 
-For users with git installed:
-* Go to the Monkey modules directory 
-* Do **git clone git@github.com:devolonter/flixel-monkey.git flixel**
-* Optionally. Do git **submodule update --init** to get bananas
+* For users with git installed:
+	* Go to the Monkey modules directory 
+	* Do **git clone git@github.com:devolonter/flixel-monkey.git flixel**
+	* Optionally. Do git **submodule update --init** to get bananas
 	
-For users without git:
-* Download archive monkey-flixel-latest-stable.zip or monkey-flixel-latest-stable-full.zip (with bananas) from downloads directory 
-* Extract archive into the Monkey modules directory
+* For users without git:
+	* Download archive monkey-flixel-latest-stable.zip or monkey-flixel-latest-stable-full.zip (with bananas) from downloads directory 
+	* Extract archive into the Monkey modules directory
 	
 Upgrade to new version
 ----------------------
 
-For users with git installed:
-* **git pull**
-* Optionally. Do git **submodule update** to update bananas
+* For users with git installed:
+	* **git pull**
+	* Optionally. Do git **submodule update** to update bananas
 	
-For users without git:
-* Download the latest version of the library from downloads directory
-* Replace flixel module content by archive data
+* For users without git:
+	* Download the latest version of the library from downloads directory
+	* Replace flixel module content by archive data
 	
 Naming conventions
 ------------------
