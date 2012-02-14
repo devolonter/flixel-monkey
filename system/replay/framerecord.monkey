@@ -48,7 +48,7 @@ Class FrameRecord
 	End Method
 	
 	Method Save:StringStack(output:StringStack)			
-		output.Push(frame + ":" + "k")
+		output.Push(frame + "k")
 		
 		If (keys <> Null) Then
 			Local key:KeyRecord
