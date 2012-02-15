@@ -15,10 +15,10 @@ Install
 * For users with git installed:
 	* Go to the Monkey modules directory 
 	* Do **git clone git@github.com:devolonter/flixel-monkey.git flixel**
-	* Optionally. Do git **submodule update --init** to get bananas
+	* Optionally. Do **git submodule update --init** to get bananas
 	
 * For users without git:
-	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads directory 
+	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads section 
 	* Extract archive into the Monkey modules directory
 	
 Upgrade to new version
@@ -26,7 +26,7 @@ Upgrade to new version
 
 * For users with git installed:
 	* **git pull**
-	* Optionally. Do git **submodule update** to update bananas
+	* Optionally. Do **git submodule update** to update bananas
 	
 * For users without git:
 	* Download the latest version of the library from downloads directory
@@ -94,7 +94,7 @@ End Class
 Class HelloWorldState Extends FlxState
 
 	'necessary to the FlxGame constructor, also used to reset game
-	Global ClassObject:FlxClass = new HelloWorldClass()
+	Global ClassObject:FlxClass = new HelloWorldStateClass()
 	
 	Method Create:Void()		
 		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!")	
@@ -116,7 +116,7 @@ Class HelloWorldState Extends FlxState
 End Class
 
 'Monkey currently does not support reflection, so here we emulate necessary functional
-Class HelloWorldClass Implements FlxClass
+Class HelloWorldStateClass Implements FlxClass
 
 	'Creates new instance of an object
 	Method CreateInstance:Object()
