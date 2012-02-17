@@ -1,7 +1,7 @@
 Flixel For Monkey
 =================
 
-This is a port of flixel to the Monkey language.
+This is a port of flixel to the [Monkey](http://www.monkeycoder.co.nz/) language.
 The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam 'Atomic' Saltsman.
 
 Requirements
