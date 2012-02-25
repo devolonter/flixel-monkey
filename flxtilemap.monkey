@@ -194,6 +194,8 @@ Public
 			i += 1
 		Wend
 		
+		_buffers.Clear()
+		
 		Return Self
 	End Method
 	
