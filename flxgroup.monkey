@@ -118,6 +118,8 @@ Public
 	summary:Automatically goes through and calls render on everything you added.
 	#End
 	Method Draw:Void()
+		If (cameras <> Null And Not cameras.Contains(FlxG._CurrentCamera.ID)) Return
+	
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
