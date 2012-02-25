@@ -679,7 +679,7 @@ Public
 		Return True
 	End Method
 	
-	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:FlxClass, range:Int = 1)
+	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:FlxClass = Null, range:Int = 1)
 		If (range <= 0) range = 1
 		
 		Local tileObject:FlxTile
