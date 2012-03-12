@@ -377,7 +377,7 @@ Public
 		_animations.Set(name, New FlxAnim(name, frames, frameRate, looped))
 	End Method
 	
-	Method AddAnimationCallback:Void(animationCallback:FlxAnimationCallback)
+	Method AddAnimationCallback:Void(animationCallback:FlxAnimationListener)
 		_callback = animationCallback
 	End Method
 	
