@@ -207,7 +207,7 @@ Public
 		
 		_camera = FlxG._CurrentCamera
 		
-		If (cameras <> Null And Not cameras.Contains(_camera.ID)) Return
+		If (_cameras <> Null And Not _cameras.Contains(_camera.ID)) Return
 		
 		If (_camera.ID >= _buffers.Length()) _buffers.Push(Null)
 		_buffer = _buffers.Get(_camera.ID)

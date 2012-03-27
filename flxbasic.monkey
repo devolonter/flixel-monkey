@@ -56,14 +56,14 @@ Class FlxBasic
 	summary:Useful state for many game objects - "dead" (!alive) vs alive.
 	[a #Kill]Kill()[/a] and [a #Recive]Revive()[/a] both flip this switch (along with exists, but you can override that).
 	#End
-	Field alive:Bool
-	
-	Field cameras:IntSet
+	Field alive:Bool	
 	
 	#Rem
 	summary:Setting this to true will prevent the object from appearing when the visual debug mode in the debugger overlay is toggled on.
 	#End
 	Field ignoreDrawDebug:Bool
+
+	Field _cameras:IntSet
 	
 	#Rem
 	summary:Instantiate the basic flixel object.
@@ -144,6 +144,23 @@ Class FlxBasic
 	Method Revive:Void()
 		alive = True
 		exists = True
+	End Method
+	
+	Method Cameras:Void(cameras:Int[])
+		If (cameras.Length() = 0) Then
+			_cameras = Null
+			Return
+		End If
+		
+		If (_cameras = Null) _cameras = New IntSet()
+		
+		Local l:Int = cameras.Length()
+		Local i:Int = 0
+		
+		While (i < l)
+			_cameras.Insert(cameras[i])
+			i += 1
+		Wend
 	End Method
 	
 	#Rem
