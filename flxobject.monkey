@@ -214,7 +214,7 @@ Public
 		_point = Null
 		_rect = Null
 		last = Null
-		cameras = Null
+		_cameras = Null
 		If (path <> Null) path.Destroy()
 		path = Null		
 		_debugBoundingBoxColor = Null	

@@ -88,6 +88,7 @@ Public
 		_length = 0
 		_members = _members.Resize(_length)
 		_sortComparator = Null
+		_cameras = Null
 	End Method
 	
 	#Rem
