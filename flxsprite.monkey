@@ -87,7 +87,7 @@ Public
 		_alpha = 1
 		_color = New FlxColor(FlxG.WHITE)
 		blend = AlphaBlend
-		cameras = Null
+		_cameras = Null
 		
 		finished = False
 		_facing = RIGHT

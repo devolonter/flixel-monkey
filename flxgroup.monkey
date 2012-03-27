@@ -53,6 +53,7 @@ Public
 		_maxSize = maxSize
 		_marker = 0
 		_length = 0
+		_cameras = Null
 	End Method
 	
 	#Rem

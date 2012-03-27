@@ -80,7 +80,7 @@ Public
 		_tileHeight = 0
 		_tiles = Null		
 		immovable = True
-		cameras = Null
+		_cameras = Null
 		_startingIndex = 0
 		_camera = Null
 		_buffer = Null
