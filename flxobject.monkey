@@ -249,7 +249,7 @@ Public
 	End Method
 	
 	Method Draw:Void()
-		If (cameras <> Null And Not cameras.Contains(FlxG._CurrentCamera.ID)) Return	
+		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera.ID)) Return	
 		If (Not OnScreen(FlxG._CurrentCamera)) Return
 		
 		_VisibleCount += 1
