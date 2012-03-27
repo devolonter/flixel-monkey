@@ -440,7 +440,7 @@ Public
 	
 	Method GetRandom:FlxBasic(startIndex:Int = 0, length:Int = 0)
 		If (length = 0) length = _length
-		Return FlxArray<FlxBasic>.GetRandom(_members, startIndex, length)
+		Return FlxArray<FlxBasic>.GetSafeRandom(_members, startIndex, length)
 	End Method
 	
 	Method Clear:Void()
