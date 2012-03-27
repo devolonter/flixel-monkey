@@ -146,7 +146,7 @@ Class FlxBasic
 		exists = True
 	End Method
 	
-	Method Cameras:Void(cameras:Int[])
+	Method Cameras:Void(cameras:Int[]) Property
 		If (cameras.Length() = 0) Then
 			_cameras = Null
 			Return
