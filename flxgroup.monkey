@@ -6,6 +6,7 @@ Strict
 Import flxextern
 Import flxbasic
 Import flxobject
+Import system.flxarray
 
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
@@ -439,7 +440,7 @@ Public
 	
 	Method GetRandom:FlxBasic(startIndex:Int = 0, length:Int = 0)
 		If (length = 0) length = _length
-		Return FlxG.GetRandom(_members, startIndex, length)
+		Return FlxArray<FlxBasic>.GetRandom(_members, startIndex, length)
 	End Method
 	
 	Method Clear:Void()

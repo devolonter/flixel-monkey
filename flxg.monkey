@@ -179,20 +179,6 @@ Public
 		Return FlxU.Srand(FlxG.GlobalSeed)
 	End Function
 	
-	Function GetRandom:FlxBasic(objects:FlxBasic[], startIndex:Int = 0, length:Int = 0)
-		If (objects.Length() > 0) Then
-			Local l:Int = length
-			
-			If (l = 0 Or l > objects.Length() - startIndex) Then
-				l = objects.Length() - startIndex
-			End if
-			
-			If (l > 0) Return objects[startIndex + int(FlxG.Random()*l)]	
-		End If
-		
-		Return Null
-	End Function
-	
 	#Rem
 	Function GetRandom:Object(objects:Object[], startIndex:Int = 0, length:Int = 0)
 		GetRandom is not currently supported in Monkey. Use FlxArray.GetSafeRandom method
