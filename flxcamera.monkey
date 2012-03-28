@@ -203,7 +203,7 @@ Public
 				_xnaRectHelper.height -= _xnaRectHelper.Bottom - FlxG.DeviceHeight
 			End If
 			
-			If (_xnaRectHelper.width <= 0 And _xnaRectHelper.height <= 0) Then					
+			If (_xnaRectHelper.width > 0 And _xnaRectHelper.height > 0) Then					
 				SetScissor(_xnaRectHelper.x, _xnaRectHelper.y, _xnaRectHelper.width, _xnaRectHelper.height)
 			End If
 		#Else
