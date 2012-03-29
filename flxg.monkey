@@ -513,7 +513,7 @@ Public
 			FlxG.Cameras.Get(i).Shake(intensity, duration, onComplete, force, direction)
 			i+=1
 		Wend
-	End Function		
+	End Function
 	
 	Function BgColor:Int()
 		If (FlxG.Camera = Null Or Not FlxG.Camera.alive) Return FlxG._BgColor.argb	
@@ -538,7 +538,7 @@ Public
 		
 		FlxQuadTree.Divisions = FlxG.WorldDivisions
 		
-		Local quadTree:FlxQuadTree = New FlxQuadTree(FlxG.WorldBounds.x, FlxG.WorldBounds.y, FlxG.WorldBounds.width, FlxG.WorldBounds.height)
+		Local quadTree:FlxQuadTree = FlxQuadTree.Recycle(FlxG.WorldBounds.x, FlxG.WorldBounds.y, FlxG.WorldBounds.width, FlxG.WorldBounds.height)
 		quadTree.Load(objectOrGroup1, objectOrGroup2, notifyCallback, processCallback)
 		
 		Local result:Bool = quadTree.Execute()

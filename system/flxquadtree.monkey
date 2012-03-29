@@ -15,6 +15,8 @@ Class FlxQuadTree Extends FlxRect
 	
 	Global Divisions:Int
 	
+	Field exists:Bool
+	
 Private
 	Field _canSubdivide:Bool
 	
@@ -87,68 +89,15 @@ Private
 	Global _CheckObjectHullWidth:Float
 	
 	Global _CheckObjectHullHeight:Float
+	
+	Global _listsCache:FlxListsCache = New FlxListsCache()
+	
+	Global _treesCache:FlxQuadTreesCache = New FlxQuadTreesCache()
 
 Public
-	Method New(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
-		Super.New(x, y, width, height)
-		_tailA = New FlxList()
-		_headA = _tailA
-		
-		_tailB = New FlxList()
-		_headB = _tailB
-		
-		If (parent <> Null) Then
-			Local iterator:FlxList
-			Local ot:FlxList
-			
-			If (parent._headA.object <> Null) Then
-				iterator = parent._headA
-				
-				While (iterator <> Null)
-					If (_tailA.object <> Null) Then
-						ot = _tailA
-						_tailA = New FlxList()
-						ot.nextLink = _tailA
-					End If
-					
-					_tailA.object = iterator.object
-					iterator = iterator.nextLink
-				Wend
-			End If
-			
-			If (parent._headB.object <> Null) Then
-				iterator = parent._headB
-				
-				While (iterator <> Null)
-					If (_tailB.object <> Null) Then
-						ot = _tailB
-						_tailB = New FlxList()
-						ot.nextLink = _tailB
-					End If
-					
-					_tailB.object = iterator.object
-					iterator = iterator.nextLink
-				Wend
-			End If
-		Else
-			_Min = (width + height) / (2 * Divisions)
-		End If
-		
-		_canSubdivide = (width > _Min Or height > _Min)
-		
-		_northWestTree = Null
-		_northEastTree = Null
-		_southEastTree = Null
-		_southWestTree = Null
-		_leftEdge = x
-		_rightEdge = x + width
-		_halfWidth = width / 2
-		_midpointX = _leftEdge + _halfWidth
-		_topEdge = y
-		_bottomEdge = y + height
-		_halfHeight = height / 2
-		_midpointY = _topEdge + _halfHeight
-	End Method
+	Method New(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)		
+		_Reset(x, y, width, height, parent)
+	End Method	
 
 	Method Destroy:Void()
 		_headA.Destroy()
@@ -175,6 +124,8 @@ Public
 		_Object = Null
 		_ProcessingCallback = Null
 		_NotifyCallback = Null
+		
+		exists = False
 	End Method
 	
 	Method Load:Void(objectOrGroup1:FlxBasic, objectOrGroup2:FlxBasic = Null, notifyCallback:FlxOverlapNotifyListener, processCallback:FlxOverlapProcessListener = Null)
@@ -276,8 +227,76 @@ Public
 		
 		Return overlapProcessed
 	End Method
+	
+	Function Recycle:FlxQuadTree(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
+		Return _treesCache.Recycle(x, y, width, height, parent)
+	End Function
 
-Private	
+Private
+	Method _Reset:Void(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
+		exists = True
+		
+		Make(x, y, width, height)		
+				
+		_tailA = _listsCache.Recycle()
+		_headA = _tailA
+		
+		_tailB = _listsCache.Recycle()
+		_headB = _tailB
+		
+		If (parent <> Null) Then
+			Local iterator:FlxList
+			Local ot:FlxList
+			
+			If (parent._headA.object <> Null) Then
+				iterator = parent._headA
+				
+				While (iterator <> Null)
+					If (_tailA.object <> Null) Then
+						ot = _tailA
+						_tailA = _listsCache.Recycle()
+						ot.nextLink = _tailA
+					End If
+					
+					_tailA.object = iterator.object
+					iterator = iterator.nextLink
+				Wend
+			End If
+			
+			If (parent._headB.object <> Null) Then
+				iterator = parent._headB
+				
+				While (iterator <> Null)
+					If (_tailB.object <> Null) Then
+						ot = _tailB
+						_tailB = _listsCache.Recycle()
+						ot.nextLink = _tailB
+					End If
+					
+					_tailB.object = iterator.object
+					iterator = iterator.nextLink
+				Wend
+			End If
+		Else
+			_Min = (width + height) / (2 * Divisions)
+		End If
+		
+		_canSubdivide = (width > _Min Or height > _Min)
+		
+		_northWestTree = Null
+		_northEastTree = Null
+		_southEastTree = Null
+		_southWestTree = Null
+		_leftEdge = x
+		_rightEdge = x + width
+		_halfWidth = width / 2
+		_midpointX = _leftEdge + _halfWidth
+		_topEdge = y
+		_bottomEdge = y + height
+		_halfHeight = height / 2
+		_midpointY = _topEdge + _halfHeight
+	End Method
+
 	Method _AddObject:Void()
 		If (Not _canSubdivide Or (_leftEdge >= _ObjectLeftEdge And _rightEdge <= _ObjectRightEdge And _topEdge >= _ObjectTopEdge And _bottomEdge <= _ObjectBottomEdge)) Then
 			_AddToList()
@@ -287,7 +306,7 @@ Private
 		If (_ObjectLeftEdge > _leftEdge And _ObjectRightEdge < _midpointX) Then
 			If (_ObjectTopEdge > _topEdge And _ObjectBottomEdge < _midpointY) Then
 				If (_northWestTree = Null) Then
-					_northWestTree = New FlxQuadTree(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
+					_northWestTree = _treesCache.Recycle(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_northWestTree._AddObject()
@@ -296,7 +315,7 @@ Private
 			
 			If (_ObjectTopEdge > _midpointY And _ObjectBottomEdge < _bottomEdge) Then
 				If (_southWestTree = Null) Then
-					_southWestTree = New FlxQuadTree(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
+					_southWestTree = _treesCache.Recycle(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_southWestTree._AddObject()
@@ -307,7 +326,7 @@ Private
 		If (_ObjectLeftEdge > _midpointX And _ObjectRightEdge < _rightEdge) Then
 			If (_ObjectTopEdge > _topEdge And _ObjectBottomEdge < _midpointY) Then
 				If (_northEastTree = Null) Then
-					_northEastTree = New FlxQuadTree(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
+					_northEastTree = _treesCache.Recycle(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_northEastTree._AddObject()
@@ -316,7 +335,7 @@ Private
 			
 			If (_ObjectTopEdge > _midpointY And _ObjectBottomEdge < _bottomEdge) Then
 				If (_southEastTree = Null) Then
-					_southEastTree = New FlxQuadTree(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
+					_southEastTree = _treesCache.Recycle(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_southEastTree._AddObject()
@@ -326,7 +345,7 @@ Private
 		
 		If (_ObjectRightEdge > _leftEdge And _ObjectLeftEdge < _midpointX And _ObjectBottomEdge > _topEdge And _ObjectTopEdge < _midpointY) Then
 			If (_northWestTree = Null) Then
-				_northWestTree = New FlxQuadTree(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
+				_northWestTree = _treesCache.Recycle(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_northWestTree._AddObject()
@@ -334,7 +353,7 @@ Private
 		
 		If (_ObjectRightEdge > _midpointX And _ObjectLeftEdge < _rightEdge And _ObjectBottomEdge > _topEdge And _ObjectTopEdge < _midpointY) Then
 			If (_northEastTree = Null) Then
-				_northEastTree = New FlxQuadTree(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
+				_northEastTree = _treesCache.Recycle(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_northEastTree._AddObject()
@@ -342,7 +361,7 @@ Private
 		
 		If (_ObjectRightEdge > _midpointX And _ObjectLeftEdge < _rightEdge And _ObjectBottomEdge > _midpointY And _ObjectTopEdge < _bottomEdge) Then
 			If (_southEastTree = Null) Then
-				_southEastTree = New FlxQuadTree(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
+				_southEastTree = _treesCache.Recycle(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_southEastTree._AddObject()
@@ -350,7 +369,7 @@ Private
 		
 		If (_ObjectRightEdge > _leftEdge And _ObjectLeftEdge < _midpointX And _ObjectBottomEdge > _midpointY And _ObjectTopEdge < _bottomEdge) Then
 			If (_southWestTree = Null) Then
-				_southWestTree = New FlxQuadTree(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
+				_southWestTree = _treesCache.Recycle(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_southWestTree._AddObject()
@@ -363,7 +382,7 @@ Private
 		If (_List = A_LIST) Then
 			If (_tailA.object <> Null) Then
 				ot = _tailA
-				_tailA = New FlxList()
+				_tailA = _listsCache.Recycle()
 				ot.nextLink = _tailA
 			End If
 			
@@ -371,7 +390,7 @@ Private
 		Else
 			If (_tailB.object <> Null) Then
 				ot = _tailB
-				_tailB = New FlxList()
+				_tailB = _listsCache.Recycle()
 				ot.nextLink = _tailB
 			End If
 			
@@ -485,3 +504,87 @@ Interface FlxOverlapProcessListener
 	Method OnOverlapProcess:Bool(object1:FlxObject, object2:FlxObject)
 
 End Interface
+
+Private
+
+Class FlxListsCache
+
+Private	
+	Field _lists:FlxList[]
+	
+	Field _length:Int
+	
+Public
+	Method New()
+		_length = 0
+	End Method
+
+	Method Add:FlxList(list:FlxList)		
+		If (_length = _lists.Length()) Then			
+			_lists = _lists.Resize(_length * 2 + 10)
+		End If
+
+		_lists[_length] = list
+		_length += 1	
+			
+		Return list
+	End Method
+	
+	Method Recycle:FlxList()
+		Local list:FlxList
+		Local i:Int = 0	
+			
+		While(i < _length)
+			list = _lists[i]
+			If (list <> Null And Not list.exists) Then
+				list.exists = True
+				Return list
+			End If
+			i+=1
+		Wend
+		
+		Return Add(New FlxList())
+	End Method
+
+End Class
+
+Class FlxQuadTreesCache
+
+Private	
+	Field _trees:FlxQuadTree[]
+	
+	Field _length:Int
+	
+Public
+	Method New()
+		_length = 0
+	End Method
+
+	Method Add:FlxQuadTree(tree:FlxQuadTree)		
+		If (_length = _trees.Length()) Then			
+			_trees = _trees.Resize(_length * 2 + 10)
+		End If
+
+		_trees[_length] = tree
+		_length += 1	
+			
+		Return tree
+	End Method
+	
+	Method Recycle:FlxQuadTree(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
+		Local tree:FlxQuadTree
+		Local i:Int = 0
+			
+		While(i < _length)
+			tree = _trees[i]
+			If (tree <> Null And Not tree.exists) Then
+				tree._Reset(x, y, width, height, parent)
+				Return tree
+			End If
+			i+=1
+		Wend
+		
+		Return Add(New FlxQuadTree(x, y, width, height, parent))
+	End Method
+
+End Class
