@@ -13,7 +13,8 @@ Class FlxList
 	
 	Method New()
 		object = null
-		nextLink = Null		
+		nextLink = Null
+		exists = True	
 	End Method
 	
 	Method Destroy:Void()

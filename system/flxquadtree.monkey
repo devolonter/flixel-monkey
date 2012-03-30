@@ -26,9 +26,7 @@ Private
 	
 	Field _headB:FlxList
 	
-	Field _tailB:FlxList
-	
-	Global _Min:Int
+	Field _tailB:FlxList	
 	
 	Field _northWestTree:FlxQuadTree
 	
@@ -53,6 +51,10 @@ Private
 	Field _midpointX:Float
 	
 	Field _midpointY:Float
+	
+	Field _listsCache:FlxListsCache
+	
+	Global _Min:Int
 	
 	Global _Object:FlxObject
 	
@@ -88,14 +90,13 @@ Private
 	
 	Global _CheckObjectHullWidth:Float
 	
-	Global _CheckObjectHullHeight:Float
+	Global _CheckObjectHullHeight:Float	
 	
-	Global _listsCache:FlxListsCache = New FlxListsCache()
-	
-	Global _treesCache:FlxQuadTreesCache = New FlxQuadTreesCache()
+	Global _TreesCache:FlxQuadTreesCache = New FlxQuadTreesCache()
 
 Public
-	Method New(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)		
+	Method New(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
+		_listsCache = New FlxListsCache()	
 		_Reset(x, y, width, height, parent)
 	End Method	
 
@@ -229,7 +230,7 @@ Public
 	End Method
 	
 	Function Recycle:FlxQuadTree(x:Float, y:Float, width:Float, height:Float, parent:FlxQuadTree = Null)
-		Return _treesCache.Recycle(x, y, width, height, parent)
+		Return _TreesCache.Recycle(x, y, width, height, parent)
 	End Function
 
 Private
@@ -306,7 +307,7 @@ Private
 		If (_ObjectLeftEdge > _leftEdge And _ObjectRightEdge < _midpointX) Then
 			If (_ObjectTopEdge > _topEdge And _ObjectBottomEdge < _midpointY) Then
 				If (_northWestTree = Null) Then
-					_northWestTree = _treesCache.Recycle(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
+					_northWestTree = _TreesCache.Recycle(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_northWestTree._AddObject()
@@ -315,7 +316,7 @@ Private
 			
 			If (_ObjectTopEdge > _midpointY And _ObjectBottomEdge < _bottomEdge) Then
 				If (_southWestTree = Null) Then
-					_southWestTree = _treesCache.Recycle(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
+					_southWestTree = _TreesCache.Recycle(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_southWestTree._AddObject()
@@ -326,7 +327,7 @@ Private
 		If (_ObjectLeftEdge > _midpointX And _ObjectRightEdge < _rightEdge) Then
 			If (_ObjectTopEdge > _topEdge And _ObjectBottomEdge < _midpointY) Then
 				If (_northEastTree = Null) Then
-					_northEastTree = _treesCache.Recycle(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
+					_northEastTree = _TreesCache.Recycle(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_northEastTree._AddObject()
@@ -335,7 +336,7 @@ Private
 			
 			If (_ObjectTopEdge > _midpointY And _ObjectBottomEdge < _bottomEdge) Then
 				If (_southEastTree = Null) Then
-					_southEastTree = _treesCache.Recycle(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
+					_southEastTree = _TreesCache.Recycle(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
 				End If
 				
 				_southEastTree._AddObject()
@@ -345,7 +346,7 @@ Private
 		
 		If (_ObjectRightEdge > _leftEdge And _ObjectLeftEdge < _midpointX And _ObjectBottomEdge > _topEdge And _ObjectTopEdge < _midpointY) Then
 			If (_northWestTree = Null) Then
-				_northWestTree = _treesCache.Recycle(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
+				_northWestTree = _TreesCache.Recycle(_leftEdge, _topEdge, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_northWestTree._AddObject()
@@ -353,7 +354,7 @@ Private
 		
 		If (_ObjectRightEdge > _midpointX And _ObjectLeftEdge < _rightEdge And _ObjectBottomEdge > _topEdge And _ObjectTopEdge < _midpointY) Then
 			If (_northEastTree = Null) Then
-				_northEastTree = _treesCache.Recycle(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
+				_northEastTree = _TreesCache.Recycle(_midpointX, _topEdge, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_northEastTree._AddObject()
@@ -361,7 +362,7 @@ Private
 		
 		If (_ObjectRightEdge > _midpointX And _ObjectLeftEdge < _rightEdge And _ObjectBottomEdge > _midpointY And _ObjectTopEdge < _bottomEdge) Then
 			If (_southEastTree = Null) Then
-				_southEastTree = _treesCache.Recycle(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
+				_southEastTree = _TreesCache.Recycle(_midpointX, _midpointY, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_southEastTree._AddObject()
@@ -369,7 +370,7 @@ Private
 		
 		If (_ObjectRightEdge > _leftEdge And _ObjectLeftEdge < _midpointX And _ObjectBottomEdge > _midpointY And _ObjectTopEdge < _bottomEdge) Then
 			If (_southWestTree = Null) Then
-				_southWestTree = _treesCache.Recycle(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
+				_southWestTree = _TreesCache.Recycle(_leftEdge, _midpointY, _halfWidth, _halfHeight, Self)
 			End If
 				
 			_southWestTree._AddObject()
@@ -536,7 +537,7 @@ Public
 			
 		While(i < _length)
 			list = _lists[i]
-			If (list <> Null And Not list.exists) Then
+			If (Not list.exists) Then
 				list.exists = True
 				Return list
 			End If
@@ -577,7 +578,7 @@ Public
 			
 		While(i < _length)
 			tree = _trees[i]
-			If (tree <> Null And Not tree.exists) Then
+			If (Not tree.exists) Then
 				tree._Reset(x, y, width, height, parent)
 				Return tree
 			End If
