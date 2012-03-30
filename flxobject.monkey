@@ -147,11 +147,15 @@ Class FlxObject Extends FlxBasic
 	Field _rect:FlxRect
 	
 Private
-	Global _separateXCallback:FlxObjectSeparateX = New FlxObjectSeparateX()
+	Global _SeparateXCallback:FlxObjectSeparateX = New FlxObjectSeparateX()
 	
-	Global _separateYCallback:FlxObjectSeparateY = New FlxObjectSeparateY()
+	Global _SeparateYCallback:FlxObjectSeparateY = New FlxObjectSeparateY()
 
-	Global _pZero:FlxPoint = New FlxPoint()		
+	Global _PZero:FlxPoint = New FlxPoint()
+	
+	Global _Obj1Rect:FlxRect = New FlxRect()
+	
+	Global _Obj2Rect:FlxRect = New FlxRect()	
 	
 	Field _pathNodeIndex:Int
 	
@@ -548,11 +552,11 @@ Public
 		If (obj1immovable And obj2immovable) Return False
 		
 		If (FlxTilemap(object1) <> Null) Then
-			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateXCallback)
+			Return FlxTilemap(object1).OverlapsWithCallback(object2, _SeparateXCallback)
 		End If
 		
 		If (FlxTilemap(object2) <> Null) Then
-			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateXCallback, True)
+			Return FlxTilemap(object2).OverlapsWithCallback(object1, _SeparateXCallback, True)
 		End If
 		
 		Local overlap:Float = 0
@@ -562,10 +566,10 @@ Public
 		If (obj1delta <> obj2delta) Then
 			Local obj1deltaAbs:Float = Abs(obj1delta)
 			Local obj2deltaAbs:Float = Abs(obj2delta)
-			Local obj1rect:FlxRect = New FlxRect(object1.x - Max(obj1delta, 0.0), object1.last.y, object1.width + obj1deltaAbs, object1.height)
-			Local obj2rect:FlxRect = New FlxRect(object2.x - Max(obj2delta, 0.0), object2.last.y, object2.width + obj2deltaAbs, object2.height)
+			_Obj1Rect.Make(object1.x - Max(obj1delta, 0.0), object1.last.y, object1.width + obj1deltaAbs, object1.height)
+			_Obj2Rect.Make(object2.x - Max(obj2delta, 0.0), object2.last.y, object2.width + obj2deltaAbs, object2.height)
 			
-			If (obj1rect.x + obj1rect.width > obj2rect.x And obj1rect.x < obj2rect.x + obj2rect.width And obj1rect.y + obj1rect.height > obj2rect.y And obj1rect.y < obj2rect.y + obj2rect.height) Then
+			If (_Obj1Rect.x + _Obj1Rect.width > _Obj2Rect.x And _Obj1Rect.x < _Obj2Rect.x + _Obj2Rect.width And _Obj1Rect.y + _Obj1Rect.height > _Obj2Rect.y And _Obj1Rect.y < _Obj2Rect.y + _Obj2Rect.height) Then
 				Local maxOverlap:Float = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS
 				
 				If (obj1delta > obj2delta) Then
@@ -631,11 +635,11 @@ Public
 		If (obj1immovable And obj2immovable) Return False
 		
 		If (FlxTilemap(object1) <> Null) Then
-			Return FlxTilemap(object1).OverlapsWithCallback(object2, _separateYCallback)
+			Return FlxTilemap(object1).OverlapsWithCallback(object2, _SeparateYCallback)
 		End If
 		
 		If (FlxTilemap(object2) <> Null) Then
-			Return FlxTilemap(object2).OverlapsWithCallback(object1, _separateYCallback, True)
+			Return FlxTilemap(object2).OverlapsWithCallback(object1, _SeparateYCallback, True)
 		End If
 		
 		Local overlap:Float = 0
@@ -645,10 +649,10 @@ Public
 		If (obj1delta <> obj2delta) Then
 			Local obj1deltaAbs:Float = Abs(obj1delta)
 			Local obj2deltaAbs:Float = Abs(obj2delta)
-			Local obj1rect:FlxRect = New FlxRect(object1.x, object1.y - Max(obj1delta, 0.0), object1.width, object1.height + obj1deltaAbs)
-			Local obj2rect:FlxRect = New FlxRect(object2.x, object2.y - Max(obj2delta, 0.0), object2.width, object2.height +  + obj2deltaAbs)
+			_Obj1Rect.Make(object1.x, object1.y - Max(obj1delta, 0.0), object1.width, object1.height + obj1deltaAbs)
+			_Obj2Rect.Make(object2.x, object2.y - Max(obj2delta, 0.0), object2.width, object2.height +  + obj2deltaAbs)
 			
-			If (obj1rect.x + obj1rect.width > obj2rect.x And obj1rect.x < obj2rect.x + obj2rect.width And obj1rect.y + obj1rect.height > obj2rect.y And obj1rect.y < obj2rect.y + obj2rect.height) Then
+			If (_Obj1Rect.x + _Obj1Rect.width > _Obj2Rect.x And _Obj1Rect.x < _Obj2Rect.x + _Obj2Rect.width And _Obj1Rect.y + _Obj1Rect.height > _Obj2Rect.y And _Obj1Rect.y < _Obj2Rect.y + _Obj2Rect.height) Then
 				Local maxOverlap:Float = obj1deltaAbs + obj2deltaAbs + OVERLAP_BIAS
 				
 				If (obj1delta > obj2delta) Then
