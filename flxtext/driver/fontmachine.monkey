@@ -87,10 +87,8 @@ Public
 		End If	
 	End Method
 	
-	Method Destroy:Void()		
-		_font.UnloadFullFont()
-		_font = Null
-				
+	Method Destroy:Void()
+		_font = Null				
 		Super.Destroy()
 	End Method			
 
