@@ -410,6 +410,16 @@ Public
 		Return _BitmapCache.GetResource(key, graphicLoader)
 	End Function
 	
+	Function RemoveBitmap:Void(graphic:String)
+		If (_BitmapCache <> Null) Then
+			Local image:Image = _BitmapCache.Resources.Get(graphic)
+			If (image <> Null) Then
+				image.Discard()
+				_BitmapCache.RemoveResource(graphic)
+			End If
+		End If
+	End Function
+	
 	Function ClearBitmapCache:Void()
 		If (_BitmapCache = Null) _BitmapCache = New FlxResourcesManager<Image>()
 		
