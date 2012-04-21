@@ -68,6 +68,10 @@ Public
 		_font = _FontsManager.GetResource(_fontFamily + _size, _FontLoader)		
 		_fontHeight = _font.Height()
 	End Method
+	
+	Method GetFontObject:Object()
+		Return _font
+	End Method
 
 End Class
 

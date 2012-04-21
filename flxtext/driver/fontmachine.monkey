@@ -103,6 +103,10 @@ Public
 	Method ID:Int() Property
 		Return FlxText.DRIVER_FONTMACHINE		 	
 	End Method
+	
+	Method GetFontObject:Object()
+		Return _font
+	End Method
 
 End Class
 

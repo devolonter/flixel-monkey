@@ -129,6 +129,10 @@ Public
 		_shadow.SetARGB(color)
 	End Method
 	
+	Method GetFontObject:Object()
+		Return _driver.GetFontObject()
+	End Method
+	
 	Method _DrawSurface:Void(x:Float, y:Float)	
 		If (_shadow.argb <> 0) Then
 			Local oldColor:Int = FlxG._LastDrawingColor
