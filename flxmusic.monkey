@@ -54,7 +54,9 @@ Public
 		active = True
 	End Method
 	
-	Method Pause:Void()		
+	Method Pause:Void()
+		If (Not active) Return	
+		
 		PauseMusic()		
 		_paused = True
 		active = False
