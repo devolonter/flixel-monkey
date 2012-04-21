@@ -175,7 +175,7 @@ Public
 	
 Private
 	Method _UpdateButton:Void()
-		If (FlxG.Mobile Or FlxG.Mouse.Visible) Then
+		If (FlxG.Mobile Or FlxG.Mouse.Visible Or FlxG._Game.useSystemCursor) Then
 			Local cameras:Stack<FlxCamera> = FlxG.Cameras
 			Local camera:FlxCamera
 			Local i:Int = 0
