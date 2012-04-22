@@ -7,7 +7,7 @@
   <Build>NIGHTLY-A</Build>
   <Kind>ZipFolder</Kind>
   <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-nightly.zip</UpdateURL>
-  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/pre-beta/flixel.lmbs</RemoteSignatureURL>
+  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/nightly/flixel.lmbs</RemoteSignatureURL>
   <ShortDescription>Implemented automatic updater</ShortDescription>
   <RequireCredentials>false</RequireCredentials>
   <MoreInfoURL>https://github.com/devolonter/flixel-monkey/issues?direction=desc&milestone=1&page=1&sort=created&state=closed</MoreInfoURL>
