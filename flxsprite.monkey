@@ -137,11 +137,7 @@ Public
 		
 		_pixels = FlxG.AddBitmap(graphic, _GraphicLoader, unique)
 		
-		If (reverse) Then
-			_flipped = True
-		Else
-			_flipped = True
-		End if
+		_flipped = reverse
 		
 		Self.width = _pixels.Width()
 		frameWidth = Self.width
