@@ -7,7 +7,7 @@ Strict
 #End
 
 #If TARGET = "html5"
-	Import "data/flx_empty_cursor.png" 
+	Import "data/empty_cursor_flx.png" 
 #End
 
 Extern

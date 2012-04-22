@@ -9,7 +9,7 @@ Import flixel.flxg
 Import flixel.system.flxresourcesmanager
 Import flixel.system.flxassetsmanager
 
-Import "../../data/flx_cursor.png"
+Import "../../data/cursor_flx.png"
 
 Class Mouse Extends XYDevice
 
@@ -99,7 +99,7 @@ Public
 	End Method
 	
 	Method Load:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)		
-		If (cursor.Length() = 0) cursor = FlxG.DATA_PREFIX + "cursor"
+		If (cursor.Length() = 0) cursor = "cursor" + FlxG.DATA_SUFFIX
 		
 		_cursor.pixels = _CursorsManager.GetResource(cursor, _CursorLoader)
 		_cursor.pixels.SetHandle(xOffset, yOffset)

@@ -10,40 +10,40 @@ Import flixel.system.flxfont
 Import flixel.system.flxassetsmanager
 Import flixel.system.flxresourcesmanager
 
-Import "../../data/flx_system_angel_font_8.png"
-Import "../../data/flx_system_angel_font_8.txt"
-Import "../../data/flx_system_angel_font_9.png"
-Import "../../data/flx_system_angel_font_9.txt"
-Import "../../data/flx_system_angel_font_10.png"
-Import "../../data/flx_system_angel_font_10.txt"
-Import "../../data/flx_system_angel_font_11.png"
-Import "../../data/flx_system_angel_font_11.txt"
-Import "../../data/flx_system_angel_font_12.png"
-Import "../../data/flx_system_angel_font_12.txt"
-Import "../../data/flx_system_angel_font_13.png"
-Import "../../data/flx_system_angel_font_13.txt"
-Import "../../data/flx_system_angel_font_14.png"
-Import "../../data/flx_system_angel_font_14.txt"
-Import "../../data/flx_system_angel_font_15.png"
-Import "../../data/flx_system_angel_font_15.txt"
-Import "../../data/flx_system_angel_font_16.png"
-Import "../../data/flx_system_angel_font_16.txt"
-Import "../../data/flx_system_angel_font_17.png"
-Import "../../data/flx_system_angel_font_17.txt"
-Import "../../data/flx_system_angel_font_18.png"
-Import "../../data/flx_system_angel_font_18.txt"
-Import "../../data/flx_system_angel_font_19.png"
-Import "../../data/flx_system_angel_font_19.txt"
-Import "../../data/flx_system_angel_font_20.png"
-Import "../../data/flx_system_angel_font_20.txt"
-Import "../../data/flx_system_angel_font_21.png"
-Import "../../data/flx_system_angel_font_21.txt"
-Import "../../data/flx_system_angel_font_22.png"
-Import "../../data/flx_system_angel_font_22.txt"
-Import "../../data/flx_system_angel_font_23.png"
-Import "../../data/flx_system_angel_font_23.txt"
-Import "../../data/flx_system_angel_font_24.png"
-Import "../../data/flx_system_angel_font_24.txt"
+Import "../../data/system_angel_font_8_flx.png"
+Import "../../data/system_angel_font_8_flx.txt"
+Import "../../data/system_angel_font_9_flx.png"
+Import "../../data/system_angel_font_9_flx.txt"
+Import "../../data/system_angel_font_10_flx.png"
+Import "../../data/system_angel_font_10_flx.txt"
+Import "../../data/system_angel_font_11_flx.png"
+Import "../../data/system_angel_font_11_flx.txt"
+Import "../../data/system_angel_font_12_flx.png"
+Import "../../data/system_angel_font_12_flx.txt"
+Import "../../data/system_angel_font_13_flx.png"
+Import "../../data/system_angel_font_13_flx.txt"
+Import "../../data/system_angel_font_14_flx.png"
+Import "../../data/system_angel_font_14_flx.txt"
+Import "../../data/system_angel_font_15_flx.png"
+Import "../../data/system_angel_font_15_flx.txt"
+Import "../../data/system_angel_font_16_flx.png"
+Import "../../data/system_angel_font_16_flx.txt"
+Import "../../data/system_angel_font_17_flx.png"
+Import "../../data/system_angel_font_17_flx.txt"
+Import "../../data/system_angel_font_18_flx.png"
+Import "../../data/system_angel_font_18_flx.txt"
+Import "../../data/system_angel_font_19_flx.png"
+Import "../../data/system_angel_font_19_flx.txt"
+Import "../../data/system_angel_font_20_flx.png"
+Import "../../data/system_angel_font_20_flx.txt"
+Import "../../data/system_angel_font_21_flx.png"
+Import "../../data/system_angel_font_21_flx.txt"
+Import "../../data/system_angel_font_22_flx.png"
+Import "../../data/system_angel_font_22_flx.txt"
+Import "../../data/system_angel_font_23_flx.png"
+Import "../../data/system_angel_font_23_flx.txt"
+Import "../../data/system_angel_font_24_flx.png"
+Import "../../data/system_angel_font_24_flx.txt"
 
 Global AngelfontTextDriver:FlxClass = New FlxAFDriverClass()
 
@@ -60,12 +60,12 @@ Public
 	Function Init:Void()
 		Local minSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MinSize
 		Local maxSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MaxSize
-		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_angel_font_"
+		Local fontPathPrefix:String = FlxText.SYSTEM_FONT + "_angel_font_"
 		
 		Local angelSystemFont:FlxFont = FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT, FlxText.DRIVER_ANGELFONT)
 		
 		For Local size:Int = minSize To maxSize
-			angelSystemFont.SetPath(size, fontPathPrefix +  size + ".txt")
+			angelSystemFont.SetPath(size, fontPathPrefix +  size + FlxG.DATA_SUFFIX + ".txt")
 		Next
 	End Function
 	
@@ -211,7 +211,7 @@ Public
 			Endif
 		Next		
 
-		image = LoadImage(url.Replace(".txt", ".png"))
+		image = LoadImage(url.Replace("_flx.txt", "_flx.png"))
 	End Method
 	
 	Method DrawText:Void(txt:String, x:Int, y:Int)

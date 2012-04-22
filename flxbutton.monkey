@@ -9,8 +9,8 @@ Import flxg
 Import flxcamera
 Import system.flxassetsmanager
 
-Import "data/flx_button.png"
-Import "data/flx_beep.mp3"
+Import "data/button_flx.png"
+Import "data/beep_flx.mp3"
 
 Class FlxButton Extends FlxSprite
 	
@@ -59,7 +59,7 @@ Public
 			labelOffset = New FlxPoint(-1, 3)
 		End If
 		
-		LoadGraphic(FlxG.DATA_PREFIX + "button", True, False, 80, 20)
+		LoadGraphic("button" + FlxG.DATA_SUFFIX, True, False, 80, 20)
 		onUp = onClick
 		onDown = Null
 		onOut = Null

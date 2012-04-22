@@ -10,7 +10,7 @@ Import flixel.system.flxassetsmanager
 Import flixel.system.replay.keyrecord
 Import flixel.system.replay.xyrecord
 
-Import "../../data/flx_cursor.png"
+Import "../../data/cursor_flx.png"
 
 Class XYDevice Extends Input Abstract
 

@@ -18,12 +18,12 @@ Import system.flxreplay
 Import plugin.timermanager
 
 #If TARGET = "glfw" Or TARGET = "xna"
-	Import "data/flx_beep.wav"
+	Import "data/beep_flx.wav"
 #ElseIf TARGET = "html5"
-	Import "data/flx_beep.ogg"
-	Import "data/flx_beep.mp3"
+	Import "data/beep_flx.ogg"
+	Import "data/beep_flx.mp3"
 #Else
-	Import "data/flx_beep.mp3"
+	Import "data/beep_flx.mp3"
 #End
 
 Class FlxGame extends App
@@ -231,7 +231,7 @@ Public
 Private
 	Method _ShowSoundTray:Void(silent:Bool = False)
 		If (Not silent) Then
-			FlxG.Play(FlxG.DATA_PREFIX + "beep")
+			FlxG.Play("beep" + FlxG.DATA_SUFFIX)
 		End If
 		
 		_soundTrayTimer = 1
@@ -526,21 +526,21 @@ Private
 		
 		Local minSystemFontSize:Int = 8
 		Local maxSystemFontSize:Int = 24
-		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_font_"
+		Local fontPathPrefix:String = FlxText.SYSTEM_FONT + "_font_"
 		
 		Local system:FlxFont = 	FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT)	
 		
 		For Local size:Int = minSystemFontSize To maxSystemFontSize
-			system.SetPath(size, fontPathPrefix + Min(size, 17) + ".png")
+			system.SetPath(size, fontPathPrefix + Min(size, 17) +  FlxG.DATA_SUFFIX + ".png")
 		Next
 		
-		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "default", FlxG.DATA_PREFIX + "default.png")
-		FlxAssetsManager.AddImage(FlxG.DATA_PREFIX + "button", FlxG.DATA_PREFIX + "button.png")
+		FlxAssetsManager.AddImage("default" + FlxG.DATA_SUFFIX, "default" +  FlxG.DATA_SUFFIX + ".png")
+		FlxAssetsManager.AddImage("button" + FlxG.DATA_SUFFIX, "button" + FlxG.DATA_SUFFIX + ".png")
 		FlxAssetsManager.AddImage(FlxTilemap.AUTOTILES, FlxTilemap.AUTOTILES + ".png")
 		FlxAssetsManager.AddImage(FlxTilemap.AUTOTILES_ALT, FlxTilemap.AUTOTILES_ALT + ".png")
-		FlxAssetsManager.AddCursor(FlxG.DATA_PREFIX + "cursor", FlxG.DATA_PREFIX + "cursor.png")
+		FlxAssetsManager.AddCursor("cursor" + FlxG.DATA_SUFFIX, "cursor" + FlxG.DATA_SUFFIX + ".png")
 		
-		FlxAssetsManager.AddSound(FlxG.DATA_PREFIX + "beep", FlxG.DATA_PREFIX + "beep." + FlxSound.GetValidExt())
+		FlxAssetsManager.AddSound("beep" + FlxG.DATA_SUFFIX, "beep" + FlxG.DATA_SUFFIX + "." + FlxSound.GetValidExt())
 		
 		Self.OnContentInit()
 	End Method

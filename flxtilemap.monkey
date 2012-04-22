@@ -14,14 +14,14 @@ Import flxpath
 Import system.flxtile
 Import system.flxtilemapbuffer
 
-Import "data/flx_autotiles.png"
-Import "data/flx_autotiles_alt.png"
+Import "data/autotiles_flx.png"
+Import "data/autotiles_flx.png"
 
 Class FlxTilemap Extends FlxObject
 
-	Const AUTOTILES:String = FlxG.DATA_PREFIX + "autotiles"
+	Const AUTOTILES:String =  "autotiles" + FlxG.DATA_SUFFIX
 	
-	Const AUTOTILES_ALT:String = FlxG.DATA_PREFIX + "autotiles_alt"
+	Const AUTOTILES_ALT:String =  "autotiles_alt" + FlxG.DATA_SUFFIX
 	
 	Const OFF:Int = 0
 	

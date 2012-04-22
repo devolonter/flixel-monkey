@@ -36,7 +36,7 @@ Class FlxG
 	
 	Const LIBRARY_MINOR_VERSION:Int = 0
 	
-	Const DATA_PREFIX:String = "flx_"
+	Const DATA_SUFFIX:String = "_flx"
 	
 	Const RED:Int = $FFFF0012
 	

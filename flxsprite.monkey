@@ -11,7 +11,7 @@ Import flxg
 Import system.flxanim
 Import system.flxcolor
 
-Import "data/flx_default.png"
+Import "data/default_flx.png"
 
 Class FlxSprite Extends FlxObject
 
@@ -104,7 +104,7 @@ Public
 		_mixedColor = New FlxColor(FlxG.WHITE)
 		
 		If (simpleGraphic.Length() = 0)
-			simpleGraphic = FlxG.DATA_PREFIX + "default"
+			simpleGraphic = "default" + FlxG.DATA_SUFFIX
 		End If
 		
 		LoadGraphic(simpleGraphic)

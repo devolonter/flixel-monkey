@@ -10,40 +10,40 @@ Import flixel.flxtext.driver
 Import flixel.system.flxassetsmanager
 Import flixel.system.flxresourcesmanager
 
-Import "../../data/flx_system_machine_font_8_P_1.png"
-Import "../../data/flx_system_machine_font_8.txt"
-Import "../../data/flx_system_machine_font_9_P_1.png"
-Import "../../data/flx_system_machine_font_9.txt"
-Import "../../data/flx_system_machine_font_10_P_1.png"
-Import "../../data/flx_system_machine_font_10.txt"
-Import "../../data/flx_system_machine_font_11_P_1.png"
-Import "../../data/flx_system_machine_font_11.txt"
-Import "../../data/flx_system_machine_font_12_P_1.png"
-Import "../../data/flx_system_machine_font_12.txt"
-Import "../../data/flx_system_machine_font_13_P_1.png"
-Import "../../data/flx_system_machine_font_13.txt"
-Import "../../data/flx_system_machine_font_14_P_1.png"
-Import "../../data/flx_system_machine_font_14.txt"
-Import "../../data/flx_system_machine_font_15_P_1.png"
-Import "../../data/flx_system_machine_font_15.txt"
-Import "../../data/flx_system_machine_font_16_P_1.png"
-Import "../../data/flx_system_machine_font_16.txt"
-Import "../../data/flx_system_machine_font_17_P_1.png"
-Import "../../data/flx_system_machine_font_17.txt"
-Import "../../data/flx_system_machine_font_18_P_1.png"
-Import "../../data/flx_system_machine_font_18.txt"
-Import "../../data/flx_system_machine_font_19_P_1.png"
-Import "../../data/flx_system_machine_font_19.txt"
-Import "../../data/flx_system_machine_font_20_P_1.png"
-Import "../../data/flx_system_machine_font_20.txt"
-Import "../../data/flx_system_machine_font_21_P_1.png"
-Import "../../data/flx_system_machine_font_21.txt"
-Import "../../data/flx_system_machine_font_22_P_1.png"
-Import "../../data/flx_system_machine_font_22.txt"
-Import "../../data/flx_system_machine_font_23_P_1.png"
-Import "../../data/flx_system_machine_font_23.txt"
-Import "../../data/flx_system_machine_font_24_P_1.png"
-Import "../../data/flx_system_machine_font_24.txt"
+Import "../../data/system_machine_font_8_flx_P_1.png"
+Import "../../data/system_machine_font_8_flx.txt"
+Import "../../data/system_machine_font_9_flx_P_1.png"
+Import "../../data/system_machine_font_9_flx.txt"
+Import "../../data/system_machine_font_10_flx_P_1.png"
+Import "../../data/system_machine_font_10_flx.txt"
+Import "../../data/system_machine_font_11_flx_P_1.png"
+Import "../../data/system_machine_font_11_flx.txt"
+Import "../../data/system_machine_font_12_flx_P_1.png"
+Import "../../data/system_machine_font_12_flx.txt"
+Import "../../data/system_machine_font_13_flx_P_1.png"
+Import "../../data/system_machine_font_13_flx.txt"
+Import "../../data/system_machine_font_14_flx_P_1.png"
+Import "../../data/system_machine_font_14_flx.txt"
+Import "../../data/system_machine_font_15_flx_P_1.png"
+Import "../../data/system_machine_font_15_flx.txt"
+Import "../../data/system_machine_font_16_flx_P_1.png"
+Import "../../data/system_machine_font_16_flx.txt"
+Import "../../data/system_machine_font_17_flx_P_1.png"
+Import "../../data/system_machine_font_17_flx.txt"
+Import "../../data/system_machine_font_18_flx_P_1.png"
+Import "../../data/system_machine_font_18_flx.txt"
+Import "../../data/system_machine_font_19_flx_P_1.png"
+Import "../../data/system_machine_font_19_flx.txt"
+Import "../../data/system_machine_font_20_flx_P_1.png"
+Import "../../data/system_machine_font_20_flx.txt"
+Import "../../data/system_machine_font_21_flx_P_1.png"
+Import "../../data/system_machine_font_21_flx.txt"
+Import "../../data/system_machine_font_22_flx_P_1.png"
+Import "../../data/system_machine_font_22_flx.txt"
+Import "../../data/system_machine_font_23_flx_P_1.png"
+Import "../../data/system_machine_font_23_flx.txt"
+Import "../../data/system_machine_font_24_flx_P_1.png"
+Import "../../data/system_machine_font_24_flx.txt"
 
 Global FontmachineTextDriver:FlxClass = New FlxFMDriverClass()
 
@@ -60,12 +60,12 @@ Public
 	Function Init:Void()
 		Local minSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MinSize
 		Local maxSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MaxSize
-		Local fontPathPrefix:String = FlxG.DATA_PREFIX + FlxText.SYSTEM_FONT + "_machine_font_"
+		Local fontPathPrefix:String = FlxText.SYSTEM_FONT + "_machine_font_"
 		
 		Local angelSystemFont:FlxFont = FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT, FlxText.DRIVER_FONTMACHINE)
 		
 		For Local size:Int = minSize To maxSize
-			angelSystemFont.SetPath(size, fontPathPrefix +  size + ".txt")
+			angelSystemFont.SetPath(size, fontPathPrefix +  size + FlxG.DATA_SUFFIX + ".txt")
 		Next
 	End Function
 
