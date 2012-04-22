@@ -10,5 +10,5 @@
   <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/nightly/flixel.lmbs</RemoteSignatureURL>
   <ShortDescription>Implemented automatic updater</ShortDescription>
   <RequireCredentials>false</RequireCredentials>
-  <MoreInfoURL>https://github.com/devolonter/flixel-monkey/issues?direction=desc&milestone=1&page=1&sort=created&state=closed</MoreInfoURL>
+  <MoreInfoURL>https://github.com/devolonter/flixel-monkey/issues?direction=desc&amp;milestone=1&amp;page=1&amp;sort=created&amp;state=closed</MoreInfoURL>
 </ModSignature>
