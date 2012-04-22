@@ -447,6 +447,19 @@ Public
 		_length = 0
 	End Method
 	
+	Method Revive:Void()
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null And Not basic.exists) basic.Revive()
+			i+=1
+		Wend
+
+		Super.Revive()
+	End Method
+	
 	Method Kill:Void()
 		Local i:Int = 0
 		Local basic:FlxBasic
