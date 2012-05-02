@@ -211,7 +211,7 @@ Public
 			Endif
 		Next		
 
-		image = LoadImage(url.Replace("_flx.txt", "_flx.png"))
+		image = LoadImage(url.Replace(".txt", ".png"))
 	End Method
 	
 	Method DrawText:Void(txt:String, x:Int, y:Int)
