@@ -17,11 +17,11 @@ End Class
 
 Class TextStateClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New TextState()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (TextState(object) <> Null)
 	End Method
 

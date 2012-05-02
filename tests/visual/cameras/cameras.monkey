@@ -17,11 +17,11 @@ End Class
 
 Class CamerasStateClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New CamerasState()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (CamerasState(object) <> Null)
 	End Method
 
@@ -47,6 +47,12 @@ Class CamerasState Extends FlxState
 		Local green_camera:FlxCamera = new FlxCamera(180, 10, 100, 100, 2)
 		green_camera.BgColor = FlxG.GREEN
 		FlxG.AddCamera(green_camera)		
+	End Method
+	
+	Method Update:Void()
+		If (FlxG.Keys.JustPressed(KEY_SPACE)) Then
+			FlxG.Shake(0.5)
+		End If
 	End Method
 	
 End Class

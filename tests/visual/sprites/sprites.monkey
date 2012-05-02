@@ -36,7 +36,7 @@ Class SpritesState Extends FlxState
 	
 	Method Create:Void()		
 		sprite = New FlxSprite(FlxG.Width / 2, FlxG.Height / 2)
-		sprite.LoadGraphic("flx_default", False, True)
+		sprite.LoadGraphic("default_flx", False, True)
 		sprite.x -= sprite.width *.5
 		sprite.y -= sprite.height *.5
 		sprite.angle = 45
