@@ -104,10 +104,6 @@ Private
 	
 	Field _id:Int
 	
-#If TARGET = "xna"
-	Field _xnaRectHelper:FlxRect
-#End
-	
 	Global _Inkrement:Int
 
 Public
@@ -148,10 +144,6 @@ Public
 		
 		_id = _Inkrement
 		_Inkrement += 1
-		
-		#If TARGET = "xna"
-			_xnaRectHelper = New FlxRect()
-		#End	
 	End Method
 	
 	Method Destroy:Void()
@@ -166,53 +158,15 @@ Public
 		_fxShakeComplete = Null
 		_fxShakeOffset = Null
 		_fill = Null
-		
-	#If TARGET = "xna"
-		_xnaRectHelper = Null
-	#End
 	End Method
 	
 	Method Lock:Void()
 		If (_clipped) Then
-		#If TARGET = "xna"
-			_xnaRectHelper.Make(_realX, _realY, _realWidth, _realHeight)
-			
-			If (_fxShakeOffset.x <> 0) Then
-				_xnaRectHelper.x += _fxShakeOffset.x * FlxG._DeviceScaleFactorX
-			End If
-			
-			If (_fxShakeOffset.y <> 0) Then
-				_xnaRectHelper.y += _fxShakeOffset.y * FlxG._DeviceScaleFactorY
-			End If			
-			
-			If (_xnaRectHelper.x < 0) Then
-				_xnaRectHelper.width += _xnaRectHelper.x
-				_xnaRectHelper.x = 0
-			End If
-			
-			If (_xnaRectHelper.y < 0) Then
-				_xnaRectHelper.height += _xnaRectHelper.y
-				_xnaRectHelper.y = 0
-			End If
-			
-			If (_xnaRectHelper.Right > FlxG.DeviceWidth) Then
-				_xnaRectHelper.width -= _xnaRectHelper.Right - FlxG.DeviceWidth
-			End If
-			
-			If (_xnaRectHelper.Bottom > FlxG.DeviceHeight) Then
-				_xnaRectHelper.height -= _xnaRectHelper.Bottom - FlxG.DeviceHeight
-			End If
-			
-			If (_xnaRectHelper.width > 0 And _xnaRectHelper.height > 0) Then					
-				SetScissor(_xnaRectHelper.x, _xnaRectHelper.y, _xnaRectHelper.width, _xnaRectHelper.height)
-			End If
-		#Else
 			If (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0) Then
 				SetScissor(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY, _realWidth, _realHeight)
 			Else
 				SetScissor(_realX, _realY, _realWidth, _realHeight)
 			End If
-		#End
 		End If
 				
 		PushMatrix()
