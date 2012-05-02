@@ -663,11 +663,19 @@ Public
 		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End		
 	
-	#If TARGET = "xna" Or TARGET = "glfw"
+	#If TARGET = "glfw"
+		For Local i:Int = 0 Until _JOY_UNITS_COUNT
+			_Joystick[i].Update()
+		Next
+	#End
+	
+	#If TARGET = "xna"
 		If (Not FlxG.Mobile) Then
 			For Local i:Int = 0 Until _JOY_UNITS_COUNT
 				_Joystick[i].Update()
 			Next
+		Else
+			Accel.Update(AccelX(), AccelY(), AccelZ())
 		End If
 	#End
 	
