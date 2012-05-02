@@ -32,9 +32,11 @@ Class FlxSound Extends FlxBasic
 Private
 	Const _CHANNELS_COUNT:Int = 32
 
-	Global _NextChannel:Int = 0
+	Global _NextChannel:Int = -1
 	
-	Global _SoundLoader:FlxSoundLoader = New FlxSoundLoader()
+	Global _LoopedChannels:Bool[_CHANNELS_COUNT]
+	
+	Global _SoundLoader:FlxSoundLoader = New FlxSoundLoader()	
 
 	Field _sound:Sound
 	
@@ -69,6 +71,7 @@ Private
 Public
 	Method New()
 		Super.New()
+		_channel = -1
 		_CreateSound()
 	End Method
 	
@@ -150,14 +153,15 @@ Public
 	End Method
 	
 	Method Load:FlxSound(sound:String, looped:Bool = False, autoDestroy:Bool = False, stopPrevious:Bool = True)
-		If (stopPrevious) Then
-			Stop()
-		Else
-			_channel = _GetFreeChannel()
-		End If
-		
+		If (stopPrevious) Stop()			
+
 		_CreateSound()
-		_sound = FlxG.AddSound(sound, _SoundLoader)
+		
+		_channel = _GetFreeChannel()
+		If (looped And _channel >= 0) _LoopedChannels[_channel] = True
+		
+		name = sound
+		_sound = FlxG.AddSound(sound, _SoundLoader)		
 		_looped = looped
 		_UpdateTransform()
 		If (_sound <> Null) exists = True		
@@ -182,11 +186,13 @@ Public
 			autoDestroy = oldAutoDestroy
 		End If
 		
-		If (_channel < 0)  Then
-			_channel = _GetFreeChannel()
+		If (_channel < 0)  Then		
+			_channel = _GetFreeChannel()			
 			If (_channel < 0) Then
 				exists = False
 				Return
+			ElseIf (_looped) Then
+				_LoopedChannels[_channel] = True
 			End If
 		End If
 		
@@ -231,6 +237,7 @@ Public
 	
 		If (_channel >= 0) Then
 			StopChannel(_channel)
+			If (_looped) _LoopedChannels[_channel] = False
 			_channel = -1			
 			active = False
 			
@@ -346,9 +353,21 @@ Private
 				If (ChannelState(i) = 0) Return i				
 				i += 1
 			Wend	
-		Else
-			_NextChannel += 1		
-			If (_NextChannel >= _CHANNELS_COUNT) _NextChannel = 0
+		Else			
+			Local counter:Int = 0
+			
+			Repeat
+				_NextChannel += 1				
+				If (_NextChannel >= _CHANNELS_COUNT) _NextChannel = 0
+				
+				counter += 1
+				If (counter >= _CHANNELS_COUNT) Then
+					FlxG.Log("Free channels for sound " + name + " are not found")
+					Exit
+				End If
+			Until (Not _LoopedChannels[_NextChannel])		
+			
+			Print _NextChannel
 			Return _NextChannel
 		End If
 		
