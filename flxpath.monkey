@@ -172,12 +172,7 @@ Public
 			
 			Local linealpha:Float = .3
 			
-			If (i < l - 1) Then
-				nextNode = nodes.Get(i + 1)
-			Else
-				nextNode = nodes.Get(0)
-				linealpha = .15
-			End If
+			nextNode = nodes.Get(i + 1)
 			
 			_debugNodeColor.SetARGB(debugColor)
 			
