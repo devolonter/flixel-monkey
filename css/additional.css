@@ -1,0 +1,41 @@
+body , p{
+	font-size: 14px;
+}
+
+header {
+	background: url(../img/jungle.png) #dff1f9 bottom repeat-x;
+}
+
+header .btn small {
+	color: #777;
+	font-size: 11px;
+}
+
+header {
+	padding: 70px 0 70px 0;	
+}
+
+header h1 {
+	font-size: 78px;	
+    text-shadow: 0px 2px 0px #FFF;
+	letter-spacing: -3px;
+	line-height: 1;
+	margin-bottom: 2px;
+}
+
+#framework-name  {
+	margin-top: -3px;
+	padding-left: 145px;
+}
+
+#framework-name  p {
+	font-size: 16px;
+	text-transform: uppercase;
+	padding-left: 5px;
+	font-weight: bold;
+	color: #777;
+}
+
+.page-header h2 {
+	text-transform: uppercase;
+}
