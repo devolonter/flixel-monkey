@@ -111,7 +111,7 @@ Public
 	
 	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
 		accelRecord = FlxG.Accel.RecordXYZ()
-	#End		
+	#End	
 	
 	#If TARGET = "xna" Or TARGET = "glfw"
 		If (Not FlxG.Mobile) Then
@@ -165,6 +165,8 @@ Public
 			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
 			keysRecord = FlxG.Keys.RecordKeys(keysRecord)
 		Else
+			accelRecord = FlxG.Accel.RecordXYZ()
+		
 			Local touchCount:Int = FlxG.TouchCount()
 			Local touchXYRecord:XYRecord
 		
