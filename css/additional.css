@@ -36,6 +36,32 @@ header h1 {
 	color: #777;
 }
 
+#quick-buttons {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
 .page-header h2 {
 	text-transform: uppercase;
+}
+
+.content-block {
+	margin-bottom: 50px;
+}
+
+footer p {
+	line-height: 18px;
+	padding: 8px 0;
+}
+
+footer .content-block {
+	margin-bottom: 10px;
+}
+
+#social {
+	text-align: center;
+}
+
+#social .button {
+	display: inline-block;
 }
