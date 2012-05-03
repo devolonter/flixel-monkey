@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Flixel-monkey by devolonter</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/devolonter/flixel-monkey">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/devolonter/flixel-monkey/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/devolonter/flixel-monkey/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Flixel-monkey</h1>
+          <p>This is a port of flixel to the Monkey language</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/devolonter">devolonter</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Flixel For Monkey</h1>
+
+<p>This is a port of flixel to the <a href="http://www.monkeycoder.co.nz/">Monkey</a> language.
+The port is translated from <a href="http://flixel.org/">flixel</a> v2.55 written by Adam 'Atomic' Saltsman.</p>
+
+<h2>Requirements</h2>
+
+<p>Monkey v53 or higher</p>
+
+<h2>Install</h2>
+
+<ul>
+<li>
+<p>For users with git installed:</p>
+
+<ul>
+<li>Go to the Monkey modules directory </li>
+<li>Do <strong>git clone <a href="mailto:git@github.com">git@github.com</a>:devolonter/flixel-monkey.git flixel</strong>
+</li>
+<li>Optionally. Do <strong>git submodule update --init</strong> to get bananas</li>
+</ul>
+</li>
+<li>
+<p>For users without git:</p>
+
+<ul>
+<li>Download archive <a href="https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip">flixel-monkey-lastest-stable.zip</a> or <a href="https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip">flixel-monkey-lastest-stable-full.zip</a> (with bananas) from downloads section </li>
+<li>Extract archive into the Monkey modules directory</li>
+</ul>
+</li>
+</ul><h2>Upgrade to new version</h2>
+
+<ul>
+<li>
+<p>For users with git installed:</p>
+
+<ul>
+<li><strong>git pull</strong></li>
+<li>Optionally. Do <strong>git submodule update</strong> to update bananas</li>
+</ul>
+</li>
+<li>
+<p>For users without git:</p>
+
+<ul>
+<li>Download the latest version of the library from downloads directory</li>
+<li>Replace flixel module content by archive data</li>
+</ul>
+</li>
+</ul><h2>Naming conventions</h2>
+
+<ul>
+<li>All-caps case (eg: 'ALLCAPS' ): Constants</li>
+<li>Pascal case (eg: 'PascalCase' ): Globals, functions, class, methods, properties</li>
+<li>Camel case (eg: 'camelCase' ): Fields, locals and function parameters</li>
+</ul><h2>Notes</h2>
+
+<ul>
+<li>FlxSave currently is not ported</li>
+<li>Debugger is absent</li>
+<li>To build  Windows Phone applications you must add a reference to Microsoft.Phone to the project </li>
+</ul><h2>Demo</h2>
+
+<ul>
+<li><a href="http://lab.devolonter.ru/libs/monkey-flixel/mode/html5.html">Mode Game</a></li>
+<li><a href="http://lab.devolonter.ru/libs/monkey-flixel/flxinvaders/html5.html">Invaders Game</a></li>
+<li><a href="http://lab.devolonter.ru/libs/monkey-flixel/splitscreen/html5.html">Split Screen</a></li>
+<li>
+<a href="http://lab.devolonter.ru/libs/monkey-flixel/pathfinding/html5.html">Path Finding</a> </li>
+<li>
+<a href="http://lab.devolonter.ru/libs/monkey-flixel/replay/html5.html">Replay</a> </li>
+<li>
+<a href="http://lab.devolonter.ru/libs/monkey-flixel/collisions/html5.html">Collisions</a> </li>
+<li>
+<a href="http://lab.devolonter.ru/libs/monkey-flixel/tilemap/html5.html">Tilemap</a> </li>
+<li>
+<a href="http://lab.devolonter.ru/libs/monkey-flixel/particles/html5.html">Particles</a> </li>
+</ul><h2>QuickStart</h2>
+
+<pre><code>Import flixel
+
+Function Main()
+    New HelloWorld()
+    Return 0
+End Function
+
+'Main class of the game
+Class HelloWorld Extends FlxGame
+
+    Method New()
+        Super.New(640, 480, HelloWorldState.ClassObject)    
+    End Method
+
+    'Optional
+    Method OnContentInit:Void()
+        #Rem
+        Register here all your assets, to use within application
+        Example:
+        FlxAssetsManager.AddImage("ball", "graphics/ball.png")
+
+        Now you can load an image in the game this way:
+        Local sprite:FlxSprite = New FlxSprite(0, 0, "ball")
+        #End
+    End Method
+
+End Class
+
+'Main game state 
+Class HelloWorldState Extends FlxState
+
+    'necessary to the FlxGame constructor, also used to reset game
+    Global ClassObject:FlxClass = new HelloWorldStateClass()
+
+    Method Create:Void()        
+        Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!") 
+        helloWorld.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER) 
+        Add(helloWorld)     
+    End Method
+
+    Method Update:Void()
+        'put your game logic here
+        Super.Update()
+        '... or here
+    End Method
+
+    'If you do not use FlxG.ResetState, FlxG.ReloadReplay, FlxG.RecordReplay, it is optional to override this method.
+    Method GetClass:FlxCalss()
+        Return ClassObject
+    End Method
+
+End Class
+
+'Monkey currently does not support reflection, so here we emulate necessary functional
+Class HelloWorldStateClass Implements FlxClass
+
+    'Creates new instance of an object
+    Method CreateInstance:Object()
+        Return New HelloWorldState()
+    End Method
+
+    'checks that the scanned object belongs to a class
+    Method InstanceOf:Bool(object:Object)
+        Return (HelloWorldState(object) &lt;&gt; Null)
+    End Method
+
+End Class
+</code></pre>
+
+<p>See more examples in the <a href="https://github.com/devolonter/flixel-monkey-bananas">bananas</a> folder.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
