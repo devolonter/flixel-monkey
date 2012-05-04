@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <ModSignature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Name>Flixel For Monkey</Name>
+  <Name>Flixel for Monkey</Name>
   <MajorVersion>12</MajorVersion>
   <MinorVersion>05</MinorVersion>
   <Revision>04</Revision>
-  <Build>A</Build>
+  <Build>B</Build>
   <Kind>ZipFolder</Kind>
   <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip</UpdateURL>
   <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/master/flixel.lmbs</RemoteSignatureURL>
