@@ -1,4 +1,4 @@
-Flixel For Monkey
+Flixel for Monkey
 =================
 
 This is a port of flixel to the [Monkey](http://www.monkeycoder.co.nz/) language.
@@ -14,8 +14,8 @@ Install
 
 * For users with git installed:
 	* Go to the Monkey modules directory 
-	* Do **git clone git@github.com:devolonter/flixel-monkey.git flixel**
-	* Optionally. Do **git submodule update --init** to get bananas
+	* Do `git clone git@github.com:devolonter/flixel-monkey.git flixel`
+	* Optionally. Do `git submodule update --init` to get bananas
 	
 * For users without git:
 	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads section 
@@ -25,8 +25,8 @@ Upgrade to new version
 ----------------------
 
 * For users with git installed:
-	* **git pull**
-	* Optionally. Do **git submodule update** to update bananas
+	* `git pull`
+	* Optionally. Do `git submodule update` to update bananas
 	
 * For users without git:
 	* Download the latest version of the library from downloads directory
