@@ -367,7 +367,6 @@ Private
 				End If
 			Until (Not _LoopedChannels[_NextChannel])		
 			
-			Print _NextChannel
 			Return _NextChannel
 		End If
 		
