@@ -3,12 +3,12 @@
   <Name>Flixel For Monkey</Name>
   <MajorVersion>12</MajorVersion>
   <MinorVersion>05</MinorVersion>
-  <Revision>03</Revision>
-  <Build>NIGHTLY-A</Build>
+  <Revision>04</Revision>
+  <Build>A</Build>
   <Kind>ZipFolder</Kind>
-  <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-nightly.zip</UpdateURL>
-  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/nightly/flixel.lmbs</RemoteSignatureURL>
-  <ShortDescription>FlxReplay for XNA fixed</ShortDescription>
+  <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip</UpdateURL>
+  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/master/flixel.lmbs</RemoteSignatureURL>
+  <ShortDescription>Update to v1.0a2</ShortDescription>
   <RequireCredentials>false</RequireCredentials>
   <MoreInfoURL>https://github.com/devolonter/flixel-monkey/issues?direction=desc&amp;milestone=1&amp;page=1&amp;sort=created&amp;state=closed</MoreInfoURL>
 </ModSignature>
