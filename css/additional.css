@@ -39,7 +39,7 @@ header h1 {
 }
 
 .content-block {
-	margin-bottom: 50px;
+	margin-bottom: 30px;
 }
 
 footer p {
@@ -81,4 +81,8 @@ footer .content-block {
 
 #games.more .caption h5 {
 	text-align: left;
+}
+
+#bananas .caption h5 {
+	margin-bottom: 10px;
 }
