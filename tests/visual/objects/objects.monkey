@@ -10,7 +10,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, ObjectsState.ClassObject)
+		Super.New(640, 480, ObjectsState.ClassObject, 1, 60, 60)
 		FlxG.VisualDebug = True
 	End Method
 
@@ -80,11 +80,11 @@ Class ObjectsState Extends FlxState
 	End Method
 	
 	Method Update:Void()	
-		If (KeyDown(KEY_RIGHT)) Then
+		If (FlxG.Keys.Right) Then
 			player.x += 2
 		End If
 		
-		If (KeyDown(KEY_LEFT)) Then
+		If (FlxG.Keys.Left) Then
 			player.x -= 2
 		End If
 		

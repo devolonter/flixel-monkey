@@ -14,14 +14,14 @@ Import flxpath
 Import system.flxtile
 Import system.flxtilemapbuffer
 
-Import "data/flx_autotiles.png"
-Import "data/flx_autotiles_alt.png"
+Import "data/autotiles_flx.png"
+Import "data/autotiles_flx.png"
 
 Class FlxTilemap Extends FlxObject
 
-	Const AUTOTILES:String = FlxG.DATA_PREFIX + "autotiles"
+	Const AUTOTILES:String =  "autotiles" + FlxG.DATA_SUFFIX
 	
-	Const AUTOTILES_ALT:String = FlxG.DATA_PREFIX + "autotiles_alt"
+	Const AUTOTILES_ALT:String =  "autotiles_alt" + FlxG.DATA_SUFFIX
 	
 	Const OFF:Int = 0
 	
@@ -80,7 +80,7 @@ Public
 		_tileHeight = 0
 		_tiles = Null		
 		immovable = True
-		cameras = Null
+		_cameras = Null
 		_startingIndex = 0
 		_camera = Null
 		_buffer = Null
@@ -194,6 +194,8 @@ Public
 			i += 1
 		Wend
 		
+		_buffers.Clear()
+		
 		Return Self
 	End Method
 	
@@ -205,7 +207,7 @@ Public
 		
 		_camera = FlxG._CurrentCamera
 		
-		If (cameras <> Null And Not cameras.Contains(_camera.ID)) Return
+		If (_cameras <> Null And Not _cameras.Contains(_camera.ID)) Return
 		
 		If (_camera.ID >= _buffers.Length()) _buffers.Push(Null)
 		_buffer = _buffers.Get(_camera.ID)
@@ -677,7 +679,7 @@ Public
 		Return True
 	End Method
 	
-	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:FlxClass, range:Int = 1)
+	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:FlxClass = Null, range:Int = 1)
 		If (range <= 0) range = 1
 		
 		Local tileObject:FlxTile

@@ -10,7 +10,7 @@ End Function
 Class Sprites Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, SpritesState.ClassObject, 1, 60)
+		Super.New(640, 480, SpritesState.ClassObject, 1, 60, 60)
 	End Method
 	
 	Method OnContentInit:Void()

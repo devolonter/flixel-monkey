@@ -9,16 +9,16 @@ Import flixel.flxtext.driver
 Import flixel.system.flxassetsmanager
 Import flixel.system.flxresourcesmanager
 
-Import "../../data/flx_system_font_8.png"
-Import "../../data/flx_system_font_9.png"
-Import "../../data/flx_system_font_10.png"
-Import "../../data/flx_system_font_11.png"
-Import "../../data/flx_system_font_12.png"
-Import "../../data/flx_system_font_13.png"
-Import "../../data/flx_system_font_14.png"
-Import "../../data/flx_system_font_15.png"
-Import "../../data/flx_system_font_16.png"
-Import "../../data/flx_system_font_17.png"
+Import "../../data/system_font_8_flx.png"
+Import "../../data/system_font_9_flx.png"
+Import "../../data/system_font_10_flx.png"
+Import "../../data/system_font_11_flx.png"
+Import "../../data/system_font_12_flx.png"
+Import "../../data/system_font_13_flx.png"
+Import "../../data/system_font_14_flx.png"
+Import "../../data/system_font_15_flx.png"
+Import "../../data/system_font_16_flx.png"
+Import "../../data/system_font_17_flx.png"
 
 Global NativeTextDriver:FlxClass = New FlxNFDriverClass()
 
@@ -67,6 +67,10 @@ Public
 		
 		_font = _FontsManager.GetResource(_fontFamily + _size, _FontLoader)		
 		_fontHeight = _font.Height()
+	End Method
+	
+	Method GetFontObject:Object()
+		Return _font
 	End Method
 
 End Class

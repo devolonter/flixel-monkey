@@ -10,7 +10,7 @@ End Function
 Class Paths Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, PathsState.ClassObject)
+		Super.New(640, 480, PathsState.ClassObject, 1, 60, 60)
 		FlxG.VisualDebug = True	
 	End Method
 
@@ -18,11 +18,11 @@ End Class
 
 Class PathsStateClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New PathsState()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (PathsState(object) <> Null)
 	End Method
 
@@ -77,7 +77,7 @@ Class PathsState Extends FlxState
 	End Method
 	
 	Method Update:Void()
-		If (KeyHit(KEY_SPACE) Or TouchHit()) Then
+		If (FlxG.Keys.JustPressed(KEY_SPACE) Or FlxG.Touch().JustPressed()) Then
 			pathFrowardedObject.FollowPath(pathForward, 50, FlxObject.PATH_FORWARD)
 			pathBackwardedObject.FollowPath(pathBackward, 50, FlxObject.PATH_BACKWARD)
 			pathLoopForwadedObject.FollowPath(pathLoopForward, 50, FlxObject.PATH_LOOP_FORWARD)

@@ -18,22 +18,19 @@ Class CameraFX Extends FlxGame
 		Local minSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MinSize
 		Local maxSize:Int = FlxAssetsManager.GetFont(FlxText.SYSTEM_FONT).MaxSize
 		
-		Local angelSystemFont:FlxFont = FlxAssetsManager.AddFont("system", FlxText.DRIVER_ANGELFONT)
-		
-		For Local i:Int = minSize To maxSize
-			angelSystemFont.SetPath(i, "fonts/"+FlxText.SYSTEM_FONT+"/angelfont/"+i+".txt")	
-		Next
+		FlxTextAngelFontDriver.Init()
+		FlxText.SetDefaultDriver(AngelfontTextDriver)
 	End Method
 
 End Class
 
 Class CameraFXStateClass Implements FlxClass
 
-	Method CreateInstance:FlxBasic()
+	Method CreateInstance:Object()
 		Return New CameraFXState()
 	End Method
 	
-	Method InstanceOf:Bool(object:FlxBasic)
+	Method InstanceOf:Bool(object:Object)
 		Return (CameraFXState(object) <> Null)
 	End Method
 
@@ -44,37 +41,37 @@ Class CameraFXState Extends FlxState
 	Global ClassObject:FlxClass = new CameraFXStateClass()
 	
 	Method Create:Void()		
-		Local manual:FlxText = New FlxText(10, 10, 620, "- Press S to shake", New FlxTextAngelFontDriver())	
+		Local manual:FlxText = New FlxText(10, 10, 620, "- Press S to shake")
 		manual.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_LEFT)	
 		Add(manual)		
 		
-		manual = New FlxText(10, 40, 620, "- Press L to flash", New FlxTextAngelFontDriver())	
+		manual = New FlxText(10, 40, 620, "- Press L to flash")	
 		manual.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_LEFT)	
 		Add(manual)
 		
-		manual = New FlxText(10, 70, 620, "- Press F to fade", New FlxTextAngelFontDriver())	
+		manual = New FlxText(10, 70, 620, "- Press F to fade")	
 		manual.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_LEFT)	
 		Add(manual)
 		
-		manual = New FlxText(10, 100, 620, "- Press SPACE to stopFX", New FlxTextAngelFontDriver())	
+		manual = New FlxText(10, 100, 620, "- Press SPACE to stopFX")	
 		manual.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_LEFT)	
 		Add(manual)
 	End Method
 	
 	Method Update:Void()
-		If (KeyHit(KEY_S)) Then
+		If (FlxG.Keys.JustPressed(KEY_S)) Then
 			FlxG.Shake()
 		End If	
 		
-		If (KeyHit(KEY_L)) Then
+		If (FlxG.Keys.JustPressed(KEY_L)) Then
 			FlxG.Flash()
 		End If
 		
-		If (KeyHit(KEY_F)) Then
+		If (FlxG.Keys.JustPressed(KEY_F)) Then
 			FlxG.Fade()
 		End If
 		
-		If (KeyHit(KEY_SPACE)) Then
+		If (FlxG.Keys.JustPressed(KEY_SPACE)) Then
 			FlxG.Camera.StopFX()
 		End If
 	

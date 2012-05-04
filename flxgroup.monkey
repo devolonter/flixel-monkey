@@ -6,6 +6,7 @@ Strict
 Import flxextern
 Import flxbasic
 Import flxobject
+Import system.flxarray
 
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
@@ -53,6 +54,7 @@ Public
 		_maxSize = maxSize
 		_marker = 0
 		_length = 0
+		_cameras = Null
 	End Method
 	
 	#Rem
@@ -87,6 +89,7 @@ Public
 		_length = 0
 		_members = _members.Resize(_length)
 		_sortComparator = Null
+		_cameras = Null
 	End Method
 	
 	#Rem
@@ -118,6 +121,8 @@ Public
 	summary:Automatically goes through and calls render on everything you added.
 	#End
 	Method Draw:Void()
+		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera.ID)) Return
+	
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
@@ -435,11 +440,24 @@ Public
 	
 	Method GetRandom:FlxBasic(startIndex:Int = 0, length:Int = 0)
 		If (length = 0) length = _length
-		Return FlxG.GetRandom(_members, startIndex, length)
+		Return FlxArray<FlxBasic>.GetSafeRandom(_members, startIndex, length)
 	End Method
 	
 	Method Clear:Void()
 		_length = 0
+	End Method
+	
+	Method Revive:Void()
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null And Not basic.exists) basic.Revive()
+			i+=1
+		Wend
+
+		Super.Revive()
 	End Method
 	
 	Method Kill:Void()

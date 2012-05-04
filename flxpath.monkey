@@ -168,14 +168,11 @@ Public
 			
 			DrawRect(_point.x - nodeSize * 0.5, _point.y - nodeSize * 0.5, nodeSize, nodeSize)
 			
+			If (i = l - 1) Exit
+			
 			Local linealpha:Float = .3
 			
-			If (i < l - 1) Then
-				nextNode = nodes.Get(i + 1)
-			Else
-				nextNode = nodes.Get(0)
-				linealpha = .15
-			End If
+			nextNode = nodes.Get(i + 1)
 			
 			_debugNodeColor.SetARGB(debugColor)
 			

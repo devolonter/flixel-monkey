@@ -117,16 +117,16 @@ Public
 		Return _Cursors.Keys()
 	End Function
 	
-	Function AddString:Void(string:String, path:String)
-		_Strings.Set(string, path)
+	Function AddString:Void(name:String, path:String)
+		_Strings.Set(name, path)
 	End Function
 	
-	Function RemoveString:Void(string:String)
-		_Strings.Remove(string)
+	Function RemoveString:Void(name:String)
+		_Strings.Remove(name)
 	End Function
 	
-	Function GetString:String(string:String)
-		Return LoadString(_Strings.Get(string))
+	Function GetString:String(name:String)
+		Return LoadString(_Strings.Get(name))
 	End Function
 	
 	Function AllStrings:MapKeys<String, String>()

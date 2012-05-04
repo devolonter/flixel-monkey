@@ -104,6 +104,8 @@ Public
 
 	Method Draw:Void(x:Float, y:Float) Abstract
 	
+	Method GetFontObject:Object() Abstract
+	
 	Method ID:Int() Property
 		Return FlxText.DRIVER_NATIVE			 	
 	End Method

@@ -90,7 +90,7 @@ Public
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.Size = FlxAssetsManager.FlxAssetsManager.GetFont(_driver.Font, _driver.ID).GetValidSize(size)
+		_driver.Size = FlxAssetsManager.GetFont(_driver.Font, _driver.ID).GetValidSize(size)
 		
 		Self.height = _driver.GetTextHeight()
 		frameHeight = Self.height
@@ -127,6 +127,10 @@ Public
 	
 	Method Shadow:Void(color:Int) Property
 		_shadow.SetARGB(color)
+	End Method
+	
+	Method GetFontObject:Object()
+		Return _driver.GetFontObject()
 	End Method
 	
 	Method _DrawSurface:Void(x:Float, y:Float)	

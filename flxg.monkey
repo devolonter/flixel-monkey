@@ -36,7 +36,7 @@ Class FlxG
 	
 	Const LIBRARY_MINOR_VERSION:Int = 0
 	
-	Const DATA_PREFIX:String = "flx_"
+	Const DATA_SUFFIX:String = "_flx"
 	
 	Const RED:Int = $FFFF0012
 	
@@ -179,20 +179,6 @@ Public
 		Return FlxU.Srand(FlxG.GlobalSeed)
 	End Function
 	
-	Function GetRandom:FlxBasic(objects:FlxBasic[], startIndex:Int = 0, length:Int = 0)
-		If (objects.Length() > 0) Then
-			Local l:Int = length
-			
-			If (l = 0 Or l > objects.Length() - startIndex) Then
-				l = objects.Length() - startIndex
-			End if
-			
-			If (l > 0) Return objects[startIndex + int(FlxG.Random()*l)]	
-		End If
-		
-		Return Null
-	End Function
-	
 	#Rem
 	Function GetRandom:Object(objects:Object[], startIndex:Int = 0, length:Int = 0)
 		GetRandom is not currently supported in Monkey. Use FlxArray.GetSafeRandom method
@@ -307,7 +293,7 @@ Public
 	
 	Function Play:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = True)
 		Local s:FlxSound = FlxG.LoadSound(sound, volume, looped, autoDestroy, True, False)
-		s.exists = False
+		If (Not looped) s.exists = False
 		Return s
 	End Function
 	
@@ -424,6 +410,16 @@ Public
 		Return _BitmapCache.GetResource(key, graphicLoader)
 	End Function
 	
+	Function RemoveBitmap:Void(graphic:String)
+		If (_BitmapCache <> Null) Then
+			Local image:Image = _BitmapCache.Resources.Get(graphic)
+			If (image <> Null) Then
+				image.Discard()
+				_BitmapCache.RemoveResource(graphic)
+			End If
+		End If
+	End Function
+	
 	Function ClearBitmapCache:Void()
 		If (_BitmapCache = Null) _BitmapCache = New FlxResourcesManager<Image>()
 		
@@ -513,7 +509,7 @@ Public
 			FlxG.Cameras.Get(i).Shake(intensity, duration, onComplete, force, direction)
 			i+=1
 		Wend
-	End Function		
+	End Function
 	
 	Function BgColor:Int()
 		If (FlxG.Camera = Null Or Not FlxG.Camera.alive) Return FlxG._BgColor.argb	
@@ -538,7 +534,7 @@ Public
 		
 		FlxQuadTree.Divisions = FlxG.WorldDivisions
 		
-		Local quadTree:FlxQuadTree = New FlxQuadTree(FlxG.WorldBounds.x, FlxG.WorldBounds.y, FlxG.WorldBounds.width, FlxG.WorldBounds.height)
+		Local quadTree:FlxQuadTree = FlxQuadTree.Recycle(FlxG.WorldBounds.x, FlxG.WorldBounds.y, FlxG.WorldBounds.width, FlxG.WorldBounds.height)
 		quadTree.Load(objectOrGroup1, objectOrGroup2, notifyCallback, processCallback)
 		
 		Local result:Bool = quadTree.Execute()
@@ -667,11 +663,19 @@ Public
 		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End		
 	
-	#If TARGET = "xna" Or TARGET = "glfw"
+	#If TARGET = "glfw"
+		For Local i:Int = 0 Until _JOY_UNITS_COUNT
+			_Joystick[i].Update()
+		Next
+	#End
+	
+	#If TARGET = "xna"
 		If (Not FlxG.Mobile) Then
 			For Local i:Int = 0 Until _JOY_UNITS_COUNT
 				_Joystick[i].Update()
 			Next
+		Else
+			Accel.Update(AccelX(), AccelY(), AccelZ())
 		End If
 	#End
 	

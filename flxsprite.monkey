@@ -11,7 +11,7 @@ Import flxg
 Import system.flxanim
 Import system.flxcolor
 
-Import "data/flx_default.png"
+Import "data/default_flx.png"
 
 Class FlxSprite Extends FlxObject
 
@@ -87,7 +87,7 @@ Public
 		_alpha = 1
 		_color = New FlxColor(FlxG.WHITE)
 		blend = AlphaBlend
-		cameras = Null
+		_cameras = Null
 		
 		finished = False
 		_facing = RIGHT
@@ -104,7 +104,7 @@ Public
 		_mixedColor = New FlxColor(FlxG.WHITE)
 		
 		If (simpleGraphic.Length() = 0)
-			simpleGraphic = FlxG.DATA_PREFIX + "default"
+			simpleGraphic = "default" + FlxG.DATA_SUFFIX
 		End If
 		
 		LoadGraphic(simpleGraphic)
@@ -137,11 +137,7 @@ Public
 		
 		_pixels = FlxG.AddBitmap(graphic, _GraphicLoader, unique)
 		
-		If (reverse) Then
-			_flipped = True
-		Else
-			_flipped = True
-		End if
+		_flipped = reverse
 		
 		Self.width = _pixels.Width()
 		frameWidth = Self.width
@@ -188,7 +184,7 @@ Public
 		
 		_camera = FlxG._CurrentCamera
 		
-		If (cameras <> Null And Not cameras.Contains(_camera.ID)) Return
+		If (_cameras <> Null And Not _cameras.Contains(_camera.ID)) Return
 		If (Not OnScreen(_camera)) Return
 		
 		If (dirty) _CalcFrame()		
@@ -377,7 +373,7 @@ Public
 		_animations.Set(name, New FlxAnim(name, frames, frameRate, looped))
 	End Method
 	
-	Method AddAnimationCallback:Void(animationCallback:FlxAnimationCallback)
+	Method AddAnimationCallback:Void(animationCallback:FlxAnimationListener)
 		_callback = animationCallback
 	End Method
 	

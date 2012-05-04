@@ -143,7 +143,7 @@ Public
 		_fill = New FlxColor(0)
 		
 		_id = _Inkrement
-		_Inkrement += 1		
+		_Inkrement += 1
 	End Method
 	
 	Method Destroy:Void()
@@ -162,7 +162,11 @@ Public
 	
 	Method Lock:Void()
 		If (_clipped) Then
-			SetScissor(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY, _realWidth, _realHeight)	
+			If (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0) Then
+				SetScissor(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY, _realWidth, _realHeight)
+			Else
+				SetScissor(_realX, _realY, _realWidth, _realHeight)
+			End If
 		End If
 				
 		PushMatrix()
@@ -174,7 +178,7 @@ Public
 			SetColor(_bgColor.r, _bgColor.g, _bgColor.b)
 			DrawRect(0, 0, _width, _height)
 			FlxG._LastDrawingColor = _bgColor.argb
-		End If	
+		End If
 	End Method
 	
 	Method Unlock:Void()		

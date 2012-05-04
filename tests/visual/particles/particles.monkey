@@ -10,7 +10,7 @@ End Function
 Class Emitter Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, EmitterState.ClassObject)	
+		Super.New(640, 480, EmitterState.ClassObject, 1, 60, 60)	
 	End Method
 
 End Class
