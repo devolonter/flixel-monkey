@@ -153,13 +153,45 @@ footer .content-block {
 	}
 }
 
-@media (max-width: 1024px) {	
+@media (max-width: 768px) {	
 	.navbar-fixed-top {
 		margin-bottom: 0;
 	}
 	
 	header {
 		padding: 20px 0 50px 0;
+	}
+	
+	header h1 {
+		font-size: 36px;
+		margin-top: 25px;
+	}
+	
+	#framework-name  p {
+		font-size: 12px;
+	}
+	
+	#quick-buttons .btn {
+		font-size: 12px;
+	}
+	
+	footer .span4 {
+		width: 100%  !important;
+	}
+	
+	footer p{
+		text-align: center !important;
+		float: none !important;
+	}
+	
+	footer .nav {
+		display: none;
+	}
+}
+
+@media (max-width: 1024px) {	
+	header {
+		padding: 50px 0;
 	}
 	
 	header h1 {
