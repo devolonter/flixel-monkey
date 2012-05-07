@@ -4,15 +4,12 @@ body , p{
 
 header {
 	background: url(../img/jungle.png) #dff1f9 bottom repeat-x;
+	padding: 70px 0;
 }
 
 header .btn small {
 	color: #777;
 	font-size: 11px;
-}
-
-header {
-	padding: 70px 0 70px 0;	
 }
 
 header h1 {
@@ -85,4 +82,109 @@ footer .content-block {
 
 #bananas .caption h5 {
 	margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+	body {
+		padding: 0 20px;
+	}
+	
+	.navbar-fixed-top {
+		margin-bottom: 0;
+	}
+	
+	header {
+		margin: 0 -20px;
+		padding: 20px 0 50px 0;
+		text-align: center;
+	}
+	
+	header h1 {
+		font-size: 36px;
+	}
+	
+	#logo {
+		float: none !important;
+		margin-bottom: 15px;
+	}
+	
+	#framework-name {
+		padding: 0;
+	}
+	
+	#framework-name  p {
+		display: none;
+	}
+	
+	#quick-buttons {
+		float: none !important;
+		margin-bottom: 0px;
+	}
+	
+	#quick-buttons .btn {
+		font-size: 18px;
+		padding: 10px 14px;
+		margin: 0 auto 10px;
+	}
+	
+	#github-buttons {
+		float: none !important;
+	}
+	
+	.page-header .btn-large {
+		display: none;
+	}
+	
+	.thumbnails li {
+		margin-left: 0;
+	}
+	
+	footer p{
+		text-align: center !important;
+		float: none !important;
+	}
+	
+	footer .nav {
+		display: none;
+	}
+	
+	#social {
+		display: none;
+	}
+}
+
+@media (max-width: 1024px) {	
+	.navbar-fixed-top {
+		margin-bottom: 0;
+	}
+	
+	header {
+		padding: 20px 0 50px 0;
+	}
+	
+	header h1 {
+		font-size: 36px;
+		margin-top: 25px;
+	}
+	
+	#framework-name  p {
+		font-size: 12px;
+	}
+	
+	#quick-buttons .btn {
+		font-size: 12px;
+	}
+	
+	footer .span4 {
+		width: 100%  !important;
+	}
+	
+	footer p{
+		text-align: center !important;
+		float: none !important;
+	}
+	
+	footer .nav {
+		display: none;
+	}
 }
