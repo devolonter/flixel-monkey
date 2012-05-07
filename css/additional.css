@@ -84,7 +84,7 @@ footer .content-block {
 	margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
 	body {
 		padding: 0 20px;
 	}
@@ -153,7 +153,7 @@ footer .content-block {
 	}
 }
 
-@media (max-width: 1024px) {	
+@media (max-width: 800px) {	
 	.navbar-fixed-top {
 		margin-bottom: 0;
 	}
