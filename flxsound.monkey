@@ -148,8 +148,8 @@ Public
 	End Method
 	
 	Method Kill:Void()
-		Super.Kill()		
 		Stop()
+		Super.Kill()		
 	End Method
 	
 	Method Load:FlxSound(sound:String, looped:Bool = False, autoDestroy:Bool = False, stopPrevious:Bool = True)
@@ -235,7 +235,7 @@ Public
 	Method Stop:Void()
 		_paused = False
 	
-		If (_channel >= 0) Then
+		If (_channel >= 0 And exists) Then
 			StopChannel(_channel)
 			If (_looped) _LoopedChannels[_channel] = False
 			_channel = -1			
