@@ -15,6 +15,17 @@
     <!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+	
+	<script type="text/javascript">
+	/* <![CDATA[ */
+		(function() {
+			var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+			s.type = 'text/javascript';
+			s.async = true;
+			s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+			t.parentNode.insertBefore(s, t);
+		})();
+	/* ]]> */</script>
   </head>
 
   <body>	
@@ -77,27 +88,55 @@
 		<div class="content-block"><p style="text-align:center">Port Flixel for Monkey will always remain free and open source! But if you want to support the project financially, you can use one of the following ways:</p></div>
 		
 		<div id="plans" class="row content-block">
-			<div class="span4 item">
-				<h3>Yandex.Money</h3>
-				<p><iframe frameborder="0" allowtransparency="true" scrolling="no" src="https://money.yandex.ru/embed/small.xml?uid=41001526285224&amp;button-text=04&amp;button-size=s&amp;button-color=white&amp;targets=%d0%9f%d0%be%d0%b4%d0%b4%d0%b5%d1%80%d0%b6%d0%ba%d0%b0+%d0%bf%d1%80%d0%be%d0%b5%d0%ba%d1%82%d0%b0+flixel+for+monkey&amp;default-sum=100" width="auto" height="31"></iframe></p>
-			</div>
-		
-			<div class="span4 item">
+			<div class="span3 item">
 				<h3>PayPal</h3>
-				<p><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-						<input type="hidden" name="cmd" value="_s-xclick">
-						<input type="hidden" name="hosted_button_id" value="HASF89DATKMYS">
-						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-						<img alt="" border="0" src="https://www.paypalobjects.com/ru_RU/i/scr/pixel.gif" width="1" height="1">
-					</form>
-				</p>
-			</div>			
-			
-			<div class="span4 item">
-				<h3>WebMoney</h3>
-				<p>R192466022667</p>
+				<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HASF89DATKMYS" title="PayPal" class="btn btn-large" target="_blank"><img src="/flixel-monkey/img/donate/paypal.png" alt="PayPal" /></a>
 			</div>
 		
+			<div class="span3 item">
+				<h3>Yandex.Money</h3>
+				<a href="#yandexmoney" title="Yandex.Money" class="btn btn-large" data-toggle="modal"><img src="/flixel-monkey/img/donate/yandex.png" alt="Yandex.Money" /></a>
+				<div class="modal hide" id="yandexmoney">
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal">×</button>
+						<h3>Donate with Yandex.Money</h3>
+					</div>
+					<div class="modal-body">
+						<iframe frameborder="0" allowtransparency="true" scrolling="no" src="https://money.yandex.ru/embed/donate.xml?uid=41001526285224&amp;default-sum=100&amp;targets=%d0%9f%d0%be%d0%bc%d0%be%d1%89%d1%8c+%d0%bf%d1%80%d0%be%d0%b5%d0%ba%d1%82%d1%83+Flixel+for+Monkey&amp;project-name=Flixel+for+Monkey&amp;project-site=http%3a%2f%2fdevolonter.github.loc%2fflixel-monkey%2f&amp;button-text=01&amp;comment=on&amp;hint=%d0%9a%d0%be%d0%bc%d0%bc%d0%b5%d0%bd%d1%82%d0%b0%d1%80%d0%b8%d0%b9" width="450" height="179"></iframe>
+					</div>
+					<div class="modal-footer">
+						<a href="#" class="btn btn-primary" data-dismiss="modal">Done</a>
+					</div>
+				</div>
+			</div>		
+			
+			<div class="span3 item">
+				<h3>WebMoney</h3>
+				<a href="#webmoney" title="WebMoney" class="btn btn-large" data-toggle="modal"><img src="/flixel-monkey/img/donate/webmoney.png" alt="WebMoney" /></a>
+				<div class="modal hide" id="webmoney">
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal">×</button>
+						<h3>Donate with WebMoney</h3>
+					</div>
+					<div class="modal-body">
+						<div class="row" style="text-align:center">
+							<div class="span2" style="width: 155px">R192466022667</div>
+							<div class="span2" style="width: 155px">Z375942274000</div>
+							<div class="span2" style="width: 155px">E330970706710</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<a href="#" class="btn btn-primary" data-dismiss="modal">Done</a>
+					</div>
+				</div>
+			</div>
+		
+			<div class="span3 item">
+				<h3>Flattr</h3>
+				<div href="#" class="btn btn-large"><a class="FlattrButton" style="display:none;" href="http://devolonter.github.loc/flixel-monkey/"></a>
+<noscript><a href="http://flattr.com/thing/671439/Flixel-for-Monkey" target="_blank">
+<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a></noscript></div>
+			</div>
 		</div>
 		
 		<div class="content-block"><p style="text-align:center">Thank you!</p></div>
