@@ -447,7 +447,7 @@ Public
 		_length = 0
 	End Method
 	
-	Method Revive:Void()
+	Method ReviveAll:Void()
 		Local i:Int = 0
 		Local basic:FlxBasic
 			
