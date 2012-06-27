@@ -42,7 +42,7 @@ Private
 
 	Field _tiles:Image
 	
-	Field _buffers:Stack<FlxTilemapBuffer>
+	Field _buffers:IntMap<FlxTilemapBuffer>
 
 	Field _data:Int[]
 	
@@ -75,7 +75,7 @@ Public
 		widthInTiles = 0
 		heightInTiles = 0
 		totalTiles = 0
-		_buffers = New Stack<FlxTilemapBuffer>()
+		_buffers = New IntMap<FlxTilemapBuffer>()
 		_tileWidth = 0
 		_tileHeight = 0
 		_tiles = Null		
@@ -103,6 +103,7 @@ Public
 			i += 1
 		Wend
 		
+		_buffers.Clear()
 		_buffers = Null
 		
 		Super.Destroy()
@@ -209,7 +210,6 @@ Public
 		
 		If (_cameras <> Null And Not _cameras.Contains(_camera.ID)) Return
 		
-		If (_camera.ID >= _buffers.Length()) _buffers.Push(Null)
 		_buffer = _buffers.Get(_camera.ID)
 		
 		If (_buffer = Null) Then
@@ -219,7 +219,7 @@ Public
 		
 		_screenRows = _buffer.rows
 		_screenColumns = _buffer.columns
-		
+						
 		If (Not _buffer.dirty) Then
 			_point.x = x - Int(_camera.scroll.x * scrollFactor.x) + _buffer.x
 			_point.y = y - Int(_camera.scroll.y * scrollFactor.y) + _buffer.y
@@ -364,14 +364,10 @@ Public
 		Return data
 	End Method
 	
-	Method SetDirty:Void(dirty:Bool = True)
-		Local i:Int = 0
-		Local l:Int = _buffers.Length()
-		
-		While (i < l)
-			_buffers.Get(i).dirty = dirty
-			i += 1
-		Wend
+	Method SetDirty:Void(dirty:Bool = True)		
+		For Local buffer:FlxTilemapBuffer = EachIn _buffers.Values()
+			buffer.dirty = dirty
+		Next
 	End Method
 	
 	Method FindPath:FlxPath(start:FlxPoint, endPoint:FlxPoint, simplify:Bool = True, raySimplify:Bool = False)
