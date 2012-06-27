@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+'Import reflection
 
 Import flxextern
 Import flxpoint
@@ -11,6 +12,7 @@ Alias MonkeyFloor = monkey.math.Floor
 Alias MonkeyCeil = monkey.math.Ceil
 Alias MonkeyMin = monkey.math.Min
 Alias MonkeyMax = monkey.math.Max
+'Alias MonkeyGetClass = reflection.GetClass
 Alias NativeOpenURL = flxextern.OpenURL
 
 Class FlxU
@@ -266,6 +268,20 @@ Class FlxU
 		Return result
 	End Function
 	
+	#Rem
+	Function GetClassName:String(obj:Object)
+		Return MonkeyGetClass(obj).Name
+	End Function
+	
+	Function CompareClassNames:Bool(object1:Object, object2:Object)
+		Return (MonkeyGetClass(object1).Name = MonkeyGetClass(object2).Name)
+	End Function
+	
+	Function GetClass:ClassInfo(name:String)
+		Return MonkeyGetClass(name)
+	End Function
+	#End
+	
 	Function ComputeVelocity:Float(velocity:Float, acceleration:Float = 0, drag:Float = 0, max:Float = 10000)
 		If (acceleration <> 0) Then
 			velocity += acceleration * FlxG.Elapsed
@@ -276,7 +292,7 @@ Class FlxU
 			If (velocity - drag > 0) Then
 				velocity -= drag			
 			ElseIf (velocity + drag < 0) Then
-				velocity += drag			
+				velocity += drag
 			Else
 				velocity = 0
 			End If

@@ -11,7 +11,7 @@ Import flixel.plugin.debugpathdisplay
 
 Class FlxPath
 
-	Global ClassObject:FlxClass = new FlxObjectClass()
+	Global ClassObject:FlxClass = New FlxPathClass()
 
 	Field nodes:Stack<FlxPoint>
 	
@@ -74,9 +74,9 @@ Public
 		If (index > nodes.Length()) index = nodes.Length()
 		
 		If (asReference) Then
-			nodes.Insert(i, node)
+			nodes.Insert(index, node)
 		Else
-			nodes.Insert(i, New FlxPoint(node.x, node.y))	
+			nodes.Insert(index, New FlxPoint(node.x, node.y))	
 		End If
 	End Method
 	
@@ -99,8 +99,8 @@ Public
 		If (nodes.Length() <= 0) Return Null
 		If (index >= nodes.Length()) index = nodes.Length() - 1
 		
-		Local point:FlxPoint = nodes.Get(i)
-		nodes.Remove(i)
+		Local point:FlxPoint = nodes.Get(index)
+		nodes.Remove(index)
 		Return point
 	End Method
 	
@@ -213,4 +213,17 @@ Public
 		Return DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.ClassObject))
 	End Function
 
+End Class
+
+Private
+Class FlxPathClass Implements FlxClass
+
+	Method CreateInstance:Object()
+		Return New FlxPath()
+	End Method
+	
+	Method InstanceOf:Bool(object:Object)			
+		Return (FlxPath(object) <> Null)
+	End Method	
+	
 End Class
