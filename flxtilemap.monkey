@@ -430,7 +430,7 @@ Public
 					End If
 					
 				Else
-					If (Overlaps(x, y, basic, inScreenSpace, camera)) Then
+					If (Overlaps(basic, inScreenSpace, camera)) Then
 						results = True
 					End If
 				End If
@@ -694,7 +694,7 @@ Public
 	End Method
 	
 	Method Follow:Void(camera:FlxCamera = Null, border:Int = 0, updateWorld:Bool = True)
-		If (camera = Null) camera = FlxCamera
+		If (camera = Null) camera = FlxG.Camera
 		camera.SetBounds(x + border * _tileWidth, y + border * _tileHeight, width - border * _tileWidth * 2, height - border * _tileHeight * 2, updateWorld)
 	End Method
 	

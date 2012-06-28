@@ -147,7 +147,7 @@ Public
 		End If
 	End Method
 	
-	Method SetSounds:Void(soundOver:String = "", soundOverVolume:Float = 1.0, soundOut:String = "", soundOutVolume:Float = 1.0, soundDown:String = "", soundDownVolume:Float = 1.0, SoundUp:String = "", SoundUpVolume:Float = 1.0)
+	Method SetSounds:Void(soundOver:String = "", soundOverVolume:Float = 1.0, soundOut:String = "", soundOutVolume:Float = 1.0, soundDown:String = "", soundDownVolume:Float = 1.0, soundUp:String = "", soundUpVolume:Float = 1.0)
 		If (soundOver.Length() > 0) Then
 			Self.soundOver = FlxG.LoadSound(soundOver, soundOverVolume)
 		End If
@@ -160,8 +160,8 @@ Public
 			Self.soundDown = FlxG.LoadSound(soundDown, soundDownVolume)
 		End If
 		
-		If (SoundUp.Length() > 0) Then
-			Self.SoundUp = FlxG.LoadSound(SoundUp, SoundUpVolume)
+		If (soundUp.Length() > 0) Then
+			Self.soundUp = FlxG.LoadSound(soundUp, soundUpVolume)
 		End If
 	End Method
 	

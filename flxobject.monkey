@@ -370,7 +370,7 @@ Public
 		End If
 		
 		If (FlxTilemap(objectOrGroup) <> Null) Then
-			Return FlxTilemap(objectOrGroup).overlaps(Self, inScreenSpace, camera)
+			Return FlxTilemap(objectOrGroup).Overlaps(Self, inScreenSpace, camera)
 		End If
 		
 		Local object:FlxObject = FlxObject(objectOrGroup)
@@ -398,7 +398,7 @@ Public
 			Local l:Int = members.Length()
 			
 			While(i < l)
-				If (overlapsAt(x, y, members[i], inScreenSpace, camera)) Then
+				If (OverlapsAt(x, y, members[i], inScreenSpace, camera)) Then
 					results = True
 					Exit
 				End if
@@ -423,19 +423,19 @@ Public
 		If (camera = Null) camera = FlxG.Camera
 		Local objectScreenPos:FlxPoint = object.GetScreenXY(Null, camera)
 		
-		point.x = x - Int(camera.scroll.x * scrollFactor.x)
-		point.y = y - Int(camera.scroll.y * scrollFactor.y)
+		_point.x = x - Int(camera.scroll.x * scrollFactor.x)
+		_point.y = y - Int(camera.scroll.y * scrollFactor.y)
 		
-		If (point.x > 0) Then
-			point.x += 0.0000001
+		If (_point.x > 0) Then
+			_point.x += 0.0000001
 		Else
-			point.x -= 0.0000001			
+			_point.x -= 0.0000001			
 		End If
 		
-		If (point.y > 0) Then
-			point.y += 0.0000001
+		If (_point.y > 0) Then
+			_point.y += 0.0000001
 		Else
-			point.y -= 0.0000001			
+			_point.y -= 0.0000001			
 		End If
 		
 		Return (objectScreenPos.x + object.width > _point.x) And (objectScreenPos.x < _point.x + width) And

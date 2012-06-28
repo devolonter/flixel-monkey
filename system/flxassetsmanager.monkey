@@ -41,8 +41,8 @@ Public
 		Return font	
 	End Function
 	
-	Function RemoveFont:Void(name:String, size:Int, driver:Int = FlxText.DRIVER_NATIVE)
-		_Fonts[driver].RemoveFontPath(name, size)	
+	Function RemoveFont:Void(name:String, driver:Int = FlxText.DRIVER_NATIVE)
+		_Fonts[driver].Remove(name)
 	End Function
 	
 	Function GetFonts:StringMap<FlxFont>(driver:Int = FlxText.DRIVER_NATIVE)

@@ -53,7 +53,7 @@ Public
 	End Method
 	
 	Method Start:FlxTimer(time:Float = 1, loops:Int = 1, callback:FlxTimerListener = Null)
-		Local timerManager:TimerManager = Manager		
+		Local timerManager:TimerManager = Manager()		
 		If (timerManager <> Null) timerManager.Add(Self)
 		
 		If (paused) Then
