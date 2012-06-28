@@ -2,13 +2,13 @@
 <ModSignature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>Flixel for Monkey</Name>
   <MajorVersion>12</MajorVersion>
-  <MinorVersion>05</MinorVersion>
-  <Revision>09</Revision>
+  <MinorVersion>06</MinorVersion>
+  <Revision>28</Revision>
   <Build>A</Build>
   <Kind>ZipFolder</Kind>
   <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip</UpdateURL>
   <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/master/flixel.lmbs</RemoteSignatureURL>
-  <ShortDescription>Fixed critical bugs</ShortDescription>
+  <ShortDescription>Bug fixes</ShortDescription>
   <RequireCredentials>false</RequireCredentials>
-  <MoreInfoURL>https://github.com/devolonter/flixel-monkey/issues?direction=desc&amp;milestone=2&amp;page=1&amp;sort=created&amp;state=closed</MoreInfoURL>
+  <MoreInfoURL></MoreInfoURL>
 </ModSignature>
