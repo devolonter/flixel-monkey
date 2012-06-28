@@ -303,8 +303,8 @@ Class Char
 End Class
 
 Class KernPair
-	Field first:String
-	Field second:String
+	Field first:Int
+	Field second:Int
 	Field amount:Int
 	
 	
