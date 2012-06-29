@@ -1,5 +1,7 @@
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxpoint
 Import flxrect
@@ -11,7 +13,7 @@ Import system.flxcolor
 
 Class FlxCamera Extends FlxBasic
 
-	Global ClassObject:FlxClass = New FlxCameraClass()
+	Global ClassObject:ClassInfo
 
 	Const STYLE_LOCKON:Int = 0
 	
@@ -524,10 +526,6 @@ Public
 	Method ID:Int() Property
 		Return _id
 	End Method
-
-	Method ToString:String()
-		Return "FlxCamera"	
-	End Method
 	
 Private
 	Method _IsClipped:Bool()
@@ -553,16 +551,3 @@ Interface FlxCameraShakeListener
 	Method OnShakeComplete:Void()
 
 End Interface
-
-Private
-Class FlxCameraClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxCamera()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return FlxCamera(object) <> Null
-	End Method
-	
-End Class

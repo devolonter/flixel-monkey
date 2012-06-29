@@ -1,17 +1,19 @@
 Strict
 
+Import reflection
+
 Import flixel.flxextern
 Import flixel.flxbasic
 Import flixel.flxtimer
 
 Class TimerManager Extends FlxBasic
 
+	Global ClassObject:ClassInfo
+
 Private
 	Field _timers:Stack<FlxTimer>
 
-Public	
-	Global ClassObject:FlxClass = new TimerManagerClass()
-
+Public
 	Method New()
 		_timers = New Stack<FlxTimer>()
 		visible = False
@@ -59,18 +61,5 @@ Public
 	Method ToString:String()
 		Return "TimerManager"
 	End Method
-	
-End Class
-
-Private
-Class TimerManagerClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New TimerManager()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (TimerManager(object) <> Null)
-	End Method	
 	
 End Class

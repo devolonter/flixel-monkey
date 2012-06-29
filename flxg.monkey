@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flxextern
 Import flxbasic
@@ -240,7 +241,7 @@ Public
 	End Function
 	
 	Function ResetState:Void()
-		_Game._requestedState = FlxState(_Game._state.GetClass().CreateInstance())
+		_Game._requestedState = FlxState(_Game._state.GetClass().NewInstance())
 	End Function
 	
 	Function ResetGame:Void()
@@ -564,7 +565,7 @@ Public
 		Return plugin
 	End Function
 	
-	Function GetPlugin:FlxBasic(creator:FlxClass)
+	Function GetPlugin:FlxBasic(classInfo:ClassInfo)
 		Local pluginList:Stack<FlxBasic> = FlxG.Plugins
 		Local plugin:FlxBasic
 		Local i:Int = 0
@@ -572,7 +573,7 @@ Public
 		
 		While(i < l)
 			plugin = pluginList.Get(i)
-			If (creator.InstanceOf(plugin)) Return plugin
+			If (classInfo.ExtendsClass(plugin.GetClass())) Return plugin
 			
 			i+=1
 		Wend
@@ -585,13 +586,13 @@ Public
 		Return plugin
 	End Function
 	
-	Function RemovePluginType:Bool(creator:FlxClass)
+	Function RemovePluginType:Bool(creator:ClassInfo)
 		Local results:Bool = False
 		Local pluginList:Stack<FlxBasic> = FlxG.Plugins
 		Local i:Int = pluginList.Length() - 1	
 		
 		While(i >= 0)
-			If (creator.InstanceOf(pluginList.Get(i))) Then
+			If (creator.ExtendsClass(pluginList.Get(i).GetClass())) Then
 				pluginList.Remove(i)
 				results = True	
 			End If

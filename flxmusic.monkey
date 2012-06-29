@@ -1,11 +1,14 @@
 Strict
 
 Import mojo.audio
+Import reflection
 
 Import flxsound
 Import system.flxassetsmanager
 
 Class FlxMusic Extends FlxSound
+
+	Global ClassObject:ClassInfo
 
 Private
 	Field _filename:String
@@ -71,10 +74,6 @@ Public
 		If (autoDestroy) Then
 			Destroy()				
 		End If
-	End Method
-	
-	Method ToString:String()
-		Return "FlxMusic"
 	End Method
 	
 	Function GetValidExt:String()

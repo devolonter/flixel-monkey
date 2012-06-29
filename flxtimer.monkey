@@ -97,10 +97,6 @@ Public
 		Return TimerManager(FlxG.GetPlugin(TimerManager.ClassObject))				
 	End Function
 	
-	Method ToString:String()
-		Return "FlxTimer"
-	End Method
-	
 End Class
 
 Interface FlxTimerListener

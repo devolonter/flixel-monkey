@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 Import fontmachine.fontmachine
 
 Import flixel.flxextern
@@ -45,9 +46,9 @@ Import "../../data/system_machine_font_23_flx.txt"
 Import "../../data/system_machine_font_24_flx_P_1.png"
 Import "../../data/system_machine_font_24_flx.txt"
 
-Global FontmachineTextDriver:FlxClass = New FlxFMDriverClass()
-
 Class FlxTextFontMachineDriver Extends FlxTextDriver
+
+	Global ClassObject:ClassInfo
 
 Private
 	Global _FontLoader:FlxFMDriverLoader = New FlxFMDriverLoader()
@@ -111,18 +112,6 @@ Public
 End Class
 
 Private
-Class FlxFMDriverClass Implements FlxClass
-	
-	Method CreateInstance:Object()
-		Return New FlxTextFontMachineDriver()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return FlxTextFontMachineDriver(object) <> Null
-	End Method
-
-End Class
-
 Class FlxFMDriverLoader Extends FlxResourceLoader<BitmapFont>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT

@@ -1,5 +1,7 @@
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxgroup
 Import flxpoint
@@ -10,7 +12,7 @@ Import flxg
 
 Class FlxEmitter Extends FlxGroup
 
-	Global ClassObject:FlxClass = New FlxEmitterClass()
+	Global ClassObject:ClassInfo
 	
 	Field x:Float
 	
@@ -40,7 +42,7 @@ Class FlxEmitter Extends FlxGroup
 	
 	Field bounce:Float
 	
-	Field particleClass:FlxClass
+	Field particleClass:ClassInfo
 	
 Private
 	Field _quantity:Int
@@ -106,7 +108,7 @@ Public
 			If (particleClass = Null) Then
 				particle = New FlxParticle()
 			Else
-				particle = FlxParticle(particleClass.CreateInstance())			
+				particle = FlxParticle(particleClass.NewInstance())			
 			End If
 			
 			If (multiple) Then
@@ -262,17 +264,4 @@ Public
 		y = _point.y - (height Shr 1)
 	End Method
 
-End Class
-
-Private
-Class FlxEmitterClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxEmitter()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)			
-		Return (FlxEmitter(object) <> Null)
-	End Method	
-	
 End Class

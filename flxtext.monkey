@@ -1,18 +1,19 @@
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxsprite
 Import flxcamera
 Import flxtext.driver
 Import flxtext.driver.native
 Import flxg
-
 Import system.flxcolor
 Import system.flxassetsmanager
 
 Class FlxText Extends FlxSprite
 
-	Global ClassObject:FlxClass = new FlxTextClass()
+	Global ClassObject:ClassInfo
 	
 	Const ALIGN_LEFT:Float = 0
 	Const ALIGN_RIGHT:Float = 1
@@ -26,20 +27,25 @@ Class FlxText Extends FlxSprite
 	Const SYSTEM_FONT:String = "system"
 	
 Private
-	Global _DefaultDriver:FlxClass = NativeTextDriver
+	Global _DefaultDriver:ClassInfo
 	Field _driver:FlxTextDriver
 	Field _shadow:FlxColor
 
 Public
-	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:FlxClass = Null)
+	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:ClassInfo = Null)
 		Super.New(x, y)
 		
 		Pixels = Null
 		
-		_shadow = New FlxColor(0)	
+		_shadow = New FlxColor(0)		
 		
-		If (driver = Null) driver =	_DefaultDriver
-		_driver = FlxTextDriver(driver.CreateInstance())
+		If (driver = Null) Then
+			If (_DefaultDriver = Null) _DefaultDriver = FlxTextNativeDriver.ClassObject
+		
+			driver = _DefaultDriver
+		End If
+		
+		_driver = FlxTextDriver(driver.NewInstance())
 		
 		Self.width = width
 		frameWidth = Self.width
@@ -171,25 +177,8 @@ Public
 		_driver.Draw(x, y)
 	End Method
 	
-	Function SetDefaultDriver:Void(driver:FlxClass)
+	Function SetDefaultDriver:Void(driver:ClassInfo)
 		_DefaultDriver = driver
 	End Function
-	
-	Method ToString:String()
-		Return "FlxText"	
-	End Method
-	
-End Class
-
-Private	
-Class FlxTextClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxText()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)			
-		Return (FlxText(object) <> Null)
-	End Method	
 	
 End Class

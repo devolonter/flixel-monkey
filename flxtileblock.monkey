@@ -1,10 +1,14 @@
 Strict
 
 Import mojo
+Import reflection
+
 Import flxsprite
 Import flxg
 
 Class FlxTileblock Extends FlxSprite
+
+	Global ClassObject:ClassInfo
 
 Private
 	Field _tilePixels:Image
@@ -90,7 +94,7 @@ Public
 		Wend
 		
 		Return Self	
-	End Method
+	End Method	
 	
 	Method _DrawSurface:Void(x:Float, y:Float)		
 		If (_tilePixels = Null) Return

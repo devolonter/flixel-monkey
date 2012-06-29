@@ -3,6 +3,8 @@
 #end
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxbasic
 Import flxobject
@@ -14,7 +16,7 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
-	Global ClassObject:FlxClass = New FlxGroupClass()
+	Global ClassObject:ClassInfo
 
 	#Rem
 	summary:See detail.
@@ -222,11 +224,11 @@ Public
 	[/list]
 	Return a reference to the object that was created. Don't forget to cast it back to the objectClass you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassClass))).
 	#End
-	Method Recycle:FlxBasic(objectClass:FlxClass = null)
+	Method Recycle:FlxBasic(objectClass:ClassInfo = null)
 		If (_maxSize > 0) Then
 			If (_length < _maxSize) Then
 				If (objectClass = Null) Return Null				
-				Return Add(FlxBasic(objectClass.CreateInstance()))
+				Return Add(FlxBasic(objectClass.NewInstance()))
 			Else				
 				Local basic:FlxBasic = _members[_marker]
 				_marker+=1
@@ -237,7 +239,7 @@ Public
 			Local basic:FlxBasic = GetFirstAvailable(objectClass)
 			If (basic <> Null) Return basic
 			If (objectClass = Null) Return Null
-			Return Add(FlxBasic(objectClass.CreateInstance()))				
+			Return Add(FlxBasic(objectClass.NewInstance()))				
 		End If
 	End Method
 	
@@ -340,14 +342,14 @@ Public
 		Wend
 	End Method
 	
-	Method GetFirstAvailable:FlxBasic(objectClass:FlxClass = null)
+	Method GetFirstAvailable:FlxBasic(objectClass:ClassInfo = null)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null And Not basic.exists And 
-					(objectClass = Null Or objectClass.InstanceOf(basic))) Return basic
+					(objectClass = Null Or objectClass.ExtendsClass(basic.GetClass()))) Return basic
 			i+=1
 		Wend
 
@@ -477,12 +479,7 @@ Public
 		Return New Enumerator(Self)
 	End
 	
-	Method ToString:String()
-		Return "FlxGroup"
-	End Method
-	
 Private
-
 	Method _IndexOf:Int(object:FlxBasic)
 		Local i:Int = 0		
 			
@@ -563,19 +560,6 @@ Private
 	Field _index:Int
 
 End
-
-Private
-Class FlxGroupClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxGroup()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return FlxGroup(object) <> Null
-	End Method
-	
-End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.

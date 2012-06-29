@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flixel.flxextern
 Import flixel.flxtext
@@ -20,9 +21,9 @@ Import "../../data/system_font_15_flx.png"
 Import "../../data/system_font_16_flx.png"
 Import "../../data/system_font_17_flx.png"
 
-Global NativeTextDriver:FlxClass = New FlxNFDriverClass()
-
 Class FlxTextNativeDriver Extends FlxTextDriver
+
+	Global ClassObject:ClassInfo
 
 Private
 	Global _FontLoader:FlxNFDriverLoader = New FlxNFDriverLoader()
@@ -76,18 +77,6 @@ Public
 End Class
 
 Private
-Class FlxNFDriverClass Implements FlxClass
-	
-	Method CreateInstance:Object()
-		Return New FlxTextNativeDriver()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return FlxTextNativeDriver(object) <> Null
-	End Method
-
-End Class
-
 Class FlxNFDriverLoader Extends FlxResourceLoader<Image>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT

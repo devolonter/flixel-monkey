@@ -35,13 +35,3 @@ Extern
 #If TARGET = "html5"
 	Function IsIE:Bool() = "flixel.isIE"
 #End
-
-Public
-
-	Interface FlxClass
-		
-		Method CreateInstance:Object()
-		
-		Method InstanceOf:Bool(object:Object)
-	
-	End Interface

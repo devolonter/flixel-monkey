@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flxextern
 Import flxobject
@@ -18,6 +19,8 @@ Import "data/autotiles_flx.png"
 Import "data/autotiles_flx.png"
 
 Class FlxTilemap Extends FlxObject
+
+	Global ClassObject:ClassInfo
 
 	Const AUTOTILES:String =  "autotiles" + FlxG.DATA_SUFFIX
 	
@@ -540,7 +543,7 @@ Public
 					End If
 					
 					If (overlapFound) Then
-						If (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object))) Then
+						If (tile.callback <> Null And (tile.filter = Null Or tile.filter.ExtendsClass(object.GetClass()))) Then
 							tile.mapIndex = rowStart + column
 							tile.callback.OnTileHit(tile, object)
 						End If
@@ -548,7 +551,7 @@ Public
 						results = True
 					End If
 					
-				ElseIf (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object))) Then
+				ElseIf (tile.callback <> Null And (tile.filter = Null Or tile.filter.ExtendsClass(object.GetClass()))) Then
 					tile.mapIndex = rowStart + column
 					tile.callback.OnTileHit(tile, object)
 				End If
@@ -675,7 +678,7 @@ Public
 		Return True
 	End Method
 	
-	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:FlxClass = Null, range:Int = 1)
+	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:ClassInfo = Null, range:Int = 1)
 		If (range <= 0) range = 1
 		
 		Local tileObject:FlxTile
@@ -828,10 +831,6 @@ Public
 		
 		Return csv.Join("")
 	End Function
-	
-	Method ToString:String()
-		Return "FlxTilemap"
-	End Method
 	
 Private
 	Method _SimplifyPath:Void(points:Stack<FlxPoint>)

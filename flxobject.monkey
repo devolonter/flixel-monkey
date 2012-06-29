@@ -4,6 +4,8 @@ Strict
 	header:This module contains the FlxObject class.
 #end
 
+Import reflection
+
 Import flxextern
 Import flxbasic
 Import flxpoint
@@ -24,7 +26,7 @@ basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
 
-	Global ClassObject:FlxClass = new FlxObjectClass()
+	Global ClassObject:ClassInfo
 	
 	Global XComparator:FlxBasicComparator = new FlxObjectXComparator()
 	
@@ -719,10 +721,6 @@ Public
 		End If		
 	End Function
 	
-	Method ToString:String()
-		Return "FlxObject"	
-	End Method
-	
 Private
 	Method _UpdateMotion:Void()
 		Local delta:Float
@@ -885,18 +883,6 @@ Private
 End Class
 
 Private
-Class FlxObjectClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxObject()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)			
-		Return (FlxObject(object) <> Null)
-	End Method	
-	
-End Class
-
 Class FlxObjectYComparator Implements FlxBasicComparator
 
 	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)

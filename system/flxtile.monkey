@@ -1,14 +1,18 @@
 Strict
 
+Import reflection
+
 Import flixel.flxextern
 Import flixel.flxobject
 Import flixel.flxtilemap
 
 Class FlxTile Extends FlxObject
+
+	Global ClassObject:ClassInfo
 	
 	Field callback:FlxTileHitListener
 	
-	Field filter:FlxClass
+	Field filter:ClassInfo
 	
 	Field tilemap:FlxTilemap
 	

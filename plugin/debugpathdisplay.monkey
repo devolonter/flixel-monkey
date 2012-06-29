@@ -1,17 +1,19 @@
 Strict
 
+Import reflection
+
 Import flixel.flxextern
 Import flixel.flxbasic
 Import flixel.flxpath
 
 Class DebugPathDisplay extends FlxBasic
+
+	Global ClassObject:ClassInfo
 	
 Private
 	Field _paths:Stack<FlxPath>
 	
 Public
-	Global ClassObject:FlxClass = new DebugPathDisplayClass()
-
 	Method New()
 		_paths = New Stack<FlxPath>
 		active = False
@@ -61,17 +63,4 @@ Public
 		Return "DebugPathDisplay"	
 	End Method
 
-End Class
-
-Private
-Class DebugPathDisplayClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New DebugPathDisplay()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (DebugPathDisplay(object) <> Null)
-	End Method	
-	
 End Class
