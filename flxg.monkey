@@ -565,7 +565,7 @@ Public
 		Return plugin
 	End Function
 	
-	Function GetPlugin:FlxBasic(classInfo:ClassInfo)
+	Function GetPlugin:FlxBasic(objectClass:ClassInfo)
 		Local pluginList:Stack<FlxBasic> = FlxG.Plugins
 		Local plugin:FlxBasic
 		Local i:Int = 0
@@ -573,7 +573,7 @@ Public
 		
 		While(i < l)
 			plugin = pluginList.Get(i)
-			If (classInfo.ExtendsClass(plugin.GetClass())) Return plugin
+			If (plugin.GetClass().ExtendsClass(objectClass)) Return plugin
 			
 			i+=1
 		Wend
@@ -586,13 +586,13 @@ Public
 		Return plugin
 	End Function
 	
-	Function RemovePluginType:Bool(creator:ClassInfo)
+	Function RemovePluginType:Bool(objectClass:ClassInfo)
 		Local results:Bool = False
 		Local pluginList:Stack<FlxBasic> = FlxG.Plugins
 		Local i:Int = pluginList.Length() - 1	
 		
 		While(i >= 0)
-			If (creator.ExtendsClass(pluginList.Get(i).GetClass())) Then
+			If (pluginList.Get(i).GetClass().ExtendsClass(objectClass)) Then
 				pluginList.Remove(i)
 				results = True	
 			End If

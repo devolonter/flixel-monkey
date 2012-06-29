@@ -349,7 +349,7 @@ Public
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null And Not basic.exists And 
-					(objectClass = Null Or objectClass.ExtendsClass(basic.GetClass()))) Return basic
+					(objectClass = Null Or basic.GetClass().ExtendsClass(objectClass))) Return basic
 			i+=1
 		Wend
 

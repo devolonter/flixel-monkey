@@ -543,7 +543,7 @@ Public
 					End If
 					
 					If (overlapFound) Then
-						If (tile.callback <> Null And (tile.filter = Null Or tile.filter.ExtendsClass(object.GetClass()))) Then
+						If (tile.callback <> Null And (tile.filter = Null Or object.GetClass().ExtendsClass(tile.filter))) Then
 							tile.mapIndex = rowStart + column
 							tile.callback.OnTileHit(tile, object)
 						End If
@@ -551,7 +551,7 @@ Public
 						results = True
 					End If
 					
-				ElseIf (tile.callback <> Null And (tile.filter = Null Or tile.filter.ExtendsClass(object.GetClass()))) Then
+				ElseIf (tile.callback <> Null And (tile.filter = Null Or object.GetClass().ExtendsClass(tile.filter))) Then
 					tile.mapIndex = rowStart + column
 					tile.callback.OnTileHit(tile, object)
 				End If

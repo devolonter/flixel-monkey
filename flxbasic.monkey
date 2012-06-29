@@ -22,7 +22,7 @@ Class FlxBasic
 
 	Global _ActiveCount:Int
 	
-	Global _VisibleCount:Int	
+	Global _VisibleCount:Int
 	
 	Global ExistsComparator:FlxBasicComparator = new FlxBasicExistsComparator()
 	
