@@ -2,6 +2,8 @@ Strict
 
 Import flixel
 
+#REFLECTION_FILTER="text*|flixel*"
+
 Function Main:Int()
 	New Text()
 	Return 0
@@ -10,26 +12,12 @@ End Function
 Class Text Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, TextState.ClassObject)	
-	End Method
-
-End Class
-
-Class TextStateClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New TextState()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (TextState(object) <> Null)
+		Super.New(640, 480, GetClass("TextState"))	
 	End Method
 
 End Class
 
 Class TextState Extends FlxState
-
-	Global ClassObject:FlxClass = new TextStateClass()
 	
 	Method Create:Void()		
 		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!")	

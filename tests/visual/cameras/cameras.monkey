@@ -2,6 +2,8 @@ Strict
 
 Import flixel
 
+#REFLECTION_FILTER="cameras*|flixel*"
+
 Function Main:Int()
 	New Cameras()
 	Return 0
@@ -10,26 +12,12 @@ End Function
 Class Cameras Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, CamerasState.ClassObject)	
-	End Method
-
-End Class
-
-Class CamerasStateClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New CamerasState()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (CamerasState(object) <> Null)
+		Super.New(640, 480, GetClass("CamerasState"))
 	End Method
 
 End Class
 
 Class CamerasState Extends FlxState
-
-	Global ClassObject:FlxClass = new CamerasStateClass()
 	
 	Field pink_camera:FlxCamera
 	Field red_camera:FlxCamera
