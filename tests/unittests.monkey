@@ -495,7 +495,7 @@ Class FlxGroupReplaceUnitTest Extends FlxGroupUnitTestBase
 	
 End Class
 
-Class FlxGroupSortUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicComparator
+Class FlxGroupSortUnitTest Extends FlxGroupUnitTestBase
 
 	Method Run:Bool()	
 		group = New FlxGroup()
@@ -506,7 +506,7 @@ Class FlxGroupSortUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicCompa
 			i-=1
 		Next
 		
-		group.Sort(Self)
+		group.Sort("ID")
 		
 		i = 0
 		For Local basic:FlxBasic = EachIn group
@@ -514,7 +514,7 @@ Class FlxGroupSortUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicCompa
 			i+=1	
 		Next
 		
-		group.Sort(Self, FlxGroup.DESCENDING)
+		group.Sort("ID", FlxGroup.DESCENDING)
 		
 		i = countObjects - 1
 		For Local basic:FlxBasic = EachIn group
@@ -528,10 +528,7 @@ Class FlxGroupSortUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicCompa
 	Method GetName:String()
 		Return "FlxGroup.Sort"
 	End Method
-	
-	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
-		Return lhs.ID - rhs.ID
-	End Method
+
 	
 End Class
 
