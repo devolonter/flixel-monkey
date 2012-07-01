@@ -165,6 +165,8 @@ Private
 	
 Public	
 	Method New(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0)
+		Super.New()
+	
 		Self.x = x
 		Self.y = y
 		last = New FlxPoint(x, y)
@@ -217,7 +219,9 @@ Public
 		_cameras = Null
 		If (path <> Null) path.Destroy()
 		path = Null		
-		_debugBoundingBoxColor = Null	
+		_debugBoundingBoxColor = Null
+		
+		Super.Destroy()	
 	End Method
 	
 	Method PreUpdate:Void()

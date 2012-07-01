@@ -35,7 +35,12 @@ Private
 	
 	Field _fontHeight:Int
 
-Public	
+Public
+	Method Destroy:Void()
+		_font = Null						
+		Super.Destroy()
+	End Method
+	
 	Method GetTextWidth:Int(text:String)
 		Return text.Length()*_font.Width()
 	End Method
@@ -57,12 +62,7 @@ Public
 		End If
 		
 		SetFont(_DefaultFont)	
-	End Method
-	
-	Method Destroy:Void()
-		_font = Null				
-		Super.Destroy()
-	End Method			
+	End Method				
 
 	Method Reset:Void()
 		_FontLoader.fontFamily = _fontFamily

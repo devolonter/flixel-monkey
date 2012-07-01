@@ -91,6 +91,8 @@ Public
 		_length = 0
 		_members = _members.Resize(_length)
 		_cameras = Null
+		
+		Super.Destroy()
 	End Method
 	
 	#Rem

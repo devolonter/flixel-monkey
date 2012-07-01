@@ -13,13 +13,17 @@ Private
 
 Public
 	Method New()
+		Super.New()
+		
 		_timers = New Stack<FlxTimer>()
 		visible = False
 	End Method
 	
 	Method Destroy:Void()
 		Clear()
-		_timers = Null		
+		_timers = Null
+		
+		Super.Destroy()		
 	End Method
 	
 	Method Update:Void()

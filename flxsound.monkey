@@ -79,7 +79,7 @@ Public
 		Kill()		
 		_sound = Null
 		_target = Null
-		
+				
 		Super.Destroy()
 	End Method
 	

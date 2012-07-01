@@ -27,9 +27,7 @@ Public
 		_cursor = New FlxCursor()
 	End Method
 	
-	Method Destroy:Void()
-		Super.Destroy()
-		
+	Method Destroy:Void()		
 		For Local cur:Image = EachIn _CursorsManager.Resources.Values()
 			cur.Discard()
 		Next
@@ -38,6 +36,8 @@ Public
 		
 		If (_cursor <> Null) _cursor.Destroy()
 		_cursor = Null
+		
+		Super.Destroy()
 	End Method
 	
 	Method Left:Bool() Property

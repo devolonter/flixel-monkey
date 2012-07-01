@@ -83,7 +83,8 @@ Private
 	Override this function to null out variables or manually call [a #Destroy]Destroy()[/a] on class members if necessary.
 	Don't forget to call [b]super.Destroy()[/b]!
 	#End
-	Method Destroy:Void()	
+	Method Destroy:Void()
+		_classInfo = Null
 	End Method
 	
 	#Rem

@@ -35,11 +35,12 @@ Class FlxTile Extends FlxObject
 		mapIndex = 0
 	End Method
 	
-	Method Destroy:Void()
-		Super.Destroy()
+	Method Destroy:Void()		
 		callback = Null
 		tilemap = Null
 		filter = Null
+		
+		Super.Destroy()
 	End Method
 
 End Class

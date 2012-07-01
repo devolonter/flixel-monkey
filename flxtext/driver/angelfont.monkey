@@ -72,6 +72,11 @@ Public
 		Next
 	End Function
 	
+	Method Destroy:Void()
+		_font = Null				
+		Super.Destroy()
+	End Method
+	
 	Method GetTextWidth:Int(text:String)
 		Return _font.TextWidth(text)
 	End Method
@@ -88,12 +93,7 @@ Public
 				_font.DrawText(_textLines.Get(line).text, x + _textLines.Get(line).offsetX, y + line * _fontHeight)
 			Next
 		End If
-	End Method
-	
-	Method Destroy:Void()
-		_font = Null				
-		Super.Destroy()
-	End Method			
+	End Method				
 
 	Method Reset:Void()
 		_FontLoader.fontFamily = _fontFamily

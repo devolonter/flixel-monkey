@@ -20,6 +20,16 @@ Public
 		_textLines = New Stack<FlxTextDriverTextLine>();
 	End Method
 	
+	Method Destroy:Void()
+		Local l:Int = _textLines.Length()			
+		For Local i:Int = 0 Until l
+			_textLines.Set(i, Null)
+		Next
+		
+		_textLines.Clear()
+		_textLines = Null
+	End Method
+	
 	Method Width:Void(width:Int) Property
 		_width = width
 		If (_text.Length > 0) _ParseText()
@@ -85,16 +95,7 @@ Public
 	
 	Method Alignment:Float() Property
 		Return _alignment
-	End Method
-	
-	Method Destroy:Void()
-		Local l:Int = _textLines.Length()			
-		For Local i:Int = 0 Until l
-			_textLines.Set(i, Null)
-		Next
-		
-		_textLines.Clear()	
-	End Method	
+	End Method		
 	
 	Method GetTextWidth:Int(text:String) Abstract
 	

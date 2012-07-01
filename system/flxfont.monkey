@@ -12,6 +12,10 @@ Public
 		_name = name
 		_paths = New IntMap<String>()
 	End Method
+	
+	Method Destroy:Void()
+		_paths = Null
+	End Method
 
 	Method GetValidSize:Int(size:Int)
 		Return Clamp(size, _minSize, _maxSize)		

@@ -17,6 +17,7 @@ Private
 Public	
 	Method New(x:Int, y:Int, width:Int, height:Int)
 		Super.New(x, y)
+		
 		MakeGraphic(width, height, 0)
 		active = False
 		immovable = True

@@ -158,6 +158,8 @@ Public
 		_fxShakeComplete = Null
 		_fxShakeOffset = Null
 		_fill = Null
+		
+		Super.Destroy()
 	End Method
 	
 	Method Lock:Void()

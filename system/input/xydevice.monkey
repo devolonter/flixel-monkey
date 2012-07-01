@@ -45,10 +45,11 @@ Public
 		_globalScreenPosition = New FlxPoint()	
 	End Method
 	
-	Method Destroy:Void()
-		Super.Destroy()
+	Method Destroy:Void()		
 		_point = Null
 		_globalScreenPosition = Null
+		
+		Super.Destroy()
 	End Method
 	
 	Method Update:Void(x:Float, y:Float)

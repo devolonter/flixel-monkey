@@ -13,14 +13,17 @@ Private
 	
 Public
 	Method New()
+		Super.New()
+		
 		_paths = New Stack<FlxPath>
 		active = False
 	End Method
 	
-	Method Destroy:Void()
-		Super.Destroy()
+	Method Destroy:Void()		
 		Clear()
 		_paths = Null
+		
+		Super.Destroy()
 	End Method
 	
 	Method Draw:Void()

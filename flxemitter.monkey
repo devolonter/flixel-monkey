@@ -85,6 +85,7 @@ Public
 		particleDrag = Null
 		particleClass = Null
 		_point = Null
+		
 		Super.Destroy()
 	End Method
 	

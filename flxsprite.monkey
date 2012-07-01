@@ -125,6 +125,8 @@ Public
 		_surfaceColor = Null
 		_mixedColor = Null
 		_camera = Null
+		
+		Super.Destroy()
 	End Method
 	
 	Method LoadGraphic:FlxSprite(graphic:String, animated:Bool = False, reverse:Bool = False, width:Int = 0, height:Int = 0, unique:Bool = False)
