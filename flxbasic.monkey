@@ -18,8 +18,6 @@ as do the plugins.  Has no size, position or graphical data.
 #End
 Class FlxBasic
 
-	Global ClassObject:ClassInfo
-
 	Global _ActiveCount:Int
 	
 	Global _VisibleCount:Int

@@ -21,13 +21,15 @@ Import "../../data/system_font_15_flx.png"
 Import "../../data/system_font_16_flx.png"
 Import "../../data/system_font_17_flx.png"
 
-Class FlxTextNativeDriver Extends FlxTextDriver
+Global NativeTextDriver:ClassInfo = GetClass("FlxTextNativeDriver")
 
-	Global ClassObject:ClassInfo
+Class FlxTextNativeDriver Extends FlxTextDriver
 
 Private
 	Global _FontLoader:FlxNFDriverLoader = New FlxNFDriverLoader()
+	
 	Global _FontsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
+	
 	Global _DefaultFont:Image
 	
 	Field _font:Image

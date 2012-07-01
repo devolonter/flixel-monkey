@@ -1,10 +1,14 @@
 Strict
 
 Class FlxFont
+
 Private
 	Field _minSize:Int = 65536
+	
 	Field _maxSize:Int = -1
+	
 	Field _paths:IntMap<String>
+	
 	Field _name:String
 	
 Public

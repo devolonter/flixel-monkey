@@ -16,8 +16,6 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
-	Global ClassObject:ClassInfo
-
 	#Rem
 	summary:See detail.
 	Use with [a #Sort]Sort()[/a] to sort in ascending order.

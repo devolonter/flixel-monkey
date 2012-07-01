@@ -1,13 +1,9 @@
 Strict
 
-Import reflection
-
 Import flxsprite
 
 Class FlxParticle Extends FlxSprite
 
-	Global ClassObject:ClassInfo
-	
 	Field lifespan:Float
 	
 	Field friction:Float

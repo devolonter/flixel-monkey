@@ -15,8 +15,6 @@ Import "data/button_flx.png"
 Import "data/beep_flx.mp3"
 
 Class FlxButton Extends FlxSprite
-
-	Global ClassObject:ClassInfo
 	
 	Const NORMAL:Int = 0
 	

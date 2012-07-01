@@ -1,14 +1,10 @@
 Strict
 
-Import reflection
-
 Import flixel.flxextern
 Import flixel.flxbasic
 Import flixel.flxtimer
 
 Class TimerManager Extends FlxBasic
-
-	Global ClassObject:ClassInfo
 
 Private
 	Field _timers:Stack<FlxTimer>

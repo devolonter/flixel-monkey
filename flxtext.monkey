@@ -12,8 +12,6 @@ Import system.flxcolor
 Import system.flxassetsmanager
 
 Class FlxText Extends FlxSprite
-
-	Global ClassObject:ClassInfo
 	
 	Const ALIGN_LEFT:Float = 0
 	Const ALIGN_RIGHT:Float = 1

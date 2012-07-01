@@ -1,7 +1,5 @@
 Strict
 
-Import reflection
-
 Import flxgroup
 
 Class FlxState Extends FlxGroup Abstract

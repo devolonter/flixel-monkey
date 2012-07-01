@@ -1,7 +1,6 @@
 Strict
 
 Import mojo.audio
-Import reflection
 
 Import flxbasic
 Import flxobject
@@ -11,8 +10,6 @@ Import system.flxassetsmanager
 Import system.flxresourcesmanager
 
 Class FlxSound Extends FlxBasic
-	
-	Global ClassObject:ClassInfo
 
 	Field x:Float
 	
