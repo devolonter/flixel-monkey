@@ -23,14 +23,6 @@ Class FlxBasic
 	Global _ActiveCount:Int
 	
 	Global _VisibleCount:Int
-	
-	Global ExistsComparator:FlxBasicComparator = new FlxBasicExistsComparator()
-	
-	Global ActiveComparator:FlxBasicComparator = new FlxBasicActiveComparator()
-	
-	Global VisibleComparator:FlxBasicComparator = new FlxBasicVisibleComparator()
-	
-	Global AliveComparator:FlxBasicComparator = new FlxBasicAliveComparator()
 
 	#Rem
 	summary:IDs seem like they could be pretty useful, huh?
@@ -183,69 +175,6 @@ Private
 		Return _classInfo.Name[_classInfo.Name.FindLast(".")+1..]
 	End Method
 
-End Class
-
-Interface FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
-
-End Interface
-
-Private
-Class FlxBasicExistsComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.exists) Then
-			If (rhs.exists) Return 0
-			Return 1
-		Else
-			If (Not rhs.exists) Return 0
-			Return -1
-		End If
-	End Method
-	
-End Class
-
-Class FlxBasicActiveComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.active) Then
-			If (rhs.active) Return 0
-			Return 1
-		Else
-			If (Not rhs.active) Return 0
-			Return -1
-		End If
-	End Method
-	
-End Class
-
-Class FlxBasicVisibleComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.visible) Then
-			If (rhs.visible) Return 0
-			Return 1
-		Else
-			If (Not rhs.visible) Return 0
-			Return -1
-		End If
-	End Method
-	
-End Class
-
-Class FlxBasicAliveComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.alive) Then
-			If (rhs.alive) Return 0
-			Return 1
-		Else
-			If (Not rhs.alive) Return 0
-			Return -1
-		End If
-	End Method
-	
 End Class
 
 #Rem 

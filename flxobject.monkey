@@ -26,10 +26,6 @@ Class FlxObject Extends FlxBasic
 
 	Global ClassObject:Object
 	
-	Global XComparator:FlxBasicComparator = new FlxObjectXComparator()
-	
-	Global YComparator:FlxBasicComparator = new FlxObjectYComparator()
-	
 	'summary:Generic value for "left" Used by facing, allowCollisions, and touching.
 	Const LEFT:Int = 1
 	
@@ -881,22 +877,6 @@ Private
 End Class
 
 Private
-Class FlxObjectYComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		Return FlxObject(lhs).y - FlxObject(rhs).y		
-	End Method
-	
-End Class
-
-Class FlxObjectXComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		Return FlxObject(lhs).x - FlxObject(rhs).x		
-	End Method
-	
-End Class
-
 Class FlxObjectSeparateX Implements FlxTileOverlapChecker
 	
 	Method IsTileOverlap:Bool(object1:FlxObject, object2:FlxObject)
