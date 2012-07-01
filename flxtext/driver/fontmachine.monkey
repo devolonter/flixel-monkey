@@ -46,15 +46,17 @@ Import "../../data/system_machine_font_23_flx.txt"
 Import "../../data/system_machine_font_24_flx_P_1.png"
 Import "../../data/system_machine_font_24_flx.txt"
 
-Class FlxTextFontMachineDriver Extends FlxTextDriver
+Global FontmachineTextDriver:ClassInfo = GetClass("FlxTextFontMachineDriver")
 
-	Global ClassObject:ClassInfo
+Class FlxTextFontMachineDriver Extends FlxTextDriver
 
 Private
 	Global _FontLoader:FlxFMDriverLoader = New FlxFMDriverLoader()
+	
 	Global _FontsManager:FlxResourcesManager<BitmapFont> = New FlxResourcesManager<BitmapFont>()
 	
 	Field _font:BitmapFont
+	
 	Field _fontHeight:Int
 
 Public

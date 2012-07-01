@@ -1,7 +1,5 @@
 Strict
 
-Import reflection
-
 Import flxextern
 Import flxpoint
 Import flxrect
@@ -13,7 +11,7 @@ Import system.flxcolor
 
 Class FlxCamera Extends FlxBasic
 
-	Global ClassObject:ClassInfo
+	Global ClassObject:Object
 
 	Const STYLE_LOCKON:Int = 0
 	

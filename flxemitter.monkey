@@ -12,7 +12,7 @@ Import flxg
 
 Class FlxEmitter Extends FlxGroup
 
-	Global ClassObject:ClassInfo
+	Global ClassObject:Object
 	
 	Field x:Float
 	
@@ -202,7 +202,7 @@ Public
 	End Method
 	
 	Method EmitParticle:Void()
-		Local particle:FlxParticle = FlxParticle(Recycle(FlxParticle.ClassObject))
+		Local particle:FlxParticle = FlxParticle(Recycle(ClassInfo(FlxParticle.ClassObject)))
 		particle.lifespan = lifespan
 		particle.elasticity = bounce
 		particle.Reset(x - (particle.width Shr 1) + FlxG.Random() * width, y - (particle.height Shr 1) + FlxG.Random() * height)

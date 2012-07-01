@@ -1,14 +1,13 @@
 Strict
 
 Import mojo
-Import reflection
 
 Import flxsprite
 Import flxg
 
 Class FlxTileblock Extends FlxSprite
 
-	Global ClassObject:ClassInfo
+	Global ClassObject:Object
 
 Private
 	Field _tilePixels:Image

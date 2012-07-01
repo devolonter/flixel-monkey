@@ -99,8 +99,8 @@ Public
 		Local classObject:GlobalInfo
 		
 		For Local classInfo:ClassInfo = EachIn GetClasses()
-			classObject = classInfo.GetGlobal("ClassObject")
-			If (classObject = Null) classObject = classInfo.GetGlobal("ClassInfo")
+			classObject = classInfo.GetGlobal("ClassObject", False)
+			If (classObject = Null) classObject = classInfo.GetGlobal("ClassInfo", False)
 			
 			If (classObject <> Null) Then
 				classObject.SetValue(classInfo)

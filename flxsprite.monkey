@@ -1,6 +1,5 @@
 Strict
 
-Import reflection
 Import mojo
 
 Import flxextern
@@ -16,7 +15,7 @@ Import "data/default_flx.png"
 
 Class FlxSprite Extends FlxObject
 
-	Global ClassObject:ClassInfo
+	Global ClassObject:Object
 	
 	Field origin:FlxPoint
 	

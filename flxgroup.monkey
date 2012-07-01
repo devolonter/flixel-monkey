@@ -16,7 +16,7 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
-	Global ClassObject:ClassInfo
+	Global ClassObject:Object
 
 	#Rem
 	summary:See detail.

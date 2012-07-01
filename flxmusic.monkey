@@ -1,14 +1,13 @@
 Strict
 
 Import mojo.audio
-Import reflection
 
 Import flxsound
 Import system.flxassetsmanager
 
 Class FlxMusic Extends FlxSound
 
-	Global ClassObject:ClassInfo
+	Global ClassObject:Object
 
 Private
 	Field _filename:String

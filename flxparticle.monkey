@@ -1,12 +1,10 @@
 Strict
 
-Import reflection
-
 Import flxsprite
 
 Class FlxParticle Extends FlxSprite
 
-	Global ClassObject:ClassInfo
+	Global ClassObject:Object
 	
 	Field lifespan:Float
 	
