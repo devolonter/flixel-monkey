@@ -535,7 +535,7 @@ Class FlxGroupSortUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicCompa
 	
 End Class
 
-Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicSetter
+Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase
 
 	Method Run:Bool()	
 		group = New FlxGroup()
@@ -549,13 +549,13 @@ Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicSet
 		Next		
 		group.Add(group2)
 		
-		group.SetAll(Self, IntObject(100), False)
+		group.SetAll("ID", BoxInt(100), False)
 		
 		For Local basic:FlxBasic = EachIn group
 			If (Not UnitTest.AssertEqualsI(100, basic.ID)) Return False
 		Next		
 		
-		group.SetAll(Self, IntObject(50), False)
+		group.SetAll("ID", BoxInt(50), False)
 		
 		For Local basic:FlxBasic = EachIn group
 			If (FlxGroup(basic) <> Null) Then
@@ -572,10 +572,6 @@ Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicSet
 
 	Method GetName:String()
 		Return "FlxGroup.SetAll"
-	End Method
-	
-	Method Set:Void(basic:FlxBasic, value:Object)
-		basic.ID = IntObject(value)	
 	End Method
 	
 End Class

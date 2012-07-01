@@ -308,7 +308,7 @@ Public
 	End Method
 	
 	
-	Method SetAll:Void(setter:FlxBasicSetter, value:Object, recurse:Bool = True)
+	Method SetAll:Void(variableName:String, value:Object, recurse:Bool = True)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
@@ -316,9 +316,9 @@ Public
 			basic = _members[i]
 			If (basic <> Null) Then
 				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).SetAll(setter, value, recurse)	
+					FlxGroup(basic).SetAll(variableName, value, recurse)	
 				Else
-					setter.Set(basic, value)
+					basic.GetClass().GetField(variableName).SetValue(basic, value)
 				End If
 			End If
 			i+=1		
