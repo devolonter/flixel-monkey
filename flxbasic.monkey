@@ -185,12 +185,6 @@ Private
 
 End Class
 
-Interface FlxBasicInvoker
-	
-	Method Invoke:Void(object:FlxBasic)
-
-End Interface
-
 Interface FlxBasicSetter
 	
 	Method Set:Void(object:FlxBasic, value:Object)

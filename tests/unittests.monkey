@@ -580,7 +580,7 @@ Class FlxGroupSetAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicSet
 	
 End Class
 
-Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicInvoker
+Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase
 
 	Method Run:Bool()	
 		group = New FlxGroup()
@@ -594,14 +594,14 @@ Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicIn
 		Next		
 		group.Add(group2)
 		
-		group.CallAll(Self, False)
+		group.CallAll("Kill", False)
 		
 		For Local basic:FlxBasic = EachIn group
 			If (Not UnitTest.AssertFalse(basic.exists)) Return False
 			basic.Revive()
 		Next		
 		
-		group.CallAll(Self)
+		group.CallAll("Kill")
 		
 		For Local basic:FlxBasic = EachIn group
 			If (FlxGroup(basic) <> Null) Then
@@ -618,10 +618,6 @@ Class FlxGroupCallAllUnitTest Extends FlxGroupUnitTestBase Implements FlxBasicIn
 
 	Method GetName:String()
 		Return "FlxGroup.CallAll"
-	End Method
-	
-	Method Invoke:Void(basic:FlxBasic)
-		basic.Kill()
 	End Method
 	
 End Class

@@ -325,7 +325,7 @@ Public
 		Wend
 	End Method
 	
-	Method CallAll:Void(invoker:FlxBasicInvoker, recurse:Bool = True)
+	Method CallAll:Void(functionName:String, recurse:Bool = True)
 		Local basic:FlxBasic
 		Local i:Int = 0	
 			
@@ -333,9 +333,9 @@ Public
 			basic = _members[i]
 			If (basic <> Null) Then
 				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).CallAll(invoker, recurse)	
+					FlxGroup(basic).CallAll(functionName, recurse)	
 				Else
-					invoker.Invoke(basic)
+					basic.GetClass().GetMethod(functionName, []).Invoke(basic, [])
 				End If
 			End If
 			i+=1		
