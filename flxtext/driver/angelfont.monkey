@@ -46,9 +46,9 @@ Import "../../data/system_angel_font_23_flx.txt"
 Import "../../data/system_angel_font_24_flx.png"
 Import "../../data/system_angel_font_24_flx.txt"
 
-Global AngelfontTextDriver:ClassInfo = GetClass("FlxTextAngelFontDriver")
-
 Class FlxTextAngelFontDriver Extends FlxTextDriver
+
+	Global ClassObject:Object
 
 Private
 	Global _FontLoader:FlxAFDriverLoader = New FlxAFDriverLoader()

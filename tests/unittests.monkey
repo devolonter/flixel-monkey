@@ -3,9 +3,8 @@ Strict
 
 Import unittest
 Import flixel
-Import reflection
 
-#REFLECTION_FILTER="main*|flixel*"
+#REFLECTION_FILTER="unittests*|flixel*"
 
 Function Main:Int()
 	Local classObject:GlobalInfo
