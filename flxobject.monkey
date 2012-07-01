@@ -4,6 +4,8 @@ Strict
 	header:This module contains the FlxObject class.
 #end
 
+Import reflection
+
 Import flxextern
 Import flxbasic
 Import flxpoint
@@ -23,6 +25,8 @@ It includes some basic attributes about game objects, including retro-style flic
 basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
+
+	Global ClassObject:ClassInfo
 	
 	Global XComparator:FlxBasicComparator = new FlxObjectXComparator()
 	

@@ -1,10 +1,14 @@
 Strict
 
+Import reflection
+
 Import flixel.flxextern
 Import flixel.flxbasic
 Import flixel.flxpath
 
 Class DebugPathDisplay extends FlxBasic
+
+	Global ClassObject:ClassInfo
 	
 Private
 	Field _paths:Stack<FlxPath>

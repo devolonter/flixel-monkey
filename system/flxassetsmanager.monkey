@@ -38,7 +38,7 @@ Public
 		font = New FlxFont(name)
 		_Fonts[driver].Set(name, font)
 		
-		Return font
+		Return font	
 	End Function
 	
 	Function RemoveFont:Void(name:String, driver:Int = FlxText.DRIVER_NATIVE)

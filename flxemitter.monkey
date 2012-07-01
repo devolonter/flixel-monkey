@@ -11,6 +11,8 @@ Import flxobject
 Import flxg
 
 Class FlxEmitter Extends FlxGroup
+
+	Global ClassObject:ClassInfo
 	
 	Field x:Float
 	
