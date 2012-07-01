@@ -38,7 +38,7 @@ Public
 		_shadow = New FlxColor(0)		
 		
 		If (driver = Null) Then
-			If (_DefaultDriver = Null) _DefaultDriver = FlxTextNativeDriver.ClassObject
+			If (_DefaultDriver = Null) _DefaultDriver = NativeTextDriver
 		
 			driver = _DefaultDriver
 		End If

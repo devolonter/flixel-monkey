@@ -1,5 +1,7 @@
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxpoint
 Import flxg
