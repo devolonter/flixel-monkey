@@ -303,7 +303,7 @@ Public
 	Return the new object.
 	#End	
 	Method Sort:Void(index:String = "y", order:Bool = ASCENDING)
-		_sortIndex = GetFirstExtant().GetClass().GetField(index)
+		_sortIndex = GetFirstNotNull().GetClass().GetField(index)
 		_sortDescending = order
 		
 		Select _sortIndex.Type.Name
@@ -324,12 +324,17 @@ Public
 				_QSortString(0, _length - 1)
 		
 		End Select
-	End Method
-	
+	End Method	
 	
 	Method SetAll:Void(variableName:String, value:Object, recurse:Bool = True)
 		Local basic:FlxBasic
-		Local i:Int = 0	
+		Local i:Int = 0
+		
+		basic = GetFirstNotNull()
+		If (basic <> Null And basic.GetClass().GetField(variableName) = Null) Then			
+			_SetAllProperties(variableName, value, recurse)
+			Return		
+		End If
 			
 		While(i < _length)
 			basic = _members[i]
@@ -384,6 +389,19 @@ Public
 		Wend
 
 		Return -1	
+	End Method
+	
+	Method GetFirstNotNull:FlxBasic()
+		Local i:Int = 0
+		Local basic:FlxBasic
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null) Return basic
+			i+=1
+		Wend
+
+		Return Null	
 	End Method
 	
 	Method GetFirstExtant:FlxBasic()
@@ -692,6 +710,32 @@ Private
 		_members[store] = _members[right]
 		_members[right] = basic
 		Return store	
+	End Method
+	
+	Method _SetAllProperties:Void(variableName:String, value:Object, recurse:Bool = True)
+		Local basic:FlxBasic
+		Local prop:MethodInfo
+		Local argType:ClassInfo
+		Local i:Int = 0
+		
+		basic = GetFirstNotNull()
+		
+		For argType = EachIn GetClasses()
+			prop = basic.GetClass().GetMethod(variableName, [argType])
+			If (prop <> Null) Exit
+		Next
+			
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null) Then
+				If (recurse And FlxGroup(basic) <> Null) Then
+					FlxGroup(basic).SetAll(variableName, value, recurse)	
+				Else
+					basic.GetClass().GetMethod(variableName, [argType]).Invoke(basic, [value])
+				End If
+			End If
+			i+=1		
+		Wend
 	End Method
 	
 End Class
