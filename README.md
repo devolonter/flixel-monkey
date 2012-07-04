@@ -64,7 +64,7 @@ QuickStart
 ```
 Import flixel
 
-#REFLECTION_FILTER="your_app*|flixel*"
+#REFLECTION_FILTER="myapp*|flixel*"
 
 Function Main()
 	New HelloWorld()
