@@ -273,7 +273,9 @@ Private
 		End If
 	End Method
 
-	Method _Step:Void()	
+	Method _Step:Void()
+		FlxG.UpdateDevice()
+	
 		If (_requestedReset) Then
 			_requestedReset = False
 			_requestedState = FlxState(_iState.NewInstance())
@@ -507,6 +509,7 @@ Private
 				
 		Seed = SystemMillisecs()
 		
+		#Rem
 		FlxG.DeviceWidth = DeviceWidth()
 		FlxG.DeviceHeight = DeviceHeight()
 		
@@ -516,7 +519,8 @@ Private
 		Else
 			FlxG._DeviceScaleFactorX = 1
 			FlxG._DeviceScaleFactorY = 1
-		End If		
+		End If
+		#End		
 	End Method
 	
 	Method _ResetFramerate:Void()

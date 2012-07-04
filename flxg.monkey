@@ -17,6 +17,8 @@ Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
+Import system.resolutionpolicy.flxresolutionpolicy
+Import system.resolutionpolicy.flxfillresolutionpolicy
 Import system.flxresourcesmanager
 Import system.flxquadtree
 Import system.flxreplay
@@ -28,6 +30,8 @@ Alias AccelInput = accel.Accel
 Alias MouseInput = mouse.Mouse
 Alias TouchInput = touch.Touch
 Alias JoystickInput = joystick.Joystick
+Alias MojoDeviceWidth = mojo.graphics.DeviceWidth
+Alias MojoDeviceHeight = mojo.graphics.DeviceHeight
 
 Class FlxG
 
@@ -145,6 +149,10 @@ Private
 	Global _Touch:TouchInput[_TOUCH_COUNT]
 	
 	Global _CollideListener:FlxCollideProcessListener = New FlxCollideProcessListener()
+	
+	Global _ResolutionPolicy:FlxResolutionPolicy = New FlxFillResolutionPolicy()
+	
+	Global _Point:FlxPoint = New FlxPoint()
 	
 
 Public
@@ -773,6 +781,54 @@ Public
 	
 	Function TouchCount:Int()
 		Return _TOUCH_COUNT
+	End Function
+	
+	Function SetResolutionPolicy:Void(resolutionPolicy:FlxResolutionPolicy)
+		_ResolutionPolicy = resolutionPolicy
+		_Measure()
+	End Function
+	
+	Function UpdateDevice:Void()
+		If(FlxG.DeviceWidth <> MojoDeviceWidth() Or FlxG.DeviceHeight <> MojoDeviceHeight()) Then
+			_Measure()
+		End If
+	End Function
+	
+Private
+	Function _Measure:Void()
+		Local oldDeviceWidth:Int = FlxG.DeviceWidth
+		Local oldDeviceHeight:Int = FlxG.DeviceHeight
+	
+		FlxG.DeviceWidth = MojoDeviceWidth()
+		FlxG.DeviceHeight = MojoDeviceHeight()
+		
+		If(oldDeviceWidth = 0) oldDeviceWidth = FlxG.DeviceWidth
+		If(oldDeviceHeight = 0) oldDeviceHeight = FlxG.DeviceHeight
+		
+		Local dtDeviceWidth:Int = FlxG.DeviceWidth - oldDeviceWidth
+		Local dtDeviceHeight:Int = FlxG.DeviceHeight - oldDeviceHeight
+	
+		_ResolutionPolicy.OnMeasure(FlxG.DeviceWidth, FlxG.DeviceHeight, _Point)
+		
+		FlxG._DeviceScaleFactorX = _Point.x / Float(FlxG.Width)
+		FlxG._DeviceScaleFactorY = _Point.y / Float(FlxG.Height)
+		
+		If(FlxG.DeviceWidth <> _Point.x Or FlxG.DeviceHeight <> _Point.y) Then
+			Local i:Int = 0
+			Local l:Int = FlxG.Cameras.Length()
+			Local cam:FlxCamera
+		
+			While(i < l)
+				cam = FlxG.Cameras.Get(i)
+				
+				cam.X += dtDeviceWidth * 0.5
+				cam.Y += dtDeviceHeight * 0.5
+				
+				'Print(FlxG.DeviceWidth - oldDeviceWidth)
+				
+				i += 1
+			Wend
+		End If
 	End Function
 
 End Class
