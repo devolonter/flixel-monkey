@@ -2,19 +2,22 @@ Strict
 
 Import flixel
 
+#REFLECTION_FILTER="sound*|flixel*"
+
 Function Main:Int()
-	New Sprites()
+	New Sound()
 	Return 0
 End Function
 
-Class Sprites Extends FlxGame
+Class Sound Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, SpritesState.ClassObject, 1, 60, 60)
+		Super.New(640, 480, GetClass("SoundState"), 1, 60, 60)
 	End Method
 	
 	Method OnContentInit:Void()
 		#if TARGET = "html5" OR TARGET = "android"
+			Print "html5"
 			FlxAssetsManager.AddSound("main", "beep.ogg")
 		#ElseIf TARGET = "glfw" Or TARGET = "xna"
 			FlxAssetsManager.AddSound("main", "beep.wav")
@@ -25,21 +28,7 @@ Class Sprites Extends FlxGame
 
 End Class
 
-Class SpritesStateClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New SpritesState()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (SpritesState(object) <> Null)
-	End Method
-
-End Class
-
-Class SpritesState Extends FlxState
-	
-	Global ClassObject:FlxClass = New SpritesStateClass()
+Class SoundState Extends FlxState
 	
 	Field soundBox:FlxSprite
 	Field player:FlxSprite

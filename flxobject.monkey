@@ -24,11 +24,7 @@ basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
 
-	Global ClassObject:FlxClass = new FlxObjectClass()
-	
-	Global XComparator:FlxBasicComparator = new FlxObjectXComparator()
-	
-	Global YComparator:FlxBasicComparator = new FlxObjectYComparator()
+	Global ClassObject:Object
 	
 	'summary:Generic value for "left" Used by facing, allowCollisions, and touching.
 	Const LEFT:Int = 1
@@ -169,6 +165,8 @@ Private
 	
 Public	
 	Method New(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0)
+		Super.New()
+	
 		Self.x = x
 		Self.y = y
 		last = New FlxPoint(x, y)
@@ -221,7 +219,9 @@ Public
 		_cameras = Null
 		If (path <> Null) path.Destroy()
 		path = Null		
-		_debugBoundingBoxColor = Null	
+		_debugBoundingBoxColor = Null
+		
+		Super.Destroy()	
 	End Method
 	
 	Method PreUpdate:Void()
@@ -719,10 +719,6 @@ Public
 		End If		
 	End Function
 	
-	Method ToString:String()
-		Return "FlxObject"	
-	End Method
-	
 Private
 	Method _UpdateMotion:Void()
 		Local delta:Float
@@ -885,34 +881,6 @@ Private
 End Class
 
 Private
-Class FlxObjectClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxObject()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)			
-		Return (FlxObject(object) <> Null)
-	End Method	
-	
-End Class
-
-Class FlxObjectYComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		Return FlxObject(lhs).y - FlxObject(rhs).y		
-	End Method
-	
-End Class
-
-Class FlxObjectXComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		Return FlxObject(lhs).x - FlxObject(rhs).x		
-	End Method
-	
-End Class
-
 Class FlxObjectSeparateX Implements FlxTileOverlapChecker
 	
 	Method IsTileOverlap:Bool(object1:FlxObject, object2:FlxObject)

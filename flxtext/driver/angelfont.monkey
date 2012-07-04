@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flixel.flxextern
 Import flixel.flxtext
@@ -45,15 +46,17 @@ Import "../../data/system_angel_font_23_flx.txt"
 Import "../../data/system_angel_font_24_flx.png"
 Import "../../data/system_angel_font_24_flx.txt"
 
-Global AngelfontTextDriver:FlxClass = New FlxAFDriverClass()
+Class FlxTextAngelFontDriver Extends FlxTextDriver
 
-Class FlxTextAngelFontDriver Extends FlxTextDriver	
+	Global ClassObject:Object
 
 Private
 	Global _FontLoader:FlxAFDriverLoader = New FlxAFDriverLoader()
+	
 	Global _FontsManager:FlxResourcesManager<AngelFont> = New FlxResourcesManager<AngelFont>()
 	
 	Field _font:AngelFont
+	
 	Field _fontHeight:Int	
 	
 Public
@@ -68,6 +71,11 @@ Public
 			angelSystemFont.SetPath(size, fontPathPrefix +  size + FlxG.DATA_SUFFIX + ".txt")
 		Next
 	End Function
+	
+	Method Destroy:Void()
+		_font = Null				
+		Super.Destroy()
+	End Method
 	
 	Method GetTextWidth:Int(text:String)
 		Return _font.TextWidth(text)
@@ -85,12 +93,7 @@ Public
 				_font.DrawText(_textLines.Get(line).text, x + _textLines.Get(line).offsetX, y + line * _fontHeight)
 			Next
 		End If
-	End Method
-	
-	Method Destroy:Void()
-		_font = Null				
-		Super.Destroy()
-	End Method			
+	End Method				
 
 	Method Reset:Void()
 		_FontLoader.fontFamily = _fontFamily
@@ -116,18 +119,6 @@ Public
 End Class
 
 Private
-Class FlxAFDriverClass Implements FlxClass
-	
-	Method CreateInstance:Object()
-		Return New FlxTextAngelFontDriver()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return FlxTextAngelFontDriver(object) <> Null
-	End Method
-
-End Class
-
 Class FlxAFDriverLoader Extends FlxResourceLoader<AngelFont>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT

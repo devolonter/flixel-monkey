@@ -6,20 +6,24 @@ Import flixel.flxtimer
 
 Class TimerManager Extends FlxBasic
 
+	Global ClassObject:Object
+
 Private
 	Field _timers:Stack<FlxTimer>
 
-Public	
-	Global ClassObject:FlxClass = new TimerManagerClass()
-
+Public
 	Method New()
+		Super.New()
+		
 		_timers = New Stack<FlxTimer>()
 		visible = False
 	End Method
 	
 	Method Destroy:Void()
 		Clear()
-		_timers = Null		
+		_timers = Null
+		
+		Super.Destroy()		
 	End Method
 	
 	Method Update:Void()
@@ -59,18 +63,5 @@ Public
 	Method ToString:String()
 		Return "TimerManager"
 	End Method
-	
-End Class
-
-Private
-Class TimerManagerClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New TimerManager()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (TimerManager(object) <> Null)
-	End Method	
 	
 End Class

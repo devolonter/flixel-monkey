@@ -1,10 +1,13 @@
 Strict
 
 Import mojo
+
 Import flxsprite
 Import flxg
 
 Class FlxTileblock Extends FlxSprite
+
+	Global ClassObject:Object
 
 Private
 	Field _tilePixels:Image
@@ -14,6 +17,7 @@ Private
 Public	
 	Method New(x:Int, y:Int, width:Int, height:Int)
 		Super.New(x, y)
+		
 		MakeGraphic(width, height, 0)
 		active = False
 		immovable = True
@@ -90,7 +94,7 @@ Public
 		Wend
 		
 		Return Self	
-	End Method
+	End Method	
 	
 	Method _DrawSurface:Void(x:Float, y:Float)		
 		If (_tilePixels = Null) Return

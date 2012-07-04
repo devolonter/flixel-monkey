@@ -1,14 +1,18 @@
 Strict
 
+Import reflection
+
 Import flixel.flxextern
 Import flixel.flxobject
 Import flixel.flxtilemap
 
 Class FlxTile Extends FlxObject
+
+	Global ClassObject:Object
 	
 	Field callback:FlxTileHitListener
 	
-	Field filter:FlxClass
+	Field filter:ClassInfo
 	
 	Field tilemap:FlxTilemap
 	
@@ -31,11 +35,12 @@ Class FlxTile Extends FlxObject
 		mapIndex = 0
 	End Method
 	
-	Method Destroy:Void()
-		Super.Destroy()
+	Method Destroy:Void()		
 		callback = Null
 		tilemap = Null
 		filter = Null
+		
+		Super.Destroy()
 	End Method
 
 End Class

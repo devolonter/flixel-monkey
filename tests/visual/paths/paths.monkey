@@ -2,6 +2,8 @@ Strict
 
 Import flixel
 
+#REFLECTION_FILTER="paths*|flixel*"
+
 Function Main:Int()
 	New Paths()
 	Return 0
@@ -10,27 +12,13 @@ End Function
 Class Paths Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, PathsState.ClassObject, 1, 60, 60)
+		Super.New(640, 480, GetClass("PathsState"), 1, 60, 60)
 		FlxG.VisualDebug = True	
 	End Method
 
 End Class
 
-Class PathsStateClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New PathsState()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (PathsState(object) <> Null)
-	End Method
-
-End Class
-
 Class PathsState Extends FlxState
-
-	Global ClassObject:FlxClass = new PathsStateClass()
 	
 	Field pathFrowardedObject:FlxObject
 	Field pathForward:FlxPath

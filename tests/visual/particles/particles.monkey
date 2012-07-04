@@ -2,6 +2,8 @@ Strict
 
 Import flixel
 
+#REFLECTION_FILTER="particles*|flixel*"
+
 Function Main:Int()
 	New Emitter()
 	Return 0
@@ -10,14 +12,12 @@ End Function
 Class Emitter Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, EmitterState.ClassObject, 1, 60, 60)	
+		Super.New(640, 480, GetClass("EmitterState"), 1, 60, 60)	
 	End Method
 
 End Class
 
 Class EmitterState Extends FlxState
-
-	Global ClassObject:FlxClass = new EmitterStateClass()
 	
 	Field theEmitter:FlxEmitter
 	
@@ -98,17 +98,4 @@ Class EmitterState Extends FlxState
 		FlxG.Collide(theEmitter, collisionGroup)
 	End Method
 	
-End Class
-
-Private
-Class EmitterStateClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New EmitterState()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (EmitterState(object) <> Null)
-	End Method
-
 End Class

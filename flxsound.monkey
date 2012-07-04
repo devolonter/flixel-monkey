@@ -11,7 +11,7 @@ Import system.flxresourcesmanager
 
 Class FlxSound Extends FlxBasic
 	
-	Global ClassObject:FlxSoundClass = New FlxSoundClass()
+	Global ClassObject:Object
 
 	Field x:Float
 	
@@ -79,8 +79,6 @@ Public
 		Kill()		
 		_sound = Null
 		_target = Null
-		
-		Super.Destroy()
 	End Method
 	
 	Method Update:Void()
@@ -282,10 +280,6 @@ Public
 		Return _volume * _volumeAdjust
 	End Method
 	
-	Method ToString:String()
-		Return "FlxSound"
-	End Method
-	
 	Function GetValidExt:String()
 	#If TARGET = "glfw" Or TARGET = "xna"
 		Return "wav"
@@ -382,18 +376,6 @@ Interface FlxVolumeChangeListener
  End Interface
 
 Private
-Class FlxSoundClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxSound()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (FlxSound(object) <> Null)
-	End Method
-	
-End Class
-
 Class FlxSoundLoader Extends FlxResourceLoader<Sound>
 
 	Method Load:Sound(name:String)

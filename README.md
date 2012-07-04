@@ -64,6 +64,8 @@ QuickStart
 ```
 Import flixel
 
+#REFLECTION_FILTER="myapp*|flixel*"
+
 Function Main()
 	New HelloWorld()
 	Return 0
@@ -73,7 +75,7 @@ End Function
 Class HelloWorld Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, HelloWorldState.ClassObject)	
+		Super.New(640, 480, GetClass("HelloWorldState"))	
 	End Method
 	
 	'Optional
@@ -92,9 +94,6 @@ End Class
 
 'Main game state 
 Class HelloWorldState Extends FlxState
-
-	'necessary to the FlxGame constructor, also used to reset game
-	Global ClassObject:FlxClass = new HelloWorldStateClass()
 	
 	Method Create:Void()		
 		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!")	
@@ -108,26 +107,6 @@ Class HelloWorldState Extends FlxState
 		'... or here
 	End Method
 	
-	'If you do not use FlxG.ResetState, FlxG.ReloadReplay, FlxG.RecordReplay, it is optional to override this method.
-	Method GetClass:FlxCalss()
-		Return ClassObject
-	End Method
-	
-End Class
-
-'Monkey currently does not support reflection, so here we emulate necessary functional
-Class HelloWorldStateClass Implements FlxClass
-
-	'Creates new instance of an object
-	Method CreateInstance:Object()
-		Return New HelloWorldState()
-	End Method
-	
-	'checks that the scanned object belongs to a class
-	Method InstanceOf:Bool(object:Object)
-		Return (HelloWorldState(object) <> Null)
-	End Method
-
 End Class
 ```
 

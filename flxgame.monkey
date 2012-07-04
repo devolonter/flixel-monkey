@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flxextern
 Import flxbasic
@@ -63,7 +64,7 @@ Class FlxGame extends App
 	Field _replayCallback:FlxReplayListener
 
 Private
-	Field _iState:FlxClass
+	Field _iState:ClassInfo
 	
 	Field _created:Bool
 	
@@ -94,7 +95,18 @@ Private
 	Field _framerate:Int
 
 Public
-	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)		
+	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)
+		Local classObject:GlobalInfo
+		
+		For Local classInfo:ClassInfo = EachIn GetClasses()
+			classObject = classInfo.GetGlobal("ClassObject", False)
+			If (classObject = Null) classObject = classInfo.GetGlobal("ClassInfo", False)
+			
+			If (classObject <> Null) Then
+				classObject.SetValue(classInfo)
+			End If
+		Next
+	
 		_soundTrayTimer = 0
 		_soundTrayWidth = 160
 		_soundTrayHeight = 45
@@ -264,7 +276,7 @@ Private
 	Method _Step:Void()	
 		If (_requestedReset) Then
 			_requestedReset = False
-			_requestedState = FlxState(_iState.CreateInstance())
+			_requestedState = FlxState(_iState.NewInstance())
 			_replayTimer = 0
 			_replayCancelKeys = []
 			_Reset()

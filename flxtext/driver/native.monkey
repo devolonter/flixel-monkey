@@ -20,19 +20,27 @@ Import "../../data/system_font_15_flx.png"
 Import "../../data/system_font_16_flx.png"
 Import "../../data/system_font_17_flx.png"
 
-Global NativeTextDriver:FlxClass = New FlxNFDriverClass()
-
 Class FlxTextNativeDriver Extends FlxTextDriver
+
+	Global ClassObject:Object
 
 Private
 	Global _FontLoader:FlxNFDriverLoader = New FlxNFDriverLoader()
+	
 	Global _FontsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
+	
 	Global _DefaultFont:Image
 	
 	Field _font:Image
+	
 	Field _fontHeight:Int
 
-Public	
+Public
+	Method Destroy:Void()
+		_font = Null						
+		Super.Destroy()
+	End Method
+	
 	Method GetTextWidth:Int(text:String)
 		Return text.Length()*_font.Width()
 	End Method
@@ -54,12 +62,7 @@ Public
 		End If
 		
 		SetFont(_DefaultFont)	
-	End Method
-	
-	Method Destroy:Void()
-		_font = Null				
-		Super.Destroy()
-	End Method			
+	End Method				
 
 	Method Reset:Void()
 		_FontLoader.fontFamily = _fontFamily
@@ -76,18 +79,6 @@ Public
 End Class
 
 Private
-Class FlxNFDriverClass Implements FlxClass
-	
-	Method CreateInstance:Object()
-		Return New FlxTextNativeDriver()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return FlxTextNativeDriver(object) <> Null
-	End Method
-
-End Class
-
 Class FlxNFDriverLoader Extends FlxResourceLoader<Image>
 	
 	Field fontFamily:String = FlxText.SYSTEM_FONT

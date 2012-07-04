@@ -1,17 +1,15 @@
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxpoint
 Import flxg
-
 Import flixel.system.flxcolor
-
 Import flixel.plugin.debugpathdisplay
 
 
 Class FlxPath
-
-	Global ClassObject:FlxClass = New FlxPathClass()
 
 	Field nodes:Stack<FlxPoint>
 	
@@ -210,20 +208,7 @@ Public
 	End Method
 	
 	Function Manager:DebugPathDisplay()
-		Return DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.ClassObject))
+		Return DebugPathDisplay(FlxG.GetPlugin(ClassInfo(DebugPathDisplay.ClassObject)))
 	End Function
 
-End Class
-
-Private
-Class FlxPathClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxPath()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)			
-		Return (FlxPath(object) <> Null)
-	End Method	
-	
 End Class

@@ -2,6 +2,8 @@ Strict
 
 Import flixel
 
+#REFLECTION_FILTER="sprites*|flixel*"
+
 Function Main:Int()
 	New Sprites()
 	Return 0
@@ -10,27 +12,13 @@ End Function
 Class Sprites Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, SpritesState.ClassObject)
+		Super.New(640, 480, GetClass("SpritesState"))
 		FlxG.VisualDebug = True
 	End Method
 
 End Class
 
-Class SpritesStateClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New SpritesState()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (SpritesState(object) <> Null)
-	End Method
-
-End Class
-
 Class SpritesState Extends FlxState
-
-	Global ClassObject:FlxClass = new SpritesStateClass()
 	
 	Field sprite:FlxSprite
 	

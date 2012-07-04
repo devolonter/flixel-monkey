@@ -2,6 +2,8 @@ Strict
 
 Import flixel
 
+#REFLECTION_FILTER="objects*|flixel*"
+
 Function Main:Int()
 	New Objects()
 	Return 0
@@ -10,27 +12,13 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, ObjectsState.ClassObject, 1, 60, 60)
+		Super.New(640, 480, GetClass("ObjectsState"), 1, 60, 60)
 		FlxG.VisualDebug = True
 	End Method
 
 End Class
 
-Class ObjectsStateClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New ObjectsState()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (ObjectsState(object) <> Null)
-	End Method
-
-End Class
-
 Class ObjectsState Extends FlxState
-
-	Global ClassObject:FlxClass = new ObjectsStateClass()
 	
 	Field blocks1:FlxGroup
 	Field blocks2:FlxGroup	
