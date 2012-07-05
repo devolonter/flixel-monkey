@@ -803,8 +803,11 @@ Private
 		While(i < l)
 			cam = FlxG.Cameras.Get(i)
 			
+			'recalc values
 			cam.X = cam.X
 			cam.Y = cam.Y
+			cam.Width = cam.Width
+			cam.Height = cam.Height
 			
 			i += 1
 		Wend

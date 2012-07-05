@@ -103,6 +103,7 @@ Public
 		
 		_cursor.pixels = _CursorsManager.GetResource(cursor, _CursorLoader)
 		_cursor.pixels.SetHandle(xOffset, yOffset)
+		_cursor.scale = scale
 	End Method
 	
 	Method Unload:Void(cursor:String = "")
