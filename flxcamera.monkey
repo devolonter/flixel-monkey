@@ -402,7 +402,7 @@ Public
 	
 	Method X:Void(x:Float) Property
 		_x = x
-		_realX = (FlxG._DeviceOffsetX + _x * FlxG._DeviceScaleFactorX)
+		_realX = FlxG._DeviceOffsetX + _x * FlxG._DeviceScaleFactorX
 		
 		_clipped = _IsClipped()
 	End Method
@@ -413,7 +413,7 @@ Public
 	
 	Method Y:Void(y:Float) Property
 		_y = y
-		_realY = (FlxG._DeviceOffsetY + _y * FlxG._DeviceScaleFactorY)
+		_realY = FlxG._DeviceOffsetY + _y * FlxG._DeviceScaleFactorY
 		
 		_clipped = _IsClipped()
 	End Method
