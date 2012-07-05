@@ -167,26 +167,8 @@ Public
 	Function Log:Void(data:String)
 		Print data
 		'TODO
-	End Function
-	
-	Function FullScreen:Void()
-		Local fsw:Int = Min(Float(FlxG.DeviceWidth), FlxG.Width * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorX)
-		Local fsh:Int = Min(Float(FlxG.DeviceHeight), FlxG.Height * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorY)
-		
-		Local i:Int = 0
-		Local l:Int = FlxG.Cameras.Length()
-		Local cam:FlxCamera
-		
-		While (i < l)
-			cam = FlxG.Cameras.Get(i)
-			
-			cam.X += (FlxG.DeviceWidth - fsw) / 2
-			cam.Y += (FlxG.DeviceHeight - fsh) / 2
-			
-			i += 1
-		Wend
-	End Function
-	
+	End Function	
+
 	Function Random:Float()
 		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223)|0
 		Return FlxU.Srand(FlxG.GlobalSeed)
@@ -811,8 +793,8 @@ Private
 		Local zoom:Float = FlxCamera.DefaultZoom
 		If(FlxG.Camera <> Null) zoom = FlxG.Camera.Zoom
 	
-		FlxG._DeviceOffsetX = (FlxG.DeviceWidth - _Point.x * zoom) * 0.5
-		FlxG._DeviceOffsetY = (FlxG.DeviceHeight - _Point.y * zoom) * 0.5
+		FlxG._DeviceOffsetX = Floor( (FlxG.DeviceWidth - _Point.x * zoom) * 0.5)
+		FlxG._DeviceOffsetY = Floor( (FlxG.DeviceHeight - _Point.y * zoom) * 0.5)
 	
 		Local i:Int = 0
 		Local l:Int = FlxG.Cameras.Length()

@@ -12,10 +12,10 @@ Class RatioResolutionPolicy Implements FlxResolutionPolicy
 		
 		If(realRatio < ratio) Then
 			result.x = width
-			result.y = result.x / ratio
+			result.y = Floor(result.x / ratio)
 		Else
 			result.y = height
-			result.x = result.y * ratio
+			result.x = Floor(result.y * ratio)
 		End If
 	End Method
 

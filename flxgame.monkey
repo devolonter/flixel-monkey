@@ -33,8 +33,6 @@ Class FlxGame extends App
 
 	Field useSystemCursor:Bool
 	
-	Field useVirtualResolution:Bool
-	
 	Field forceDebugger:Bool
 
 	Field _state:FlxState
@@ -123,7 +121,6 @@ Public
 		
 		useSoundHotKeys = Not IsMobile()
 		Self.useSystemCursor = useSystemCursor
-		useVirtualResolution = True
 		
 		If (Not useSystemCursor) HideMouse()
 		
