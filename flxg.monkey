@@ -121,6 +121,10 @@ Class FlxG
 	
 	Global _DeviceScaleFactorY:Float = 1
 	
+	Global _DeviceOffsetX:Int
+	
+	Global _DeviceOffsetY:Int
+	
 	Global _BgColor:FlxColor = FlxColor.ARGB(FlxG.BLACK)		
 	
 	Global _Game:FlxGame
@@ -796,39 +800,32 @@ Public
 	
 Private
 	Function _Measure:Void()
-		Local oldDeviceWidth:Int = FlxG.DeviceWidth
-		Local oldDeviceHeight:Int = FlxG.DeviceHeight
-	
 		FlxG.DeviceWidth = MojoDeviceWidth()
 		FlxG.DeviceHeight = MojoDeviceHeight()
-		
-		If(oldDeviceWidth = 0) oldDeviceWidth = FlxG.DeviceWidth
-		If(oldDeviceHeight = 0) oldDeviceHeight = FlxG.DeviceHeight
-		
-		Local dtDeviceWidth:Int = FlxG.DeviceWidth - oldDeviceWidth
-		Local dtDeviceHeight:Int = FlxG.DeviceHeight - oldDeviceHeight
-	
+
 		_ResolutionPolicy.OnMeasure(FlxG.DeviceWidth, FlxG.DeviceHeight, _Point)
 		
 		FlxG._DeviceScaleFactorX = _Point.x / Float(FlxG.Width)
 		FlxG._DeviceScaleFactorY = _Point.y / Float(FlxG.Height)
 		
-		If(FlxG.DeviceWidth <> _Point.x Or FlxG.DeviceHeight <> _Point.y) Then
-			Local i:Int = 0
-			Local l:Int = FlxG.Cameras.Length()
-			Local cam:FlxCamera
-		
-			While(i < l)
-				cam = FlxG.Cameras.Get(i)
-				
-				cam.X += dtDeviceWidth * 0.5
-				cam.Y += dtDeviceHeight * 0.5
-				
-				'Print(FlxG.DeviceWidth - oldDeviceWidth)
-				
-				i += 1
-			Wend
-		End If
+		Local zoom:Float = FlxCamera.DefaultZoom
+		If(FlxG.Camera <> Null) zoom = FlxG.Camera.Zoom
+	
+		FlxG._DeviceOffsetX = (FlxG.DeviceWidth - _Point.x * zoom) * 0.5
+		FlxG._DeviceOffsetY = (FlxG.DeviceHeight - _Point.y * zoom) * 0.5
+	
+		Local i:Int = 0
+		Local l:Int = FlxG.Cameras.Length()
+		Local cam:FlxCamera
+	
+		While(i < l)
+			cam = FlxG.Cameras.Get(i)
+			
+			cam.X = cam.X
+			cam.Y = cam.Y
+			
+			i += 1
+		Wend
 	End Function
 
 End Class

@@ -140,17 +140,21 @@ Public
 			FlxG._LastDrawingAlpha = 1
 		End If
 		
-		Translate(_cursor.x, _cursor.y)
+		Transform(FlxG._DeviceScaleFactorX, 0, 0, FlxG._DeviceScaleFactorY, _cursor.x, _cursor.y)
 		
-		PushMatrix()
-			Scale(_cursor.scale * FlxG.Camera.Zoom, _cursor.scale * FlxG.Camera.Zoom)
+		If(_cursor.scale <> 1) Then
+			PushMatrix()
+				Scale(_cursor.scale, _cursor.scale)
+				DrawImage(_cursor.pixels, 0, 0)
+			PopMatrix()
+		Else
 			DrawImage(_cursor.pixels, 0, 0)
-		PopMatrix()
+		End If
 	End Method
 	
 	Method _UpdateXY:Void()	
-		_cursor.x = _globalScreenPosition.x / FlxG._DeviceScaleFactorX
-		_cursor.y = _globalScreenPosition.y / FlxG._DeviceScaleFactorY
+		_cursor.x = _globalScreenPosition.x
+		_cursor.y = _globalScreenPosition.y
 		
 		Super._UpdateXY()
 	End Method

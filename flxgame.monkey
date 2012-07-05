@@ -145,8 +145,7 @@ Public
 	Method OnCreate:Int()	
 		_InitData()		
 		_Step()
-		
-		_soundTrayX	= (FlxG.Width / 2) * FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX - (_soundTrayWidth / 2) + FlxG.Camera.X
+
 		#Rem
 		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
 		_soundTrayLabel.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER)
@@ -409,7 +408,15 @@ Private
 	End Method
 	
 	Method _Draw:Void()
-		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)	
+		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+	
+	#If TARGET <> "ios" Or TARGET <> "android"
+		If( Not FlxG.Mobile) Then
+			PushMatrix()
+		End If
+	#End
+		
+		Translate(FlxG._DeviceOffsetX, FlxG._DeviceOffsetY)
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)
 		
 		FlxG._LastDrawingColor = FlxG.WHITE
@@ -440,7 +447,8 @@ Private
 		Wend
 		
 	#If TARGET <> "ios" Or TARGET <> "android"
-		If (Not FlxG.Mobile) Then
+		If( Not FlxG.Mobile) Then
+			PopMatrix()
 			_DrawSoundTray()
 			FlxG.Mouse.Draw()
 		End If
@@ -453,9 +461,8 @@ Private
 			If (FlxG.Mute) globalVolume = 0			
 			
 			PushMatrix()
-			
-			Scale(1 / FlxG._DeviceScaleFactorX, 1 / FlxG._DeviceScaleFactorY)
-			Translate(_soundTrayX, _soundTrayY)
+
+			Transform(FlxG._DeviceScaleFactorX, 0, 0, FlxG._DeviceScaleFactorY, ( (FlxG.DeviceWidth - _soundTrayWidth * FlxG._DeviceScaleFactorX) * 0.5), _soundTrayY)
 			
 			If (FlxG._LastDrawingAlpha <> .5) Then
 				SetAlpha(.5)
@@ -507,20 +514,7 @@ Private
 			_ResetFramerate()
 		End If
 				
-		Seed = SystemMillisecs()
-		
-		#Rem
-		FlxG.DeviceWidth = DeviceWidth()
-		FlxG.DeviceHeight = DeviceHeight()
-		
-		If (useVirtualResolution) Then
-			FlxG._DeviceScaleFactorX = FlxG.DeviceWidth / Float(FlxG.Width)
-			FlxG._DeviceScaleFactorY = FlxG.DeviceHeight / Float(FlxG.Height)
-		Else
-			FlxG._DeviceScaleFactorX = 1
-			FlxG._DeviceScaleFactorY = 1
-		End If
-		#End		
+		Seed = SystemMillisecs()		
 	End Method
 	
 	Method _ResetFramerate:Void()
