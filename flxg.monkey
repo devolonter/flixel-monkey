@@ -17,8 +17,8 @@ Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
-Import system.resolutionpolicy.flxresolutionpolicy
-Import system.resolutionpolicy.flxfillresolutionpolicy
+Import system.resolutionpolicy.resolutionpolicy
+Import system.resolutionpolicy.fill
 Import system.flxresourcesmanager
 Import system.flxquadtree
 Import system.flxreplay
@@ -154,7 +154,7 @@ Private
 	
 	Global _CollideListener:FlxCollideProcessListener = New FlxCollideProcessListener()
 	
-	Global _ResolutionPolicy:FlxResolutionPolicy = New FlxFillResolutionPolicy()
+	Global _ResolutionPolicy:FlxResolutionPolicy = New FillResolutionPolicy()
 	
 	Global _Point:FlxPoint = New FlxPoint()
 	

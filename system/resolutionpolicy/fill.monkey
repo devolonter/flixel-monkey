@@ -1,9 +1,9 @@
 Strict
 
 Import flixel.flxpoint
-Import flxresolutionpolicy
+Import resolutionpolicy
 
-Class FlxFillResolutionPolicy Implements FlxResolutionPolicy
+Class FillResolutionPolicy Implements FlxResolutionPolicy
 	
 	Method OnMeasure:Void(width:Int, height:Int, result:FlxPoint)
 		result.x = width
