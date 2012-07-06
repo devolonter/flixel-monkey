@@ -17,6 +17,8 @@ Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
+Import system.resolutionpolicy.resolutionpolicy
+Import system.resolutionpolicy.fill
 Import system.flxresourcesmanager
 Import system.flxquadtree
 Import system.flxreplay
@@ -28,6 +30,8 @@ Alias AccelInput = accel.Accel
 Alias MouseInput = mouse.Mouse
 Alias TouchInput = touch.Touch
 Alias JoystickInput = joystick.Joystick
+Alias MojoDeviceWidth = mojo.graphics.DeviceWidth
+Alias MojoDeviceHeight = mojo.graphics.DeviceHeight
 
 Class FlxG
 
@@ -117,6 +121,10 @@ Class FlxG
 	
 	Global _DeviceScaleFactorY:Float = 1
 	
+	Global _DeviceOffsetX:Int
+	
+	Global _DeviceOffsetY:Int
+	
 	Global _BgColor:FlxColor = FlxColor.ARGB(FlxG.BLACK)		
 	
 	Global _Game:FlxGame
@@ -146,6 +154,10 @@ Private
 	
 	Global _CollideListener:FlxCollideProcessListener = New FlxCollideProcessListener()
 	
+	Global _ResolutionPolicy:FlxResolutionPolicy = New FillResolutionPolicy()
+	
+	Global _Point:FlxPoint = New FlxPoint()
+	
 
 Public
 	Function GetLibraryName:String()
@@ -155,26 +167,8 @@ Public
 	Function Log:Void(data:String)
 		Print data
 		'TODO
-	End Function
-	
-	Function FullScreen:Void()
-		Local fsw:Int = Min(Float(FlxG.DeviceWidth), FlxG.Width * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorX)
-		Local fsh:Int = Min(Float(FlxG.DeviceHeight), FlxG.Height * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorY)
-		
-		Local i:Int = 0
-		Local l:Int = FlxG.Cameras.Length()
-		Local cam:FlxCamera
-		
-		While (i < l)
-			cam = FlxG.Cameras.Get(i)
-			
-			cam.X += (FlxG.DeviceWidth - fsw) / 2
-			cam.Y += (FlxG.DeviceHeight - fsh) / 2
-			
-			i += 1
-		Wend
-	End Function
-	
+	End Function	
+
 	Function Random:Float()
 		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223)|0
 		Return FlxU.Srand(FlxG.GlobalSeed)
@@ -773,6 +767,50 @@ Public
 	
 	Function TouchCount:Int()
 		Return _TOUCH_COUNT
+	End Function
+	
+	Function SetResolutionPolicy:Void(resolutionPolicy:FlxResolutionPolicy)
+		_ResolutionPolicy = resolutionPolicy
+		_Measure()
+	End Function
+	
+	Function UpdateDevice:Void()
+		If(FlxG.DeviceWidth <> MojoDeviceWidth() Or FlxG.DeviceHeight <> MojoDeviceHeight()) Then
+			_Measure()
+		End If
+	End Function
+	
+Private
+	Function _Measure:Void()
+		FlxG.DeviceWidth = MojoDeviceWidth()
+		FlxG.DeviceHeight = MojoDeviceHeight()
+
+		_ResolutionPolicy.OnMeasure(FlxG.DeviceWidth, FlxG.DeviceHeight, _Point)
+		
+		FlxG._DeviceScaleFactorX = _Point.x / Float(FlxG.Width)
+		FlxG._DeviceScaleFactorY = _Point.y / Float(FlxG.Height)
+		
+		Local zoom:Float = FlxCamera.DefaultZoom
+		If(FlxG.Camera <> Null) zoom = FlxG.Camera.Zoom
+	
+		FlxG._DeviceOffsetX = Ceil( (FlxG.DeviceWidth - _Point.x * zoom) * 0.5)
+		FlxG._DeviceOffsetY = Ceil( (FlxG.DeviceHeight - _Point.y * zoom) * 0.5)
+	
+		Local i:Int = 0
+		Local l:Int = FlxG.Cameras.Length()
+		Local cam:FlxCamera
+	
+		While(i < l)
+			cam = FlxG.Cameras.Get(i)
+			
+			'recalc values
+			cam.X = cam.X
+			cam.Y = cam.Y
+			cam.Width = cam.Width
+			cam.Height = cam.Height
+			
+			i += 1
+		Wend
 	End Function
 
 End Class
