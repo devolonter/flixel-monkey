@@ -224,24 +224,24 @@ Private
 					End If
 				End If
 				
-				If (offAll) Then
-					If (status <> NORMAL) Then
-						If (onOut <> Null) Then
-							onOut.OnButtonOut()
-						End If
-						
-						If (soundOut <> Null) Then
-							soundOut.Play(True)
-						End If
-					End If
-					
-					status = NORMAL
-				End If
-				
 				i += 1
 			Wend
 			
-			If (click) Then
+			If(offAll) Then
+				If (status <> NORMAL) Then
+					If (onOut <> Null) Then
+						onOut.OnButtonOut()
+					End If
+					
+					If (soundOut <> Null) Then
+						soundOut.Play(True)
+					End If
+				End If
+				
+				status = NORMAL
+			End If
+			
+			If(click) Then
 				If (onUp <> Null) Then
 					onUp.OnButtonClick()
 				End If

@@ -74,11 +74,14 @@ Public
 	End Method
 	
 	Method GetScreenPosition:FlxPoint(camera:FlxCamera, point:FlxPoint)
-		If (camera = Null) camera = FlxG.Camera
-		If (point = Null) point = New FlxPoint()
+		If(camera = Null) camera = FlxG.Camera
+		If(point = Null) point = New FlxPoint()
 		
-		point.x = (_globalScreenPosition.x - camera.X) / (camera.Zoom * FlxG._DeviceScaleFactorX) - FlxG._DeviceOffsetX / (FlxG.Camera.Zoom * FlxG._DeviceScaleFactorX)
-		point.y = (_globalScreenPosition.y - camera.Y) / (camera.Zoom * FlxG._DeviceScaleFactorY) - FlxG._DeviceOffsetY / (FlxG.Camera.Zoom * FlxG._DeviceScaleFactorY)
+		Local zx:Float = 1 / (camera.Zoom * FlxG._DeviceScaleFactorX)
+		Local zy:Float = 1 / (camera.Zoom * FlxG._DeviceScaleFactorY)
+		
+		point.x = (_globalScreenPosition.x - camera.X) * zx - FlxG._DeviceOffsetX * zx
+		point.y = (_globalScreenPosition.y - camera.Y) * zy - FlxG._DeviceOffsetY * zy
 		
 		Return point
 	End Method
