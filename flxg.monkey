@@ -793,8 +793,8 @@ Private
 		Local zoom:Float = FlxCamera.DefaultZoom
 		If(FlxG.Camera <> Null) zoom = FlxG.Camera.Zoom
 	
-		FlxG._DeviceOffsetX = Floor( (FlxG.DeviceWidth - _Point.x * zoom) * 0.5)
-		FlxG._DeviceOffsetY = Floor( (FlxG.DeviceHeight - _Point.y * zoom) * 0.5)
+		FlxG._DeviceOffsetX = Ceil( (FlxG.DeviceWidth - _Point.x * zoom) * 0.5)
+		FlxG._DeviceOffsetY = Ceil( (FlxG.DeviceHeight - _Point.y * zoom) * 0.5)
 	
 		Local i:Int = 0
 		Local l:Int = FlxG.Cameras.Length()

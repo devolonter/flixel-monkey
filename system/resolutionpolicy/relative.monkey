@@ -21,8 +21,8 @@ Public
 	End Method
 	
 	Method OnMeasure:Void(width:Int, height:Int, result:FlxPoint)
-		result.x = width * _widthScale
-		result.y = height * _heightScale
+		result.x = Int(width * _widthScale)
+		result.y = Int(height * _heightScale)
 	End Method
 	
 Private

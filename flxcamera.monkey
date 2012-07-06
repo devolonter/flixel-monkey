@@ -165,7 +165,7 @@ Public
 	Method Lock:Void()
 		If (_clipped) Then
 			If (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0) Then
-				SetScissor(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY, _realWidth, _realHeight)
+				SetScissor(Ceil(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX), Ceil(_realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY), _realWidth, _realHeight)
 			Else
 				SetScissor(_realX, _realY, _realWidth, _realHeight)
 			End If
@@ -173,7 +173,7 @@ Public
 				
 		PushMatrix()
 				
-		Translate(_x + _fxShakeOffset.x, _y + _fxShakeOffset.y)		
+		Translate(Ceil(_x + _fxShakeOffset.x), Ceil(_y + _fxShakeOffset.y))
 		Scale(_scaleX, _scaleY)		
 		
 		If (_clipped Or _bgColor.argb <> FlxG._BgColor.argb) 
@@ -195,7 +195,7 @@ Public
 				FlxG._LastDrawingAlpha = _fill.a			
 			End If
 			
-			DrawRect(0, 0, _width, _height)			
+			DrawRect(0, 0, _width, _height)
 		End If
 		
 		PopMatrix()		
@@ -402,7 +402,7 @@ Public
 	
 	Method X:Void(x:Float) Property
 		_x = x
-		_realX = FlxG._DeviceOffsetX + _x * FlxG._DeviceScaleFactorX
+		_realX = Ceil(FlxG._DeviceOffsetX + _x * FlxG._DeviceScaleFactorX)
 		
 		_clipped = _IsClipped()
 	End Method
@@ -413,7 +413,7 @@ Public
 	
 	Method Y:Void(y:Float) Property
 		_y = y
-		_realY = FlxG._DeviceOffsetY + _y * FlxG._DeviceScaleFactorY
+		_realY = Ceil(FlxG._DeviceOffsetY + _y * FlxG._DeviceScaleFactorY)
 		
 		_clipped = _IsClipped()
 	End Method
