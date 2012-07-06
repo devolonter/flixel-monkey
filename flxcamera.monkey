@@ -195,7 +195,7 @@ Public
 				FlxG._LastDrawingAlpha = _fill.a			
 			End If
 			
-			DrawRect(0, 0, _width, _height)
+			DrawRect( -1, - 1, _width + 2, _height+2)
 		End If
 		
 		PopMatrix()		
