@@ -151,6 +151,8 @@ Public
 	End Method
 	
 	Method OnUpdate:Int()
+		FlxG.UpdateDevice()
+	
 	#If TARGET <> "ios" Or TARGET <> "android"
 		If (useSoundHotKeys) Then
 			If (KeyHit(KEY_0)) Then
@@ -270,8 +272,6 @@ Private
 	End Method
 
 	Method _Step:Void()
-		FlxG.UpdateDevice()
-	
 		If (_requestedReset) Then
 			_requestedReset = False
 			_requestedState = FlxState(_iState.NewInstance())
@@ -511,7 +511,8 @@ Private
 			_ResetFramerate()
 		End If
 				
-		Seed = SystemMillisecs()		
+		Seed = SystemMillisecs()
+		FlxG.UpdateDevice()
 	End Method
 	
 	Method _ResetFramerate:Void()
