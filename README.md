@@ -56,7 +56,8 @@ Demo
 * [Replay](http://lab.devolonter.ru/libs/monkey-flixel/replay/html5.html) 
 * [Collisions](http://lab.devolonter.ru/libs/monkey-flixel/collisions/html5.html) 
 * [Tilemap](http://lab.devolonter.ru/libs/monkey-flixel/tilemap/html5.html) 
-* [Particles](http://lab.devolonter.ru/libs/monkey-flixel/particles/html5.html)	
+* [Particles](http://lab.devolonter.ru/libs/monkey-flixel/particles/html5.html)
+* [Resolution policies](http://lab.devolonter.ru/libs/monkey-flixel/resolutionpolicy/html5.html)	
 
 QuickStart
 ----------
