@@ -20,7 +20,9 @@ SuperStrict
 
 '------------------------------------------------------------------------------------------------------------------------------------------------------
 '#Region &H0F Framework
-Framework maxgui.maxgui
+Framework maxgui.drivers
+Import brl.eventqueue
+Import brl.linkedlist
 '#EndRegion &H0F
 
 
@@ -86,7 +88,8 @@ Public
 '------------------------------------------------------------------------------------------------------------------------------------------------------
 '#Region &H03 Includes
 Include "main.bmx"
-Include "src\application.bmx"
+Include "src\TApplication.bmx"
+Include "src\TListener.bmx"
  
 '#EndRegion &H03
 
