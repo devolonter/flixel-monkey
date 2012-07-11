@@ -23,6 +23,10 @@ SuperStrict
 Framework maxgui.drivers
 Import brl.eventqueue
 Import brl.linkedlist
+Import brl.timer
+Import brl.max2d
+Import brl.glmax2d
+Import brl.d3d9max2d
 '#EndRegion &H0F
 
 
@@ -90,6 +94,10 @@ Public
 Include "main.bmx"
 Include "src\TApplication.bmx"
 Include "src\TListener.bmx"
+Include "src\TPreloader.bmx"
+Include "src\TCanvas.bmx"
+Include "src\TPreloaderObject.bmx"
+Include "src\TColor.bmx"
  
 '#EndRegion &H03
 
