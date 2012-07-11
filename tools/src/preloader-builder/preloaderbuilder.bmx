@@ -27,6 +27,7 @@ Import brl.timer
 Import brl.max2d
 Import brl.glmax2d
 Import brl.d3d9max2d
+Import brl.retro
 '#EndRegion &H0F
 
 

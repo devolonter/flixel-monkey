@@ -14,7 +14,7 @@ Type TColor
 	End Method
 
 	Method ToString:String()
-		Return "" + r + "," + g + "," + b
+		Return Hex(r | g | b)
 	End Method
 
 	Method FromString(s$)

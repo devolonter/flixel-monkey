@@ -12,7 +12,7 @@ Type TPreloader Extends TPreloaderObject
 		Super.Create(context)
 		
 		properties = TPreloaderProperties(New TPreloaderProperties.Create(context.context))
-		properties.Build("Preloader Properties")
+		properties.Show()
 		
 		Return Self
 	End Method
