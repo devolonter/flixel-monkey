@@ -1,7 +1,7 @@
 
 Type TCanvas Extends TListener
 
-	Field gadget:TGadget
+	Field canvas:TGadget
 	
 	Field project:TPreloader
 	
@@ -13,8 +13,8 @@ Type TCanvas Extends TListener
 	?MacOs
 		SetGraphicsDriver(GLMax2DDriver())
 	?
-		gadget = CreateCanvas(0, 0, context.window.ClientWidth(), context.window.ClientHeight(), context.window)
-		gadget.SetLayout(EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED)
+		canvas = CreateCanvas(0, 0, context.window.ClientWidth(), context.window.ClientHeight(), context.window)
+		canvas.SetLayout(EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED)
 		
 		project = TPreloader(New TPreloader.Create(Self))
 		
@@ -28,12 +28,12 @@ Type TCanvas Extends TListener
 		Select event
 			Case EVENT_TIMERTICK
 				project.Update()
-				RedrawGadget(gadget)
+				RedrawGadget(canvas)
 				
 			Case EVENT_GADGETPAINT
-				SetGraphics (CanvasGraphics(gadget))
+				SetGraphics (CanvasGraphics(canvas))
 				SetClsColor(127, 127, 127)
-				SetViewport(0, 0, gadget.ClientWidth(), gadget.ClientHeight())
+				SetViewport(0, 0, canvas.ClientWidth(), canvas.ClientHeight())
 				SetBlend(ALPHABLEND)
 				
 				Cls

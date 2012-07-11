@@ -98,6 +98,8 @@ Include "src\TPreloader.bmx"
 Include "src\TCanvas.bmx"
 Include "src\TPreloaderObject.bmx"
 Include "src\TColor.bmx"
+Include "src\TDialog.bmx"
+Include "src\TPreloaderProperties.bmx"
  
 '#EndRegion &H03
 

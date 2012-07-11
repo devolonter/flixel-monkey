@@ -9,7 +9,7 @@ Type TApplication
 
 	Field window:TGadget
 	
-	Field canvas:TCanvas
+	Field workArea:TCanvas
 	
 	Field listeners:TList
 	
@@ -22,14 +22,12 @@ Type TApplication
 				
 		listeners = New TList
 		running = True
-		
-		Init()
 	End Method
 	
-	Method Init()
+	Method Create:TApplication()
 		InitMenu()
-		
-		canvas = TCanvas(New TCanvas.Create(Self))
+		workArea = TCanvas(New TCanvas.Create(Self))
+		Return Self
 	End Method
 	
 	Method Quit()
@@ -47,6 +45,10 @@ Type TApplication
 	
 	Method AddListener(listener:TListener)
 		listeners.AddLast(listener)
+	End Method
+	
+	Method RemoveListener(listener:TListener)
+		listeners.Remove(listener)
 	End Method
 	
 	Method Poll()
