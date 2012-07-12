@@ -22,6 +22,8 @@ Type TPreloaderObject Abstract
 		Return Self
 	End Method
 	
+	Method Init() Abstract
+	
 	Method Update() Abstract
 	
 	Method Draw() Abstract

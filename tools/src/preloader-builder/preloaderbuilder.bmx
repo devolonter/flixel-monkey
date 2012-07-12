@@ -53,6 +53,12 @@ End Type
 
 TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_1 abstract  'Resource folder
     Const toolbar_png:String = "incbin::res\toolbar.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\toolbar.png</font></b>"
+    Global icons:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_2 '<b>Resource folder</b>
+End Type
+
+
+TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_2 abstract  'Resource folder
+    Const color_png:String = "incbin::res\icons\color.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\icons\color.png</font></b>"
 End Type
 
 
@@ -114,3 +120,5 @@ Include "src\TProperties.bmx"
  
 '#EndRegion &H03
 
+
+Incbin "res\icons\color.png"

@@ -12,9 +12,13 @@ Type TPreloader Extends TPreloaderObject
 		Super.Create(context)
 		
 		properties = TPreloaderProperties(New TPreloaderProperties.Create(context.context))
-		properties.Show()
 		
 		Return Self
+	End Method
+	
+	Method Init()
+		properties.Init()
+		properties.Show()
 	End Method
 	
 	Method Update()
@@ -25,7 +29,7 @@ Type TPreloader Extends TPreloaderObject
 	Method Draw()
 		SetAlpha(.2)
 		SetColor(0, 0, 0)
-		DrawRect(x + width *.005, y + height *.005, width, height)
+		DrawRect(x + 3, y + 3, width, height)
 		
 		SetAlpha(1)
 		SetColor(color.r, color.g, color.b)

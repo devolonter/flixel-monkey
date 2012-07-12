@@ -14,7 +14,7 @@ Type TApplication
 	
 	Field propertiesBar:TGadget
 	
-	Field workArea:TCanvas
+	Field solution:TCanvas
 	
 	Field listeners:TList
 	
@@ -43,7 +43,8 @@ Type TApplication
 		propertiesBar = CreatePanel(0, 0, window.ClientWidth(), 30, window)
 		propertiesBar.SetLayout(EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED, EDGE_CENTERED)
 		
-		workArea = TCanvas(New TCanvas.Create(Self))
+		solution = TCanvas(New TCanvas.Create(Self))
+		solution.Init()
 		
 		running = True
 		Return Self
