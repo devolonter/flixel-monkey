@@ -39,20 +39,21 @@ Type TDialog Extends TListener Abstract
 						(context.window.height - window.height) *.5,  ..
 						window.width, window.height)
 		
-		window.SetShow(True)
-		window.Activate(ACTIVATE_FOCUS)
+		ShowGadget(window)
+		ActivateGadget(window)
 		
-		context.window.SetEnabled(False)
+		DisableGadget(context.window)
 		context.AddListener(Self)
 		PollSystem()
 	End Method
 	
 	Method Hide()
-		window.SetShow(False)
+		HideGadget(window)
 		
 		context.RemoveListener(Self)
-		context.window.SetEnabled(True)
-		context.window.Activate(ACTIVATE_FOCUS)
+		
+		EnableGadget(context.window)
+		ActivateGadget(context.window)
 	End Method
 	
 	Method OnEvent(event:Int, src:TGadget)

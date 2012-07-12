@@ -28,6 +28,8 @@ Import brl.max2d
 Import brl.glmax2d
 Import brl.d3d9max2d
 Import brl.retro
+Import brl.pngloader
+Import brl.jpgloader
 '#EndRegion &H0F
 
 
@@ -45,6 +47,12 @@ Import brl.retro
 'guid:d3e99f15_f89d_4905_b08a_e0aed2f388bc
 Private
 TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_0 abstract  'Resource folder
+    Global res:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_1 '<b>Resource folder</b>
+End Type
+
+
+TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_1 abstract  'Resource folder
+    Const toolbar_png:String = "incbin::res\toolbar.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\toolbar.png</font></b>"
 End Type
 
 
@@ -101,6 +109,8 @@ Include "src\TPreloaderObject.bmx"
 Include "src\TColor.bmx"
 Include "src\TDialog.bmx"
 Include "src\TPreloaderProperties.bmx"
+Incbin "res\toolbar.png"
+Include "src\TProperties.bmx"
  
 '#EndRegion &H03
 

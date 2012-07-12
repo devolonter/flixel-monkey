@@ -1,13 +1,18 @@
 
+'Icons by http://www.fatcow.com/free-icons (Farm-fresh)
 Type TApplication
 
-	Const DEFAULT_WIDTH:Float = 800
+	Const DEFAULT_WIDTH:Float = 900
 	
-	Const DEFAULT_HEIGHT:Float = 600
+	Const DEFAULT_HEIGHT:Float = 700
 	
 	Const MENU_NEW:Int = 10
 
 	Field window:TGadget
+	
+	Field toolbar:TGadget
+	
+	Field propertiesBar:TGadget
 	
 	Field workArea:TCanvas
 	
@@ -16,17 +21,31 @@ Type TApplication
 	Field running:Int
 	
 	Method New()
-		window = CreateWindow(z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.Name, 0, 0,  ..
-		DEFAULT_WIDTH, DEFAULT_HEIGHT, Null, WINDOW_TITLEBAR | WINDOW_MENU | WINDOW_CENTER | WINDOW_RESIZABLE)
-		window.SetColor(127, 127, 127)
-				
 		listeners = New TList
-		running = True
+		
 	End Method
 	
 	Method Create:TApplication()
-		InitMenu()
+		window = CreateWindow(z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.Name, 0, 0,  ..
+		DEFAULT_WIDTH, DEFAULT_HEIGHT, Null, WINDOW_TITLEBAR | WINDOW_MENU | WINDOW_CENTER | WINDOW_RESIZABLE)
+		
+		Local menu:TGadget, file:TGadget, build:TGadget, help:TGadget
+		
+		menu = CreateMenu("&File", 0, window)
+		menu = CreateMenu("&Build", 0, window)
+		menu = CreateMenu("&Help", 0, window)
+		
+		window.UpdateMenu()
+		
+		toolbar = CreateToolbar("incbin::res\toolbar.png", 0, 0, 0, 0, window)
+		SetToolbarTips(toolbar, ["New", "Save", "", "Properties", "", "Add Image", "Add Progressbar", "Add Text"])
+		
+		propertiesBar = CreatePanel(0, 0, window.ClientWidth(), 30, window)
+		propertiesBar.SetLayout(EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED, EDGE_CENTERED)
+		
 		workArea = TCanvas(New TCanvas.Create(Self))
+		
+		running = True
 		Return Self
 	End Method
 	
@@ -66,16 +85,6 @@ Type TApplication
 			Case EVENT_WINDOWCLOSE
 				If (src = window) Quit()
 		End Select
-	End Method
-	
-	Method InitMenu()
-		Local menu:TGadget, file:TGadget, build:TGadget, help:TGadget
-		
-		menu = CreateMenu("&File", 0, window)
-		menu = CreateMenu("&Build", 0, window)
-		menu = CreateMenu("&Help", 0, window)
-		
-		window.UpdateMenu()
 	End Method
 
 End Type

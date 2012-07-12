@@ -13,7 +13,7 @@ Type TCanvas Extends TListener
 	?MacOs
 		SetGraphicsDriver(GLMax2DDriver())
 	?
-		canvas = CreateCanvas(0, 0, context.window.ClientWidth(), context.window.ClientHeight(), context.window)
+		canvas = CreateCanvas(0, context.propertiesBar.ClientHeight(), context.window.ClientWidth(), context.window.ClientHeight(), context.window)
 		canvas.SetLayout(EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED)
 		
 		project = TPreloader(New TPreloader.Create(Self))

@@ -1,5 +1,6 @@
 
-Local app:TApplication = New TApplication.Create()
+Local app:TApplication = New TApplication
+app.Create()
 
 While app.running
 	app.Poll()
