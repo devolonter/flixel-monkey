@@ -14,16 +14,14 @@ Type TPreloaderProperties Extends TProperties
 			Case EVENT_GADGETACTION
 				Select src
 					Case color
-						context.solution.BgColor()
+						context.GetSolution().BgColor()
 						
 					Case width
-						context.solution.SetWidth(Int(src.GetText()))
+						context.GetSolution().SetWidth(Int(src.GetText()))
 						
 					Case height
-						context.solution.SetHeight(Int(src.GetText()))
+						context.GetSolution().SetHeight(Int(src.GetText()))
 				End Select
-			Case EVENT_KEYUP
-				
 		End Select
 	End Method
 

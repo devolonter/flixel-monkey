@@ -122,3 +122,6 @@ Include "src\TProperties.bmx"
 
 
 Incbin "res\icons\color.png"
+Include "src\TBrowseDialog.bmx"
+Include "src\TPreloaderImage.bmx"
+Include "src\TImageProperties.bmx"

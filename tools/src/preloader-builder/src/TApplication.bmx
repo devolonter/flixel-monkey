@@ -6,7 +6,17 @@ Type TApplication
 	
 	Const DEFAULT_HEIGHT:Float = 700
 	
-	Const MENU_NEW:Int = 10
+	Const TB_NEW:Int = 0
+	
+	Const TB_SAVE:Int = 1
+	
+	Const TB_PREF:Int = 3
+	
+	Const TB_IMAGE:Int = 5
+	
+	Const TB_PROGRESS:Int = 6
+	
+	Const TB_TEXT:Int = 7
 
 	Field window:TGadget
 	
@@ -47,7 +57,20 @@ Type TApplication
 		solution.Init()
 		
 		running = True
+		
 		Return Self
+	End Method
+	
+	Method GetSolution:TCanvas()
+		Return solution
+	End Method
+	
+	Method GetPreloader:TPreloader()
+		Return solution.preloader
+	End Method
+	
+	Method DeselectAll()
+		GetPreloader().DeselectAll()
 	End Method
 	
 	Method Quit()
@@ -80,6 +103,17 @@ Type TApplication
 		Next
 		
 		Select event
+			Case EVENT_GADGETACTION
+				If (src = toolbar) Then
+					Select EventData()
+						Case TB_PREF
+							DeselectAll()
+					
+						Case TB_IMAGE
+							solution.AddImage()
+					End Select
+				End If
+		
 			Case EVENT_APPTERMINATE
 				Quit()
 				

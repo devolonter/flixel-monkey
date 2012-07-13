@@ -54,6 +54,7 @@ Type TProperties Extends TListener Abstract
 		Local button:TGadget = CreateButton(name, lastX, (panel.height - size) *.25, size, size, panel)
 		button.SetPixmap(LoadPixmap("incbin::res\icons\" + imagePath + ".png"), GADGETPIXMAP_ICON | GADGETPIXMAP_NOTEXT)
 		button.SetTooltip(name)
+		button.SetLayout(EDGE_ALIGNED, EDGE_CENTERED, EDGE_RELATIVE, EDGE_CENTERED)
 		
 		Return button
 	End Method

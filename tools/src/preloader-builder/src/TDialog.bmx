@@ -32,11 +32,13 @@ Type TDialog Extends TListener Abstract
 			Local separator:TGadget = CreateLabel("", 6, window.ClientHeight() - 42, window.ClientWidth() - 12, 4, window, LABEL_SEPARATOR)
 			separator.SetLayout(EDGE_ALIGNED, EDGE_ALIGNED, EDGE_CENTERED, EDGE_ALIGNED)
 		End If
+		
+		OnBuild()
 	End Method
 	
 	Method Show()
-		window.SetShape((context.window.width - window.width) *.5,  ..
-						(context.window.height - window.height) *.5,  ..
+		window.SetShape(context.window.xpos + (context.window.width - window.width) *.5,  ..
+						context.window.ypos + (context.window.height - window.height) *.5,  ..
 						window.width, window.height)
 		
 		ShowGadget(window)
@@ -71,6 +73,12 @@ Type TDialog Extends TListener Abstract
 				EndIf
 		End Select
 	End Method
+	
+	Method SetTitle(title:String)
+		window.SetText(title)
+	End Method
+	
+	Method OnBuild() Abstract
 	
 	Method OnConfirm:Int() Abstract
 

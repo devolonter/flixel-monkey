@@ -13,7 +13,8 @@ Type TCanvas Extends TListener
 	?MacOs
 		SetGraphicsDriver(GLMax2DDriver())
 	?
-		canvas = CreateCanvas(0, context.propertiesBar.ClientHeight(), context.window.ClientWidth(), context.window.ClientHeight(), context.window)
+		canvas = CreateCanvas(0, context.propertiesBar.height, context.window.ClientWidth(),  ..
+							context.window.ClientHeight() - context.propertiesBar.height, context.window)
 		canvas.SetLayout(EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED, EDGE_ALIGNED)
 		
 		preloader = TPreloader(New TPreloader.Create(Self))
@@ -48,6 +49,36 @@ Type TCanvas Extends TListener
 		preloader.height = height
 	End Method
 	
+	Method GetActiveImageX:Int()
+		Return preloader.GetActiveImage().x
+	End Method
+	
+	Method SetActiveImageX(x:Int)
+		preloader.GetActiveImage().x = x
+	End Method
+	
+	Method GetActiveImageY:Int()
+		Return preloader.GetActiveImage().y
+	End Method
+	
+	Method SetActiveImageY(y:Int)
+		preloader.GetActiveImage().y = y
+	End Method
+	
+	Method AddImage()
+		Local path:String = RequestFile("Select Image", "Image Files:png,jpg")
+		
+		If (path <> Null) Then
+			Local image:TImage = LoadImage(path)
+			
+			If (image <> Null) Then
+				Local preloaderImage:TPreloaderImage = TPreloaderImage(New TPreloaderImage.Create(Self))
+				preloaderImage.SetImage(image)
+				preloader.AddImage(preloaderImage)
+			End If
+		End If
+	End Method
+	
 	Method OnEvent(event:Int, src:TGadget)
 		Select event
 			Case EVENT_TIMERTICK
@@ -59,10 +90,18 @@ Type TCanvas Extends TListener
 				SetClsColor(127, 127, 127)
 				SetViewport(0, 0, canvas.ClientWidth(), canvas.ClientHeight())
 				SetBlend(ALPHABLEND)
-				
+				SetOrigin(0, 0)
+				SetAlpha(1)
+				SetColor(255, 255, 255)
+								
 				Cls
 				preloader.Draw()
 				Flip
+				
+			Case EVENT_MOUSEUP
+				If (src = canvas And EventData() = MOUSE_LEFT) Then
+					preloader.Click(EventX(), EventY())
+				End If
 		End Select
 	End Method
 
