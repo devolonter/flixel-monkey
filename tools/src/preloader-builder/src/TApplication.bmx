@@ -36,8 +36,12 @@ Type TApplication
 	End Method
 	
 	Method Create:TApplication()
-		window = CreateWindow(z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.Name, 0, 0,  ..
-		DEFAULT_WIDTH, DEFAULT_HEIGHT, Null, WINDOW_TITLEBAR | WINDOW_MENU | WINDOW_CENTER | WINDOW_RESIZABLE)
+		window = CreateWindow(z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.Name + " v" + ..
+							z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.MajorVersion + "." + ..
+							z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.MinorVersion + ..
+							z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.Revision,  ..
+							0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, Null,  ..
+							WINDOW_TITLEBAR | WINDOW_MENU | WINDOW_CENTER | WINDOW_RESIZABLE)
 		
 		Local menu:TGadget, file:TGadget, build:TGadget, help:TGadget
 		

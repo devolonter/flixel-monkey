@@ -8,5 +8,9 @@ Type TPreloaderImage Extends TPreloaderObject
 		width = src.width
 		height = src.height
 	End Method
+	
+	Method Draw()
+		DrawImage(src, x, y)
+	End Method
 
 End Type

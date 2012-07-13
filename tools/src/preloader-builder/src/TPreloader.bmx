@@ -5,9 +5,9 @@ Type TPreloader Extends TPreloaderObject
 	
 	Field imageProperties:TImageProperties
 	
-	Field images:TList
+	Field objects:TList
 	
-	Field activeImage:TPreloaderImage
+	Field selectedObject:TPreloaderObject
 
 	Method New()
 		width = 640
@@ -20,7 +20,7 @@ Type TPreloader Extends TPreloaderObject
 		properties = TPreloaderProperties(New TPreloaderProperties.Create(GetApplication()))
 		imageProperties = TImageProperties(New TImageProperties.Create(GetApplication()))
 		
-		images = New TList
+		objects = New TList
 		
 		Return Self
 	End Method
@@ -32,13 +32,9 @@ Type TPreloader Extends TPreloaderObject
 	End Method
 	
 	Method AddImage(image:TPreloaderImage)
-		images.AddLast(image)
-		activeImage = image
+		objects.AddLast(image)
+		selectedObject = image
 		ShowImageProperties()
-	End Method
-	
-	Method GetActiveImage:TPreloaderImage()
-		Return activeImage
 	End Method
 	
 	Method ShowPreloaderProperties()
@@ -58,24 +54,16 @@ Type TPreloader Extends TPreloaderObject
 	
 	Method DeselectAll()
 		ShowPreloaderProperties()
-		activeImage = Null
+		selectedObject = Null
 	End Method
 	
-	Method MoveImageUp()
-		Move(images, activeImage)
-	End Method
-	
-	Method MoveImageDown()
-		Move(images, activeImage, True)
-	End Method
-	
-	Method Move(list:TList, obj:TPreloaderObject, down:Int = False)
-		If (obj = Null) Return
-		If (Not down) list.Reverse()
+	Method MoveSelected(down:Int = False)
+		If (selectedObject = Null) Return
+		If (Not down) objects.Reverse()
 		
-		Local prev:TPreloaderObject		
-		For Local cur:TPreloaderObject = EachIn list
-			If (cur = obj And prev <> Null) Then
+		Local prev:TPreloaderObject
+		For Local cur:TPreloaderObject = EachIn objects
+			If (cur = selectedObject And prev <> Null) Then
 				cur.weight = prev.weight + cur.weight
 				prev.weight = cur.weight - prev.weight
 				cur.weight = cur.weight - prev.weight
@@ -84,26 +72,28 @@ Type TPreloader Extends TPreloaderObject
 			prev = cur
 		Next
 		
-		list.Sort(True, CompareObjects)
+		objects.Sort(True, CompareObjects)
 	End Method
 	
 	Method Click(x:Int, y:Int)
 		x:-Self.x
 		y:-Self.y
 	
-		activeImage = Null
-		For Local img:TPreloaderImage = EachIn images
+		selectedObject = Null
+		For Local img:TPreloaderImage = EachIn objects
 			If (x >= img.x And ..
 				y >= img.y And ..
 				x <= img.x + img.width And ..
 				y <= img.y + img.height)
 				
-				activeImage = img
+				selectedObject = img
 			End If
 		Next
 		
-		If (activeImage <> Null) Then
-			ShowImageProperties()
+		If (selectedObject <> Null) Then
+			If (TPreloaderImage(selectedObject) <> Null) Then
+				ShowImageProperties()
+			End If
 			Return
 		End If
 		
@@ -128,24 +118,24 @@ Type TPreloader Extends TPreloaderObject
 		SetViewport(x, y, width, height)
 		SetOrigin(x, y)
 		
-		For Local img:TPreloaderImage = EachIn images
-			DrawImage(img.src, img.x, img.y)
+		For Local obj:TPreloaderObject = EachIn objects
+			obj.Draw()
 		Next
 
 		SetColor(126, 186, 207)
 		SetViewport(0, 0, context.canvas.width, context.canvas.height)
 		SetOrigin(0, 0)
 		
-		If (activeImage <> Null) Then
-			DrawLine(0, y + activeImage.y, context.canvas.width, y + activeImage.y)
+		If (selectedObject <> Null) Then
+			DrawLine(0, y + selectedObject.y, context.canvas.width, y + selectedObject.y)
 			
-			DrawLine(0, y + activeImage.y + activeImage.height, context.canvas.width,  ..
-					y + activeImage.y + activeImage.height)
+			DrawLine(0, y + selectedObject.y + selectedObject.height, context.canvas.width,  ..
+					y + selectedObject.y + selectedObject.height)
 					
-			DrawLine(x + activeImage.x, 0, x + activeImage.x, context.canvas.height)
+			DrawLine(x + selectedObject.x, 0, x + selectedObject.x, context.canvas.height)
 			
-			DrawLine(x + activeImage.x + activeImage.width, 0,  ..
-					x + activeImage.x + activeImage.width, context.canvas.height)
+			DrawLine(x + selectedObject.x + selectedObject.width, 0,  ..
+					x + selectedObject.x + selectedObject.width, context.canvas.height)
 		End If
 	End Method
 

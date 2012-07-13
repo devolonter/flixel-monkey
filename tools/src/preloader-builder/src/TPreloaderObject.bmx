@@ -31,5 +31,7 @@ Type TPreloaderObject Abstract
 	Method GetApplication:TApplication()
 		Return context.context
 	End Method
+	
+	Method Draw() Abstract
 
 End Type
