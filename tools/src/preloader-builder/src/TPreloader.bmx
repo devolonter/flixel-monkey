@@ -99,6 +99,7 @@ Type TPreloader Extends TPreloaderObject
 		DrawRect(x, y, width, height)
 		
 		SetColor(255, 255, 255)
+		SetViewport(x, y, width, height)
 		SetOrigin(x, y)
 		
 		For Local img:TPreloaderImage = EachIn images
@@ -106,6 +107,7 @@ Type TPreloader Extends TPreloaderObject
 		Next
 
 		SetColor(126, 186, 207)
+		SetViewport(0, 0, context.canvas.width, context.canvas.height)
 		SetOrigin(0, 0)
 		
 		If (activeImage <> Null) Then

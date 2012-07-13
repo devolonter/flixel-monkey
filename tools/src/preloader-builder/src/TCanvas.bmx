@@ -29,42 +29,6 @@ Type TCanvas Extends TListener
 		preloader.Init()
 	End Method
 	
-	Method BgColor()
-		preloader.color.Request()
-	End Method
-	
-	Method GetWidth:Int()
-		Return preloader.width
-	End Method
-	
-	Method SetWidth(width:Int)
-		preloader.width = width
-	End Method
-	
-	Method GetHeight:Int()
-		Return preloader.height
-	End Method
-	
-	Method SetHeight(height:Int)
-		preloader.height = height
-	End Method
-	
-	Method GetActiveImageX:Int()
-		Return preloader.GetActiveImage().x
-	End Method
-	
-	Method SetActiveImageX(x:Int)
-		preloader.GetActiveImage().x = x
-	End Method
-	
-	Method GetActiveImageY:Int()
-		Return preloader.GetActiveImage().y
-	End Method
-	
-	Method SetActiveImageY(y:Int)
-		preloader.GetActiveImage().y = y
-	End Method
-	
 	Method AddImage()
 		Local path:String = RequestFile("Select Image", "Image Files:png,jpg")
 		
@@ -88,7 +52,7 @@ Type TCanvas Extends TListener
 			Case EVENT_GADGETPAINT
 				SetGraphics (CanvasGraphics(canvas))
 				SetClsColor(127, 127, 127)
-				SetViewport(0, 0, canvas.ClientWidth(), canvas.ClientHeight())
+				SetViewport(0, 0, canvas.width, canvas.height)
 				SetBlend(ALPHABLEND)
 				SetOrigin(0, 0)
 				SetAlpha(1)

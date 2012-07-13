@@ -61,16 +61,8 @@ Type TApplication
 		Return Self
 	End Method
 	
-	Method GetSolution:TCanvas()
-		Return solution
-	End Method
-	
-	Method GetPreloader:TPreloader()
-		Return solution.preloader
-	End Method
-	
 	Method DeselectAll()
-		GetPreloader().DeselectAll()
+		solution.preloader.DeselectAll()
 	End Method
 	
 	Method Quit()

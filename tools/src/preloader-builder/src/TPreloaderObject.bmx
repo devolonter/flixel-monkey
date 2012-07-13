@@ -3,7 +3,7 @@ Type TPreloaderObject Abstract
 
 	Field x:Int
 	
-	Field y:Float
+	Field y:Int
 	
 	Field width:Int
 	

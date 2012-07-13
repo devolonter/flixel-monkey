@@ -9,8 +9,8 @@ Type TImageProperties Extends TProperties
 	End Method
 	
 	Method Show()
-		x.SetText(context.GetSolution().GetActiveImageX())
-		y.SetText(context.GetSolution().GetActiveImageY())
+		x.SetText(context.solution.preloader.activeImage.x)
+		y.SetText(context.solution.preloader.activeImage.y)
 		Super.Show()
 	End Method
 		
@@ -19,10 +19,10 @@ Type TImageProperties Extends TProperties
 			Case EVENT_GADGETACTION
 				Select src
 					Case x
-						context.GetSolution().SetActiveImageX(Int(x.GetText()))
+						context.solution.preloader.activeImage.x = Int(src.GetText())
 						
 					Case y
-						context.GetSolution().SetActiveImageY(Int(y.GetText()))
+						context.solution.preloader.activeImage.y = Int(src.GetText())
 				End Select
 		End Select
 	End Method

@@ -4,8 +4,8 @@ Type TPreloaderProperties Extends TProperties
 	Field width:TGadget, height:TGadget, color:TGadget
 
 	Method Init()
-		width = AddTextField("Width", context.solution.GetWidth(), 40, 70)
-		height = AddTextField("Height", context.solution.GetHeight(), 45, 70)
+		width = AddTextField("Width", context.solution.preloader.width, 40, 70)
+		height = AddTextField("Height", context.solution.preloader.height, 45, 70)
 		color = AddImageButton("Background Color", "color")
 	End Method
 	
@@ -14,13 +14,13 @@ Type TPreloaderProperties Extends TProperties
 			Case EVENT_GADGETACTION
 				Select src
 					Case color
-						context.GetSolution().BgColor()
+						context.solution.preloader.color.Request()
 						
 					Case width
-						context.GetSolution().SetWidth(Int(src.GetText()))
+						context.solution.preloader.width = Int(src.GetText())
 						
 					Case height
-						context.GetSolution().SetHeight(Int(src.GetText()))
+						context.solution.preloader.height = Int(src.GetText())
 				End Select
 		End Select
 	End Method
