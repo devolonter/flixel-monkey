@@ -25,9 +25,11 @@ Type TProgBarProperties Extends TMovableProperties
 				Select src
 					Case width
 						context.solution.preloader.selectedObject.width = Int(src.GetText())
+						hAlign.SelectItem(0)
 						
 					Case height
 						context.solution.preloader.selectedObject.height = Int(src.GetText())
+						vAlign.SelectItem(0)
 						
 					Case color
 						context.solution.preloader.selectedObject.color.Request()

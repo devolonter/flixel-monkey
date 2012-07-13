@@ -25,9 +25,13 @@ Type TTextProperties Extends TMovableProperties
 				Select src
 					Case text
 						TPreloaderText(context.solution.preloader.selectedObject).SetText(src.GetText())
+						hAlign.SelectItem(0)
+						vAlign.SelectItem(0)
 						
 					Case size
 						TPreloaderText(context.solution.preloader.selectedObject).SetSize(Int(src.ItemText(src.SelectedItem())))
+						hAlign.SelectItem(0)
+						vAlign.SelectItem(0)
 				
 					Case color
 						context.solution.preloader.selectedObject.color.Request()

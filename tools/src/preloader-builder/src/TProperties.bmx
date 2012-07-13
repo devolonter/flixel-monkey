@@ -67,18 +67,43 @@ Type TProperties Extends TListener Abstract
 		Return button
 	End Method
 	
-	Method AddNumericComboBox:TGadget(name:String, fromValue:Int, toValue:Int, fieldWidth:Int)
+	Method AddComboBox:TGadget(name:String, fieldWidth:Int)
 		AddLabel(name)
 		Local fieldHeight:Int = panel.height *.75
 		
 		Local combo:TGadget = CreateComboBox(lastX, (panel.height - fieldHeight) *.2, fieldWidth, fieldHeight, panel)
 		combo.SetLayout(EDGE_ALIGNED, EDGE_CENTERED, EDGE_RELATIVE, EDGE_CENTERED)
 		
+		lastX:+combo.width + 10
+		
+		Return combo
+	End Method
+	
+	Method AddNumericComboBox:TGadget(name:String, fromValue:Int, toValue:Int, fieldWidth:Int)
+		Local combo:TGadget = AddComboBox(name, fieldWidth)
+		
 		For Local i:Int = fromValue to toValue
 			AddGadgetItem(combo, i)
 		Next
 		
-		lastX:+combo.width + 10
+		combo.SelectItem(0)
+		
+		Return combo
+	End Method
+	
+	Method AddImageComboBox:TGadget(name:String, icons:String, noValue:Int = False)
+		Local combo:TGadget = AddComboBox(name, panel.height * 1.4)
+		Local strip:TIconStrip = LoadIconStrip("incbin::res\icons\" + icons + ".png")
+		combo.SetIconStrip(strip)
+		
+		Local from:Int = 0
+		If (noValue) from = -1
+		
+		For Local i:Int = from To strip.count - 1
+			AddGadgetItem(combo, "",, i)
+		Next
+		
+		combo.SelectItem(0)
 		
 		Return combo
 	End Method
