@@ -47,6 +47,10 @@ Type TCanvas Extends TListener
 		preloader.AddProgBar(TPreloaderProgBar(New TPreloaderProgBar.Create(Self)))
 	End Method
 	
+	Method AddText()
+		preloader.AddText(TPreloaderText(New TPreloaderText.Create(Self)))
+	End Method
+	
 	Method OnEvent(event:Int, src:TGadget)
 		Select event
 			Case EVENT_TIMERTICK

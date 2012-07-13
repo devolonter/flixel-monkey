@@ -7,6 +7,8 @@ Type TPreloader Extends TPreloaderObject
 	
 	Field progBarProperties:TProgBarProperties
 	
+	Field textProperties:TTextProperties
+	
 	Field objects:TList
 	
 	Field selectedObject:TPreloaderObject
@@ -24,6 +26,7 @@ Type TPreloader Extends TPreloaderObject
 		properties = TPreloaderProperties(New TPreloaderProperties.Create(GetApplication()))
 		imageProperties = TImageProperties(New TImageProperties.Create(GetApplication()))
 		progBarProperties = TProgBarProperties(New TProgBarProperties.Create(GetApplication()))
+		textProperties = TTextProperties(New TTextProperties.Create(GetApplication()))
 		
 		Return Self
 	End Method
@@ -32,6 +35,7 @@ Type TPreloader Extends TPreloaderObject
 		properties.Init()
 		imageProperties.Init()
 		progBarProperties.Init()
+		textProperties.Init()
 		properties.Show()
 	End Method
 	
@@ -45,6 +49,12 @@ Type TPreloader Extends TPreloaderObject
 		objects.AddLast(progBar)
 		selectedObject = progBar
 		ShowProgBarProperties()
+	End Method
+	
+	Method AddText(text:TPreloaderText)
+		objects.AddLast(text)
+		selectedObject = text
+		ShowTextProperties()
 	End Method
 	
 	Method ShowPreloaderProperties()
@@ -62,10 +72,16 @@ Type TPreloader Extends TPreloaderObject
 		progBarProperties.Show()
 	End Method
 	
+	Method ShowTextProperties()
+		HideAllProperties()
+		textProperties.Show()
+	End Method
+	
 	Method HideAllProperties()
 		properties.Hide()
 		imageProperties.Hide()
 		progBarProperties.Hide()
+		textProperties.Hide()
 	End Method
 	
 	Method DeselectAll()
@@ -96,7 +112,7 @@ Type TPreloader Extends TPreloaderObject
 		y:-Self.y
 	
 		selectedObject = Null
-		For Local img:TPreloaderObject  = EachIn objects
+		For Local img:TPreloaderObject = EachIn objects
 			If (x >= img.x And ..
 				y >= img.y And ..
 				x <= img.x + img.width And ..
@@ -111,6 +127,8 @@ Type TPreloader Extends TPreloaderObject
 				ShowImageProperties()
 			ElseIf(TPreloaderProgBar(selectedObject) <> Null) Then
 				ShowProgBarProperties()
+			ElseIf(TPreloaderText(selectedObject) <> Null) Then
+				ShowTextProperties()
 			End If
 			Return
 		End If

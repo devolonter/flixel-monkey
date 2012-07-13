@@ -30,6 +30,7 @@ Import brl.d3d9max2d
 Import brl.retro
 Import brl.pngloader
 Import brl.jpgloader
+Import brl.freetypefont
 '#EndRegion &H0F
 
 
@@ -54,6 +55,7 @@ End Type
 TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_1 abstract  'Resource folder
     Const toolbar_png:String = "incbin::res\toolbar.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\toolbar.png</font></b>"
     Global icons:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_2 '<b>Resource folder</b>
+    Global system:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_3 '<b>Resource folder</b>
 End Type
 
 
@@ -61,6 +63,11 @@ TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_2 abstract  'Resource folder
     Const color_png:String = "incbin::res\icons\color.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\icons\color.png</font></b>"
     Const up_png:String = "incbin::res\icons\up.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\icons\up.png</font></b>"
     Const down_png:String = "incbin::res\icons\down.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\icons\down.png</font></b>"
+End Type
+
+
+TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_3 abstract  'Resource folder
+    Const font_ttf:String = "incbin::res\system\font.ttf" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\system\font.ttf</font></b>"
 End Type
 
 
@@ -132,3 +139,6 @@ Incbin "res\icons\down.png"
 Include "src\TMovableProperties.bmx"
 Include "src\TPreloaderProgBar.bmx"
 Include "src\TProgBarProperties.bmx"
+Incbin "res\system\font.ttf"
+Include "src\TPreloaderText.bmx"
+Include "src\TTextProperties.bmx"

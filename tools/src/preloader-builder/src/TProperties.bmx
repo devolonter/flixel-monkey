@@ -29,13 +29,18 @@ Type TProperties Extends TListener Abstract
 		context.RemoveListener(Self)
 	End Method
 	
-	Method AddTextField:TGadget(name:String, value:String, labelWidth:Int = 100, fieldWidth:Int = 0)
+	Method AddLabel(name:String, labelWidth:Int)
 		Local labelHeight:Int = panel.height *.5
 	
 		Local label:TGadget = CreateLabel(name + ":", lastX, (panel.height - labelHeight) *.35, labelWidth, labelHeight, panel)
 		label.SetLayout(EDGE_ALIGNED, EDGE_CENTERED, EDGE_RELATIVE, EDGE_CENTERED)
 		
 		lastX:+label.width
+	End Method
+	
+	Method AddTextField:TGadget(name:String, value:String, labelWidth:Int = 100, fieldWidth:Int = 0)
+		AddLabel(name, labelWidth)
+	
 		If (fieldWidth = 0) fieldWidth = labelWidth
 		Local fieldHeight:Int = panel.height *.75
 		
@@ -59,6 +64,24 @@ Type TProperties Extends TListener Abstract
 		lastX:+size + 10
 		
 		Return button
+	End Method
+	
+	Method AddNumericComboBox:TGadget(name:String, fromValue:Int, toValue:Int, labelWidth:Int = 100, fieldWidth:Int = 0)
+		AddLabel(name, labelWidth)
+		
+		If (fieldWidth = 0) fieldWidth = labelWidth
+		Local fieldHeight:Int = panel.height *.75
+		
+		Local combo:TGadget = CreateComboBox(lastX, (panel.height - fieldHeight) *.25, fieldWidth, fieldHeight, panel)
+		combo.SetLayout(EDGE_ALIGNED, EDGE_CENTERED, EDGE_RELATIVE, EDGE_CENTERED)
+		
+		For Local i:Int = fromValue to toValue
+			AddGadgetItem(combo, i)
+		Next
+		
+		lastX:+combo.width + 10
+		
+		Return combo
 	End Method
 	
 	Method Init() Abstract

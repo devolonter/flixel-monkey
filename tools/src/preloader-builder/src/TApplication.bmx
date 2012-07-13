@@ -111,6 +111,9 @@ Type TApplication
 						Case TB_PROGBAR
 							solution.AddProgBar()
 							
+						Case TB_TEXT
+							solution.AddText()
+							
 					End Select
 				End If
 		

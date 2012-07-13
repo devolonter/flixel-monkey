@@ -14,7 +14,6 @@ Type TProgBarProperties Extends TMovableProperties
 	Method Show()
 		width.SetText(context.solution.preloader.selectedObject.width)
 		height.SetText(context.solution.preloader.selectedObject.height)
-		
 		Super.Show()
 	End Method
 	
