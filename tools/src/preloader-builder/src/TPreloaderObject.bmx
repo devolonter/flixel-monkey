@@ -1,6 +1,8 @@
 
 Type TPreloaderObject Abstract
 
+	Global inc:Int
+
 	Field x:Int
 	
 	Field y:Int
@@ -9,12 +11,16 @@ Type TPreloaderObject Abstract
 	
 	Field height:Int
 	
+	Field weight:Int
+	
 	Field color:TColor
 	
 	Field context:TCanvas
 	
 	Method New()
 		color = New TColor
+		weight = inc
+		TPreloaderObject.inc:+1
 	End Method
 	
 	Method Create:TPreloaderObject(context:TCanvas)

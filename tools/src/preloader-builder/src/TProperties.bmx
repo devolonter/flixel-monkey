@@ -48,13 +48,15 @@ Type TProperties Extends TListener Abstract
 		Return textField
 	End Method
 	
-	Method AddImageButton:TGadget(name:String, imagePath:String)
+	Method AddImageButton:TGadget(name:String, icon:String)
 		Local size:Int = panel.height *.75
 		
 		Local button:TGadget = CreateButton(name, lastX, (panel.height - size) *.25, size, size, panel)
-		button.SetPixmap(LoadPixmap("incbin::res\icons\" + imagePath + ".png"), GADGETPIXMAP_ICON | GADGETPIXMAP_NOTEXT)
+		button.SetPixmap(LoadPixmap("incbin::res\icons\" + icon + ".png"), GADGETPIXMAP_ICON | GADGETPIXMAP_NOTEXT)
 		button.SetTooltip(name)
 		button.SetLayout(EDGE_ALIGNED, EDGE_CENTERED, EDGE_RELATIVE, EDGE_CENTERED)
+		
+		lastX:+size + 10
 		
 		Return button
 	End Method

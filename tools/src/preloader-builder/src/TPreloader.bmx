@@ -61,6 +61,32 @@ Type TPreloader Extends TPreloaderObject
 		activeImage = Null
 	End Method
 	
+	Method MoveImageUp()
+		Move(images, activeImage)
+	End Method
+	
+	Method MoveImageDown()
+		Move(images, activeImage, True)
+	End Method
+	
+	Method Move(list:TList, obj:TPreloaderObject, down:Int = False)
+		If (obj = Null) Return
+		If (Not down) list.Reverse()
+		
+		Local prev:TPreloaderObject		
+		For Local cur:TPreloaderObject = EachIn list
+			If (cur = obj And prev <> Null) Then
+				cur.weight = prev.weight + cur.weight
+				prev.weight = cur.weight - prev.weight
+				cur.weight = cur.weight - prev.weight
+			End If
+		
+			prev = cur
+		Next
+		
+		list.Sort(True, CompareObjects)
+	End Method
+	
 	Method Click(x:Int, y:Int)
 		x:-Self.x
 		y:-Self.y
@@ -124,3 +150,9 @@ Type TPreloader Extends TPreloaderObject
 	End Method
 
 End Type
+
+Private
+
+Function CompareObjects:Int(o1:Object, o2:Object)
+	Return TPreloaderObject(o1).weight - TPreloaderObject(o2).weight
+End Function

@@ -59,6 +59,8 @@ End Type
 
 TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_2 abstract  'Resource folder
     Const color_png:String = "incbin::res\icons\color.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\icons\color.png</font></b>"
+    Const up_png:String = "incbin::res\icons\up.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\icons\up.png</font></b>"
+    Const down_png:String = "incbin::res\icons\down.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\icons\down.png</font></b>"
 End Type
 
 
@@ -125,3 +127,5 @@ Incbin "res\icons\color.png"
 Include "src\TBrowseDialog.bmx"
 Include "src\TPreloaderImage.bmx"
 Include "src\TImageProperties.bmx"
+Incbin "res\icons\up.png"
+Incbin "res\icons\down.png"
