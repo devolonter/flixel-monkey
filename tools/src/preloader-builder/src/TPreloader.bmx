@@ -107,6 +107,11 @@ Type TPreloader Extends TPreloaderObject
 		objects.Sort(True, CompareObjects)
 	End Method
 	
+	Method RemoveSelected()
+		objects.Remove(selectedObject)
+		DeselectAll()
+	End Method
+	
 	Method Click(x:Int, y:Int)
 		x:-Self.x
 		y:-Self.y

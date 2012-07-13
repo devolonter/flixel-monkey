@@ -5,6 +5,8 @@ Type TMovableProperties Extends TProperties
 	
 	Field moveUp:TGadget, moveDown:TGadget
 	
+	Field remove:TGadget
+	
 	Method Init()
 		x = AddTextField("X", 0, 70)
 		y = AddTextField("Y", 0, 70)
@@ -13,6 +15,8 @@ Type TMovableProperties Extends TProperties
 		
 		moveUp = AddImageButton("Move Up", "up")
 		moveDown = AddImageButton("Move Down", "down")
+		
+		remove = AddImageButton("Remove", "delete")
 	End Method
 	
 	Method Show()
@@ -36,6 +40,9 @@ Type TMovableProperties Extends TProperties
 						
 					Case moveDown
 						context.solution.preloader.MoveSelected(True)
+						
+					Case remove
+						context.solution.preloader.RemoveSelected()
 				End Select
 		End Select
 	End Method
