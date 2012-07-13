@@ -6,8 +6,8 @@ Type TProgBarProperties Extends TMovableProperties
 	Field color:TGadget
 	
 	Method OnInit()
-		width = AddTextField("Width", 0, 40, 70)
-		height = AddTextField("Height", 0, 45, 70)
+		width = AddTextField("Width", 0, 70)
+		height = AddTextField("Height", 0, 70)
 		color = AddImageButton("Set Color", "color")
 	End Method
 	

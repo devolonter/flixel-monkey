@@ -6,8 +6,8 @@ Type TTextProperties Extends TMovableProperties
 	Field color:TGadget
 
 	Method OnInit()
-		text = AddTextField("Text", "", 35, 150)
-		size = AddNumericComboBox("Size", TPreloaderText.MIN_SIZE, TPreloaderText.MAX_SIZE, 35, 50)
+		text = AddTextField("Text", "", 150)
+		size = AddNumericComboBox("Size", TPreloaderText.MIN_SIZE, TPreloaderText.MAX_SIZE, 50)
 		color = AddImageButton("Set Color", "color")
 	End Method
 	

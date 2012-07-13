@@ -4,8 +4,8 @@ Type TImageProperties Extends TMovableProperties
 	Field fromAlpha:TGadget, toAlpha:TGadget
 
 	Method OnInit()
-		fromAlpha = AddTextField("Alpha From", 100, 70, 35)
-		toAlpha = AddTextField("To", 100, 25, 35)
+		fromAlpha = AddTextField("Alpha From", 100, 35)
+		toAlpha = AddTextField("To", 100, 35)
 	End Method
 	
 	Method Show()

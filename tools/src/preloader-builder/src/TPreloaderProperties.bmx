@@ -4,8 +4,8 @@ Type TPreloaderProperties Extends TProperties
 	Field width:TGadget, height:TGadget, color:TGadget
 
 	Method Init()
-		width = AddTextField("Width", context.solution.preloader.width, 40, 70)
-		height = AddTextField("Height", context.solution.preloader.height, 45, 70)
+		width = AddTextField("Width", context.solution.preloader.width, 70)
+		height = AddTextField("Height", context.solution.preloader.height, 70)
 		color = AddImageButton("Background Color", "color")
 	End Method
 	

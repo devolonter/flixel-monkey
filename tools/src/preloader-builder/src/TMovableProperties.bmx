@@ -6,8 +6,8 @@ Type TMovableProperties Extends TProperties
 	Field moveUp:TGadget, moveDown:TGadget
 	
 	Method Init()
-		x = AddTextField("X", 0, 20, 70)
-		y = AddTextField("Y", 0, 20, 70)
+		x = AddTextField("X", 0, 70)
+		y = AddTextField("Y", 0, 70)
 		
 		Self.OnInit()
 		
