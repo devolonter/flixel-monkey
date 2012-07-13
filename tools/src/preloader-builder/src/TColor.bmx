@@ -7,6 +7,12 @@ Type TColor
 	
 	Field b:Int
 	
+	Method New()
+		r = 255
+		g = 255
+		b = 255
+	End Method
+	
 	Method Set(rgb:Int)
 		r = (rgb Shr 16) & $FF
 		g = (rgb Shr 8) & $FF

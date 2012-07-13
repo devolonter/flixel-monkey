@@ -43,6 +43,10 @@ Type TCanvas Extends TListener
 		End If
 	End Method
 	
+	Method AddProgBar()
+		preloader.AddProgBar(TPreloaderProgBar(New TPreloaderProgBar.Create(Self)))
+	End Method
+	
 	Method OnEvent(event:Int, src:TGadget)
 		Select event
 			Case EVENT_TIMERTICK
@@ -62,7 +66,7 @@ Type TCanvas Extends TListener
 				preloader.Draw()
 				Flip
 				
-			Case EVENT_MOUSEUP
+			Case EVENT_MOUSEDOWN
 				If (src = canvas And EventData() = MOUSE_LEFT) Then
 					preloader.Click(EventX(), EventY())
 				End If

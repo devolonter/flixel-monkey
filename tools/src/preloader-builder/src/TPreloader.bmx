@@ -5,6 +5,8 @@ Type TPreloader Extends TPreloaderObject
 	
 	Field imageProperties:TImageProperties
 	
+	Field progBarProperties:TProgBarProperties
+	
 	Field objects:TList
 	
 	Field selectedObject:TPreloaderObject
@@ -12,6 +14,8 @@ Type TPreloader Extends TPreloaderObject
 	Method New()
 		width = 640
 		height = 480
+		objects = New TList
+		color.Set($000000)
 	End Method
 	
 	Method Create:TPreloaderObject(context:TCanvas)
@@ -19,8 +23,7 @@ Type TPreloader Extends TPreloaderObject
 		
 		properties = TPreloaderProperties(New TPreloaderProperties.Create(GetApplication()))
 		imageProperties = TImageProperties(New TImageProperties.Create(GetApplication()))
-		
-		objects = New TList
+		progBarProperties = TProgBarProperties(New TProgBarProperties.Create(GetApplication()))
 		
 		Return Self
 	End Method
@@ -28,6 +31,7 @@ Type TPreloader Extends TPreloaderObject
 	Method Init()
 		properties.Init()
 		imageProperties.Init()
+		progBarProperties.Init()
 		properties.Show()
 	End Method
 	
@@ -35,6 +39,12 @@ Type TPreloader Extends TPreloaderObject
 		objects.AddLast(image)
 		selectedObject = image
 		ShowImageProperties()
+	End Method
+	
+	Method AddProgBar(progBar:TPreloaderProgBar)
+		objects.AddLast(progBar)
+		selectedObject = progBar
+		ShowProgBarProperties()
 	End Method
 	
 	Method ShowPreloaderProperties()
@@ -47,9 +57,15 @@ Type TPreloader Extends TPreloaderObject
 		imageProperties.Show()
 	End Method
 	
+	Method ShowProgBarProperties()
+		HideAllProperties()
+		progBarProperties.Show()
+	End Method
+	
 	Method HideAllProperties()
 		properties.Hide()
 		imageProperties.Hide()
+		progBarProperties.Hide()
 	End Method
 	
 	Method DeselectAll()
@@ -80,7 +96,7 @@ Type TPreloader Extends TPreloaderObject
 		y:-Self.y
 	
 		selectedObject = Null
-		For Local img:TPreloaderImage = EachIn objects
+		For Local img:TPreloaderObject  = EachIn objects
 			If (x >= img.x And ..
 				y >= img.y And ..
 				x <= img.x + img.width And ..
@@ -93,6 +109,8 @@ Type TPreloader Extends TPreloaderObject
 		If (selectedObject <> Null) Then
 			If (TPreloaderImage(selectedObject) <> Null) Then
 				ShowImageProperties()
+			ElseIf(TPreloaderProgBar(selectedObject) <> Null) Then
+				ShowProgBarProperties()
 			End If
 			Return
 		End If

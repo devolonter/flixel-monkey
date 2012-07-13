@@ -14,7 +14,7 @@ Type TApplication
 	
 	Const TB_IMAGE:Int = 5
 	
-	Const TB_PROGRESS:Int = 6
+	Const TB_PROGBAR:Int = 6
 	
 	Const TB_TEXT:Int = 7
 
@@ -107,6 +107,10 @@ Type TApplication
 					
 						Case TB_IMAGE
 							solution.AddImage()
+							
+						Case TB_PROGBAR
+							solution.AddProgBar()
+							
 					End Select
 				End If
 		
