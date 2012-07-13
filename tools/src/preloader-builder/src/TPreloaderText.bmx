@@ -43,7 +43,7 @@ Type TPreloaderText Extends TPreloaderObject
 		SetImageFont(Fonts[size])
 		SetColor(color.r, color.g, color.b)
 		DrawText(text, x, y)
-		SetColor(0, 0, 0)
+		SetColor(255, 255, 255)
 	End Method
 
 End Type

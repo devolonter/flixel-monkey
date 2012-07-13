@@ -172,6 +172,17 @@ Type TPreloader Extends TPreloaderObject
 			
 			DrawLine(x + selectedObject.x + selectedObject.width, 0,  ..
 					x + selectedObject.x + selectedObject.width, context.canvas.height)
+			
+					
+			SetImageFont(Null)
+							
+			DrawText(selectedObject.width,  ..
+					x + selectedObject.x + (selectedObject.width - TextWidth(selectedObject.width)) *.5,  ..
+					y + selectedObject.y + selectedObject.height + 7)
+					
+			DrawText(selectedObject.height,  ..
+					x + selectedObject.x + selectedObject.width + 7,  ..
+					y + selectedObject.y + (selectedObject.height - TextHeight(selectedObject.height)) *.5)
 		End If
 	End Method
 

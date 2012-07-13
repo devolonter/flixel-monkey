@@ -54,9 +54,9 @@ Type TProperties Extends TListener Abstract
 	End Method
 	
 	Method AddImageButton:TGadget(name:String, icon:String)
-		Local size:Int = panel.height *.75
+		Local size:Int = panel.height *.9
 		
-		Local button:TGadget = CreateButton(name, lastX, (panel.height - size) *.25, size, size, panel)
+		Local button:TGadget = CreateButton(name, lastX, (panel.height - size) *.1, size, size, panel)
 		button.SetPixmap(LoadPixmap("incbin::res\icons\" + icon + ".png"), GADGETPIXMAP_ICON | GADGETPIXMAP_NOTEXT)
 		button.SetTooltip(name)
 		button.SetLayout(EDGE_ALIGNED, EDGE_CENTERED, EDGE_RELATIVE, EDGE_CENTERED)
@@ -72,7 +72,7 @@ Type TProperties Extends TListener Abstract
 		If (fieldWidth = 0) fieldWidth = labelWidth
 		Local fieldHeight:Int = panel.height *.75
 		
-		Local combo:TGadget = CreateComboBox(lastX, (panel.height - fieldHeight) *.25, fieldWidth, fieldHeight, panel)
+		Local combo:TGadget = CreateComboBox(lastX, (panel.height - fieldHeight) *.2, fieldWidth, fieldHeight, panel)
 		combo.SetLayout(EDGE_ALIGNED, EDGE_CENTERED, EDGE_RELATIVE, EDGE_CENTERED)
 		
 		For Local i:Int = fromValue to toValue
