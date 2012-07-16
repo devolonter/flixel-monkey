@@ -91,6 +91,18 @@ Type TProperties Extends TListener Abstract
 		Return combo
 	End Method
 	
+	Method AddStringCombo:TGadget(name:String, values:String[], fieldWidth:Int)
+		Local combo:TGadget = AddComboBox(name, fieldWidth)
+		
+		For Local value:String = EachIn values
+			AddGadgetItem(combo, value)
+		Next
+		
+		combo.SelectItem(0)
+		
+		Return combo
+	End Method
+	
 	Method AddImageComboBox:TGadget(name:String, icons:String, noValue:Int = False)
 		Local combo:TGadget = AddComboBox(name, panel.height * 1.4)
 		Local strip:TIconStrip = LoadIconStrip("incbin::res\icons\" + icons + ".png")
