@@ -20,7 +20,7 @@ Type TColor
 	End Method
 
 	Method ToString:String()
-		Return Hex(r | g | b)
+		Return ("$" + Right(Hex(r), 2) + Right(Hex(g), 2) + Right(Hex(b), 2)).ToUpper()
 	End Method
 
 	Method FromString(s$)

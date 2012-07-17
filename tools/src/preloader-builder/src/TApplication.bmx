@@ -102,6 +102,9 @@ Type TApplication
 			Case EVENT_GADGETACTION
 				If (src = toolbar) Then
 					Select EventData()
+						Case TB_SAVE
+							solution.Save()
+					
 						Case TB_PREF
 							DeselectAll()
 					

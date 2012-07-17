@@ -9,7 +9,7 @@ Type TPreloaderObject Abstract
 	
 	Field width:Int
 	
-	Field height:Int
+	Field height:Int	
 	
 	Field weight:Int
 	

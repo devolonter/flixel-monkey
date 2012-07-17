@@ -38,6 +38,7 @@ Type TCanvas Extends TListener
 			If (image <> Null) Then
 				Local preloaderImage:TPreloaderImage = TPreloaderImage(New TPreloaderImage.Create(Self))
 				preloaderImage.SetImage(image)
+				preloaderImage.filename = path
 				preloader.AddImage(preloaderImage)
 			End If
 		End If
@@ -49,6 +50,76 @@ Type TCanvas Extends TListener
 	
 	Method AddText()
 		preloader.AddText(TPreloaderText(New TPreloaderText.Create(Self)))
+	End Method
+	
+	Method Save()
+		Local filePath:String = RequestFile("Save As...", "Preloader Files:flxp", True)
+		If (Not filePath) Return
+		
+		Local flxp:ZipWriter = New ZipWriter
+		flxp.OpenZip(filePath, APPEND_STATUS_CREATE)
+		
+		Local info:String
+		
+		info:+z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.MajorVersion + ":"
+		info:+z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.MinorVersion + ":"
+		info:+z_blide_bgd3e99f15_f89d_4905_b08a_e0aed2f388bc.Revision + ";"
+		
+		info:+preloader.width + ":"
+		info:+preloader.height + ":"
+		info:+preloader.color.ToString() + ";"
+		
+		Local images:TMap = New TMap
+		
+		For Local obj:TPreloaderObject = EachIn preloader.objects
+			If (TPreloaderImage(obj)) Then
+				info:+"image:"
+				
+			ElseIf(TPreloaderProgBar(obj)) Then
+				info:+"progbar:"
+				
+			ElseIf(TPreloaderText(obj))
+				info:+"text:"
+			End If
+		
+			info:+obj.x + ":"
+			info:+obj.y + ":"
+			info:+obj.width + ":"
+			info:+obj.height + ":"
+			
+			If (TPreloaderImage(obj)) Then
+				Local filename:String = "images/" + StripDir(TPreloaderImage(obj).filename)
+			
+				If (Not images.Contains(TPreloaderImage(obj).filename)) Then
+					flxp.AddStream(ReadStream(TPreloaderImage(obj).filename), filename)
+					
+				End If
+			
+				info:+filename + ":"
+				info:+TPreloaderImage(obj).fromAlpha + ":"
+				info:+TPreloaderImage(obj).toAlpha + ":"
+				info:+TPreloaderImage(obj).blendMode
+				
+			ElseIf(TPreloaderProgBar(obj)) Then
+				info:+TPreloaderProgBar(obj).color.ToString()
+				
+			ElseIf(TPreloaderText(obj))
+				info:+TPreloaderText(obj).size + ":"
+				info:+TPreloaderText(obj).text + ":"
+				info:+TPreloaderText(obj).color.ToString()
+			End If
+			
+			info:+","
+		Next
+		
+		info = info[..(info.Length - 1)]
+		
+		Local infoStream:TStream = CreateBankStream(CreateBank(info.Length))
+		infoStream.WriteString(info)
+		
+		flxp.AddStream(infoStream, "info")
+		
+		flxp.CloseZip()
 	End Method
 	
 	Method OnEvent(event:Int, src:TGadget)

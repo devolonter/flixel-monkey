@@ -32,6 +32,7 @@ Import brl.pngloader
 Import brl.jpgloader
 Import brl.freetypefont
 Import skn3.maxguiex
+Import gman.zipengine
 '#EndRegion &H0F
 
 

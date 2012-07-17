@@ -1,6 +1,8 @@
 
 Type TPreloaderImage Extends TPreloaderObject
 
+	Field filename:String
+
 	Field src:TImage
 	
 	Field fromAlpha:Int, toAlpha:Int
