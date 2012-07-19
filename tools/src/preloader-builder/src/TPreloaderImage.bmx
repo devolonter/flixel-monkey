@@ -15,6 +15,11 @@ Type TPreloaderImage Extends TPreloaderObject
 		blendMode = ALPHABLEND
 	End Method
 	
+	Method Destroy()
+		Super.Destroy()
+		src = Null
+	End Method
+	
 	Method SetImage(image:TImage)
 		src = image
 		width = src.width

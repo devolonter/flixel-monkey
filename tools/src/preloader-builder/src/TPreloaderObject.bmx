@@ -28,6 +28,11 @@ Type TPreloaderObject Abstract
 		Return Self
 	End Method
 	
+	Method Destroy()
+		color = Null
+		context = Null
+	End Method
+	
 	Method GetApplication:TApplication()
 		Return context.context
 	End Method

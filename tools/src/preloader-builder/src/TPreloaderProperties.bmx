@@ -9,6 +9,12 @@ Type TPreloaderProperties Extends TProperties
 		color = AddImageButton("Background Color", "color")
 	End Method
 	
+	Method Show()
+		width.SetText(context.solution.preloader.width)
+		height.SetText(context.solution.preloader.height)
+		Super.Show()
+	End Method
+	
 	Method OnEvent(event:Int, src:TGadget)
 		Select event
 			Case EVENT_GADGETACTION

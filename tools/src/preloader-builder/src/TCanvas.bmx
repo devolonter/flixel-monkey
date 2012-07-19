@@ -151,6 +151,70 @@ Type TCanvas Extends TListener
 		solutionFile = filePath
 	End Method
 	
+	Method Open()
+		Local filePath:String = RequestFile("Select Preloader...", "Preloader Files:flxp")
+		
+		If (Not filePath) Then
+			Return
+		Else
+			Reset()
+		End If
+		
+		Local flxp:ZipReader = New ZipReader
+		flxp.OpenZip(filePath)
+		
+		Local info:String[] = flxp.ExtractFile("info").ReadLine().Split(";")
+		
+		Local data:String[] = info[1].Split(":")
+		
+		preloader.width = Int(data[0])
+		preloader.height = Int(data[1])
+		preloader.color.Set(Int(data[2]))
+		
+		Local objects:String[] = info[2].Split(",")
+		
+		Local tmpObj:TPreloaderObject
+		
+		For Local obj:String = EachIn objects
+			data = obj.Split(":")
+			
+			Select data[0]
+				Case "image"
+					tmpObj = New TPreloaderImage
+					TPreloaderImage(tmpObj).filename = data[5]
+					TPreloaderImage(tmpObj).src = LoadImage(flxp.ExtractFile(data[5]))
+					TPreloaderImage(tmpObj).fromAlpha = Int(data[6])
+					TPreloaderImage(tmpObj).toAlpha = Int(data[7])
+					TPreloaderImage(tmpObj).blendMode = Int(data[8])
+				Case "progbar"
+					tmpObj = New TPreloaderProgBar
+					tmpObj.color.Set(Int(data[5]))
+				Case "text"
+					tmpObj = New TPreloaderText
+					TPreloaderText(tmpObj).SetSize(Int(data[5]))
+					TPreloaderText(tmpObj).text = data[6]
+					tmpObj.color.Set(Int(data[7]))
+			End Select
+			
+			tmpObj.x = Int(data[1])
+			tmpObj.y = Int(data[2])
+			tmpObj.width = Int(data[3])
+			tmpObj.height = Int(data[4])
+			
+			preloader.objects.AddLast(tmpObj)
+		Next
+		
+		flxp.CloseZip()
+		preloader.DeselectAll()
+		solutionFile = filePath
+	End Method
+	
+	Method Reset()
+		preloader.Reset()
+		solutionFile = Null
+		preloader.DeselectAll()
+	End Method
+	
 	Method OnEvent(event:Int, src:TGadget)
 		Select event
 			Case EVENT_TIMERTICK

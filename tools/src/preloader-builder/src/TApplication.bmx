@@ -17,6 +17,8 @@ Type TApplication
 	Const TB_PROGBAR:Int = 6
 	
 	Const TB_TEXT:Int = 7
+	
+	Const MENU_OPEN:Int = 10
 
 	Field window:TGadget
 	
@@ -43,14 +45,17 @@ Type TApplication
 							0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, Null,  ..
 							WINDOW_TITLEBAR | WINDOW_MENU | WINDOW_CENTER | WINDOW_RESIZABLE)
 		
-		Local menu:TGadget, file:TGadget, build:TGadget, help:TGadget
+		Local file:TGadget, build:TGadget, help:TGadget
 		
-		menu = CreateMenu("&File", 0, window)
-		menu = CreateMenu("&Build", 0, window)
-		menu = CreateMenu("&Help", 0, window)
+		file = CreateMenu("&File", 0, window)
+		
+		CreateMenu("&Open", MENU_OPEN, file)
+		
+		build = CreateMenu("&Build", 0, window)
+		help = CreateMenu("&Help", 0, window)
 		
 		window.UpdateMenu()
-		
+
 		toolbar = CreateToolbar("incbin::res\toolbar.png", 0, 0, 0, 0, window)
 		SetToolbarTips(toolbar, ["New", "Save", "", "Properties", "", "Add Image", "Add Progressbar", "Add Text"])
 		
@@ -102,6 +107,9 @@ Type TApplication
 			Case EVENT_GADGETACTION
 				If (src = toolbar) Then
 					Select EventData()
+						Case TB_NEW
+							solution.Reset()
+					
 						Case TB_SAVE
 							solution.Save()
 					
@@ -119,6 +127,12 @@ Type TApplication
 							
 					End Select
 				End If
+				
+			Case EVENT_MENUACTION
+				Select EventData()
+					Case MENU_OPEN
+						solution.Open()
+				End Select
 		
 			Case EVENT_APPTERMINATE
 				Quit()

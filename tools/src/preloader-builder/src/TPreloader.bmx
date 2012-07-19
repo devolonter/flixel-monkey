@@ -1,6 +1,12 @@
 
 Type TPreloader Extends TPreloaderObject
 
+	Const DEFAULT_WIDTH:Int = 640
+	
+	Const DEFAULT_HEIGHT:Int = 480
+	
+	Const DEFAULT_COLOR:Int = $000000
+
 	Field properties:TPreloaderProperties
 	
 	Field imageProperties:TImageProperties
@@ -14,10 +20,10 @@ Type TPreloader Extends TPreloaderObject
 	Field selectedObject:TPreloaderObject
 
 	Method New()
-		width = 640
-		height = 480
+		width = DEFAULT_WIDTH
+		height = DEFAULT_HEIGHT
 		objects = New TList
-		color.Set($000000)
+		color.Set(DEFAULT_COLOR)
 	End Method
 	
 	Method Create:TPreloaderObject(context:TCanvas)
@@ -29,6 +35,20 @@ Type TPreloader Extends TPreloaderObject
 		textProperties = TTextProperties(New TTextProperties.Create(GetApplication()))
 		
 		Return Self
+	End Method
+	
+	Method Reset()
+		DeselectAll()
+		
+		For Local obj:TPreloaderObject = EachIn objects
+			obj.Destroy()
+		Next
+		
+		objects.Clear()
+		
+		width = DEFAULT_WIDTH
+		height = DEFAULT_HEIGHT
+		color.Set(DEFAULT_COLOR)
 	End Method
 	
 	Method Init()
