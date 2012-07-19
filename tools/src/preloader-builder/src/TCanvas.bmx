@@ -1,6 +1,10 @@
 
 Type TCanvas Extends TListener
 
+	Const IMAGES_FOLDER:String = "images"
+
+	Field solutionFile:String
+
 	Field canvas:TGadget
 	
 	Field preloader:TPreloader
@@ -53,8 +57,29 @@ Type TCanvas Extends TListener
 	End Method
 	
 	Method Save()
-		Local filePath:String = RequestFile("Save As...", "Preloader Files:flxp", True)
-		If (Not filePath) Return
+		Local filePath:String = solutionFile
+		Local oldFlxp:ZipReader
+	
+		If (Not solutionFile) Then
+			filePath = RequestFile("Save As...", "Preloader Files:flxp", True)
+			If (Not filePath) Return
+		Else
+			oldFlxp = New ZipReader
+			oldFlxp.OpenZip(filePath)
+		End If
+		
+		Local images:TMap = New TMap
+		
+		If (oldFlxp) Then
+			Local file:SZipFileEntry
+			
+			For Local i:Int = 0 To oldFlxp.getFileCount() - 1
+				file = oldFlxp.getFileInfo(i)
+				images.Insert(file.zipFileName, oldFlxp.ExtractFile(file.zipFileName))
+			Next
+			
+			oldFlxp.CloseZip()
+		End If
 		
 		Local flxp:ZipWriter = New ZipWriter
 		flxp.OpenZip(filePath, APPEND_STATUS_CREATE)
@@ -69,7 +94,15 @@ Type TCanvas Extends TListener
 		info:+preloader.height + ":"
 		info:+preloader.color.ToString() + ";"
 		
-		Local images:TMap = New TMap
+		For Local obj:TPreloaderImage = EachIn preloader.objects
+			Local filename:String = IMAGES_FOLDER + "/" + StripDir(obj.filename)
+		
+			If (Not images.Contains(filename)) Then
+				images.Insert(filename, ReadStream(obj.filename))
+			End If
+			
+			obj.filename = filename
+		Next
 		
 		For Local obj:TPreloaderObject = EachIn preloader.objects
 			If (TPreloaderImage(obj)) Then
@@ -88,14 +121,9 @@ Type TCanvas Extends TListener
 			info:+obj.height + ":"
 			
 			If (TPreloaderImage(obj)) Then
-				Local filename:String = "images/" + StripDir(TPreloaderImage(obj).filename)
+				flxp.AddStream(TStream(images.ValueForKey(TPreloaderImage(obj).filename)), TPreloaderImage(obj).filename)
 			
-				If (Not images.Contains(TPreloaderImage(obj).filename)) Then
-					flxp.AddStream(ReadStream(TPreloaderImage(obj).filename), filename)
-					
-				End If
-			
-				info:+filename + ":"
+				info:+TPreloaderImage(obj).filename + ":"
 				info:+TPreloaderImage(obj).fromAlpha + ":"
 				info:+TPreloaderImage(obj).toAlpha + ":"
 				info:+TPreloaderImage(obj).blendMode
@@ -120,6 +148,7 @@ Type TCanvas Extends TListener
 		flxp.AddStream(infoStream, "info")
 		
 		flxp.CloseZip()
+		solutionFile = filePath
 	End Method
 	
 	Method OnEvent(event:Int, src:TGadget)
