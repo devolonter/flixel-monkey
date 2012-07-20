@@ -58,6 +58,7 @@ TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_1 abstract  'Resource folder
     Const toolbar_png:String = "incbin::res\toolbar.png" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\toolbar.png</font></b>"
     Global icons:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_2 '<b>Resource folder</b>
     Global system:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_3 '<b>Resource folder</b>
+    Global templates:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_4 '<b>Resource folder</b>
 End Type
 
 
@@ -74,6 +75,16 @@ End Type
 TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_3 abstract  'Resource folder
     Const font_ttf:String = "incbin::res\system\font.ttf" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\system\font.ttf</font></b>"
     Const default_flxp:String = "incbin::res\system\default.flxp" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\system\default.flxp</font></b>"
+End Type
+
+
+TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_4 abstract  'Resource folder
+    Global flash:z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_5 '<b>Resource folder</b>
+End Type
+
+
+TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_5 abstract  'Resource folder
+    Const template:String = "incbin::res\templates\flash\template" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\templates\flash\template</font></b>"
 End Type
 
 
@@ -152,3 +163,4 @@ Incbin "res\icons\delete.png"
 Incbin "res\icons\h-align.png"
 Incbin "res\icons\v-align.png"
 Incbin "res\system\default.flxp"
+Incbin "res\templates\flash\template"

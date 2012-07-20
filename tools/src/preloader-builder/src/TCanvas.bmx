@@ -92,6 +92,7 @@ Type TCanvas Extends TListener
 		
 		info:+preloader.width + ":"
 		info:+preloader.height + ":"
+		info:+preloader.minDisplayTime + ":"
 		info:+preloader.color.ToString() + ";"
 		
 		For Local obj:TPreloaderImage = EachIn preloader.objects
@@ -169,7 +170,8 @@ Type TCanvas Extends TListener
 		
 		preloader.width = Int(data[0])
 		preloader.height = Int(data[1])
-		preloader.color.Set(Int(data[2]))
+		preloader.minDisplayTime = Int(data[2])
+		preloader.color.Set(Int(data[3]))
 		
 		Local objects:String[] = info[2].Split(",")
 		

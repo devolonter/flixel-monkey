@@ -6,6 +6,8 @@ Type TPreloader Extends TPreloaderObject
 	Const DEFAULT_HEIGHT:Int = 480
 	
 	Const DEFAULT_COLOR:Int = $000000
+	
+	Field minDisplayTime:Int
 
 	Field properties:TPreloaderProperties
 	
