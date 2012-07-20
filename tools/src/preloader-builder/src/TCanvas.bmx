@@ -3,7 +3,7 @@ Type TCanvas Extends TListener
 
 	Const IMAGES_FOLDER:String = "images"
 
-	Field solutionFile:String
+	Field name:String
 
 	Field canvas:TGadget
 	
@@ -57,10 +57,10 @@ Type TCanvas Extends TListener
 	End Method
 	
 	Method Save()
-		Local filePath:String = solutionFile
+		Local filePath:String = name
 		Local oldFlxp:ZipReader
 	
-		If (Not solutionFile) Then
+		If (Not name) Then
 			filePath = RequestFile("Save As...", "Preloader Files:flxp", True)
 			If (Not filePath) Return
 		Else
@@ -148,17 +148,17 @@ Type TCanvas Extends TListener
 		flxp.AddStream(infoStream, "info")
 		
 		flxp.CloseZip()
-		solutionFile = filePath
+		name = filePath
 	End Method
 	
 	Method Open()
 		Local filePath:String = RequestFile("Select Preloader...", "Preloader Files:flxp")
-		
-		If (Not filePath) Then
-			Return
-		Else
-			Reset()
-		End If
+		If (Not filePath) Return
+		Load(filePath)
+	End Method
+	
+	Method Load(filePath:String)
+		Reset()
 		
 		Local flxp:ZipReader = New ZipReader
 		flxp.OpenZip(filePath)
@@ -206,12 +206,12 @@ Type TCanvas Extends TListener
 		
 		flxp.CloseZip()
 		preloader.DeselectAll()
-		solutionFile = filePath
+		name = filePath
 	End Method
 	
 	Method Reset()
 		preloader.Reset()
-		solutionFile = Null
+		name = Null
 		preloader.DeselectAll()
 	End Method
 	

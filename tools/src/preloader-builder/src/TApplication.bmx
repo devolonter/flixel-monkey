@@ -19,6 +19,10 @@ Type TApplication
 	Const TB_TEXT:Int = 7
 	
 	Const MENU_OPEN:Int = 10
+	
+	Const EXT:String = "flxp"
+	
+	Const DEFAULT_FLXP:String = "default." + EXT
 
 	Field window:TGadget
 	
@@ -64,6 +68,15 @@ Type TApplication
 		
 		solution = TCanvas(New TCanvas.Create(Self))
 		solution.Init()
+		
+		If (Not FileType(GetTempDirectory() + DEFAULT_FLXP)) Then
+			Local defaultFlxp:TStream = WriteStream(GetTempDirectory() + DEFAULT_FLXP)
+			CopyStream(ReadStream("incbin::res\system\" + DEFAULT_FLXP), defaultFlxp, 10 * 1024)
+			defaultFlxp.Close()
+		End If
+		
+		SetGraphics (CanvasGraphics(solution.canvas))
+		solution.Load(GetTempDirectory() + DEFAULT_FLXP)
 		
 		running = True
 		

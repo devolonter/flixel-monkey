@@ -73,6 +73,7 @@ End Type
 
 TYPE z_d3e99f15_f89d_4905_b08a_e0aed2f388bc_3_3 abstract  'Resource folder
     Const font_ttf:String = "incbin::res\system\font.ttf" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\system\font.ttf</font></b>"
+    Const default_flxp:String = "incbin::res\system\default.flxp" 'String constant containing the value: "<b><font color=#0000AA>incbin::res\system\default.flxp</font></b>"
 End Type
 
 
@@ -150,3 +151,4 @@ Include "src\TTextProperties.bmx"
 Incbin "res\icons\delete.png"
 Incbin "res\icons\h-align.png"
 Incbin "res\icons\v-align.png"
+Incbin "res\system\default.flxp"

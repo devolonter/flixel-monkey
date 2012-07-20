@@ -13,7 +13,7 @@ Type TImageProperties Extends TMovableProperties
 	
 	Method Show()
 		fromAlpha.SetText(TPreloaderImage(context.solution.preloader.selectedObject).fromAlpha)
-		fromAlpha.SetText(TPreloaderImage(context.solution.preloader.selectedObject).toAlpha)
+		toAlpha.SetText(TPreloaderImage(context.solution.preloader.selectedObject).toAlpha)
 		blendMode.SelectItem(TPreloaderImage(context.solution.preloader.selectedObject).blendMode - ALPHABLEND)
 		
 		Super.Show()
