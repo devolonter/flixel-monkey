@@ -1,0 +1,103 @@
+package {
+
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getTimer;
+
+	public class Preloader extends MovieClip {
+
+		{ASSETS}
+
+		{OBJECTS}
+
+		protected var _init:Boolean;
+
+		protected var _buffer:Sprite;
+
+		protected var _width:uint;
+
+		protected var _height:uint;
+
+		protected var _min:uint;
+
+		public function Preloader() {
+
+			stop();
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+
+			this._init = false;
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+		}
+
+		private function onEnterFrame(event:Event):void {
+
+			if(!this._init)
+			{
+				if((stage.stageWidth <= 0) || (stage.stageHeight <= 0))
+					return;
+				create();
+				this._init = true;
+			}
+
+			graphics.clear();
+			var time:uint = getTimer();
+
+            if((framesLoaded >= totalFrames) && (time > _min))
+			{
+				removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				nextFrame();
+				var mainClass:Class = Class(getDefinitionByName("MonkeyGame"));
+				if(mainClass)
+				{
+				    var app:Object = new mainClass();
+				    addChild(app as DisplayObject);
+				}
+				destroy();
+			}
+			else
+			{
+				var percent:Number = root.loaderInfo.bytesLoaded/root.loaderInfo.bytesTotal;
+				if((_min > 0) && (percent > time/_min))
+					percent = time/_min;
+				update(percent);
+			}
+
+		}
+
+		protected function create():void {
+			_min = {MIN_DISPLAY_TIME}*1000;
+
+			_width = {WIDTH}
+			_height = {HEIGHT}
+
+			_buffer = new Sprite();
+			_buffer.scaleX = stage.stageWidth/_width;
+			_buffer.scaleY = stage.stageHeight/_height;
+			addChild(_buffer);
+
+			_buffer.addChild(new Bitmap(new BitmapData(_width,_height,false,0x{COLOR})));
+
+			{CREATE}
+		}
+
+		protected function update(Percent:Number):void {
+			{UPDATE}
+		}
+
+	}
+
+}
