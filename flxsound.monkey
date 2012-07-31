@@ -281,7 +281,7 @@ Public
 	End Method
 	
 	Function GetValidExt:String()
-	#If TARGET = "glfw" Or TARGET = "xna" Or TARGET = "psm"
+	#If TARGET = "xna" Or TARGET = "psm"
 		Return "wav"
 	#ElseIf TARGET = "html5"
 		If (IsIE()) Then
@@ -289,6 +289,8 @@ Public
 		Else
 			Return "ogg"
 		End If
+	#ElseIf TARGET = "glfw"
+		Return "ogg"
 	#Else
 		Return "mp3"
 	#End

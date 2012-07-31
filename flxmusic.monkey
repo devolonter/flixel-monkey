@@ -77,7 +77,7 @@ Public
 	
 	Function GetValidExt:String()
 	#If TARGET = "glfw"
-		Return "wav"
+		Return "ogg"
 	#ElseIf TARGET = "html5"
 		If (IsIE()) Then
 			Return "mp3"
