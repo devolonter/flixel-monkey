@@ -1,7 +1,7 @@
 Strict
 
 Import flixel.flxpoint
-Import resolutionpolicy
+Import flxresolutionpolicy
 
 Class FillResolutionPolicy Implements FlxResolutionPolicy
 	

@@ -2,7 +2,7 @@ Strict
 
 Import flixel.flxg
 Import flixel.flxpoint
-Import resolutionpolicy
+Import flxresolutionpolicy
 
 Class FixedResolutionPolicy Implements FlxResolutionPolicy
 	

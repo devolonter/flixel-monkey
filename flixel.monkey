@@ -26,7 +26,7 @@ Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
-Import system.resolutionpolicy.resolutionpolicy
+Import system.resolutionpolicy.flxresolutionpolicy
 Import system.resolutionpolicy.fill
 Import system.resolutionpolicy.fixed
 Import system.resolutionpolicy.relative
