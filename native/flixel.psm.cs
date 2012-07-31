@@ -3,8 +3,8 @@ namespace flixel {
 
 	class functions {	
 
-		public static int systemMillisecs() {
-			return 0;
+		public static int systemMillisecs() {		
+			return (int) (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
 		}
 		
 		public static void showMouse() {
