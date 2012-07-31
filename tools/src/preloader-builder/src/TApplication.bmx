@@ -34,6 +34,8 @@ Type TApplication
 	
 	Field listeners:TList
 	
+	Field transPath:String
+	
 	Field running:Int
 	
 	Method New()
@@ -80,11 +82,44 @@ Type TApplication
 		
 		running = True
 		
+		Local config:TStream = ReadStream("cfg")
+		If (Not config) Then
+			SetTransPath()
+		Else
+			transPath = config.ReadLine()
+			config.Close()
+		End If
+		
 		Return Self
 	End Method
 	
 	Method DeselectAll()
 		solution.preloader.DeselectAll()
+	End Method
+	
+	Method SetTransPath()
+		Local path:String = RequestDir("Select Monkey folder")
+		
+		If (path) Then
+			transPath = path + "\bin\trans_winnt.exe"
+			
+			DebugLog transPath
+		
+			If (FileType(transPath) = 1) Then
+				Local config:TStream = WriteStream("cfg")
+				config.WriteLine(transPath)
+				config.Close()
+				Return
+			End If
+			
+			transPath = ""
+		End If
+		
+		If (Confirm("Monkey path is incorrect. Try again?")) Then
+			SetTransPath()
+		Else
+			Quit()
+		End If
 	End Method
 	
 	Method Quit()
