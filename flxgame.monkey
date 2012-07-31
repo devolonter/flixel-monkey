@@ -18,7 +18,7 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-#If TARGET = "glfw" Or TARGET = "xna"
+#If TARGET = "glfw" Or TARGET = "xna" Or TARGET = "psm"
 	Import "data/beep_flx.wav"
 #ElseIf TARGET = "html5"
 	Import "data/beep_flx.ogg"
@@ -153,7 +153,7 @@ Public
 	Method OnUpdate:Int()
 		FlxG.UpdateDevice()
 	
-	#If TARGET <> "ios" Or TARGET <> "android"
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
 		If (useSoundHotKeys) Then
 			If (KeyHit(KEY_0)) Then
 				FlxG.Mute = Not FlxG.Mute
@@ -407,7 +407,7 @@ Private
 	Method _Draw:Void()
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
 	
-	#If TARGET <> "ios" Or TARGET <> "android"
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
 		If( Not FlxG.Mobile) Then
 			PushMatrix()
 		End If
@@ -443,7 +443,7 @@ Private
 			i+=1
 		Wend
 		
-	#If TARGET <> "ios" Or TARGET <> "android"
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
 		If( Not FlxG.Mobile) Then
 			PopMatrix()
 			_DrawSoundTray()

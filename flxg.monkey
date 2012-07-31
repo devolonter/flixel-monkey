@@ -144,8 +144,11 @@ Class FlxG
 	Global _CurrentCamera:FlxCamera
 
 Private
+#If TARGET = "psm"
+	Const _JOY_UNITS_COUNT:Int = 2
+#Else
 	Const _JOY_UNITS_COUNT:Int = 4
-	
+#End	
 	Const _TOUCH_COUNT:Int = 32
 	
 	Global _Joystick:JoystickInput[_JOY_UNITS_COUNT]
@@ -654,11 +657,11 @@ Public
 	End Function
 	
 	Function UpdateInput:Void()
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
+	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
 		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End		
 	
-	#If TARGET = "glfw"
+	#If TARGET = "glfw" Or TARGET = "psm"
 		For Local i:Int = 0 Until _JOY_UNITS_COUNT
 			_Joystick[i].Update()
 		Next
@@ -674,7 +677,7 @@ Public
 		End If
 	#End
 	
-	#If TARGET = "ios" Or TARGET = "android"
+	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
 		For Local i:Int = 0 Until _TOUCH_COUNT
 			_Touch[i].Update(TouchX(i), TouchY(i))
 			
@@ -705,7 +708,7 @@ Public
 		_Touch[0].Update(TouchX(), TouchY())
 	#End
 	
-	#If TARGET = "android"
+	#If TARGET = "android" Or TARGET = "psm"
 		Keys.Update()
 	#End
 		

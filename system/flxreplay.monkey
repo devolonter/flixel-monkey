@@ -109,12 +109,15 @@ Public
 		Local keysRecord:Stack<KeyRecord>
 		Local mouseRecord:XYRecord
 	
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
+	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
 		accelRecord = FlxG.Accel.RecordXYZ()
 	#End	
 	
-	#If TARGET = "xna" Or TARGET = "glfw"
-		If (Not FlxG.Mobile) Then
+	#If TARGET = "xna" Or TARGET = "glfw" Or TARGET = "psm"
+	
+	#If TARGET = "xna"
+		If ( Not FlxG.Mobile) Then
+	#End
 			Local joyCount:Int = FlxG.JoystickCount()
 			Local joyXYZRecord:XYZRecord[]
 		
@@ -128,10 +131,13 @@ Public
 				
 				keysRecord = FlxG.Joystick(i).RecordKeys(keysRecord)
 			Next
+	#If TARGET = "xna"
 		End If
 	#End
 	
-	#If TARGET = "ios" Or TARGET = "android"
+	#End
+	
+	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
 		Local touchCount:Int = FlxG.TouchCount()
 		Local touchXYRecord:XYRecord
 	
@@ -188,7 +194,7 @@ Public
 		keysRecord = FlxG.Keys.RecordKeys(keysRecord)		
 	#End
 	
-	#If TARGET = "android"
+	#If TARGET = "android" Or TARGET = "psm"
 		keysRecord = FlxG.Keys.RecordKeys(keysRecord)
 	#End
 	

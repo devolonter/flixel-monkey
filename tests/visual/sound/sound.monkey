@@ -19,7 +19,7 @@ Class Sound Extends FlxGame
 		#if TARGET = "html5" OR TARGET = "android"
 			Print "html5"
 			FlxAssetsManager.AddSound("main", "beep.ogg")
-		#ElseIf TARGET = "glfw" Or TARGET = "xna"
+		#ElseIf TARGET = "glfw" Or TARGET = "xna" Or TARGET = "psm"
 			FlxAssetsManager.AddSound("main", "beep.wav")
 		#Else
 			FlxAssetsManager.AddSound("main", "beep.mp3")
