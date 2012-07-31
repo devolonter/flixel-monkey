@@ -5,7 +5,7 @@ Import input
 Class Keyboard Extends Input
 
 	Method New()
-	#If TARGET <> "android"
+	#If TARGET <> "android" And TARGET <> "psm"
 		Super.New(KEY_BACKSPACE, KEY_QUOTES)
 	#Else
 		Super.New(KEY_ESCAPE, KEY_ESCAPE)

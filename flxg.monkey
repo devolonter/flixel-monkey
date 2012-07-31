@@ -145,7 +145,7 @@ Class FlxG
 
 Private
 #If TARGET = "psm"
-	Const _JOY_UNITS_COUNT:Int = 2
+	Const _JOY_UNITS_COUNT:Int = 1
 #Else
 	Const _JOY_UNITS_COUNT:Int = 4
 #End	
@@ -257,7 +257,7 @@ Public
 		Accel.Reset()		
 		Mouse.Reset()
 		
-	#If TARGET <> "android"
+	#If TARGET <> "android" And TARGET <> "psm"
 		Keys.Reset()
 	#Else
 		Keys.Reset(KEY_BACKSPACE, KEY_QUOTES)
