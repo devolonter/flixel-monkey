@@ -755,7 +755,7 @@ Public
 				rx = q
 				ry = ly + stepY * ((q - lx) / stepX)
 				
-				If (ry < tileY And ry < tileY + _tileHeight) Then
+				If (ry > tileY And ry < tileY + _tileHeight) Then
 					If (result = Null) Then
 						result = New FlxPoint()
 					End If
