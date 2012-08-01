@@ -22,6 +22,11 @@ Public
 		_range = New Stack<Float>
 	End Method
 	
+	Method Destroy:Void()
+		_object = Null
+		Super.Destroy()
+	End Method
+	
 	Method Tween:Void(object:Object, properties:StringMap<Float>, duration:Float, ease:FlxEaseFunction = Null)
 		_object = object
 		

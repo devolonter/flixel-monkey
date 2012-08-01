@@ -65,7 +65,7 @@ Class FlxBasic
 	Field _cameras:IntSet
 	
 Private
-	Field _tween:FlxTween
+	Field _tweens:List<FlxTween>
 
 	Field _classInfo:ClassInfo
 	
@@ -79,6 +79,7 @@ Private
 		visible = True
 		alive = True
 		ignoreDrawDebug = False
+		autoClear = True
 		
 		_classInfo = MonkeyGetClass(Object(Self))
 	End Method	
@@ -91,7 +92,6 @@ Private
 	Method Destroy:Void()
 		If (autoClear And HasTween) Then			
 			ClearTweens()
-			_tween = Null
 		End If
 		
 		_classInfo = Null
@@ -182,12 +182,11 @@ Private
 		End If
 		
 		tween._parent = Self
-		tween._next = _tween
 		
-		If (_tween <> Null) _tween._prev = tween
+		If (_tweens = Null) _tweens = New List<FlxTween>
+		_tweens.AddLast(tween)
 		
-		_tween = tween
-		If (start) _tween.Start()
+		If (start) tween.Start()
 		
 		Return tween
 	End Method
@@ -198,37 +197,35 @@ Private
 			Return tween
 		End If
 		
-		If (tween._next <> Null) tween._next._prev = tween._prev
+		_tweens.RemoveEach(tween)
 		
-		If (tween._prev <> Null) Then
-			tween._prev._next = tween._next
-			
-		ElseIf(tween._next <> Null) Then
-			_tween = tween._next
-		End If
-		
-		tween._next = Null
-		tween._prev = Null
+		tween.Destroy()
 		tween.active = False
 		
 		Return tween
 	End Method
 	
 	Method ClearTweens:Void()
-		Local tween:FlxTween = _tween
-		Local nextTween:FlxTween
-	
-		While (tween <> Null)
-			nextTween = tween._next
-			RemoveTween(tween)
-			tween = nextTween
+		Local node:= _tweens.FirstNode()
+		Local tween:FlxTween
+				
+		While (node <> Null)
+			tween = node.Value()
+			tween.Destroy()
+			tween.active = False
+			node = node.NextNode()
 		Wend
+		
+		_tweens = Null
 	End Method
 	
 	Method UpdateTweens:Void()
-		Local tween:FlxTween = _tween
-		
-		While (tween <> Null)
+		Local node:= _tweens.FirstNode()
+		Local tween:FlxTween
+				
+		While (node <> Null)
+			tween = node.Value()
+			
 			If (tween.active) Then
 				tween.Update()
 				
@@ -237,12 +234,12 @@ Private
 				End If
 			End If
 			
-			tween = tween._next
+			node = node.NextNode()
 		Wend
 	End Method
 	
 	Method HasTween:Bool() Property
-		Return(_tween <> Null)
+		Return(_tweens <> Null)
 	End Method
 	
 	Method GetClass:ClassInfo()

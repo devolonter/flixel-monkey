@@ -18,13 +18,9 @@ Class FlxTween
 	
 	Field complete:FlxTweenListener
 	
-	Field _finish:Bool
-	
 	Field _parent:FlxBasic
 	
-	Field _prev:FlxTween
-	
-	Field _next:FlxTween
+	Field _finish:Bool
 	
 	Field _target:Float
 	
@@ -48,6 +44,12 @@ Public
 		_ease = ease
 		_t = 0
 		_backward = False
+	End Method
+	
+	Method Destroy:Void()
+		complete = Null
+		_parent = Null
+		_ease = Null
 	End Method
 	
 	Method Update:Void()
