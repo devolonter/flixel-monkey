@@ -12,6 +12,8 @@ Class FlxTween
 	
 	Const ONESHOT:Int = 2
 	
+	Const TOANDFRO:Int = 3
+	
 	Field active:Bool
 	
 	Field complete:FlxTweenListener
@@ -33,6 +35,10 @@ Class FlxTween
 	Field _t:Float
 	
 	Field _time:Float
+	
+	Field _backward:Bool
+	
+	Field _times:Int
 
 Public
 	Method New(duration:Float, type:Int = 0, complete:FlxTweenListener = Null, ease:FlxEaseFunction = Null)
@@ -41,6 +47,7 @@ Public
 		Self.complete = complete
 		_ease = ease
 		_t = 0
+		_backward = False
 	End Method
 	
 	Method Update:Void()
@@ -48,9 +55,14 @@ Public
 		_t = _time / _target
 		
 		If (_ease <> Null) _t = _ease.Ease(_t)
+		If (_backward) _t = 1 - _t
 		
 		If (_time >= _target) Then
-			_t = 1
+			If ( Not _backward) Then
+				_t = 1
+			Else
+				_t = 0
+			End If
 			_finish = True
 		End If
 	End Method
@@ -86,6 +98,19 @@ Public
 				_time = _target
 				active = False
 				_parent.RemoveTween(Self)
+				
+			Case TOANDFRO
+				_time Mod = _target
+				_t = _time / _target
+				
+				If (_ease <> Null And _t > 0 And _t < 1) Then
+					_t = _ease.Ease(_t)
+				End If
+				
+				If (_backward) _t = 1 - _t
+				_backward = Not _backward
+				
+				Start()
 		End Select
 		
 		_finish = False
