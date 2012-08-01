@@ -26,11 +26,20 @@ Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
+
+Import system.replay.framerecord
+Import system.replay.keyrecord
+Import system.replay.xyrecord
+Import system.replay.xyzrecord
+
 Import system.resolutionpolicy.flxresolutionpolicy
 Import system.resolutionpolicy.fill
 Import system.resolutionpolicy.fixed
 Import system.resolutionpolicy.relative
 Import system.resolutionpolicy.ratio
+
+Import system.tweens.util.ease
+
 Import system.flxanim
 Import system.flxarray
 Import system.flxassetsmanager
