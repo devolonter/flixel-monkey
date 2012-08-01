@@ -790,31 +790,12 @@ Public
 		End If
 	End Function
 	
-	Function Tween:MultiVarTween(object:Object, values:StringMap<Float>, duration:Float, options:StringMap<Object> = Null)
-		Local type:Int = FlxTween.ONESHOT
-		Local complete:FlxTweenListener = Null
-		Local ease:FlxEaseFunction = Null
-		Local tweener:FlxBasic = FlxG.Tweener
-		
-		If (FlxBasic(object) <> Null) Then
-			tweener = FlxBasic(object)
-		End If
-		
-		If (options <> Null) Then
-			If (options.Contains("type"))
-				type = UnboxInt(options.Get("type"))
-			End If
-			
-			If (options.Contains("complete"))
-				complete = FlxTweenListener(options.Get("complete"))
-			End If
-			
-			If (options.Contains("ease"))
-				ease = FlxEaseFunction(options.Get("ease"))
-			End If
-			
-			If (options.Contains("tweener"))
-				tweener = FlxBasic(options.Get("tweener"))
+	Function Tween:MultiVarTween(object:Object, values:StringMap<Float>, duration:Float, type:Int = FlxTween.ONESHOT, complete:FlxTweenListener = Null, ease:FlxEaseFunction = Null, tweener:FlxBasic = Null)
+		If (tweener = Null) Then
+			If (FlxBasic(object) <> Null) Then
+				tweener = FlxBasic(object)
+			Else
+				tweener = FlxG.Tweener
 			End If
 		End If
 		
