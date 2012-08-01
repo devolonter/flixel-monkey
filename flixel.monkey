@@ -38,7 +38,7 @@ Import system.resolutionpolicy.fixed
 Import system.resolutionpolicy.relative
 Import system.resolutionpolicy.ratio
 
-Import system.tweens.util.ease
+Import system.tweens.util.flxease
 
 Import system.flxanim
 Import system.flxarray
