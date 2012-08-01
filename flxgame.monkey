@@ -380,6 +380,11 @@ Private
 		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		
 		_state.Update()
+		
+		If (FlxG.Tweener.active And FlxG.Tweener.HasTween) Then
+			FlxG.Tweener.UpdateTweens()
+		End If
+		
 		FlxG.UpdateCameras()
 		
 		If (_debuggerUp) Then

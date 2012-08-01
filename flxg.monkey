@@ -17,6 +17,9 @@ Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
+Import system.tweens.flxtween
+Import system.tweens.util.flxease
+Import system.tweens.misc.multivartween
 Import system.resolutionpolicy.flxresolutionpolicy
 Import system.resolutionpolicy.fill
 Import system.flxresourcesmanager
@@ -116,6 +119,8 @@ Class FlxG
 	Global Framerate:Int
 	
 	Global Updaterate:Int
+	
+	Global Tweener:FlxBasic
 	
 	Global _DeviceScaleFactorX:Float = 1	
 	
@@ -605,6 +610,8 @@ Public
 		FlxG.Width = width
 		FlxG.Height = height
 		
+		FlxG.Tweener = New FlxBasic()
+		
 		FlxG.Mute = False
 		FlxG._Volume = .5
 		FlxG.Sounds = New FlxGroup()
@@ -781,6 +788,41 @@ Public
 		If(FlxG.DeviceWidth <> MojoDeviceWidth() Or FlxG.DeviceHeight <> MojoDeviceHeight()) Then
 			_Measure()
 		End If
+	End Function
+	
+	Function Tween:MultiVarTween(object:Object, values:StringMap<Float>, duration:Float, options:StringMap<Object> = Null)
+		Local type:Int = FlxTween.ONESHOT
+		Local complete:FlxTweenListener = Null
+		Local ease:FlxEaseFunction = Null
+		Local tweener:FlxBasic = FlxG.Tweener
+		
+		If (FlxBasic(object) <> Null) Then
+			tweener = FlxBasic(object)
+		End If
+		
+		If (options <> Null) Then
+			If (options.Contains("type"))
+				type = UnboxInt(options.Get("type"))
+			End If
+			
+			If (options.Contains("complete"))
+				complete = FlxTweenListener(options.Get("complete"))
+			End If
+			
+			If (options.Contains("ease"))
+				ease = FlxEaseFunction(options.Get("ease"))
+			End If
+			
+			If (options.Contains("tweener"))
+				tweener = FlxBasic(options.Get("tweener"))
+			End If
+		End If
+		
+		Local tween:MultiVarTween = New MultiVarTween(complete, type)
+		tween.Tween(object, values, duration, ease)
+		tweener.AddTween(tween)
+		
+		Return tween
 	End Function
 	
 Private

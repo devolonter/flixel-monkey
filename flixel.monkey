@@ -38,7 +38,9 @@ Import system.resolutionpolicy.fixed
 Import system.resolutionpolicy.relative
 Import system.resolutionpolicy.ratio
 
+Import system.tweens.misc.multivartween
 Import system.tweens.util.flxease
+Import system.tweens.flxtween
 
 Import system.flxanim
 Import system.flxarray

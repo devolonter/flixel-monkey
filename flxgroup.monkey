@@ -114,10 +114,13 @@ Public
 			If (basic <> Null And basic.exists And basic.active) Then
 				basic.PreUpdate()
 				basic.Update()
+				If (basic.HasTween) basic.UpdateTweens()
 				basic.PostUpdate()
 			End If
 			i+=1		
 		Wend
+		
+		If (HasTween) UpdateTweens()
 	End Method
 	
 	#Rem

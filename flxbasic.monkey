@@ -8,6 +8,7 @@ Import reflection
 Import flxextern
 Import flxcamera
 Import flxg
+Import system.tweens.flxtween
 
 Alias MonkeyGetClass = reflection.GetClass
 
@@ -59,10 +60,14 @@ Class FlxBasic
 	#End
 	Field ignoreDrawDebug:Bool
 	
+	Field autoClear:Bool
+	
 	Field _cameras:IntSet
 	
-Private	
-	Field _classInfo:ClassInfo	
+Private
+	Field _tween:FlxTween
+
+	Field _classInfo:ClassInfo
 	
 	#Rem
 	summary:Instantiate the basic flixel object.
@@ -84,6 +89,11 @@ Private
 	Don't forget to call [b]super.Destroy()[/b]!
 	#End
 	Method Destroy:Void()
+		If (autoClear And HasTween) Then			
+			ClearTweens()
+			_tween = Null
+		End If
+		
 		_classInfo = Null
 	End Method
 	
@@ -163,6 +173,76 @@ Private
 			_cameras.Insert(cameras[i])
 			i += 1
 		Wend
+	End Method
+	
+	Method AddTween:FlxTween(tween:FlxTween, start:Bool = False)
+		If (tween._parent <> Null) Then
+			FlxG.Log("WARNING: Cannot add a FlxTween object more than once")
+			Return tween
+		End If
+		
+		tween._parent = Self
+		tween._next = _tween
+		
+		If (_tween <> Null) _tween._prev = tween
+		
+		_tween = tween
+		If (start) _tween.Start()
+		
+		Return tween
+	End Method
+	
+	Method RemoveTween:FlxTween(tween:FlxTween)
+		If (tween._parent <> Self) Then
+			FlxG.Log("WARNING: Core object does not contain FlxTween")
+			Return tween
+		End If
+		
+		If (tween._next <> Null) tween._next._prev = tween._prev
+		
+		If (tween._prev <> Null) Then
+			tween._prev._next = tween._next
+			
+		ElseIf(tween._next <> Null) Then
+			_tween = tween._next
+		End If
+		
+		tween._next = Null
+		tween._prev = Null
+		tween.active = False
+		
+		Return tween
+	End Method
+	
+	Method ClearTweens:Void()
+		Local tween:FlxTween = _tween
+		Local nextTween:FlxTween
+	
+		While (tween <> Null)
+			nextTween = tween._next
+			RemoveTween(tween)
+			tween = nextTween
+		Wend
+	End Method
+	
+	Method UpdateTweens:Void()
+		Local tween:FlxTween = _tween
+		
+		While (tween <> Null)
+			If (tween.active) Then
+				tween.Update()
+				
+				If (tween._finish) Then
+					tween.Finish()
+				End If
+			End If
+			
+			tween = tween._next
+		Wend
+	End Method
+	
+	Method HasTween:Bool() Property
+		Return(_tween <> Null)
 	End Method
 	
 	Method GetClass:ClassInfo()
