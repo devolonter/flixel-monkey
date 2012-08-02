@@ -38,8 +38,11 @@ Import system.resolutionpolicy.fixed
 Import system.resolutionpolicy.relative
 Import system.resolutionpolicy.ratio
 
+Import system.tweens.misc.alarm
+Import system.tweens.misc.angletween
+Import system.tweens.misc.colortween
 Import system.tweens.misc.multivartween
-Import system.tweens.util.flxease
+Import system.tweens.util.ease
 Import system.tweens.flxtween
 
 Import system.flxanim

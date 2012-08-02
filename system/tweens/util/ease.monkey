@@ -1,6 +1,6 @@
 Strict
 
-Class FlxEase
+Class Ease
 	
 	Global QuadIn:FlxEaseFunction = New FlxEaseQuadIn()
 	
@@ -183,7 +183,7 @@ End Class
 Class FlxEaseSineIn Implements FlxEaseFunction
 	
 	Method Ease:Float(t:Float)
-		Return -Cos(TWOPI * t) + 1
+		Return -Cosr(HALFPI * t) + 1
 	End Method
 
 End Class
@@ -191,7 +191,7 @@ End Class
 Class FlxEaseSineOut Implements FlxEaseFunction
 	
 	Method Ease:Float(t:Float)
-		Return Sin(TWOPI * t)
+		Return Sinr(HALFPI * t)
 	End Method
 
 End Class
@@ -199,7 +199,7 @@ End Class
 Class FlxEaseSineInOut Implements FlxEaseFunction
 	
 	Method Ease:Float(t:Float)
-		Return -Cos(PI * t) / 2 + 0.5
+		Return -Cosr(PI * t) / 2 + 0.5
 	End Method
 
 End Class

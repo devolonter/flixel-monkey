@@ -3,7 +3,7 @@ Strict
 Import reflection
 Import flixel.flxbasic
 Import flixel.system.tweens.flxtween
-Import flixel.system.tweens.util.flxease
+Import flixel.system.tweens.util.ease
 
 Class MultiVarTween Extends FlxTween
 	
@@ -14,7 +14,7 @@ Private
 	Field _object:Object
 	
 Public
-	Method New(complete:FlxTweenListener, type:Int)
+	Method New(complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT)
 		Super.New(0, type, complete)
 	
 		_vars = New Stack<FieldInfo>

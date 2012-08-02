@@ -2,7 +2,7 @@ Strict
 
 Import flixel.flxbasic
 Import flixel.flxg
-Import util.flxease
+Import util.ease
 
 Class FlxTween
 	

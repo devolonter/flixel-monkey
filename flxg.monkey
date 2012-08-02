@@ -18,7 +18,7 @@ Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
 Import system.tweens.flxtween
-Import system.tweens.util.flxease
+Import system.tweens.util.ease
 Import system.tweens.misc.multivartween
 Import system.resolutionpolicy.flxresolutionpolicy
 Import system.resolutionpolicy.fill
