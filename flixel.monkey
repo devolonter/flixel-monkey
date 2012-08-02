@@ -42,6 +42,11 @@ Import system.tweens.misc.alarm
 Import system.tweens.misc.angletween
 Import system.tweens.misc.colortween
 Import system.tweens.misc.multivartween
+Import system.tweens.misc.numtween
+Import system.tweens.misc.vartween
+Import system.tweens.motion.motion
+Import system.tweens.motion.circularmotion
+Import system.tweens.motion.linearmotion
 Import system.tweens.util.ease
 Import system.tweens.flxtween
 

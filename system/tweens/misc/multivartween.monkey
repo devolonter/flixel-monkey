@@ -9,8 +9,11 @@ Class MultiVarTween Extends FlxTween
 	
 Private
 	Field _vars:Stack<FieldInfo>
+	
 	Field _start:Stack<Float>
+	
 	Field _range:Stack<Float>
+	
 	Field _object:Object
 	
 Public

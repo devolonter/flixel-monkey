@@ -17,12 +17,19 @@ Class ColorTween Extends FlxTween
 	
 Private
 	Field _startA:Float
+	
 	Field _startR:Float
+	
 	Field _startG:Float
+	
 	Field _startB:Float
+	
 	Field _rangeA:Float
+	
 	Field _rangeR:Float
+	
 	Field _rangeG:Float
+	
 	Field _rangeB:Float
 	
 Public
