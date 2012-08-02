@@ -91,7 +91,7 @@ Private
 	#End
 	Method Destroy:Void()
 		If (autoClear And HasTween) Then			
-			ClearTweens()
+			ClearTweens(True)
 		End If
 		
 		_classInfo = Null
@@ -191,7 +191,7 @@ Private
 		Return tween
 	End Method
 	
-	Method RemoveTween:FlxTween(tween:FlxTween)
+	Method RemoveTween:FlxTween(tween:FlxTween, destroy:Bool = False)
 		If (tween._parent <> Self) Then
 			FlxG.Log("WARNING: Core object does not contain FlxTween")
 			Return tween
@@ -199,19 +199,19 @@ Private
 		
 		_tweens.RemoveEach(tween)
 		
-		tween.Destroy()
+		If (destroy) tween.Destroy()
 		tween.active = False
 		
 		Return tween
 	End Method
 	
-	Method ClearTweens:Void()
+	Method ClearTweens:Void(destroy:Bool = False)
 		Local node:= _tweens.FirstNode()
 		Local tween:FlxTween
 				
 		While (node <> Null)
 			tween = node.Value()
-			tween.Destroy()
+			If (destroy) tween.Destroy()
 			tween.active = False
 			node = node.NextNode()
 		Wend
