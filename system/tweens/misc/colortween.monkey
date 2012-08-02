@@ -33,7 +33,7 @@ Private
 	Field _rangeB:Float
 	
 Public
-	Method New(complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT)
+	Method New(complete:FlxTweenListener = Null, type:Int = -1)
 		Super.New(0, type, complete)
 		alpha = 1
 	End Method

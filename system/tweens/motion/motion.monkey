@@ -14,8 +14,13 @@ Private
 	Field _object:FlxObject
 	
 Public
-	Method New(duration:Float, complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT, ease:FlxEaseFunction = Null)
+	Method New(duration:Float, complete:FlxTweenListener = Null, type:Int = -1, ease:FlxEaseFunction = Null)
 		Super.New(duration, type, complete, ease)
+	End Method
+	
+	Method Destroy:Void()
+		_object = Null
+		Super.Destroy()
 	End Method
 	
 	Method SetObject:Void(object:FlxObject)

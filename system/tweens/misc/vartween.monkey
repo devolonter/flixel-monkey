@@ -17,7 +17,7 @@ Private
 	Field _object:Object
 	
 Public
-	Method New(complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT)
+	Method New(complete:FlxTweenListener = Null, type:Int = -1)
 		Super.New(0, type, complete)
 	End Method
 	
@@ -42,9 +42,15 @@ Public
 		_property = classInfo.GetField(prop, True)
 		
 		If (_property <> Null) Then
-			_start = UnboxFloat(_property.GetValue(object))
-			_range = toValue - _start
-			Start()
+			If (_property.Type.ExtendsClass(FloatClass()) Or _property.Type.ExtendsClass(IntClass())) Then
+				_start = UnboxFloat(_property.GetValue(object))
+				_range = toValue - _start
+				Start()
+			Else
+				FlxG.Log("WARNING: The property ~q" + prop + "~q is not numeric")
+			End If
+		Else
+			FlxG.Log("WARNING: The ~q" + classInfo.Name + "~q does not have the property ~q" + prop + "~q, or it is not accessible")
 		End If
 	End Method
 	

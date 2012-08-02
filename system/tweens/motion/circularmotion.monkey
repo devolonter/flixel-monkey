@@ -20,7 +20,7 @@ Private
 	Field _angleFinish:Float
 	
 Public
-	Method New(complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT)
+	Method New(complete:FlxTweenListener = Null, type:Int = -1)
 		Super.New(0, complete, type, Null)
 		_centerX = 0
 		_centerY = 0
@@ -84,12 +84,8 @@ Public
 		PostUpdate()
 	End Method
 	
-	Method Distance:Float() Property
-		If (_distance >= 0) return _distance
-		
-		_distance = Sqrt(_moveX * _moveX + _moveY * _moveY)
-		
-		Return _distance
+	Method Circumference:Float() Property
+		Return _radius * TWOPI
 	End Method
 
 End Class

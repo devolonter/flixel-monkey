@@ -18,7 +18,7 @@ Private
 	Field _distance:Float
 	
 Public
-	Method New(complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT)
+	Method New(complete:FlxTweenListener = Null, type:Int = -1)
 		Super.New(0, complete, type, Null)
 		_fromX = 0
 		_fromY = 0
@@ -57,7 +57,7 @@ Public
 		_moveX = toX - fromX
 		_moveY = toY - fromY
 		
-		_target = _distance / speed
+		_target = Distance / speed
 		_ease = ease
 		
 		Start()

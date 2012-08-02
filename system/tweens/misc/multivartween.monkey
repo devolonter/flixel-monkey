@@ -2,6 +2,7 @@ Strict
 
 Import reflection
 Import flixel.flxbasic
+Import flixel.flxg
 Import flixel.system.tweens.flxtween
 Import flixel.system.tweens.util.ease
 
@@ -17,7 +18,7 @@ Private
 	Field _object:Object
 	
 Public
-	Method New(complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT)
+	Method New(complete:FlxTweenListener = Null, type:Int = -1)
 		Super.New(0, type, complete)
 	
 		_vars = New Stack<FieldInfo>
@@ -48,13 +49,21 @@ Public
 		_target = duration
 		_ease = ease
 		
-		For Local f:FieldInfo = EachIn classInfo.GetFields(True)
-			If (properties.Contains(f.Name)) Then
-				Local value:Float = UnboxFloat(f.GetValue(object))
-			
-				_vars.Push(f)
-				_start.Push(value)
-				_range.Push(properties.Get(f.Name) - value)
+		Local f:FieldInfo
+		For Local prop:String = EachIn properties.Keys()
+			f = classInfo.GetField(prop, True)
+			If (f <> Null) Then
+				If (f.Type.ExtendsClass(FloatClass()) Or f.Type.ExtendsClass(IntClass())) Then
+					Local value:Float = UnboxFloat(f.GetValue(object))
+				
+					_vars.Push(f)
+					_start.Push(value)
+					_range.Push(properties.Get(f.Name) - value)
+				Else
+					FlxG.Log("WARNING: The property ~q" + prop + "~q is not numeric")
+				End If
+			Else
+				FlxG.Log("WARNING: The ~q" + classInfo.Name + "~q does not have the property ~q" + prop + "~q, or it is not accessible")
 			End If
 		Next
 	End Method

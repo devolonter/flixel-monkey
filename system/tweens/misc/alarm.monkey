@@ -4,7 +4,7 @@ Import flixel.system.tweens.flxtween
 
 Class Alarm Extends FlxTween
 
-	Method New(duration:Float, complete:FlxTweenListener = Null, type:Int = FlxTween.ONESHOT)
+	Method New(duration:Float, complete:FlxTweenListener = Null, type:Int = -1)
 		Super.New(duration, type, complete, Null)
 	End Method
 	

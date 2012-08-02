@@ -5,14 +5,18 @@ Import flixel.flxg
 Import util.ease
 
 Class FlxTween
-	
+
 	Const PERSIST:Int = 0
 	
-	Const LOOPING:Int = 1
+	Const BACKWARD:Int = 1
 	
-	Const ONESHOT:Int = 2
+	Const LOOPING:Int = 2
 	
 	Const TOANDFRO:Int = 3
+	
+	Const ONESHOT:Int = 4
+	
+	Const ONESHOTBACKWARD:Int = 5
 	
 	Field active:Bool
 	
@@ -37,13 +41,17 @@ Class FlxTween
 	Field _times:Int
 
 Public
-	Method New(duration:Float, type:Int = 0, complete:FlxTweenListener = Null, ease:FlxEaseFunction = Null)
+	Method New(duration:Float, type:Int = -1, complete:FlxTweenListener = Null, ease:FlxEaseFunction = Null)
 		_target = duration
+		
 		_type = type
+		If (_type < 0) _type = FlxTween.PERSIST
+		
 		Self.complete = complete
 		_ease = ease
 		_t = 0
-		_backward = False
+		
+		_backward = (type = BACKWARD Or type = ONESHOTBACKWARD)
 	End Method
 	
 	Method Destroy:Void()
@@ -82,7 +90,7 @@ Public
 	
 	Method Finish:Void()
 		Select(_type)
-			Case PERSIST
+			Case PERSIST, BACKWARD
 				_time = _target
 				active = False
 				
@@ -96,11 +104,6 @@ Public
 				
 				Start()
 				
-			Case ONESHOT
-				_time = _target
-				active = False
-				_parent.RemoveTween(Self)
-				
 			Case TOANDFRO
 				_time Mod = _target
 				_t = _time / _target
@@ -113,6 +116,11 @@ Public
 				_backward = Not _backward
 				
 				Start()
+				
+			Case ONESHOT, ONESHOTBACKWARD
+				_time = _target
+				active = False
+				_parent.RemoveTween(Self, True)
 		End Select
 		
 		_finish = False
