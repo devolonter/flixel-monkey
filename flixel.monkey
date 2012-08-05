@@ -51,6 +51,8 @@ Import system.tweens.motion.linearmotion
 Import system.tweens.motion.linearpath
 Import system.tweens.motion.quadmotion
 Import system.tweens.motion.quadpath
+Import system.tweens.sound.fader
+Import system.tweens.sound.sfxfader
 Import system.tweens.util.ease
 Import system.tweens.flxtween
 

@@ -43,13 +43,18 @@ Public
 		_target = duration
 		
 		_type = type
-		If (_type < 0) _type = FlxTween.PERSIST
+		
+		If (_type < 0) Then
+			_type = PERSIST
+		ElseIf(_type = BACKWARD) Then
+			_type = PERSIST | BACKWARD
+		End If
 		
 		Self.complete = complete
 		_ease = ease
 		_t = 0
 		
-		_backward = Bool(type & BACKWARD)
+		_backward = Bool(_type & BACKWARD)
 	End Method
 	
 	Method Destroy:Void()
