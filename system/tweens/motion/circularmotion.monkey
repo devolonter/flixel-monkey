@@ -5,10 +5,10 @@ Import flixel.system.tweens.flxtween
 Import flixel.system.tweens.util.ease
 
 Class CircularMotion Extends Motion
-
-	Field angle:Float
 	
 Private
+	Field _angle:Float
+
 	Field _centerX:Float
 	
 	Field _centerY:Float
@@ -25,7 +25,7 @@ Public
 		_centerX = 0
 		_centerY = 0
 		_radius = 0
-		angle = 0
+		_angle = 0
 		_angleStart = 0
 		_angleFinish = 0
 	End Method
@@ -36,9 +36,9 @@ Public
 		
 		_radius = radius
 		
-		Self.angle = angle * PI / (-180)
+		_angle = angle * PI / (-180)
 		
-		_angleStart = Self.angle
+		_angleStart = _angle
 		
 		If (clockwise) Then
 			_angleFinish = TWOPI
@@ -58,9 +58,9 @@ Public
 		
 		_radius = radius
 		
-		Self.angle = angle * PI / (-180)
+		_angle = angle * PI / (-180)
 		
-		_angleStart = Self.angle
+		_angleStart = _angle
 		
 		If (clockwise) Then
 			_angleFinish = TWOPI
@@ -77,15 +77,19 @@ Public
 	Method Update:Void()
 		Super.Update()
 		
-		angle = _angleStart + _angleFinish * _t
-		x = _centerX + Cosr(angle) * _radius
-		y = _centerY + Sinr(angle) * _radius
+		_angle = _angleStart + _angleFinish * _t
+		x = _centerX + Cosr(_angle) * _radius
+		y = _centerY + Sinr(_angle) * _radius
 		
 		PostUpdate()
 	End Method
 	
 	Method Circumference:Float() Property
 		Return _radius * TWOPI
+	End Method
+	
+	Method Angle:Float() Property
+		Return _angle
 	End Method
 
 End Class

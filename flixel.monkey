@@ -50,6 +50,7 @@ Import system.tweens.motion.cubicmotion
 Import system.tweens.motion.linearmotion
 Import system.tweens.motion.linearpath
 Import system.tweens.motion.quadmotion
+Import system.tweens.motion.quadpath
 Import system.tweens.util.ease
 Import system.tweens.flxtween
 

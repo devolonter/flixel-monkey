@@ -7,10 +7,10 @@ Import flixel.system.tweens.flxtween
 Import flixel.system.tweens.util.ease
 
 Class LinearPath Extends Motion
-
-	Field distance:Float
 	
 Private
+	Field _distance:Float
+
 	Field _points:Stack<FlxPoint>
 	
 	Field _pointD:Stack<Float>
@@ -34,7 +34,7 @@ Public
 		_pointD = New Stack<Float>()
 		_pointT = New Stack<Float>()
 		
-		distance = 0; _speed = 0; _index = 0
+		_distance = 0; _speed = 0; _index = 0
 		_pointD.Push(0); _pointT.Push(0)
 	End Method
 	
@@ -51,23 +51,23 @@ Public
 	Method SetMotion:Void(duration:Float, ease:FlxEaseFunction = Null)
 		_UpdatePath()
 		_target = duration
-		_speed = distance / duration
+		_speed = _distance / duration
 		_ease = ease
 		Start()
 	End Method
 	
 	Method SetMotionSpeed:Void(speed:Float, ease:FlxEaseFunction = Null)
 		_UpdatePath()
-		_target = duration
-		_speed = distance / speed
+		_target = _distance / speed
+		_speed = speed
 		_ease = ease
 		Start()
 	End Method
 	
 	Method AddPoint:Void(x:Float = 0, y:Float = 0)
 		If (_last <> Null) Then
-			distance += Sqrt( (x - _last.x) * (x - _last.x) + (y - _last.y) * (y - _last.y))
-			_pointD.Push(distance)
+			_distance += Sqrt( (x - _last.x) * (x - _last.x) + (y - _last.y) * (y - _last.y))
+			_pointD.Push(_distance)
 		End If
 		
 		_last = New FlxPoint(x, y)
@@ -77,7 +77,7 @@ Public
 	Method GetPoint:FlxPoint(index:Int = 0)
 		If (_points.Length() = 0) Then
 			FlxG.Log("No points have been added to the path yet")
-			Return
+			Return Null
 		End If
 		
 		Return _points.Get(index Mod _points.Length())
@@ -138,6 +138,10 @@ Public
 		Return _points.Length()
 	End Method
 	
+	Method Distance:Float() Property
+		Return _distance
+	End Method
+	
 Private
 	Method _UpdatePath:Void()
 		If (_points.Length() < 2) Then
@@ -151,7 +155,7 @@ Private
 		Local l:Int = _points.Length()
 		
 		While (i < l)
-			_pointT.Push(_pointD.Get(i + 1) / distance)
+			_pointT.Push(_pointD.Get(i + 1) / _distance)
 			i += 1
 		Wend
 	End Method
