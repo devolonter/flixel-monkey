@@ -2,8 +2,8 @@
 <ModSignature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>Flixel for Monkey</Name>
   <MajorVersion>12</MajorVersion>
-  <MinorVersion>07</MinorVersion>
-  <Revision>07</Revision>
+  <MinorVersion>08</MinorVersion>
+  <Revision>05</Revision>
   <Build>NIGHTLY-A</Build>
   <Kind>ZipFolder</Kind>
   <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-nightly.zip</UpdateURL>
