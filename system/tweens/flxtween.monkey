@@ -6,17 +6,15 @@ Import util.ease
 
 Class FlxTween
 
-	Const PERSIST:Int = 0
-	
-	Const BACKWARD:Int = 1
+	Const PERSIST:Int = 1
 	
 	Const LOOPING:Int = 2
 	
-	Const TOANDFRO:Int = 3
+	Const TOANDFRO:Int = 4
 	
-	Const ONESHOT:Int = 4
+	Const ONESHOT:Int = 8
 	
-	Const ONESHOTBACKWARD:Int = 5
+	Const BACKWARD:Int = 16
 	
 	Field active:Bool
 	
@@ -51,7 +49,7 @@ Public
 		_ease = ease
 		_t = 0
 		
-		_backward = (type = BACKWARD Or type = ONESHOTBACKWARD)
+		_backward = Bool(type & BACKWARD)
 	End Method
 	
 	Method Destroy:Void()
@@ -89,8 +87,8 @@ Public
 	End Method
 	
 	Method Finish:Void()
-		Select(_type)
-			Case PERSIST, BACKWARD
+		Select( (_type & ~ BACKWARD))
+			Case PERSIST
 				_time = _target
 				active = False
 				
@@ -117,7 +115,7 @@ Public
 				
 				Start()
 				
-			Case ONESHOT, ONESHOTBACKWARD
+			Case ONESHOT
 				_time = _target
 				active = False
 				_parent.RemoveTween(Self, True)
