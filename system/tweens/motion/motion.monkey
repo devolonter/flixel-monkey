@@ -25,6 +25,7 @@ Public
 	
 	Method SetObject:Void(object:FlxObject)
 		_object = object
+		_object.immovable = True
 	End Method
 	
 	Method PostUpdate:Void()
