@@ -35,6 +35,10 @@ Public
 		
 		If (FlxBasic(object) <> Null) Then
 			classInfo = FlxBasic(object).GetClass()
+			
+			If (FlxObject(object) <> Null) Then
+				FlxObject(object).immovable = True
+			End If
 		Else
 			classInfo = GetClass(object)
 		End If
