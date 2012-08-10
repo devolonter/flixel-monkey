@@ -10,6 +10,8 @@ Import flxbasic
 Import flxobject
 Import system.flxarray
 
+Alias MonkeyGetClass = reflection.GetClass
+
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
 [i][b]NOTE:[/b] Although FlxGroup extends [a flxbasic.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its members.[/i]
@@ -330,22 +332,25 @@ Public
 	End Method	
 	
 	Method SetAll:Void(variableName:String, value:Object, recurse:Bool = True)
-		Local basic:FlxBasic
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Return
+		
+		Local f:FieldInfo = basic.GetClass().GetField(variableName)
+
+		If (f = Null) Then
+			_SetAllProperties(variableName, value, recurse)
+			Return
+		End If
+		
 		Local i:Int = 0
 		
-		basic = GetFirstNotNull()
-		If (basic <> Null And basic.GetClass().GetField(variableName) = Null) Then			
-			_SetAllProperties(variableName, value, recurse)
-			Return		
-		End If
-			
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null) Then
 				If (recurse And FlxGroup(basic) <> Null) Then
 					FlxGroup(basic).SetAll(variableName, value, recurse)	
 				Else
-					basic.GetClass().GetField(variableName).SetValue(basic, value)
+					f.SetValue(basic, value)
 				End If
 			End If
 			i+=1		
@@ -353,16 +358,19 @@ Public
 	End Method
 	
 	Method CallAll:Void(functionName:String, recurse:Bool = True)
-		Local basic:FlxBasic
-		Local i:Int = 0	
-			
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Return
+		
+		Local m:MethodInfo = basic.GetClass().GetMethod(functionName,[])
+		Local i:Int = 0
+
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null) Then
 				If (recurse And FlxGroup(basic) <> Null) Then
 					FlxGroup(basic).CallAll(functionName, recurse)	
 				Else
-					basic.GetClass().GetMethod(functionName, []).Invoke(basic, [])
+					m.Invoke(basic,[])
 				End If
 			End If
 			i+=1		
@@ -716,17 +724,15 @@ Private
 	End Method
 	
 	Method _SetAllProperties:Void(variableName:String, value:Object, recurse:Bool = True)
-		Local basic:FlxBasic
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Return
+		
 		Local prop:MethodInfo
-		Local argType:ClassInfo
+		
+		prop = basic.GetClass().GetMethod(variableName,[MonkeyGetClass(value)])
+		If (prop = Null) Return
+		
 		Local i:Int = 0
-		
-		basic = GetFirstNotNull()
-		
-		For argType = EachIn GetClasses()
-			prop = basic.GetClass().GetMethod(variableName, [argType])
-			If (prop <> Null) Exit
-		Next
 			
 		While(i < _length)
 			basic = _members[i]
@@ -734,7 +740,7 @@ Private
 				If (recurse And FlxGroup(basic) <> Null) Then
 					FlxGroup(basic).SetAll(variableName, value, recurse)	
 				Else
-					basic.GetClass().GetMethod(variableName, [argType]).Invoke(basic, [value])
+					prop.Invoke(basic,[value])
 				End If
 			End If
 			i+=1		

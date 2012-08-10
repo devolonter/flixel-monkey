@@ -876,10 +876,16 @@ Class FlxGroupFinalUnitTest Extends FlxGroupUnitTestBase
 		group.Update()
 		group.Draw()
 		group.DrawDebug()
-		group.GetRandom()
 		group.ToString()
 		
-		Return True
+		Try
+			group.GetRandom()
+		Catch e:FlxArrayIndexOfRangeException
+			Return True
+		End Try
+		
+		
+		Return False
 	End Method
 
 	Method GetName:String()
