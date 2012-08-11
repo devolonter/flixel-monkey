@@ -1106,36 +1106,36 @@ Private
 		
 		_data[index] = 0
 		
-		If (index - widthInTiles < 0 Or _data[index - widthInTiles] > 0) Then
+		If ( (index - widthInTiles < 0) Or (_data[index - widthInTiles] > 0)) Then
 			_data[index] += 1
 		End If
 		
-		If (index Mod widthInTiles >= widthInTiles - 1 Or _data[index + 1] > 0) Then
+		If ( (index Mod widthInTiles >= widthInTiles - 1) Or (_data[index + 1] > 0)) Then
 			_data[index] += 2
 		End If
 		
-		If (index + widthInTiles >= totalTiles Or _data[index + widthInTiles] > 0) Then
+		If ( (index + widthInTiles >= totalTiles) Or (_data[index + widthInTiles] > 0)) Then
 			_data[index] += 4
 		End If
 		
-		If (index Mod widthInTiles <= 0 Or _data[index - 1] > 0) Then
+		If ( (index Mod widthInTiles <= 0) Or (_data[index - 1] > 0)) Then
 			_data[index] += 8
 		End If
 		
 		If (auto = ALT And _data[index] = 15) Then
-			If (index Mod widthInTiles > 0 And index + widthInTiles < totalTiles And _data[index + widthInTiles - 1] <= 0) Then
+			If ( (index Mod widthInTiles > 0) And (index + widthInTiles < totalTiles) And (_data[index + widthInTiles - 1] <= 0)) Then
 				_data[index] = 1
 			End If
 			
-			If (index Mod widthInTiles > 0 And index - widthInTiles >= 0 And _data[index - widthInTiles - 1] <= 0) Then
+			If ( (index Mod widthInTiles > 0) And (index - widthInTiles >= 0) And (_data[index - widthInTiles - 1] <= 0)) Then
 				_data[index] = 2
 			End If
 			
-			If (index Mod widthInTiles < widthInTiles - 1 And index - widthInTiles >= 0 And _data[index - widthInTiles + 1] <= 0) Then
+			If ( (index Mod widthInTiles < widthInTiles - 1) And (index - widthInTiles >= 0) And (_data[index - widthInTiles + 1] <= 0)) Then
 				_data[index] = 4
 			End If
 			
-			If (index Mod widthInTiles < widthInTiles - 1 And index + widthInTiles >= totalTiles And _data[index + widthInTiles + 1] <= 0) Then
+			If ( (index Mod widthInTiles < widthInTiles - 1) And (index + widthInTiles < totalTiles) And (_data[index + widthInTiles + 1] <= 0)) Then
 				_data[index] = 8
 			End If
 		End If
