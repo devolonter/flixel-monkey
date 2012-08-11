@@ -10,7 +10,7 @@ Class FlxTween
 	
 	Const LOOPING:Int = 2
 	
-	Const TOANDFRO:Int = 4
+	Const PINGPONG:Int = 4
 	
 	Const ONESHOT:Int = 8
 	
@@ -107,7 +107,7 @@ Public
 				
 				Start()
 				
-			Case TOANDFRO
+			Case PINGPONG
 				_time Mod = _target
 				_t = _time / _target
 				
