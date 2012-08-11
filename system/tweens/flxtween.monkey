@@ -91,6 +91,13 @@ Public
 		active = True
 	End Method
 	
+	Method Cancel:Void()
+		active = False
+		If (_parent <> Null) Then
+			_parent.RemoveTween(Self)
+		End If
+	End Method
+	
 	Method Finish:Void()
 		Select( (_type & ~ BACKWARD))
 			Case PERSIST
