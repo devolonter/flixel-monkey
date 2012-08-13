@@ -183,7 +183,7 @@ Private
 		
 		tween._parent = Self
 		
-		If (_tweens = Null) _tweens = New List<FlxTween>
+		If (_tweens = Null) _tweens = New List<FlxTween>()
 		_tweens.AddLast(tween)
 		
 		If (start) tween.Start()
