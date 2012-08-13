@@ -87,7 +87,7 @@ Public
 		If ( Not _backward) Then
 			_index = 0
 		Else
-			_index = _points.Length()
+			_index = _points.Length() -1
 		End If
 		Super.Start()
 	End Method
@@ -99,6 +99,10 @@ Public
 			If (_index < _points.Length() -1) Then
 				While (_t > _pointT.Get(_index + 1))
 					_index += 1
+					If (_index = _points.Length() -1) Then
+						_index -= 1
+						Exit
+					End If
 				Wend
 			End If
 			
@@ -116,6 +120,10 @@ Public
 			If (_index > 0) Then
 				While (_t < _pointT.Get(_index - 1))
 					_index -= 1
+					If (_index = 0) Then
+						_index += 1
+						Exit
+					End If
 				Wend
 			End If
 			
