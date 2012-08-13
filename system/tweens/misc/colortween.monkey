@@ -51,9 +51,9 @@ Public
 		_startG = green / 255.0
 		_startB = blue / 255.0
 		
-		_rangeR = ( ( (toColor Shr 16) & $FF) / 255) - _startR
-		_rangeG = ( ( (toColor Shr 8) & $FF) / 255) - _startG
-		_rangeB = ( (toColor & $FF) / 255) - _startB
+		_rangeR = ( ( (toColor Shr 16) & $FF) / 255.0) - _startR
+		_rangeG = ( ( (toColor Shr 8) & $FF) / 255.0) - _startG
+		_rangeB = ( (toColor & $FF) / 255.0) - _startB
 		
 		_startA = fromAlpha
 		alpha = fromAlpha
