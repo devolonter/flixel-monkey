@@ -70,6 +70,8 @@ Public
 				FlxG.Log("WARNING: The ~q" + classInfo.Name + "~q does not have the property ~q" + prop + "~q, or it is not accessible")
 			End If
 		Next
+		
+		Start()
 	End Method
 	
 	Method Update:Void()
