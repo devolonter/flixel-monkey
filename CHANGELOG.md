@@ -16,7 +16,7 @@ ______________________________________________________
 * Added FlxG.RemoveBitmap function. This API is absent in original flixel
 * Added the accelerometer support in WP7
 * Improved class FlxQuadTree FlxObject.SeparateX and FlxObject.SeparateY functions. Now they do not generate a huge amount of garbage
-* The use of class FlxArray is simplified. All methods are replaced by functions, and now you have to use it static. For example, FlxArray<Int>.GetRandom(array)
+* The use of class FlxArray is simplified. All methods are replaced by functions, and now you have to use it static. For example, `FlxArray<Int>.GetRandom(array)`
 * Many other bug fixes 
 
 ###v1.0a (2012.02.15)
