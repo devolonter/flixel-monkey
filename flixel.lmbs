@@ -4,11 +4,11 @@
   <MajorVersion>12</MajorVersion>
   <MinorVersion>08</MinorVersion>
   <Revision>14</Revision>
-  <Build>A</Build>
+  <Build>NIGHTLY-A</Build>
   <Kind>ZipFolder</Kind>
-  <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip</UpdateURL>
-  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/master/flixel.lmbs</RemoteSignatureURL>
-  <ShortDescription>v1.0a4</ShortDescription>
+  <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-nightly.zip</UpdateURL>
+  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/nightly/flixel.lmbs</RemoteSignatureURL>
+  <ShortDescription>Nightly builds</ShortDescription>
   <RequireCredentials>false</RequireCredentials>
-  <MoreInfoURL>https://github.com/devolonter/flixel-monkey/blob/master/CHANGELOG.md</MoreInfoURL>
+  <MoreInfoURL>https://github.com/devolonter/flixel-monkey/blob/nightly/CHANGELOG.md</MoreInfoURL>
 </ModSignature>
