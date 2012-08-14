@@ -2,12 +2,10 @@ Changelog
 =
 ______________________________________________________
 
-v1.0a3 (2012.06.28)
--
+###v1.0a3 (2012.06.28)
 * Bug fixes
 
-v1.0a2 (2012.05.04)
--
+###v1.0a2 (2012.05.04)
 * Compatibility with Monkey v58
 * Added support of the Jungle IDE automatic module updater
 * The prefix of internal library assets was changed by suffix _flx. Now you can filter the application resources using standard Monkey tools, without breaking the framework. For example, #IMAGE_FILES = "* _flx.png|* _your_filter.png"
@@ -21,6 +19,5 @@ v1.0a2 (2012.05.04)
 * The use of class FlxArray is simplified. All methods are replaced by functions, and now you have to use it static. For example, FlxArray<Int>.GetRandom(array)
 * Many other bug fixes 
 
-v1.0a (2012.02.15)
--
+###v1.0a (2012.02.15)
 * Initial release

@@ -5,8 +5,7 @@ ______________________________________________________
 This is a port of flixel to the [Monkey](http://www.monkeycoder.co.nz/) language.
 The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam 'Atomic' Saltsman.
 
-Requirements
--
+###Requirements
 
 Monkey v60 or higher
 
@@ -15,8 +14,7 @@ Supported targets
 
 HTML5, Flash, Android, iOS, XNA, GLFW, PSM
 
-Install
--
+###Install
 
 * For users with git installed:
 	* Go to the Monkey modules directory 
@@ -27,8 +25,7 @@ Install
 	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads section 
 	* Extract archive into the Monkey modules directory
 	
-Upgrade to new version
--
+###Upgrade to new version
 
 * For users with git installed:
 	* `git pull`
@@ -38,22 +35,19 @@ Upgrade to new version
 	* Download the latest version of the library from downloads directory
 	* Replace flixel module content by archive data
 	
-Naming conventions
--
+###Naming conventions
 
 * All-caps case (eg: 'ALLCAPS' ): Constants
 * Pascal case (eg: 'PascalCase' ): Globals, functions, class, methods, properties
 * Camel case (eg: 'camelCase' ): Fields, locals and function parameters
 	
-Notes
--
+###Notes
 
 * FlxSave currently is not ported
 * Debugger is absent
 * To build  Windows Phone applications you must add a reference to Microsoft.Phone to the project 
 	
-Demo
--
+###Demo
 
 * [Mode Game](http://lab.devolonter.ru/libs/monkey-flixel/mode/html5.html)
 * [Invaders Game](http://lab.devolonter.ru/libs/monkey-flixel/flxinvaders/html5.html)
@@ -65,8 +59,7 @@ Demo
 * [Particles](http://lab.devolonter.ru/libs/monkey-flixel/particles/html5.html)
 * [Resolution policies](http://lab.devolonter.ru/libs/monkey-flixel/resolutionpolicy/html5.html)
 
-QuickStart
--
+###QuickStart
 
 ```
 Import flixel
