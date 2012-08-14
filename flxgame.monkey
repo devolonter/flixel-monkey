@@ -18,11 +18,13 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-#If TARGET = "glfw" Or TARGET = "xna" Or TARGET = "psm"
+#If TARGET = "xna" Or TARGET = "psm"
 	Import "data/beep_flx.wav"
 #ElseIf TARGET = "html5"
 	Import "data/beep_flx.ogg"
 	Import "data/beep_flx.mp3"
+#ElseIf TARGET = "glfw"
+	Import "data/beep_flx.ogg"
 #Else
 	Import "data/beep_flx.mp3"
 #End
