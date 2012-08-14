@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flxextern
 Import flxbasic
@@ -16,6 +17,11 @@ Import system.input.joystick
 Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
+Import system.tweens.flxtween
+Import system.tweens.util.ease
+Import system.tweens.misc.multivartween
+Import system.resolutionpolicy.flxresolutionpolicy
+Import system.resolutionpolicy.fill
 Import system.flxresourcesmanager
 Import system.flxquadtree
 Import system.flxreplay
@@ -27,6 +33,8 @@ Alias AccelInput = accel.Accel
 Alias MouseInput = mouse.Mouse
 Alias TouchInput = touch.Touch
 Alias JoystickInput = joystick.Joystick
+Alias MojoDeviceWidth = mojo.graphics.DeviceWidth
+Alias MojoDeviceHeight = mojo.graphics.DeviceHeight
 
 Class FlxG
 
@@ -112,9 +120,15 @@ Class FlxG
 	
 	Global Updaterate:Int
 	
+	Global Tweener:FlxBasic
+	
 	Global _DeviceScaleFactorX:Float = 1	
 	
 	Global _DeviceScaleFactorY:Float = 1
+	
+	Global _DeviceOffsetX:Int
+	
+	Global _DeviceOffsetY:Int
 	
 	Global _BgColor:FlxColor = FlxColor.ARGB(FlxG.BLACK)		
 	
@@ -135,8 +149,11 @@ Class FlxG
 	Global _CurrentCamera:FlxCamera
 
 Private
+#If TARGET = "psm"
+	Const _JOY_UNITS_COUNT:Int = 1
+#Else
 	Const _JOY_UNITS_COUNT:Int = 4
-	
+#End	
 	Const _TOUCH_COUNT:Int = 32
 	
 	Global _Joystick:JoystickInput[_JOY_UNITS_COUNT]
@@ -144,6 +161,10 @@ Private
 	Global _Touch:TouchInput[_TOUCH_COUNT]
 	
 	Global _CollideListener:FlxCollideProcessListener = New FlxCollideProcessListener()
+	
+	Global _ResolutionPolicy:FlxResolutionPolicy = New FillResolutionPolicy()
+	
+	Global _Point:FlxPoint = New FlxPoint()
 	
 
 Public
@@ -154,26 +175,8 @@ Public
 	Function Log:Void(data:String)
 		Print data
 		'TODO
-	End Function
-	
-	Function FullScreen:Void()
-		Local fsw:Int = Min(Float(FlxG.DeviceWidth), FlxG.Width * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorX)
-		Local fsh:Int = Min(Float(FlxG.DeviceHeight), FlxG.Height * FlxG.Camera.Zoom * FlxG._DeviceScaleFactorY)
-		
-		Local i:Int = 0
-		Local l:Int = FlxG.Cameras.Length()
-		Local cam:FlxCamera
-		
-		While (i < l)
-			cam = FlxG.Cameras.Get(i)
-			
-			cam.X += (FlxG.DeviceWidth - fsw) / 2
-			cam.Y += (FlxG.DeviceHeight - fsh) / 2
-			
-			i += 1
-		Wend
-	End Function
-	
+	End Function	
+
 	Function Random:Float()
 		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223)|0
 		Return FlxU.Srand(FlxG.GlobalSeed)
@@ -240,7 +243,7 @@ Public
 	End Function
 	
 	Function ResetState:Void()
-		_Game._requestedState = FlxState(_Game._state.GetClass().CreateInstance())
+		_Game._requestedState = FlxState(_Game._state.GetClass().NewInstance())
 	End Function
 	
 	Function ResetGame:Void()
@@ -259,7 +262,7 @@ Public
 		Accel.Reset()		
 		Mouse.Reset()
 		
-	#If TARGET <> "android"
+	#If TARGET <> "android" And TARGET <> "psm"
 		Keys.Reset()
 	#Else
 		Keys.Reset(KEY_BACKSPACE, KEY_QUOTES)
@@ -282,7 +285,7 @@ Public
 	End Function
 	
 	Function LoadSound:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = False, autoPlay:Bool = False, stopPrevious:Bool = True)
-		Local s:FlxSound = FlxSound(Sounds.Recycle(FlxSound.ClassObject))
+		Local s:FlxSound = FlxSound(Sounds.Recycle(ClassInfo(FlxSound.ClassObject)))
 		
 		s.Load(sound, looped, autoDestroy, stopPrevious)
 		s.Volume = volume		
@@ -564,7 +567,7 @@ Public
 		Return plugin
 	End Function
 	
-	Function GetPlugin:FlxBasic(creator:FlxClass)
+	Function GetPlugin:FlxBasic(objectClass:ClassInfo)
 		Local pluginList:Stack<FlxBasic> = FlxG.Plugins
 		Local plugin:FlxBasic
 		Local i:Int = 0
@@ -572,7 +575,7 @@ Public
 		
 		While(i < l)
 			plugin = pluginList.Get(i)
-			If (creator.InstanceOf(plugin)) Return plugin
+			If (plugin.GetClass().ExtendsClass(objectClass)) Return plugin
 			
 			i+=1
 		Wend
@@ -585,13 +588,13 @@ Public
 		Return plugin
 	End Function
 	
-	Function RemovePluginType:Bool(creator:FlxClass)
+	Function RemovePluginType:Bool(objectClass:ClassInfo)
 		Local results:Bool = False
 		Local pluginList:Stack<FlxBasic> = FlxG.Plugins
 		Local i:Int = pluginList.Length() - 1	
 		
 		While(i >= 0)
-			If (creator.InstanceOf(pluginList.Get(i))) Then
+			If (pluginList.Get(i).GetClass().ExtendsClass(objectClass)) Then
 				pluginList.Remove(i)
 				results = True	
 			End If
@@ -606,6 +609,8 @@ Public
 		FlxG._Game = game
 		FlxG.Width = width
 		FlxG.Height = height
+		
+		FlxG.Tweener = New FlxBasic()
 		
 		FlxG.Mute = False
 		FlxG._Volume = .5
@@ -654,16 +659,16 @@ Public
 		FlxG.GlobalSeed = Rnd(1, 10000000)
 		FlxG.WorldBounds = New FlxRect(-10, -10, FlxG.Width + 20, FlxG.Height + 20)
 		FlxG.WorldDivisions = 6
-		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.ClassObject))
+		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(ClassInfo(DebugPathDisplay.ClassObject)))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
 	End Function
 	
 	Function UpdateInput:Void()
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android"
+	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
 		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End		
 	
-	#If TARGET = "glfw"
+	#If TARGET = "glfw" Or TARGET = "psm"
 		For Local i:Int = 0 Until _JOY_UNITS_COUNT
 			_Joystick[i].Update()
 		Next
@@ -679,7 +684,7 @@ Public
 		End If
 	#End
 	
-	#If TARGET = "ios" Or TARGET = "android"
+	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
 		For Local i:Int = 0 Until _TOUCH_COUNT
 			_Touch[i].Update(TouchX(i), TouchY(i))
 			
@@ -710,7 +715,7 @@ Public
 		_Touch[0].Update(TouchX(), TouchY())
 	#End
 	
-	#If TARGET = "android"
+	#If TARGET = "android" Or TARGET = "psm"
 		Keys.Update()
 	#End
 		
@@ -772,6 +777,66 @@ Public
 	
 	Function TouchCount:Int()
 		Return _TOUCH_COUNT
+	End Function
+	
+	Function SetResolutionPolicy:Void(resolutionPolicy:FlxResolutionPolicy)
+		_ResolutionPolicy = resolutionPolicy
+		_Measure()
+	End Function
+	
+	Function UpdateDevice:Void()
+		If(FlxG.DeviceWidth <> MojoDeviceWidth() Or FlxG.DeviceHeight <> MojoDeviceHeight()) Then
+			_Measure()
+		End If
+	End Function
+	
+	Function Tween:MultiVarTween(object:Object, values:StringMap<Float>, duration:Float, type:Int = FlxTween.ONESHOT, complete:FlxTweenListener = Null, ease:FlxEaseFunction = Null, tweener:FlxBasic = Null)
+		If (tweener = Null) Then
+			If (FlxBasic(object) <> Null) Then
+				tweener = FlxBasic(object)
+			Else
+				tweener = FlxG.Tweener
+			End If
+		End If
+		
+		Local tween:MultiVarTween = New MultiVarTween(complete, type)
+		tween.Tween(object, values, duration, ease)
+		tweener.AddTween(tween)
+		
+		Return tween
+	End Function
+	
+Private
+	Function _Measure:Void()
+		FlxG.DeviceWidth = MojoDeviceWidth()
+		FlxG.DeviceHeight = MojoDeviceHeight()
+
+		_ResolutionPolicy.OnMeasure(FlxG.DeviceWidth, FlxG.DeviceHeight, _Point)
+		
+		FlxG._DeviceScaleFactorX = _Point.x / Float(FlxG.Width)
+		FlxG._DeviceScaleFactorY = _Point.y / Float(FlxG.Height)
+		
+		Local zoom:Float = FlxCamera.DefaultZoom
+		If(FlxG.Camera <> Null) zoom = FlxG.Camera.Zoom
+	
+		FlxG._DeviceOffsetX = Ceil( (FlxG.DeviceWidth - _Point.x * zoom) * 0.5)
+		FlxG._DeviceOffsetY = Ceil( (FlxG.DeviceHeight - _Point.y * zoom) * 0.5)
+	
+		Local i:Int = 0
+		Local l:Int = FlxG.Cameras.Length()
+		Local cam:FlxCamera
+	
+		While(i < l)
+			cam = FlxG.Cameras.Get(i)
+			
+			'recalc values
+			cam.X = cam.X
+			cam.Y = cam.Y
+			cam.Width = cam.Width
+			cam.Height = cam.Height
+			
+			i += 1
+		Wend
 	End Function
 
 End Class

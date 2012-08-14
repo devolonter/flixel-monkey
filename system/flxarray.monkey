@@ -15,7 +15,7 @@ Class FlxArray<T>
 			If (l > 0) Return arr[startIndex + int(Rnd()*l)]	
 		End If
 		
-		Return Null
+		Throw New FlxArrayIndexOfRangeException()
 	End Function
 	
 	'Get safe random for replays/recordings
@@ -30,7 +30,7 @@ Class FlxArray<T>
 			If (l > 0) Return arr[startIndex + int(FlxG.Random()*l)]	
 		End If
 		
-		Return Null
+		Throw New FlxArrayIndexOfRangeException()
 	End Function
 	
 	Function Shuffle:Void(arr:T[], howManyTimes:Int)
@@ -82,5 +82,13 @@ Class FlxArray<T>
 		
 		Return result.Join("")
 	End Function
+
+End Class
+
+Class FlxArrayIndexOfRangeException Extends Throwable
+	
+	Method ToString:String()
+		Return "FlxArray index of range"
+	End Method
 
 End Class

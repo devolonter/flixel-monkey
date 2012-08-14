@@ -10,7 +10,7 @@ flixel.showMouse = function() {
 }
 
 flixel.hideMouse = function() {
-	document.getElementById("GameCanvas").style.cursor = 'url(data/flx_empty_cursor.png), auto';
+	document.getElementById("GameCanvas").style.cursor = 'url(data/empty_cursor_flx.png), auto';
 }
 
 flixel.isMobile = function() {

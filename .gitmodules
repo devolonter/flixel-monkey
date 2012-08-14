@@ -1,3 +1,6 @@
 [submodule "bananas"]
 	path = bananas
 	url = git@github.com:devolonter/flixel-monkey-bananas.git
+[submodule "plugin/photonstorm"]
+	path = plugin/photonstorm
+	url = git://github.com/KaaPex/monkey-photonstorm.git

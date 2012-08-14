@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flxextern
 Import flxobject
@@ -18,6 +19,8 @@ Import "data/autotiles_flx.png"
 Import "data/autotiles_flx.png"
 
 Class FlxTilemap Extends FlxObject
+
+	Global ClassObject:Object
 
 	Const AUTOTILES:String =  "autotiles" + FlxG.DATA_SUFFIX
 	
@@ -540,7 +543,7 @@ Public
 					End If
 					
 					If (overlapFound) Then
-						If (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object))) Then
+						If (tile.callback <> Null And (tile.filter = Null Or object.GetClass().ExtendsClass(tile.filter))) Then
 							tile.mapIndex = rowStart + column
 							tile.callback.OnTileHit(tile, object)
 						End If
@@ -548,7 +551,7 @@ Public
 						results = True
 					End If
 					
-				ElseIf (tile.callback <> Null And (tile.filter = Null Or tile.filter.InstanceOf(object))) Then
+				ElseIf (tile.callback <> Null And (tile.filter = Null Or object.GetClass().ExtendsClass(tile.filter))) Then
 					tile.mapIndex = rowStart + column
 					tile.callback.OnTileHit(tile, object)
 				End If
@@ -675,7 +678,7 @@ Public
 		Return True
 	End Method
 	
-	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:FlxClass = Null, range:Int = 1)
+	Method SetTileProperties:Void(tile:Int, allowCollisions:Int = $1111, callback:FlxTileHitListener = Null, callbackFilter:ClassInfo = Null, range:Int = 1)
 		If (range <= 0) range = 1
 		
 		Local tileObject:FlxTile
@@ -752,7 +755,7 @@ Public
 				rx = q
 				ry = ly + stepY * ((q - lx) / stepX)
 				
-				If (ry < tileY And ry < tileY + _tileHeight) Then
+				If (ry > tileY And ry < tileY + _tileHeight) Then
 					If (result = Null) Then
 						result = New FlxPoint()
 					End If
@@ -828,10 +831,6 @@ Public
 		
 		Return csv.Join("")
 	End Function
-	
-	Method ToString:String()
-		Return "FlxTilemap"
-	End Method
 	
 Private
 	Method _SimplifyPath:Void(points:Stack<FlxPoint>)
@@ -1107,36 +1106,36 @@ Private
 		
 		_data[index] = 0
 		
-		If (index - widthInTiles < 0 Or _data[index - widthInTiles] > 0) Then
+		If ( (index - widthInTiles < 0) Or (_data[index - widthInTiles] > 0)) Then
 			_data[index] += 1
 		End If
 		
-		If (index Mod widthInTiles >= widthInTiles - 1 Or _data[index + 1] > 0) Then
+		If ( (index Mod widthInTiles >= widthInTiles - 1) Or (_data[index + 1] > 0)) Then
 			_data[index] += 2
 		End If
 		
-		If (index + widthInTiles >= totalTiles Or _data[index + widthInTiles] > 0) Then
+		If ( (index + widthInTiles >= totalTiles) Or (_data[index + widthInTiles] > 0)) Then
 			_data[index] += 4
 		End If
 		
-		If (index Mod widthInTiles <= 0 Or _data[index - 1] > 0) Then
+		If ( (index Mod widthInTiles <= 0) Or (_data[index - 1] > 0)) Then
 			_data[index] += 8
 		End If
 		
 		If (auto = ALT And _data[index] = 15) Then
-			If (index Mod widthInTiles > 0 And index + widthInTiles < totalTiles And _data[index + widthInTiles - 1] <= 0) Then
+			If ( (index Mod widthInTiles > 0) And (index + widthInTiles < totalTiles) And (_data[index + widthInTiles - 1] <= 0)) Then
 				_data[index] = 1
 			End If
 			
-			If (index Mod widthInTiles > 0 And index - widthInTiles >= 0 And _data[index - widthInTiles - 1] <= 0) Then
+			If ( (index Mod widthInTiles > 0) And (index - widthInTiles >= 0) And (_data[index - widthInTiles - 1] <= 0)) Then
 				_data[index] = 2
 			End If
 			
-			If (index Mod widthInTiles < widthInTiles - 1 And index - widthInTiles >= 0 And _data[index - widthInTiles + 1] <= 0) Then
+			If ( (index Mod widthInTiles < widthInTiles - 1) And (index - widthInTiles >= 0) And (_data[index - widthInTiles + 1] <= 0)) Then
 				_data[index] = 4
 			End If
 			
-			If (index Mod widthInTiles < widthInTiles - 1 And index + widthInTiles >= totalTiles And _data[index + widthInTiles + 1] <= 0) Then
+			If ( (index Mod widthInTiles < widthInTiles - 1) And (index + widthInTiles < totalTiles) And (_data[index + widthInTiles + 1] <= 0)) Then
 				_data[index] = 8
 			End If
 		End If

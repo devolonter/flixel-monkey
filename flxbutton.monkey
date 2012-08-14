@@ -1,5 +1,7 @@
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxsprite
 Import flxtext
@@ -13,12 +15,14 @@ Import "data/button_flx.png"
 Import "data/beep_flx.mp3"
 
 Class FlxButton Extends FlxSprite
+
+	Global ClassObject:Object
 	
 	Const NORMAL:Int = 0
 	
 	Const HIGHLIGHT:Int = 1
 	
-	Const PRESSED:Int = 2
+	Const PRESSED:Int = 2	
 	
 	Field label:FlxText
 	
@@ -50,7 +54,7 @@ Private
 	Field _initialized:Bool
 	
 Public
-	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonClickListener = Null, driver:FlxClass = Null)
+	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonClickListener = Null, driver:ClassInfo = Null)
 		Super.New(x, y)
 		
 		If (label.Length() > 0) Then
@@ -220,24 +224,24 @@ Private
 					End If
 				End If
 				
-				If (offAll) Then
-					If (status <> NORMAL) Then
-						If (onOut <> Null) Then
-							onOut.OnButtonOut()
-						End If
-						
-						If (soundOut <> Null) Then
-							soundOut.Play(True)
-						End If
-					End If
-					
-					status = NORMAL
-				End If
-				
 				i += 1
 			Wend
 			
-			If (click) Then
+			If(offAll) Then
+				If (status <> NORMAL) Then
+					If (onOut <> Null) Then
+						onOut.OnButtonOut()
+					End If
+					
+					If (soundOut <> Null) Then
+						soundOut.Play(True)
+					End If
+				End If
+				
+				status = NORMAL
+			End If
+			
+			If(click) Then
 				If (onUp <> Null) Then
 					onUp.OnButtonClick()
 				End If

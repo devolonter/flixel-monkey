@@ -1,16 +1,19 @@
 Flixel for Monkey
-=================
+=
+______________________________________________________
 
 This is a port of flixel to the [Monkey](http://www.monkeycoder.co.nz/) language.
 The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam 'Atomic' Saltsman.
 
-Requirements
-------------
+###Requirements
 
-Monkey v53 or higher
+Monkey v60 or higher
 
-Install
--------
+###Supported targets
+
+HTML5, Flash, Android, iOS, XNA, GLFW, PSM
+
+###Install
 
 * For users with git installed:
 	* Go to the Monkey modules directory 
@@ -21,8 +24,7 @@ Install
 	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads section 
 	* Extract archive into the Monkey modules directory
 	
-Upgrade to new version
-----------------------
+###Upgrade to new version
 
 * For users with git installed:
 	* `git pull`
@@ -32,22 +34,19 @@ Upgrade to new version
 	* Download the latest version of the library from downloads directory
 	* Replace flixel module content by archive data
 	
-Naming conventions
-------------------
+###Naming conventions
 
 * All-caps case (eg: 'ALLCAPS' ): Constants
 * Pascal case (eg: 'PascalCase' ): Globals, functions, class, methods, properties
 * Camel case (eg: 'camelCase' ): Fields, locals and function parameters
 	
-Notes
------
+###Notes
 
 * FlxSave currently is not ported
 * Debugger is absent
 * To build  Windows Phone applications you must add a reference to Microsoft.Phone to the project 
 	
-Demo
-----
+###Demo
 
 * [Mode Game](http://lab.devolonter.ru/libs/monkey-flixel/mode/html5.html)
 * [Invaders Game](http://lab.devolonter.ru/libs/monkey-flixel/flxinvaders/html5.html)
@@ -56,13 +55,18 @@ Demo
 * [Replay](http://lab.devolonter.ru/libs/monkey-flixel/replay/html5.html) 
 * [Collisions](http://lab.devolonter.ru/libs/monkey-flixel/collisions/html5.html) 
 * [Tilemap](http://lab.devolonter.ru/libs/monkey-flixel/tilemap/html5.html) 
-* [Particles](http://lab.devolonter.ru/libs/monkey-flixel/particles/html5.html)	
+* [Particles](http://lab.devolonter.ru/libs/monkey-flixel/particles/html5.html)
+* [Resolution policies](http://lab.devolonter.ru/libs/monkey-flixel/resolutionpolicy/html5.html)
+* [Tweening](http://lab.devolonter.ru/libs/monkey-flixel/tweening/html5.html)
+* [Platformer](http://lab.devolonter.ru/libs/monkey-flixel/platformer/html5.html)
 
-QuickStart
-----------
+
+###QuickStart
 
 ```
 Import flixel
+
+#REFLECTION_FILTER="your_app*|flixel.flx*|flixel.plugin*"
 
 Function Main()
 	New HelloWorld()
@@ -73,7 +77,7 @@ End Function
 Class HelloWorld Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, HelloWorldState.ClassObject)	
+		Super.New(640, 480, GetClass("HelloWorldState"))	
 	End Method
 	
 	'Optional
@@ -92,9 +96,6 @@ End Class
 
 'Main game state 
 Class HelloWorldState Extends FlxState
-
-	'necessary to the FlxGame constructor, also used to reset game
-	Global ClassObject:FlxClass = new HelloWorldStateClass()
 	
 	Method Create:Void()		
 		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!")	
@@ -108,26 +109,6 @@ Class HelloWorldState Extends FlxState
 		'... or here
 	End Method
 	
-	'If you do not use FlxG.ResetState, FlxG.ReloadReplay, FlxG.RecordReplay, it is optional to override this method.
-	Method GetClass:FlxCalss()
-		Return ClassObject
-	End Method
-	
-End Class
-
-'Monkey currently does not support reflection, so here we emulate necessary functional
-Class HelloWorldStateClass Implements FlxClass
-
-	'Creates new instance of an object
-	Method CreateInstance:Object()
-		Return New HelloWorldState()
-	End Method
-	
-	'checks that the scanned object belongs to a class
-	Method InstanceOf:Bool(object:Object)
-		Return (HelloWorldState(object) <> Null)
-	End Method
-
 End Class
 ```
 

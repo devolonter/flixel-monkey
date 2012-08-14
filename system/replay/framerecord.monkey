@@ -24,6 +24,14 @@ Class FrameRecord
 		mouse = Null	
 	End Method
 	
+	Method Destroy:Void()
+		keys = Null
+		mouse = Null
+		joystick = Null
+		touch = Null
+		accel = Null
+	End Method
+	
 	Method Create:FrameRecord(frame:Int, keys:Stack<KeyRecord> = Null, mouse:XYRecord = Null, joystick:Stack<XYZRecord[]> = Null, touch:Stack<XYRecord> = Null, accel:XYZRecord = Null)
 		Self.frame = frame
 		Self.keys = keys
@@ -33,15 +41,7 @@ Class FrameRecord
 		Self.accel = accel
 		
 		Return Self
-	End Method
-	
-	Method Destroy:Void()
-		keys = Null
-		mouse = Null
-		joystick = Null
-		touch = Null
-		accel = Null
-	End Method
+	End Method	
 	
 	Method Save:String()
 		Return Save(New StringStack()).Join("")

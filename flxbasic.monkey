@@ -3,9 +3,14 @@
 #end
 Strict
 
+Import reflection
+
 Import flxextern
 Import flxcamera
 Import flxg
+Import system.tweens.flxtween
+
+Alias MonkeyGetClass = reflection.GetClass
 
 #Rem
 summary:This is a useful "generic" Flixel object.
@@ -14,19 +19,11 @@ as do the plugins.  Has no size, position or graphical data.
 #End
 Class FlxBasic
 
+	Global ClassObject:Object
+
 	Global _ActiveCount:Int
 	
-	Global _VisibleCount:Int	
-	
-	Global ClassObject:FlxClass = New FlxBasicClass()
-	
-	Global ExistsComparator:FlxBasicComparator = new FlxBasicExistsComparator()
-	
-	Global ActiveComparator:FlxBasicComparator = new FlxBasicActiveComparator()
-	
-	Global VisibleComparator:FlxBasicComparator = new FlxBasicVisibleComparator()
-	
-	Global AliveComparator:FlxBasicComparator = new FlxBasicAliveComparator()
+	Global _VisibleCount:Int
 
 	#Rem
 	summary:IDs seem like they could be pretty useful, huh?
@@ -62,8 +59,15 @@ Class FlxBasic
 	summary:Setting this to true will prevent the object from appearing when the visual debug mode in the debugger overlay is toggled on.
 	#End
 	Field ignoreDrawDebug:Bool
-
+	
+	Field autoClear:Bool
+	
 	Field _cameras:IntSet
+	
+Private
+	Field _tweens:List<FlxTween>
+
+	Field _classInfo:ClassInfo
 	
 	#Rem
 	summary:Instantiate the basic flixel object.
@@ -74,7 +78,10 @@ Class FlxBasic
 		active = True
 		visible = True
 		alive = True
-		ignoreDrawDebug = False	
+		ignoreDrawDebug = False
+		autoClear = True
+		
+		_classInfo = MonkeyGetClass(Object(Self))
 	End Method	
 	
 	#Rem
@@ -82,7 +89,12 @@ Class FlxBasic
 	Override this function to null out variables or manually call [a #Destroy]Destroy()[/a] on class members if necessary.
 	Don't forget to call [b]super.Destroy()[/b]!
 	#End
-	Method Destroy:Void()		
+	Method Destroy:Void()
+		If (autoClear And HasTween) Then			
+			ClearTweens(True)
+		End If
+		
+		_classInfo = Null
 	End Method
 	
 	#Rem
@@ -163,100 +175,84 @@ Class FlxBasic
 		Wend
 	End Method
 	
+	Method AddTween:FlxTween(tween:FlxTween, start:Bool = False)
+		If (tween._parent <> Null) Then
+			FlxG.Log("WARNING: Cannot add a FlxTween object more than once")
+			Return tween
+		End If
+		
+		tween._parent = Self
+		
+		If (_tweens = Null) _tweens = New List<FlxTween>()
+		_tweens.AddLast(tween)
+		
+		If (start) tween.Start()
+		
+		Return tween
+	End Method
+	
+	Method RemoveTween:FlxTween(tween:FlxTween, destroy:Bool = False)
+		If (tween._parent <> Self) Then
+			FlxG.Log("WARNING: Core object does not contain FlxTween")
+			Return tween
+		End If
+		
+		_tweens.RemoveEach(tween)
+		
+		If (destroy) tween.Destroy()
+		tween.active = False
+		
+		Return tween
+	End Method
+	
+	Method ClearTweens:Void(destroy:Bool = False)
+		Local node:= _tweens.FirstNode()
+		Local tween:FlxTween
+				
+		While (node <> Null)
+			tween = node.Value()
+			If (destroy) tween.Destroy()
+			tween.active = False
+			node = node.NextNode()
+		Wend
+		
+		_tweens = Null
+	End Method
+	
+	Method UpdateTweens:Void()
+		Local node:= _tweens.FirstNode()
+		Local tween:FlxTween
+				
+		While (node <> Null)
+			tween = node.Value()
+			
+			If (tween.active) Then
+				tween.Update()
+				
+				If (tween._finish) Then
+					tween.Finish()
+				End If
+			End If
+			
+			node = node.NextNode()
+		Wend
+	End Method
+	
+	Method HasTween:Bool() Property
+		Return(_tweens <> Null)
+	End Method
+	
+	Method GetClass:ClassInfo()
+		Return _classInfo
+	End Method
+	
 	#Rem
 	summary:Convert object to readable string name.  Useful for debugging, save games, etc.
 	#End
 	Method ToString:String()
-		Return "FlxBasic"
+		Return _classInfo.Name[_classInfo.Name.FindLast(".")+1..]
 	End Method
 
-End Class
-
-Interface FlxBasicInvoker
-	
-	Method Invoke:Void(object:FlxBasic)
-
-End Interface
-
-Interface FlxBasicSetter
-	
-	Method Set:Void(object:FlxBasic, value:Object)
-
-End Interface
-
-Interface FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic,rhs:FlxBasic)
-
-End Interface
-
-Private	
-Class FlxBasicClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxBasic()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (FlxBasic(object) <> Null)
-	End Method
-	
-End Class
-
-Class FlxBasicExistsComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.exists) Then
-			If (rhs.exists) Return 0
-			Return 1
-		Else
-			If (Not rhs.exists) Return 0
-			Return -1
-		End If
-	End Method
-	
-End Class
-
-Class FlxBasicActiveComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.active) Then
-			If (rhs.active) Return 0
-			Return 1
-		Else
-			If (Not rhs.active) Return 0
-			Return -1
-		End If
-	End Method
-	
-End Class
-
-Class FlxBasicVisibleComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.visible) Then
-			If (rhs.visible) Return 0
-			Return 1
-		Else
-			If (Not rhs.visible) Return 0
-			Return -1
-		End If
-	End Method
-	
-End Class
-
-Class FlxBasicAliveComparator Implements FlxBasicComparator
-
-	Method Compare:Int(lhs:FlxBasic, rhs:FlxBasic)
-		If (lhs.alive) Then
-			If (rhs.alive) Return 0
-			Return 1
-		Else
-			If (Not rhs.alive) Return 0
-			Return -1
-		End If
-	End Method
-	
 End Class
 
 #Rem 

@@ -11,7 +11,7 @@ Import system.flxcolor
 
 Class FlxCamera Extends FlxBasic
 
-	Global ClassObject:FlxClass = New FlxCameraClass()
+	Global ClassObject:Object
 
 	Const STYLE_LOCKON:Int = 0
 	
@@ -158,12 +158,14 @@ Public
 		_fxShakeComplete = Null
 		_fxShakeOffset = Null
 		_fill = Null
+		
+		Super.Destroy()
 	End Method
 	
 	Method Lock:Void()
 		If (_clipped) Then
 			If (_fxShakeOffset.x <> 0 Or _fxShakeOffset.y <> 0) Then
-				SetScissor(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX, _realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY, _realWidth, _realHeight)
+				SetScissor(Ceil(_realX + _fxShakeOffset.x * FlxG._DeviceScaleFactorX), Ceil(_realY + _fxShakeOffset.y * FlxG._DeviceScaleFactorY), _realWidth, _realHeight)
 			Else
 				SetScissor(_realX, _realY, _realWidth, _realHeight)
 			End If
@@ -171,7 +173,7 @@ Public
 				
 		PushMatrix()
 				
-		Translate(_x + _fxShakeOffset.x, _y + _fxShakeOffset.y)		
+		Translate(Ceil(_x + _fxShakeOffset.x), Ceil(_y + _fxShakeOffset.y))
 		Scale(_scaleX, _scaleY)		
 		
 		If (_clipped Or _bgColor.argb <> FlxG._BgColor.argb) 
@@ -193,7 +195,7 @@ Public
 				FlxG._LastDrawingAlpha = _fill.a			
 			End If
 			
-			DrawRect(0, 0, _width, _height)			
+			DrawRect( -1, - 1, _width + 2, _height + 2)
 		End If
 		
 		PopMatrix()		
@@ -400,7 +402,7 @@ Public
 	
 	Method X:Void(x:Float) Property
 		_x = x
-		_realX = _x * FlxG._DeviceScaleFactorX
+		_realX = Ceil(FlxG._DeviceOffsetX + _x * FlxG._DeviceScaleFactorX)
 		
 		_clipped = _IsClipped()
 	End Method
@@ -411,7 +413,7 @@ Public
 	
 	Method Y:Void(y:Float) Property
 		_y = y
-		_realY = _y * FlxG._DeviceScaleFactorY
+		_realY = Ceil(FlxG._DeviceOffsetY + _y * FlxG._DeviceScaleFactorY)
 		
 		_clipped = _IsClipped()
 	End Method
@@ -422,7 +424,7 @@ Public
 	
 	Method Width:Void(width:Float) Property
 		_width = width
-		_realWidth = Min(Float(FlxG.DeviceWidth), Floor(_width * _scaleX * FlxG._DeviceScaleFactorX))
+		_realWidth = Floor(_width * _scaleX * FlxG._DeviceScaleFactorX)
 		
 		_clipped = _IsClipped()
 	End Method
@@ -433,7 +435,7 @@ Public
 	
 	Method Height:Void(height:Float) Property
 		_height = height
-		_realHeight = Min(Float(FlxG.DeviceHeight), Floor(_height * _scaleY * FlxG._DeviceScaleFactorY))
+		_realHeight = Floor(_height * _scaleY * FlxG._DeviceScaleFactorY)
 		
 		_clipped = _IsClipped()
 	End Method
@@ -491,8 +493,8 @@ Public
 	Method SetScale:Void(x:Float, y:Float)
 		_scaleX = x
 		_scaleY = y
-		_realWidth = Min(Float(FlxG.DeviceWidth), Floor(_width * _scaleX * FlxG._DeviceScaleFactorX))
-		_realHeight = Min(Float(FlxG.DeviceHeight), Floor(_height * _scaleY * FlxG._DeviceScaleFactorY))
+		_realWidth = Floor(_width * _scaleX * FlxG._DeviceScaleFactorX)
+		_realHeight = Floor(_height * _scaleY * FlxG._DeviceScaleFactorY)
 	End Method
 	
 	Method Fill:Void(color:Int, blendAlpha:Bool = True)	
@@ -524,10 +526,6 @@ Public
 	Method ID:Int() Property
 		Return _id
 	End Method
-
-	Method ToString:String()
-		Return "FlxCamera"	
-	End Method
 	
 Private
 	Method _IsClipped:Bool()
@@ -553,16 +551,3 @@ Interface FlxCameraShakeListener
 	Method OnShakeComplete:Void()
 
 End Interface
-
-Private
-Class FlxCameraClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxCamera()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return FlxCamera(object) <> Null
-	End Method
-	
-End Class

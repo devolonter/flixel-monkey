@@ -4,7 +4,7 @@ Import flxsprite
 
 Class FlxParticle Extends FlxSprite
 
-	Global ClassObject:FlxClass = New FlxParticleClass()
+	Global ClassObject:Object
 	
 	Field lifespan:Float
 	
@@ -54,17 +54,4 @@ Class FlxParticle Extends FlxSprite
 	Method OnEmit:Void()		
 	End Method
 
-End Class
-
-Private
-Class FlxParticleClass Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New FlxParticle()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)			
-		Return (FlxParticle(object) <> Null)
-	End Method	
-	
 End Class

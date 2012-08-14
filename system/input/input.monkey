@@ -29,6 +29,17 @@ Public
 		_to = toKey + 1	
 	End Method
 	
+	Method Destroy:Void()
+		Local i:Int = _from
+		 	
+		While (i < _to)
+			_Map[i] = Null
+			i += 1
+		Wend
+		
+		_to = 0
+	End Method
+	
 	Method Update:Void()
 		Local i:Int = _from
 		Local is:InputState
@@ -156,18 +167,7 @@ Public
 		Wend
 		
 		Return False
-	End Method
-	
-	Method Destroy:Void()
-		Local i:Int = _from
-		 	
-		While (i < _to)
-			_Map[i] = Null
-			i += 1
-		Wend
-		
-		_to = 0
-	End Method
+	End Method	
 
 End Class
 

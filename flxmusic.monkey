@@ -7,6 +7,8 @@ Import system.flxassetsmanager
 
 Class FlxMusic Extends FlxSound
 
+	Global ClassObject:Object
+
 Private
 	Field _filename:String
 	
@@ -73,13 +75,9 @@ Public
 		End If
 	End Method
 	
-	Method ToString:String()
-		Return "FlxMusic"
-	End Method
-	
 	Function GetValidExt:String()
 	#If TARGET = "glfw"
-		Return "wav"
+		Return "ogg"
 	#ElseIf TARGET = "html5"
 		If (IsIE()) Then
 			Return "mp3"

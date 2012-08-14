@@ -45,10 +45,11 @@ Public
 		_globalScreenPosition = New FlxPoint()	
 	End Method
 	
-	Method Destroy:Void()
-		Super.Destroy()
+	Method Destroy:Void()		
 		_point = Null
 		_globalScreenPosition = Null
+		
+		Super.Destroy()
 	End Method
 	
 	Method Update:Void(x:Float, y:Float)
@@ -73,11 +74,14 @@ Public
 	End Method
 	
 	Method GetScreenPosition:FlxPoint(camera:FlxCamera, point:FlxPoint)
-		If (camera = Null) camera = FlxG.Camera
-		If (point = Null) point = New FlxPoint()
+		If(camera = Null) camera = FlxG.Camera
+		If(point = Null) point = New FlxPoint()
 		
-		point.x = (_globalScreenPosition.x - camera.X) / (camera.Zoom * FlxG._DeviceScaleFactorX)
-		point.y = (_globalScreenPosition.y - camera.Y) / (camera.Zoom * FlxG._DeviceScaleFactorY)
+		Local zx:Float = 1 / (camera.Zoom * FlxG._DeviceScaleFactorX)
+		Local zy:Float = 1 / (camera.Zoom * FlxG._DeviceScaleFactorY)
+		
+		point.x = (_globalScreenPosition.x - camera.X) * zx - FlxG._DeviceOffsetX * zx
+		point.y = (_globalScreenPosition.y - camera.Y) * zy - FlxG._DeviceOffsetY * zy
 		
 		Return point
 	End Method
@@ -102,9 +106,11 @@ Public
 	
 	Method _UpdateXY:Void()
 		Local camera:FlxCamera = FlxG.Camera
+		Local zx:Float = 1 / (camera.Zoom * FlxG._DeviceScaleFactorX)
+		Local zy:Float = 1 / (camera.Zoom * FlxG._DeviceScaleFactorY)
 		
-		screenX = (_globalScreenPosition.x - camera.X) / (camera.Zoom * FlxG._DeviceScaleFactorX)
-		screenY = (_globalScreenPosition.y - camera.Y) / (camera.Zoom * FlxG._DeviceScaleFactorY)
+		screenX = (_globalScreenPosition.x - camera.X) * zx - FlxG._DeviceOffsetX * zx
+		screenY = (_globalScreenPosition.y - camera.Y) * zy - FlxG._DeviceOffsetY * zy
 		
 		Self.x = screenX + camera.scroll.x
 		Self.y = screenY + camera.scroll.y

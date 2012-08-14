@@ -18,7 +18,7 @@ Extern
 	Function ShowMouse:Void() = "flixel::showMouse"
 	Function IsMobile:Bool() = "flixel::isMobile"
 	Function OpenURL:Void(url:String) = "flixel::openURL"
-#ElseIf TARGET = "xna" Or TARGET = "pss"
+#ElseIf TARGET = "xna" Or TARGET = "psm"
 	Function SystemMillisecs:Int() = "flixel.functions.systemMillisecs"
 	Function HideMouse:Void() = "flixel.functions.hideMouse"
 	Function ShowMouse:Void() = "flixel.functions.showMouse"
@@ -35,13 +35,3 @@ Extern
 #If TARGET = "html5"
 	Function IsIE:Bool() = "flixel.isIE"
 #End
-
-Public
-
-	Interface FlxClass
-		
-		Method CreateInstance:Object()
-		
-		Method InstanceOf:Bool(object:Object)
-	
-	End Interface

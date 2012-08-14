@@ -1,6 +1,7 @@
 Strict
 
 Import mojo
+Import reflection
 
 Import flxextern
 Import flxbasic
@@ -17,11 +18,13 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-#If TARGET = "glfw" Or TARGET = "xna"
+#If TARGET = "xna" Or TARGET = "psm"
 	Import "data/beep_flx.wav"
 #ElseIf TARGET = "html5"
 	Import "data/beep_flx.ogg"
 	Import "data/beep_flx.mp3"
+#ElseIf TARGET = "glfw"
+	Import "data/beep_flx.ogg"
 #Else
 	Import "data/beep_flx.mp3"
 #End
@@ -31,8 +34,6 @@ Class FlxGame extends App
 	Field useSoundHotKeys:Bool
 
 	Field useSystemCursor:Bool
-	
-	Field useVirtualResolution:Bool
 	
 	Field forceDebugger:Bool
 
@@ -63,7 +64,7 @@ Class FlxGame extends App
 	Field _replayCallback:FlxReplayListener
 
 Private
-	Field _iState:FlxClass
+	Field _iState:ClassInfo
 	
 	Field _created:Bool
 	
@@ -94,7 +95,18 @@ Private
 	Field _framerate:Int
 
 Public
-	Method New(gameSizeX:Int, gameSizeY:Int, initialState:FlxClass, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)		
+	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)
+		Local classObject:GlobalInfo
+		
+		For Local classInfo:ClassInfo = EachIn GetClasses()
+			classObject = classInfo.GetGlobal("ClassObject", False)
+			If (classObject = Null) classObject = classInfo.GetGlobal("ClassInfo", False)
+			
+			If (classObject <> Null) Then
+				classObject.SetValue(classInfo)
+			End If
+		Next
+	
 		_soundTrayTimer = 0
 		_soundTrayWidth = 160
 		_soundTrayHeight = 45
@@ -111,7 +123,6 @@ Public
 		
 		useSoundHotKeys = Not IsMobile()
 		Self.useSystemCursor = useSystemCursor
-		useVirtualResolution = True
 		
 		If (Not useSystemCursor) HideMouse()
 		
@@ -133,8 +144,7 @@ Public
 	Method OnCreate:Int()	
 		_InitData()		
 		_Step()
-		
-		_soundTrayX	= (FlxG.Width / 2) * FlxCamera.DefaultZoom * FlxG._DeviceScaleFactorX - (_soundTrayWidth / 2) + FlxG.Camera.X
+
 		#Rem
 		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
 		_soundTrayLabel.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER)
@@ -143,7 +153,9 @@ Public
 	End Method
 	
 	Method OnUpdate:Int()
-	#If TARGET <> "ios" Or TARGET <> "android"
+		FlxG.UpdateDevice()
+	
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
 		If (useSoundHotKeys) Then
 			If (KeyHit(KEY_0)) Then
 				FlxG.Mute = Not FlxG.Mute
@@ -261,10 +273,10 @@ Private
 		End If
 	End Method
 
-	Method _Step:Void()	
+	Method _Step:Void()
 		If (_requestedReset) Then
 			_requestedReset = False
-			_requestedState = FlxState(_iState.CreateInstance())
+			_requestedState = FlxState(_iState.NewInstance())
 			_replayTimer = 0
 			_replayCancelKeys = []
 			_Reset()
@@ -370,6 +382,11 @@ Private
 		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		
 		_state.Update()
+		
+		If (FlxG.Tweener.active And FlxG.Tweener.HasTween) Then
+			FlxG.Tweener.UpdateTweens()
+		End If
+		
 		FlxG.UpdateCameras()
 		
 		If (_debuggerUp) Then
@@ -395,7 +412,15 @@ Private
 	End Method
 	
 	Method _Draw:Void()
-		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)	
+		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+	
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
+		If( Not FlxG.Mobile) Then
+			PushMatrix()
+		End If
+	#End
+		
+		Translate(FlxG._DeviceOffsetX, FlxG._DeviceOffsetY)
 		Scale(FlxG._DeviceScaleFactorX, FlxG._DeviceScaleFactorY)
 		
 		FlxG._LastDrawingColor = FlxG.WHITE
@@ -425,8 +450,9 @@ Private
 			i+=1
 		Wend
 		
-	#If TARGET <> "ios" Or TARGET <> "android"
-		If (Not FlxG.Mobile) Then
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
+		If( Not FlxG.Mobile) Then
+			PopMatrix()
 			_DrawSoundTray()
 			FlxG.Mouse.Draw()
 		End If
@@ -439,9 +465,8 @@ Private
 			If (FlxG.Mute) globalVolume = 0			
 			
 			PushMatrix()
-			
-			Scale(1 / FlxG._DeviceScaleFactorX, 1 / FlxG._DeviceScaleFactorY)
-			Translate(_soundTrayX, _soundTrayY)
+
+			Transform(FlxG._DeviceScaleFactorX, 0, 0, FlxG._DeviceScaleFactorY, ( (FlxG.DeviceWidth - _soundTrayWidth * FlxG._DeviceScaleFactorX) * 0.5), _soundTrayY)
 			
 			If (FlxG._LastDrawingAlpha <> .5) Then
 				SetAlpha(.5)
@@ -494,17 +519,7 @@ Private
 		End If
 				
 		Seed = SystemMillisecs()
-		
-		FlxG.DeviceWidth = DeviceWidth()
-		FlxG.DeviceHeight = DeviceHeight()
-		
-		If (useVirtualResolution) Then
-			FlxG._DeviceScaleFactorX = FlxG.DeviceWidth / Float(FlxG.Width)
-			FlxG._DeviceScaleFactorY = FlxG.DeviceHeight / Float(FlxG.Height)
-		Else
-			FlxG._DeviceScaleFactorX = 1
-			FlxG._DeviceScaleFactorY = 1
-		End If		
+		FlxG.UpdateDevice()
 	End Method
 	
 	Method _ResetFramerate:Void()
