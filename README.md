@@ -9,8 +9,7 @@ The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam '
 
 Monkey v60 or higher
 
-Supported targets
--
+###Supported targets
 
 HTML5, Flash, Android, iOS, XNA, GLFW, PSM
 
