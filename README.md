@@ -1,16 +1,16 @@
 Flixel for Monkey
-=================
+=
 
 This is a port of flixel to the [Monkey](http://www.monkeycoder.co.nz/) language.
 The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam 'Atomic' Saltsman.
 
 Requirements
-------------
+-
 
 Monkey v53 or higher
 
 Install
--------
+-
 
 * For users with git installed:
 	* Go to the Monkey modules directory 
@@ -22,7 +22,7 @@ Install
 	* Extract archive into the Monkey modules directory
 	
 Upgrade to new version
-----------------------
+-
 
 * For users with git installed:
 	* `git pull`
@@ -33,21 +33,21 @@ Upgrade to new version
 	* Replace flixel module content by archive data
 	
 Naming conventions
-------------------
+-
 
 * All-caps case (eg: 'ALLCAPS' ): Constants
 * Pascal case (eg: 'PascalCase' ): Globals, functions, class, methods, properties
 * Camel case (eg: 'camelCase' ): Fields, locals and function parameters
 	
 Notes
------
+-
 
 * FlxSave currently is not ported
 * Debugger is absent
 * To build  Windows Phone applications you must add a reference to Microsoft.Phone to the project 
 	
 Demo
-----
+-
 
 * [Mode Game](http://lab.devolonter.ru/libs/monkey-flixel/mode/html5.html)
 * [Invaders Game](http://lab.devolonter.ru/libs/monkey-flixel/flxinvaders/html5.html)
@@ -60,12 +60,12 @@ Demo
 * [Resolution policies](http://lab.devolonter.ru/libs/monkey-flixel/resolutionpolicy/html5.html)	
 
 QuickStart
-----------
+-
 
 ```
 Import flixel
 
-#REFLECTION_FILTER="myapp*|flixel*"
+#REFLECTION_FILTER="your_app*|flixel.flx*|flixel.plugin*"
 
 Function Main()
 	New HelloWorld()
