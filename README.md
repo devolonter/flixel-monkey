@@ -6,13 +6,13 @@ The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam '
 
 Requirements
 =
-_
+______________________________________________________
 
 Monkey v60 or higher
 
 Install
 =
-_
+______________________________________________________
 
 * For users with git installed:
 	* Go to the Monkey modules directory 
@@ -25,7 +25,7 @@ _
 	
 Upgrade to new version
 =
-_
+______________________________________________________
 
 * For users with git installed:
 	* `git pull`
@@ -37,7 +37,7 @@ _
 	
 Naming conventions
 =
-_
+______________________________________________________
 
 * All-caps case (eg: 'ALLCAPS' ): Constants
 * Pascal case (eg: 'PascalCase' ): Globals, functions, class, methods, properties
@@ -45,7 +45,7 @@ _
 	
 Notes
 =
-_
+______________________________________________________
 
 * FlxSave currently is not ported
 * Debugger is absent
@@ -53,7 +53,7 @@ _
 	
 Demo
 =
-_
+______________________________________________________
 
 * [Mode Game](http://lab.devolonter.ru/libs/monkey-flixel/mode/html5.html)
 * [Invaders Game](http://lab.devolonter.ru/libs/monkey-flixel/flxinvaders/html5.html)
@@ -67,7 +67,7 @@ _
 
 QuickStart
 =
-_
+______________________________________________________
 
 ```
 Import flixel
