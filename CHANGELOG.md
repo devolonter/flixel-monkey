@@ -1,6 +1,27 @@
 Changelog
 =
 ______________________________________________________
+###v1.0a4 (2012.08.14)
+* Now minimal required Monkey version is V60
+* Added resolution policies. These allow you to easily control the behavior of the screen when you change the size of the device. The following resolution policies are available: FillResolutionPolicy (by default), RatioResolutionPolicy, FixedResolutionPolicy and RelativeResolutionPolicy. In order to set the resolution policy, use the `FlxG.SetResolutionPolicy:Void(resolutionPolicy:FlxResolutionPolicy)`
+* Added tweening system. The following tweenings are supported: Alarm, AngleTween, ColorTween, MultiVarTween, NumTween, VarTween and faders for sound effects. Also tweening system includes the following motion tweenings: CircularMotion, CubicMotion, LinearMotion, LinearPath, QuadMotion and QuadPath
+* PSM target support added
+* Full version now includes plugins from photonstorm
+* The constructor of the class FlxGame accepts ClassInfo by the third parameter. For example, `New FlxGame (640, 480, GetClass ("HelloWorldState"))`
+* FlxGroup.SetAll accepts the string field name (properties are also supported) by the first parameter 
+* FlxGroup.CallAll accepts the string name of the function by the first parameter 
+* FlxGroup.Sort accepts the string field name by the first parameter
+* All globals ClassObject:Object declared inside each class are automatically initialized at the time of creating an instance of the game.
+* There is no need to override GetClass method of the FlxState class
+* The cursor and sound tray are no longer part of the main camera. Thus the zoom of the camera and its position doesn't act on them. Now they are the part of the screen and only valid screen size and global device scale factor act on them
+* FlxSound.GetValidExt and FlxMusic.GetValidExt functions now return “ogg” for GLFW target
+* The following interfaces are removed: FlxClass, FlxBasicSetter, FlxBasicInvoker, FlxBasicComparator
+* FlxGame.useVirtualResolution field and FlxG.FullScreen function have been removed. Use resolution policies
+* Fixed the cursor scale bug
+* Fixed work of a few the buttons in several cameras
+* Method FlxTilemap.Ray bug fixed
+* Fixed auto tiling bug with FlxTilemap.ALT option
+* Some minor bug fixes
 
 ###v1.0a3 (2012.06.28)
 * Bug fixes

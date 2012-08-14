@@ -57,6 +57,9 @@ HTML5, Flash, Android, iOS, XNA, GLFW, PSM
 * [Tilemap](http://lab.devolonter.ru/libs/monkey-flixel/tilemap/html5.html) 
 * [Particles](http://lab.devolonter.ru/libs/monkey-flixel/particles/html5.html)
 * [Resolution policies](http://lab.devolonter.ru/libs/monkey-flixel/resolutionpolicy/html5.html)
+* [Tweening](http://lab.devolonter.ru/libs/monkey-flixel/tweening/html5.html)
+* [Platformer](http://lab.devolonter.ru/libs/monkey-flixel/platformer/html5.html)
+
 
 ###QuickStart
 
