@@ -5,11 +5,13 @@ This is a port of flixel to the [Monkey](http://www.monkeycoder.co.nz/) language
 The port is translated from [flixel](http://flixel.org/) v2.55 written by Adam 'Atomic' Saltsman.
 
 Requirements
+=
 _
 
 Monkey v60 or higher
 
 Install
+=
 _
 
 * For users with git installed:
@@ -22,6 +24,7 @@ _
 	* Extract archive into the Monkey modules directory
 	
 Upgrade to new version
+=
 _
 
 * For users with git installed:
@@ -33,6 +36,7 @@ _
 	* Replace flixel module content by archive data
 	
 Naming conventions
+=
 _
 
 * All-caps case (eg: 'ALLCAPS' ): Constants
@@ -40,6 +44,7 @@ _
 * Camel case (eg: 'camelCase' ): Fields, locals and function parameters
 	
 Notes
+=
 _
 
 * FlxSave currently is not ported
@@ -47,6 +52,7 @@ _
 * To build  Windows Phone applications you must add a reference to Microsoft.Phone to the project 
 	
 Demo
+=
 _
 
 * [Mode Game](http://lab.devolonter.ru/libs/monkey-flixel/mode/html5.html)
@@ -60,6 +66,7 @@ _
 * [Resolution policies](http://lab.devolonter.ru/libs/monkey-flixel/resolutionpolicy/html5.html)
 
 QuickStart
+=
 _
 
 ```
