@@ -14,70 +14,49 @@
 	<body>
 		<pre>Import flixel
 
+#REFLECTION_FILTER="your_app*|flixel.flx*|flixel.plugin*"
+
 Function Main()
-    New HelloWorld()
-    Return 0
+	New HelloWorld()
+	Return 0
 End Function
 
 'Main class of the game
 Class HelloWorld Extends FlxGame
-
-    Method New()
-        Super.New(640, 480, HelloWorldState.ClassObject)    
-    End Method
-
-    'Optional
-    Method OnContentInit:Void()
-        #Rem
-        Register here all your assets, to use within application
-        Example:
-        FlxAssetsManager.AddImage("ball", "graphics/ball.png")
-
-        Now you can load an image in the game this way:
-        Local sprite:FlxSprite = New FlxSprite(0, 0, "ball")
-        #End
-    End Method
+	
+	Method New()
+		Super.New(640, 480, GetClass("HelloWorldState"))	
+	End Method
+	
+	'Optional
+	Method OnContentInit:Void()
+		#Rem
+		Register here all your assets, to use within application
+		Example:
+		FlxAssetsManager.AddImage("ball", "graphics/ball.png")
+		
+		Now you can load an image in the game this way:
+		Local sprite:FlxSprite = New FlxSprite(0, 0, "ball")
+		#End
+	End Method
 
 End Class
 
 'Main game state 
 Class HelloWorldState Extends FlxState
-
-    'necessary to the FlxGame constructor, also used to reset game
-    Global ClassObject:FlxClass = new HelloWorldStateClass()
-
-    Method Create:Void()        
-        Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!") 
-        helloWorld.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER) 
-        Add(helloWorld)     
-    End Method
-
-    Method Update:Void()
-        'put your game logic here
-        Super.Update()
-        '... or here
-    End Method
-
-    'If you do not use FlxG.ResetState, FlxG.ReloadReplay, FlxG.RecordReplay, it is optional to override this method.
-    Method GetClass:FlxCalss()
-        Return ClassObject
-    End Method
-
-End Class
-
-'Monkey currently does not support reflection, so here we emulate necessary functional
-Class HelloWorldStateClass Implements FlxClass
-
-    'Creates new instance of an object
-    Method CreateInstance:Object()
-        Return New HelloWorldState()
-    End Method
-
-    'checks that the scanned object belongs to a class
-    Method InstanceOf:Bool(object:Object)
-        Return (HelloWorldState(object) &lt;&gt; Null)
-    End Method
-
+	
+	Method Create:Void()		
+		Local helloWorld:FlxText = New FlxText(10, 10, 620, "Hello World!")	
+		helloWorld.SetFormat(FlxText.SYSTEM_FONT, 16, FlxG.WHITE, FlxText.ALIGN_CENTER)	
+		Add(helloWorld)		
+	End Method
+	
+	Method Update:Void()
+		'put your game logic here
+		Super.Update()
+		'... or here
+	End Method
+	
 End Class</pre>
 	</body>
 </html>
