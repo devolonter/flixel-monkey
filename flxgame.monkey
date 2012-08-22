@@ -557,6 +557,13 @@ Private
 		
 		FlxAssetsManager.AddSound("beep" + FlxG.DATA_SUFFIX, "beep" + FlxG.DATA_SUFFIX + "." + FlxSound.GetValidExt())
 		
+		Local contentInitTrigger:FunctionInfo
+				
+		For Local classInfo:ClassInfo = EachIn GetClasses()
+			contentInitTrigger = classInfo.GetFunction("OnContentInit",[], False)
+			If (contentInitTrigger <> Null) contentInitTrigger.Invoke([])
+		Next
+		
 		Self.OnContentInit()
 	End Method
 End Class
