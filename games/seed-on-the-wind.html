@@ -10,11 +10,33 @@
 	<link href="/flixel-monkey/css/font-awesome.css" rel="stylesheet">
 	<link href="/flixel-monkey/css/additional.css" rel="stylesheet">
 	
-	<link rel="icon" type="image/png" href="/flixel-monkey/img/favicon.png">	
+	<link rel="icon" type="image/png" href="/flixel-monkey/img/favicon.png">
 
     <!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->	
+    <![endif]-->
+	
+	<script src="libs/swfobject.js"></script>	
+	<script>
+		var flashvars = {
+		};
+		var params = {
+			menu: "false",
+			scale: "noScale",
+			allowFullscreen: "true",
+			allowScriptAccess: "always",
+			bgcolor: "",
+			wmode: "direct" // can cause issues with FP settings & webcam
+		};
+		var attributes = {
+			id:"mode"
+		};
+		swfobject.embedSWF(
+			"files/seed-on-the-wind.swf", 
+			"altContent", "640px", "480px", "10.0.0", 
+			"files/expressInstall.swf", 
+			flashvars, params, attributes);
+	</script>
   </head>
 
   <body>	
@@ -28,9 +50,9 @@
 				</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="active"><a href="/flixel-monkey/">Home</a></li>
+						<li><a href="/flixel-monkey/">Home</a></li>
 						<li><a href="/flixel-monkey/downloads.html">Downloads</a></li>						
-						<li><a href="/flixel-monkey/features.html">Features</a></li>
+						<li class="active"><a href="/flixel-monkey/features.html">Features</a></li>
 						<li><a href="/flixel-monkey/documentation.html">Documentation</a></li>
 						<li><a href="/flixel-monkey/tutorials.html">Tutorials</a></li>
 						<li><a href="/flixel-monkey/bananas.html">Bananas</a></li>
@@ -71,86 +93,15 @@
 	
 	<div class="container">
 		<div class="page-header">
-			<h2>About Flixel for Monkey</h2>
+			<h2 align="center">A Seed on the Wind</h2>
 		</div>
 		
-		<div class="row content-block">
-			<div class="span3">
-				<h3>Description</h3>
-				<p>This framework is a port of AS3 flixel to the <a href="http://www.monkeycoder.co.nz/">Monkey</a> language.</p>
-				<p>The port is translated from <a href="http://flixel.org/">flixel</a> v2.55 written by <a href="http://www.adamatomic.com/">Adam “Atomic“ Saltsman</a></p>
-			</div>
-			<div class="span3">
-				<h3>Features</h3>
-				<ul class="unstyled">
-					<li><i class="icon-ok"></i> Basic collisions between objects</li>					
-					<li><i class="icon-ok"></i> Easily generate and emit particles</li>
-					<li><i class="icon-ok"></i> Camera system for split screen</li>
-					<li><i class="icon-ok"></i> Resolution policies</li>
-					<li><i class="icon-ok"></i> Create game levels using tilemaps</li>
-					<li><i class="icon-ok"></i> Record and play back replays</li>
-				</ul>
-			</div>
-			<div class="span3">
-				<h3>&nbsp;</h3>
-				<ul class="unstyled">					
-					<li><i class="icon-ok"></i> Text display and scrolling</li>
-					<li><i class="icon-ok"></i> Pathfinding and following</li>
-					<li><i class="icon-ok"></i> Tweening system</li>
-					<li><i class="icon-ok"></i> Group objects together for simplicity</li>
-					<li><i class="icon-ok"></i> Math &amp; color utilities</li>
-					<li><i class="icon-ok"></i> Easy object recycling</li>
-				</ul>
-			</div>
-			<div class="span3">
-				<h3>Current version</h3>
-				<p>v1.0a4</p>
-				<h3>Supported targets</h3>
-				<p>HTML5, Flash, Android, iOS, XNA, GLFW, PSM</p>
-				<h3>Requirements</h3>
-				<p><a href="http://www.monkeycoder.co.nz/">Monkey</a> v60 or higher</p>				
+		<h3 align="center">By Ryan Clark</h3>
+		<div style="width: 640px; margin: 0 auto; text-align:center">
+			<div id="altContent">
+				<p><a href="http://www.adobe.com/go/getflashplayer">Get Adobe Flash player</a></p>
 			</div>
 		</div>
-		
-		<div class="page-header">
-			<a href="/flixel-monkey/submit-game.html" class="btn btn-large pull-right">Submit game <i class="icon-chevron-right"></i></a>
-			<h2>Games made with Flixel for Monkey</h2>
-		</div>
-		
-		<ul id="games" class="thumbnails">
-			<li class="span3">
-				<a class="thumbnail" href="/flixel-monkey/games/seed-on-the-wind.html">
-					<img src="/flixel-monkey/img/games/seed-on-the-wind.png" alt="" />
-					<div class="caption">
-						<h5>A Seed on the Wind</h5>
-					</div>
-				</a>
-			</li>
-			<li class="span3">
-				<a class="thumbnail" href="http://lab.devolonter.ru/games/ld24/codename-e.html">
-					<img src="/flixel-monkey/img/games/codename-e.jpg" alt="" />
-					<div class="caption">
-						<h5>Codename E</h5>
-					</div>
-				</a>
-			</li>
-			<li class="span3">
-				<a class="thumbnail" href="http://www.newgrounds.com/portal/view/598078">
-					<img src="/flixel-monkey/img/games/get-the-jelly.png" alt="" />
-					<div class="caption">
-						<h5>Get the Jelly</h5>
-					</div>
-				</a>
-			</li>
-			<li class="span3">
-				<a class="thumbnail" href="http://www.newgrounds.com/portal/view/598396">
-					<img src="/flixel-monkey/img/games/planet-protector.png" alt="" />
-					<div class="caption">
-						<h5>Planet Protector</h5>
-					</div>
-				</a>
-			</li>
-		</ul>
 		
 		<hr>
 		
