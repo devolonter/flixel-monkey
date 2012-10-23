@@ -149,7 +149,7 @@ Class FlxG
 	Global _CurrentCamera:FlxCamera
 
 Private
-#If TARGET = "psm" Or TARGET = "bmax"
+#If TARGET = "psm"
 	Const _JOY_UNITS_COUNT:Int = 1
 #Else
 	Const _JOY_UNITS_COUNT:Int = 4

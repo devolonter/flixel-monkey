@@ -8,7 +8,11 @@ Class Joystick Extends Input
 	Field unit:Int = 0
 	
 Private
+#If TARGET = "bmax"
+	Const _COUNT_INDEXS:Int = 1
+#Else
 	Const _COUNT_INDEXS:Int = 2
+#End
 
 	Field _x:Float[_COUNT_INDEXS]
 	
