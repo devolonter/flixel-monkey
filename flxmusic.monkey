@@ -76,7 +76,7 @@ Public
 	End Method
 	
 	Function GetValidExt:String()
-	#If TARGET = "glfw"
+	#If TARGET = "glfw" Or TARGET = "bmax"
 		Return "ogg"
 	#ElseIf TARGET = "html5"
 		If (IsIE()) Then

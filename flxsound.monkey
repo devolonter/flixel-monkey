@@ -289,7 +289,7 @@ Public
 		Else
 			Return "ogg"
 		End If
-	#ElseIf TARGET = "glfw"
+	#ElseIf TARGET = "glfw" Or TARGET = "bmax"
 		Return "ogg"
 	#Else
 		Return "mp3"

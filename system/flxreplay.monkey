@@ -113,7 +113,7 @@ Public
 		accelRecord = FlxG.Accel.RecordXYZ()
 	#End	
 	
-	#If TARGET = "xna" Or TARGET = "glfw" Or TARGET = "psm"
+	#If TARGET = "xna" Or TARGET = "glfw" Or TARGET = "psm" Or TARGET = "bmax"
 	
 	#If TARGET = "xna"
 		If ( Not FlxG.Mobile) Then

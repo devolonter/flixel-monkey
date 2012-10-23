@@ -23,7 +23,7 @@ Import plugin.timermanager
 #ElseIf TARGET = "html5"
 	Import "data/beep_flx.ogg"
 	Import "data/beep_flx.mp3"
-#ElseIf TARGET = "glfw"
+#ElseIf TARGET = "glfw" Or TARGET = "bmax"
 	Import "data/beep_flx.ogg"
 #Else
 	Import "data/beep_flx.mp3"

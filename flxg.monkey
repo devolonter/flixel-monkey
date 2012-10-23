@@ -668,7 +668,7 @@ Public
 		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End		
 	
-	#If TARGET = "glfw" Or TARGET = "psm"
+	#If TARGET = "glfw" Or TARGET = "psm" Or TARGET = "bmax"
 		For Local i:Int = 0 Until _JOY_UNITS_COUNT
 			_Joystick[i].Update()
 		Next
