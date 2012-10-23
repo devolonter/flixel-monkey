@@ -51,4 +51,8 @@ Function resize_array_array_XYZRecord:bb_xyzrecord__1X_1Y_1Z_1Record[][] (arr:bb
 	Wend
 	
 	Return arr
-EndFunction
+End Function
+
+Function bb_input__1Set_1Input_1Device:Int(device:gxtkInput)
+	Return bb_input2__1Set_1Input_1Device(device)
+End Function
