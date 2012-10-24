@@ -2,6 +2,7 @@ Changelog
 =
 ______________________________________________________
 ###Development Version
+* BlitzMax target support added
 * Added OnContentInit hook function
 
 ###v1.0a4 (2012.08.14)
