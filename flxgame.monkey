@@ -433,19 +433,14 @@ Private
 		
 		While(i < l)		
 			FlxG._CurrentCamera = FlxG.Cameras.Get(i)
-			
-			If (Not FlxG._CurrentCamera.active) Then
-				i+=1
-				Continue
+
+			If (FlxG._CurrentCamera <> Null And FlxG._CurrentCamera.active And FlxG._CurrentCamera.exists And FlxG._CurrentCamera.visible) Then
+				FlxG._CurrentCamera.DrawFX() 'not really draw. Only calculation
+				FlxG._CurrentCamera.Lock()			
+				_state.Draw()
+				FlxG.DrawPlugins()			
+				FlxG._CurrentCamera.Unlock()
 			End If
-			
-			If (FlxG._CurrentCamera = Null Or Not FlxG._CurrentCamera.exists Or Not FlxG._CurrentCamera.visible) Continue
-			
-			FlxG._CurrentCamera.DrawFX() 'not realy draw. Only calculation
-			FlxG._CurrentCamera.Lock()			
-			_state.Draw()
-			FlxG.DrawPlugins()			
-			FlxG._CurrentCamera.Unlock()
 									
 			i+=1
 		Wend
