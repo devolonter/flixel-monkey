@@ -261,14 +261,14 @@ Public
 					
 					'Rotate
 					If (angle <> 0 And _bakedRotation = 0) Then						
-						Local sin:Float = -Sin(angle)
+						Local sin:Float = Sin(angle)
 						Local cos:Float = Cos(angle)
-					
-						_matrix[1] = -sin * _matrix[3]
-						_matrix[2] = _matrix[0] * sin										
-						_matrix[0] *= cos						
-						_matrix[3] = cos * _matrix[3]
-					End If	
+						
+						_matrix[1] = sin * _matrix[0]
+						_matrix[2] = -sin * _matrix[3]
+						_matrix[0] *= cos
+						_matrix[3] *= cos
+					End If
 									
 					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])
 					
@@ -348,14 +348,14 @@ Public
 					
 					'Rotate
 					If (angle <> 0 And _bakedRotation = 0) Then						
-						Local sin:Float = -Sin(angle)
+						Local sin:Float = Sin(angle)
 						Local cos:Float = Cos(angle)
-					
-						_matrix[1] = -sin * _matrix[3]
-						_matrix[2] = _matrix[0] * sin										
-						_matrix[0] *= cos						
-						_matrix[3] = cos * _matrix[3]
-					End If			
+						
+						_matrix[1] = sin * _matrix[0]
+						_matrix[2] = -sin * _matrix[3]
+						_matrix[0] *= cos
+						_matrix[3] *= cos
+					End If
 									
 					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])					
 					_DrawSurface(-origin.x, -origin.y)
