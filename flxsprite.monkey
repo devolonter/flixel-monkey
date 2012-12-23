@@ -68,7 +68,7 @@ Private
 	
 	Field _pixels:Image
 	
-	Field _matrix:Float[6]
+	Field _mx0:Float, _mx1:Float, _mx2:Float, _mx3:Float, _mx4:Float, _mx5:Float
 	
 	Field _surfaceColor:FlxColor	
 	
@@ -252,25 +252,25 @@ Public
 			Else							
 				PushMatrix()
 					'Translate
-					_matrix[4] = _point.x + origin.x
-					_matrix[5] = _point.y + origin.y
+					_mx4 = _point.x + origin.x
+					_mx5 = _point.y + origin.y
 					
 					'Scale
-					_matrix[0] = scale.x
-					_matrix[3] = scale.y
+					_mx0 = scale.x
+					_mx3 = scale.y
 					
 					'Rotate
 					If (angle <> 0 And _bakedRotation = 0) Then						
 						Local sin:Float = Sin(angle)
 						Local cos:Float = Cos(angle)
 						
-						_matrix[1] = sin * _matrix[0]
-						_matrix[2] = -sin * _matrix[3]
-						_matrix[0] *= cos
-						_matrix[3] *= cos
+						_mx1 = sin * _mx0
+						_mx2 = -sin * _mx3
+						_mx0 *= cos
+						_mx3 *= cos
 					End If
 									
-					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])
+					Transform(_mx0, _mx1, _mx2, _mx3, _mx4, _mx5)
 					
 					If (_flipNeeded) Then						
 						Transform(-1, 0, 0, 1, _halfWidth - origin.x, _halfHeight - origin.y)
@@ -339,25 +339,26 @@ Public
 			Else
 				PushMatrix()
 					'Translate
-					_matrix[4] = _point.x + origin.x
-					_matrix[5] = _point.y + origin.y
+					_mx4 = _point.x + origin.x
+					_mx5 = _point.y + origin.y
 					
 					'Scale
-					_matrix[0] = scale.x
-					_matrix[3] = scale.y
+					_mx0 = scale.x
+					_mx3 = scale.y
 					
 					'Rotate
 					If (angle <> 0 And _bakedRotation = 0) Then						
 						Local sin:Float = Sin(angle)
 						Local cos:Float = Cos(angle)
 						
-						_matrix[1] = sin * _matrix[0]
-						_matrix[2] = -sin * _matrix[3]
-						_matrix[0] *= cos
-						_matrix[3] *= cos
+						_mx1 = sin * _mx0
+						_mx2 = -sin * _mx3
+						_mx0 *= cos
+						_mx3 *= cos
 					End If
 									
-					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])					
+					Transform(_mx0, _mx1, _mx2, _mx3, _mx4, _mx5)
+										
 					_DrawSurface(-origin.x, -origin.y)
 				PopMatrix()
 			End If		
