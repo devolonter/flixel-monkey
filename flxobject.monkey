@@ -356,7 +356,7 @@ Public
 			Local results:Bool = False			
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
 			Local i:Int = 0
-			Local l:Int = members.Length()
+			Local l:Int = FlxGroup(objectOrGroup).Length
 			
 			While(i < l)
 				If (Overlaps(members[i], inScreenSpace, camera)) Then
@@ -395,7 +395,7 @@ Public
 			Local results:Bool = False			
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
 			Local i:Int = 0
-			Local l:Int = members.Length()
+			Local l:Int = FlxGroup(objectOrGroup).Length
 			
 			While(i < l)
 				If (OverlapsAt(x, y, members[i], inScreenSpace, camera)) Then

@@ -422,7 +422,7 @@ Public
 			Local basic:FlxBasic
 			Local i:Int = 0
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
-			Local l:Int = members.Length()
+			Local l:Int = FlxGroup(objectOrGroup).Length
 			
 			While (i < l)
 				basic = members[i]
@@ -456,7 +456,7 @@ Public
 			Local basic:FlxBasic
 			Local i:Int = 0
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
-			Local l:Int = members.Length()
+			Local l:Int = FlxGroup(objectOrGroup).Length
 			
 			While (i < l)
 				basic = members[i]
