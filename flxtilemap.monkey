@@ -174,9 +174,8 @@ Public
 		If (_tileHeight = 0) _tileHeight = _tileWidth
 		
 		i = 0
-		Local l:Int = (_tiles.Width() / _tileWidth) * (_tiles.Height() / _tileHeight)		
-		
-		If (auto > OFF) l += 1		
+		Local l:Int = (_tiles.Width() / _tileWidth) * (_tiles.Height() / _tileHeight) + _startingIndex
+				
 		_tileObjects = _tileObjects.Resize(l)
 		
 		While (i < l)
