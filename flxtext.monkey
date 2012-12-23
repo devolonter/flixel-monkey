@@ -49,6 +49,7 @@ Public
 		
 		Self.width = width
 		frameWidth = Self.width
+		moves = False
 		
 		_driver.Width = width
 		SetFormat(SYSTEM_FONT)

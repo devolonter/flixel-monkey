@@ -21,6 +21,7 @@ Public
 		MakeGraphic(width, height, 0)
 		active = False
 		immovable = True
+		moves = False
 		
 		_stamps = New Stack<FlxStamp>()	
 	End Method
