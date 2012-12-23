@@ -486,7 +486,9 @@ Private
 				End If
 			End If
 			
-			_Iterator = _Iterator.nextLink
+			If (_Iterator <> Null) Then
+				_Iterator = _Iterator.nextLink
+			End If
 		Wend
 		
 		Return overlapProcessed
