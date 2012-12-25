@@ -2,6 +2,7 @@ Changelog
 =
 ______________________________________________________
 ###Development Version
+* #FLX_WEBGL_ENABLED config setting added. False by default
 * BlitzMax target support added
 * Added OnContentInit hook function
 * Moves field for FlxText, FlxTileblock and FlxTilemap now is False by default
