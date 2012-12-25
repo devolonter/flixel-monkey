@@ -1,6 +1,7 @@
 Import flxbasic
 Import flxbutton
 Import flxcamera
+Import flxconfig
 Import flxemitter
 Import flxextern
 Import flxg

@@ -7,6 +7,10 @@ Strict
 #End
 
 #If TARGET = "html5"
+	#If FLX_WEBGL_ENABLED = "1"
+		Import "native/webgl/mojo.${TARGET}.gl.min.${LANG}" 
+	#End
+	
 	Import "data/empty_cursor_flx.png" 
 #End
 
