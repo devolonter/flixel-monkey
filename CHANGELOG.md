@@ -4,6 +4,11 @@ ______________________________________________________
 ###Development Version
 * BlitzMax target support added
 * Added OnContentInit hook function
+* Moves field for FlxText, FlxTileblock and FlxTilemap now is False by default
+* Fixed FlxSprite transformation bug when scale.x <> scale.y
+* Fixed FlxQuadTree null pointer error
+* Fixed incorrect length for FlxGroup in overlaps methods
+* Fixed loading tilemap bug when startIndex > 0
 
 ###v1.0a4 (2012.08.14)
 * Now minimal required Monkey version is V60
