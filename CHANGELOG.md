@@ -2,6 +2,8 @@ Changelog
 =
 ______________________________________________________
 ###Development Version
+* FlxG.Framerate are removed. Use FlxG.Updaterate instead FlxG.Framerate
+* Game update method has moved to App.OnUpdate and uses a pure Monkey updaterate control
 * #FLX_WEBGL_ENABLED config setting added. False by default
 * BlitzMax target support added
 * Added OnContentInit hook function
