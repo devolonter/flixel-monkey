@@ -115,8 +115,6 @@ Class FlxG
 	Global Plugins:Stack<FlxBasic>
 	
 	Global VolumeHandler:FlxVolumeChangeListener	
-		
-	Global Framerate:Int
 	
 	Global Updaterate:Int
 	

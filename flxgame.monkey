@@ -68,13 +68,7 @@ Private
 	
 	Field _created:Bool
 	
-	Field _total:Int
-	
-	Field _accumulator:Float	
-	
-	Field _step:Float
-	
-	Field _maxAccumulation:Float
+	Field _step:Int
 	
 	Field _soundTrayTimer:Float
 	
@@ -91,11 +85,9 @@ Private
 	Field _soundTrayLabel:FlxText
 	
 	Field _updaterate:Int
-	
-	Field _framerate:Int
 
 Public
-	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)
+	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, useSystemCursor:Bool = False)
 		Local classObject:GlobalInfo
 		
 		For Local classInfo:ClassInfo = EachIn GetClasses()
@@ -115,9 +107,7 @@ Public
 		_soundTrayVisible = False
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
-		FlxG.Framerate = framerate
 		FlxG.Updaterate = updaterate
-		_total = 0
 		
 		_state = Null
 		
@@ -153,7 +143,12 @@ Public
 	End Method
 	
 	Method OnUpdate:Int()
+		If (FlxG.Updaterate <> _updaterate) Then
+			_ResetFramerate()
+		End If
+	
 		FlxG.UpdateDevice()
+		_Step()
 	
 	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
 		If (useSoundHotKeys) Then
@@ -191,33 +186,8 @@ Public
 	End Method
 	
 	Method OnRender:Int()
-		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
-			_ResetFramerate()
-		End If
-	
-		Local mark:Int = Millisecs()
-		Local elapsedMS:Int = mark - _total
-		_total = mark	
-		
-		If (_debugger <> Null) Then
-			'TODO!			
-		Else			
-			_accumulator += elapsedMS
-			
-			if (_accumulator > _maxAccumulation) Then
-				_accumulator = _maxAccumulation
-			End If			
-						
-			While (_accumulator >= _step)
-				_Step()
-				_accumulator -= _step
-			Wend
-		End If
-	
 		FlxBasic._VisibleCount = 0
-			
 		_Draw()
-		
 		Return 0
 	End Method
 	
@@ -258,7 +228,7 @@ Private
 		
 		If (_debugger <> Null) Then
 			'TODO!
-		End If		
+		End If
 		
 		Local timeManager:TimerManager = FlxTimer.Manager()
 		If (timeManager <> Null) timeManager.Clear()		
@@ -268,7 +238,7 @@ Private
 		_state = _requestedState
 		_state.Create()
 		
-		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then						
+		If (FlxG.Updaterate <> _updaterate) Then
 			_ResetFramerate()
 		End If
 	End Method
@@ -509,7 +479,7 @@ Private
 	End Method
 	
 	Method _Reset:Void()
-		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
+		If (FlxG.Updaterate <> _updaterate) Then			
 			_ResetFramerate()
 		End If
 				
@@ -518,17 +488,9 @@ Private
 	End Method
 	
 	Method _ResetFramerate:Void()
-		SetUpdateRate(FlxG.Framerate)
-
-		_step = 1000.0 / FlxG.Updaterate		
-		_maxAccumulation = 2000.0 / FlxG.Framerate - 1
-		
-		If (_maxAccumulation < _step) Then
-			_maxAccumulation = _step
-		End If
-		
+		SetUpdateRate(FlxG.Updaterate)
+		_step = 1000 / FlxG.Updaterate
 		_updaterate = FlxG.Updaterate
-		_framerate = FlxG.Framerate
 	End Method
 	
 	Method _InitData:Void()
@@ -561,39 +523,4 @@ Private
 		
 		Self.OnContentInit()
 	End Method
-End Class
-
-Private
-Class FlxFPSCounter
-	
-	Field FPS:Int
-
-Private	
-	Field _FPSCounter:Int	
-	
-	Field _lastUpdateTime:Int
-
-Public
-	Method New()
-		Reset()
-	End Method
-	
-	Method Update:Void()
-		If (_lastUpdateTime = 0) Then
-			_lastUpdateTime = Millisecs()	
-		ElseIf (Millisecs() - _lastUpdateTime >= 1000) Then
-			FPS = _FPSCounter
-			_lastUpdateTime = Millisecs()
-			_FPSCounter = 0
-		End If
-		
-		_FPSCounter += 1
-	End Method
-	
-	Method Reset:Void()
-		FPS = FlxG.Framerate
-		_FPSCounter = 0
-		_lastUpdateTime = 0
-	End Method
-
 End Class
