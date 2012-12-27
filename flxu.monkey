@@ -6,6 +6,7 @@ Import reflection
 Import flxextern
 Import flxpoint
 Import flxg
+Import system.flxbitmapdata
 
 Alias MonkeyAbs = monkey.math.Abs
 Alias MonkeyFloor = monkey.math.Floor
@@ -414,6 +415,23 @@ Class FlxU
 		Local dy:Float = y1 - y2
 		
 		Return Sqrt(dx * dx + dy * dy)
+	End Function
+	
+	Function AddPaddingToImage:Image(image:Image, paddings:Int = Image.XYPadding)
+		Local paddingX:Int, paddingY:Int
+		
+		If (paddings & Image.XPadding) paddingX = 1
+		If (paddings & Image.YPadding) paddingY = 1
+		
+		Return FlxU.AddPaddingToImage(image, paddingX, paddingY)
+	End Function
+	
+	Function AddPaddingToImage:Image(image:Image, paddingX:Int, paddingY:Int)
+		Local bitmapData:FlxBitmapData = FlxBitmapData.FromImage(image, False, paddingX, paddingY)
+		Local result:Image = bitmapData.Image
+		bitmapData.Destroy()
+		
+		Return result
 	End Function
 
 End Class
