@@ -18,13 +18,13 @@ Private
 	
 	Field _padding:FlxPoint
 	
-	Field _storePixels:Bool
+	Field _withPixelsArray:Bool
 
 	Field _image:Image
 	
-	Field _grabbedImage:Image
-	
 	Field _sourceImage:Image
+	
+	Field _destImage:Image
 	
 	Field _color:FlxColor
 	
@@ -32,22 +32,25 @@ Private
 	
 	Field _pixels:Int[]
 	
+	Field _dirty:Bool
+	
 Public
-	Method New(width:Int, height:Int, storePixels:Bool = False, fillColor:Int = $00000000)
+	Method New(width:Int, height:Int, withPixelsArray:Bool = False, fillColor:Int = $00000000)
 		_image = CreateImage(width, height)
 		_color = New FlxColor(fillColor)
 		_rect = New FlxRect()
 		
 		_width = width
 		_height = height
-		_scroll = New FlxPoint(0, 0)
-		_padding = New FlxPoint(0, 0)
-		_storePixels = storePixels
+		_scroll = New FlxPoint()
+		_padding = New FlxPoint()
+		_withPixelsArray = withPixelsArray
+		_dirty = False
 		
-		If (_storePixels) _pixels = New Int[_width * _height]
+		If (_withPixelsArray) _pixels = New Int[_width * _height]
 		
 		If (_color.a > 0) Then
-			If ( Not _storePixels) _pixels = New Int[_width * _height]
+			If ( Not _withPixelsArray) _pixels = New Int[_width * _height]
 			_WritePixels(0, 0, _width, _height, fillColor)
 		End If
 	End Method
@@ -64,20 +67,20 @@ Public
 		
 		_image = Null
 		_sourceImage = Null
-		_grabbedImage = Null
+		_destImage = Null
 	End Method
 	
 	Method CopyPixels:Void(sourceBitmapData:FlxBitmapData, sourceRect:FlxRect = Null, destPoint:FlxPoint = Null)
 		If (sourceRect = Null) sourceRect = New FlxRect(0, 0, Min(_width - Int(_scroll.x), sourceBitmapData._width), Min(_height - Int(_scroll.y), sourceBitmapData._height))
 		If (destPoint = Null) destPoint = _ZeroPoint
 		
-		If (sourceBitmapData._storePixels) Then
+		If (sourceBitmapData._withPixelsArray) Then
 			SetPixels(_rect.Make(destPoint.x, destPoint.y, sourceRect.width, sourceRect.height), sourceBitmapData.GetPixels(sourceRect))
 		Else
-			Cls()
-				DrawImage(sourceBitmapData._image, 0, 0)
-				_GrabPixels(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y)
-			Cls()
+			Cls
+			DrawImage(sourceBitmapData._image, 0, 0)
+			_GrabPixels(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y)
+			Cls
 		End If
 	End Method
 	
@@ -91,11 +94,11 @@ Public
 		End If
 		
 		If (destPoint = Null) destPoint = _ZeroPoint
-	
-		Cls()
-			_DrawAsSpriteSheet(sourceImage, _padding.x, _padding.y, True)
-			_GrabPixels(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y)
-		Cls()
+		
+		Cls
+		_DrawAsSpriteSheet(sourceImage, _padding.x, _padding.y, True)
+		_GrabPixels(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y)
+		Cls
 	End Method
 	
 	Method CopyPixels:Void(sourceRect:FlxRect = Null, destPoint:FlxPoint = Null)
@@ -107,7 +110,7 @@ Public
 	
 	Method Dispose:Void()
 		_pixels =[]
-		_storePixels = False
+		_withPixelsArray = False
 		If (_sourceImage <> Null) _sourceImage.Discard()
 	End Method
 	
@@ -120,17 +123,26 @@ Public
 	End Method
 
 	Method GetPixel:Int(x:Float, y:Float)
-		If (_storePixels) Then
+		If ( Not _withPixelsArray) Then
+			_ReadPixels(x, y, 1, 1)
+			Return _pixels[0]
+		Else
 			Return _pixels[x + y * _width]
 		End If
-	
-		Return 0
 	End Method
 	
 	Method GetPixels:Int[] (rect:FlxRect)
 		Local result:Int[] = New Int[rect.width * rect.height]
 		
-		If (_storePixels) Then
+		If ( Not _withPixelsArray) Then
+			Local i:Int = 0, l:Int = result.Length()
+			_ReadPixels(rect.x, rect.y, rect.width, rect.height)
+			
+			While (i < l)
+				result[i] = _pixels[i]
+				i += 1
+			Wend
+		Else
 			Local i:Int, j:Int, k:Int = rect.x + rect.y * _width, index:Int
 		
 			For i = 0 Until rect.height
@@ -158,10 +170,6 @@ Public
 		_WritePixels(rect.x, rect.y, rect.width, rect.height, pixels)
 	End Method
 	
-	Method DrawAsSpriteSheet:Void()
-		_DrawAsSpriteSheet(_image, _padding.x, padding.y, True)
-	End Method
-	
 	Method Width:Int() Property
 		Return _width
 	End Method
@@ -172,49 +180,50 @@ Public
 	
 	Method Image:Image() Property
 		If (_sourceImage <> Null) Then
-			If (_grabbedImage <> Null) Return _grabbedImage
+			If ( Not _dirty) Return _destImage
 		
 			Local flags:Int
 			
 			If (_padding.x = 1) flags |= graphics.Image.XPadding
 			If (_padding.y = 1) flags |= graphics.Image.YPadding
 			
-			_grabbedImage = _image.GrabImage(0, 0, _sourceImage.Width() +_padding.x * 2, _sourceImage.Height() +_padding.y * 2, _sourceImage.Frames(), flags)
-			_grabbedImage.SetHandle(_sourceImage.HandleX(), _sourceImage.HandleY())
+			_destImage = _image.GrabImage(0, 0, _sourceImage.Width() +_padding.x * 2, _sourceImage.Height() +_padding.y * 2, _sourceImage.Frames(), flags)
+			_destImage.SetHandle(_sourceImage.HandleX(), _sourceImage.HandleY())
+			_dirty = False
 			
-			Return _grabbedImage
+			Return _destImage
 		End If
 		
 		Return _image
 	End Method
 	
-	Function FromImage:FlxBitmapData(image:Image, storePixels:Bool = False, paddingX:Int = 0, paddingY:Int)
-		Return _FromImage(image, storePixels, paddingX, paddingY)
+	Function FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool = False, paddingX:Int = 0, paddingY:Int)
+		Return _FromImage(image, withPixelsArray, paddingX, paddingY)
 	End Function
 	
-	Function FromImage:FlxBitmapData(image:Image, storePixels:Bool = False, paddings:Int = 0)
+	Function FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool = False, paddings:Int = 0)
 		Local paddingX:Int, paddingY:Int
 
 		If (paddings & graphics.Image.XPadding) paddingX = 1
 		If (paddings & graphics.Image.YPadding) paddingY = 1
 	
-		Return _FromImage(image, storePixels, paddingX, paddingY)
+		Return _FromImage(image, withPixelsArray, paddingX, paddingY)
 	End Function
 	
-	Function FromImage:FlxBitmapData(image:Image, storePixels:Bool = False)
+	Function FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool = False)
 		Local paddingX:Int, paddingY:Int
 		
 		If (image.Flags() & graphics.Image.XPadding) paddingX = 1
 		If (image.Flags() & graphics.Image.YPadding) paddingY = 1
 	
-		Return _FromImage(image, storePixels, paddingX, paddingY)
+		Return _FromImage(image, withPixelsArray, paddingX, paddingY)
 	End Function
 	
 Private
-	Function _FromImage:FlxBitmapData(image:Image, storePixels:Bool, paddingX:Int, paddingY:Int)
+	Function _FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool, paddingX:Int, paddingY:Int)
 		Local rows:Int = Sqrt(image.Frames()), cols:Int = image.Frames() / rows
 		
-		Local bitmapData:FlxBitmapData = New FlxBitmapData(cols * (image.Width() +paddingX * 2), rows * (image.Height() +paddingY * 2), storePixels)
+		Local bitmapData:FlxBitmapData = New FlxBitmapData(cols * (image.Width() +paddingX * 2), rows * (image.Height() +paddingY * 2), withPixelsArray)
 		
 		bitmapData._padding.x = paddingX
 		bitmapData._padding.y = paddingY
@@ -235,12 +244,22 @@ Private
 		
 		While (i < l)
 			If (paddingX > 0 And fillPaddings) DrawImageRect(image, x - paddingX, y, 0, 0, paddingX, h, i)
-			If (paddingY > 0 And fillPaddings) DrawImageRect(image, x, y - paddingY, 0, 0, w, paddingY, i)
+			
+			If (paddingY > 0 And fillPaddings) Then
+				DrawImageRect(image, x - paddingX, y - paddingY, 0, 0, paddingX, paddingY, i)
+				DrawImageRect(image, x, y - paddingY, 0, 0, w, paddingY, i)
+				DrawImageRect(image, x + w, y - paddingY, w - paddingX, 0, paddingX, paddingY, i)
+			End If
 			
 			DrawImage(image, x, y, i)
 			
 			If (paddingX > 0 And fillPaddings) DrawImageRect(image, x + w, y, w - paddingX, 0, paddingX, h, i)
-			If (paddingY > 0 And fillPaddings) DrawImageRect(image, x, y + h, 0, h - paddingY, w, paddingY, i)
+			
+			If (paddingY > 0 And fillPaddings) Then
+				DrawImageRect(image, x - paddingX, y + h, 0, h - paddingY, paddingX, paddingY, i)
+				DrawImageRect(image, x, y + h, 0, h - paddingY, w, paddingY, i)
+				DrawImageRect(image, x + w, y + h, w - paddingX, h - paddingY, paddingX, paddingY, i)
+			End If
 			
 			x += w + paddingX * 2
 			
@@ -265,29 +284,42 @@ Private
 		End If
 	End Method
 	
+	Method _ReadPixels:Void(x:Int, y:Int, width:Int, height:Int)
+		x += _scroll.x
+		y += _scroll.y
+	
+		If ( Not _withPixelsArray) Then
+			_CheckPixelsArray(width, height)
+			ReadPixels(_pixels, x, y, width, height)
+		Else
+			Local offset:Int = x + y * width
+			ReadPixels(_pixels, x, y, width, height, offset, _width)
+		End If
+	End Method
+	
 	Method _GrabPixels:Void(x:Int, y:Int, width:Int, height:Int, destX:Int, destY:Int)
 		destX += _scroll.x
 		destY += _scroll.y
-		
-		Local offset:Int = destX + destY * width
-		
-		If ( Not _storePixels) Then
+	
+		If ( Not _withPixelsArray) Then
 			_CheckPixelsArray(width, height)
 			ReadPixels(_pixels, x, y, width, height)
 			_image.WritePixels(_pixels, destX, destY, width, height)
 		Else
+			Local offset:Int = destX + destY * width
+		
 			ReadPixels(_pixels, x, y, width, height, offset, _width)
 			_image.WritePixels(_pixels, destX, destY, width, height, offset, _width)
 		End If
 		
-		_grabbedImage = Null
+		_Invalidate()
 	End Method
 	
 	Method _WritePixels:Void(x:Int, y:Int, width:Int, height:Int, color:Int)
 		x += _scroll.x
 		y += _scroll.y
 	
-		If ( Not _storePixels) Then
+		If ( Not _withPixelsArray) Then
 			Local i:Int = 0, l:Int = width * height
 			_CheckPixelsArray(width, height)
 			
@@ -311,14 +343,14 @@ Private
 			_image.WritePixels(_pixels, x, y, width, height, x + y * width, _width)
 		End If
 		
-		_grabbedImage = Null
+		_Invalidate()
 	End Method
 	
 	Method _WritePixels:Void(x:Int, y:Int, width:Int, height:Int, pixels:Int[])
 		x += _scroll.x
 		y += _scroll.y
 	
-		If ( Not _storePixels) Then
+		If ( Not _withPixelsArray) Then
 			_image.WritePixels(pixels, x, y, width, height)
 		Else
 			Local offset:Int = x + y * width
@@ -336,7 +368,12 @@ Private
 			_image.WritePixels(_pixels, x, y, width, height, offset, _width)
 		End If
 		
-		_grabbedImage = Null
+		_Invalidate()
+	End Method
+	
+	Method _Invalidate:Void()
+		_destImage = Null
+		_dirty = True
 	End Method
 
 End Class
