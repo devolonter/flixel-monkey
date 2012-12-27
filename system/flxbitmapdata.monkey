@@ -108,6 +108,21 @@ Public
 		_GrabPixels(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, destPoint.x, destPoint.y)
 	End Method
 	
+	Method ColorReplace:Void(color:Int, byColor:Int)
+		If ( Not _withPixelsArray)
+			_ReadPixels(0, 0, _width, _height)
+		End If
+		
+		Local i:Int = 0, l:Int = _pixels.Length()
+		
+		While (i < l)
+			If (_pixels[i] = color) _pixels[i] = byColor
+			i += 1
+		Wend
+		
+		_WritePixels(0, 0, _width, _height, _pixels)
+	End Method
+	
 	Method Dispose:Void()
 		_pixels =[]
 		_withPixelsArray = False

@@ -417,16 +417,26 @@ Class FlxU
 		Return Sqrt(dx * dx + dy * dy)
 	End Function
 	
-	Function AddPaddingToImage:Image(image:Image, paddings:Int = Image.XYPadding)
+	Function SetImageMask:Image(image:Image, maskColor:Int)
+		Local bitmapData:FlxBitmapData = FlxBitmapData.FromImage(image, True)
+		bitmapData.ColorReplace(maskColor, 0)
+		
+		Local result:Image = bitmapData.Image
+		bitmapData.Destroy()
+	
+		Return result
+	End Function
+	
+	Function SetImagePadding:Image(image:Image, paddings:Int = Image.XYPadding)
 		Local paddingX:Int, paddingY:Int
 		
 		If (paddings & Image.XPadding) paddingX = 1
 		If (paddings & Image.YPadding) paddingY = 1
 		
-		Return FlxU.AddPaddingToImage(image, paddingX, paddingY)
+		Return FlxU.SetImagePadding(image, paddingX, paddingY)
 	End Function
 	
-	Function AddPaddingToImage:Image(image:Image, paddingX:Int, paddingY:Int)
+	Function SetImagePadding:Image(image:Image, paddingX:Int, paddingY:Int)
 		Local bitmapData:FlxBitmapData = FlxBitmapData.FromImage(image, False, paddingX, paddingY)
 		Local result:Image = bitmapData.Image
 		bitmapData.Destroy()
