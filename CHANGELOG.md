@@ -3,10 +3,12 @@ Changelog
 ______________________________________________________
 ###Development Version
 * FlxG.Framerate are removed. Use FlxG.Updaterate instead FlxG.Framerate
-* Game update method has moved to App.OnUpdate and uses a pure Monkey updaterate control
 * #FLX_WEBGL_ENABLED config setting added. False by default
 * BlitzMax target support added
+* New class FlxImageData added. It's a simple OO wrapper similar with flash BitmapData to work with image pixels
+* New functions FlxU.SetImageMask and FlxU.SetImagePadding added
 * Added OnContentInit hook function
+* Game update method has moved to App.OnUpdate and uses a pure Monkey updaterate control
 * Moves field for FlxText, FlxTileblock and FlxTilemap now is False by default
 * Fixed FlxSprite transformation bug when scale.x <> scale.y
 * Fixed FlxQuadTree null pointer error

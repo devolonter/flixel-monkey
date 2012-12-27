@@ -5,7 +5,7 @@ Import flixel.flxpoint
 Import flixel.flxrect
 Import flixel.system.flxcolor
 
-Class FlxBitmapData
+Class FlxImageData
 
 Private
 	Global _ZeroPoint:FlxPoint = New FlxPoint()
@@ -70,7 +70,7 @@ Public
 		_destImage = Null
 	End Method
 	
-	Method CopyPixels:Void(sourceBitmapData:FlxBitmapData, sourceRect:FlxRect = Null, destPoint:FlxPoint = Null)
+	Method CopyPixels:Void(sourceBitmapData:FlxImageData, sourceRect:FlxRect = Null, destPoint:FlxPoint = Null)
 		If (sourceRect = Null) sourceRect = New FlxRect(0, 0, Min(_width - Int(_scroll.x), sourceBitmapData._width), Min(_height - Int(_scroll.y), sourceBitmapData._height))
 		If (destPoint = Null) destPoint = _ZeroPoint
 		
@@ -212,11 +212,11 @@ Public
 		Return _image
 	End Method
 	
-	Function FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool = False, paddingX:Int = 0, paddingY:Int)
+	Function FromImage:FlxImageData(image:Image, withPixelsArray:Bool = False, paddingX:Int = 0, paddingY:Int)
 		Return _FromImage(image, withPixelsArray, paddingX, paddingY)
 	End Function
 	
-	Function FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool = False, paddings:Int = 0)
+	Function FromImage:FlxImageData(image:Image, withPixelsArray:Bool = False, paddings:Int = 0)
 		Local paddingX:Int, paddingY:Int
 
 		If (paddings & graphics.Image.XPadding) paddingX = 1
@@ -225,7 +225,7 @@ Public
 		Return _FromImage(image, withPixelsArray, paddingX, paddingY)
 	End Function
 	
-	Function FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool = False)
+	Function FromImage:FlxImageData(image:Image, withPixelsArray:Bool = False)
 		Local paddingX:Int, paddingY:Int
 		
 		If (image.Flags() & graphics.Image.XPadding) paddingX = 1
@@ -235,10 +235,10 @@ Public
 	End Function
 	
 Private
-	Function _FromImage:FlxBitmapData(image:Image, withPixelsArray:Bool, paddingX:Int, paddingY:Int)
+	Function _FromImage:FlxImageData(image:Image, withPixelsArray:Bool, paddingX:Int, paddingY:Int)
 		Local rows:Int = Sqrt(image.Frames()), cols:Int = image.Frames() / rows
 		
-		Local bitmapData:FlxBitmapData = New FlxBitmapData(cols * (image.Width() +paddingX * 2), rows * (image.Height() +paddingY * 2), withPixelsArray)
+		Local bitmapData:FlxImageData = New FlxImageData(cols * (image.Width() +paddingX * 2), rows * (image.Height() +paddingY * 2), withPixelsArray)
 		
 		bitmapData._padding.x = paddingX
 		bitmapData._padding.y = paddingY

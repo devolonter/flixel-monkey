@@ -61,6 +61,7 @@ Import system.flxanim
 Import system.flxarray
 Import system.flxassetsmanager
 Import system.flxcolor
+Import system.flximagedata
 Import system.flxfont
 Import system.flxlist
 Import system.flxquadtree

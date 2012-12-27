@@ -6,7 +6,7 @@ Import reflection
 Import flxextern
 Import flxpoint
 Import flxg
-Import system.flxbitmapdata
+Import system.flximagedata
 
 Alias MonkeyAbs = monkey.math.Abs
 Alias MonkeyFloor = monkey.math.Floor
@@ -418,7 +418,7 @@ Class FlxU
 	End Function
 	
 	Function SetImageMask:Image(image:Image, maskColor:Int)
-		Local bitmapData:FlxBitmapData = FlxBitmapData.FromImage(image, True)
+		Local bitmapData:FlxImageData = FlxImageData.FromImage(image, True)
 		bitmapData.ColorReplace(maskColor, 0)
 		
 		Local result:Image = bitmapData.Image
@@ -437,7 +437,7 @@ Class FlxU
 	End Function
 	
 	Function SetImagePadding:Image(image:Image, paddingX:Int, paddingY:Int)
-		Local bitmapData:FlxBitmapData = FlxBitmapData.FromImage(image, False, paddingX, paddingY)
+		Local bitmapData:FlxImageData = FlxImageData.FromImage(image, False, paddingX, paddingY)
 		Local result:Image = bitmapData.Image
 		bitmapData.Destroy()
 		
