@@ -17,14 +17,6 @@ public:
 		return  (seconds + modf(glfwGetTime(), &n)) * 1000;
 	}
 	
-	static void showMouse() {
-		ShowCursor(true);
-	}
-	
-	static void hideMouse() {
-		ShowCursor(false);
-	}
-	
 	static bool isMobile() {
 		return false;
 	}

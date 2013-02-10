@@ -5,14 +5,6 @@ flixel.systemMillisecs = function() {
 	return (new Date).getTime()
 }
 
-flixel.showMouse = function() {
-	document.getElementById("GameCanvas").style.cursor = 'default';
-}
-
-flixel.hideMouse = function() {
-	document.getElementById("GameCanvas").style.cursor = 'url(data/empty_cursor_flx.png), auto';
-}
-
 flixel.isMobile = function() {
 	if (window.Touch != undefined)
 		return true;
