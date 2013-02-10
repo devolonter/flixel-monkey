@@ -21,9 +21,4 @@ public:
 		return false;
 	}
 	
-	static void openURL(String url) {
-		LPCSTR request = url.ToCString<char>();
-		ShellExecute(HWND_DESKTOP, "open", request, NULL, NULL, SW_SHOWNORMAL);
-	}
-	
 };

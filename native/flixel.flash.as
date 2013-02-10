@@ -31,9 +31,5 @@ class flixel {
 		
 		return isMobile;
 	}
-	
-	static public function openURL(URL:String):void {
-		navigateToURL(new URLRequest(URL), "_blank");
-	}
 
 }
