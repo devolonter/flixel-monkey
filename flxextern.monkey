@@ -9,13 +9,10 @@ Strict
 Extern
 
 #If LANG="cpp"
-	Function SystemMillisecs:Int() = "flixel::systemMillisecs"
 	Function IsMobile:Bool() = "flixel::isMobile"
 #ElseIf TARGET = "xna" Or TARGET = "psm"
-	Function SystemMillisecs:Int() = "flixel.functions.systemMillisecs"
 	Function IsMobile:Bool() = "flixel.functions.isMobile"
 #Else
-	Function SystemMillisecs:Int() = "flixel.systemMillisecs"
 	Function IsMobile:Bool() = "flixel.isMobile"
 #End
 

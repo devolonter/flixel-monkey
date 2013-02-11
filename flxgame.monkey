@@ -517,8 +517,10 @@ Private
 		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
 			_ResetFramerate()
 		End If
+		
+		Local date:Int[] = GetDate()
 				
-		Seed = SystemMillisecs()
+		Seed = (date[3] * 3600 + date[4] * 60 + date[5]) * 1000 + date[6]
 		FlxG.UpdateDevice()
 	End Method
 	

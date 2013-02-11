@@ -1,10 +1,6 @@
 
 var flixel = new Object();
 
-flixel.systemMillisecs = function() {
-	return (new Date).getTime()
-}
-
 flixel.isMobile = function() {
 	if (window.Touch != undefined)
 		return true;

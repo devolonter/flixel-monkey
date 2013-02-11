@@ -8,10 +8,6 @@ namespace flixel {
 #endif
 
 	class functions {	
-
-		public static int systemMillisecs() {
-			return (int) (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
-		}
 		
 		public static bool isMobile() {
 	#if WINDOWS_PHONE
