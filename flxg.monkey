@@ -440,9 +440,12 @@ Public
 	Function ClearSoundCache:Void()
 		If (_SoundCache = Null) _SoundCache = New FlxResourcesManager<Sound>()
 		
-		For Local sound:Sound = EachIn _SoundCache.Resources.Values()
-			If (sound <> Null) sound.Discard()
-		Next
+		#If TARGET <> "win8"
+			'TODO! fix that for win8 target
+			For Local sound:Sound = EachIn _SoundCache.Resources.Values()
+				If (sound <> Null) sound.Discard()
+			Next
+		#End
 		
 		_SoundCache.Clear()
 	End Function
