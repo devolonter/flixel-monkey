@@ -14,7 +14,7 @@ Alias MonkeyMin = monkey.math.Min
 Alias MonkeyMax = monkey.math.Max
 Alias MonkeyGetClass = reflection.GetClass
 
-#If TARGET = "html5" Or TARGET = "flash" Or TARGET = "android"
+#If TARGET = "html5" Or TARGET = "flash" Or TARGET = "android" Or TARGET = "win8"
 	Alias FlxOpenURL = mojo.app.OpenUrl
 #ElseIf TARGET = "glfw" And HOST <> "macos"
 	Alias FlxOpenURL = mojo.app.OpenUrl
