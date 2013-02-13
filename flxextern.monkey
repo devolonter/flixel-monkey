@@ -16,7 +16,7 @@ Extern
 	Function IsMobile:Bool() = "flixel.isMobile"
 #End
 
-#If TARGET = "ios" Or TARGET = "win8"
+#If TARGET = "ios"
 	Function FlxOpenURL:Void(url:String) = "flixel::openURL"
 #End
 
