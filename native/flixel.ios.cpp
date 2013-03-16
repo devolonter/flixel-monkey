@@ -1,1 +1,10 @@
-class flixel {public:		static bool isMobile() {		return true;	}		static void openURL(String url) {		NSString *NSstrURL = url.ToNSString();		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:NSstrURL]];	}	};
+
+class flixel {
+
+public:
+	
+	static bool isMobile() {
+		return true;
+	}
+	
+};
