@@ -1,10 +1,6 @@
 Strict
 
-#if TARGET = "glfw" And HOST = "macos"
-	Import "native/flixel.${TARGET}.macos.${LANG}"
-#Else
-	Import "native/flixel.${TARGET}.${LANG}"
-#End
+Import "native/flixel.${TARGET}.${LANG}"
 
 Extern
 
@@ -14,14 +10,6 @@ Extern
 	Function IsMobile:Bool() = "flixel.functions.isMobile"
 #Else
 	Function IsMobile:Bool() = "flixel.isMobile"
-#End
-
-#If TARGET = "ios"
-	Function FlxOpenURL:Void(url:String) = "flixel::openURL"
-#End
-
-#If TARGET = "glfw" And HOST = "macos"
-	Function FlxOpenURL:Void(url:String) = "flixel::openURL"
 #End
 
 #If TARGET = "xna" Or TARGET = "psm"
