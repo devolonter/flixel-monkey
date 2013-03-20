@@ -241,7 +241,7 @@ Public
 	End Function
 	
 	Function ResetState:Void()
-		_Game._requestedState = FlxState(_Game._state.GetClass().NewInstance())
+		_Game._requestedState = FlxState(_Game._state.GetClassInfo().NewInstance())
 	End Function
 	
 	Function ResetGame:Void()
@@ -573,7 +573,7 @@ Public
 		
 		While(i < l)
 			plugin = pluginList.Get(i)
-			If (plugin.GetClass().ExtendsClass(objectClass)) Return plugin
+			If (plugin.GetClassInfo().ExtendsClass(objectClass)) Return plugin
 			
 			i+=1
 		Wend
@@ -592,7 +592,7 @@ Public
 		Local i:Int = pluginList.Length() - 1	
 		
 		While(i >= 0)
-			If (pluginList.Get(i).GetClass().ExtendsClass(objectClass)) Then
+			If (pluginList.Get(i).GetClassInfo().ExtendsClass(objectClass)) Then
 				pluginList.Remove(i)
 				results = True	
 			End If

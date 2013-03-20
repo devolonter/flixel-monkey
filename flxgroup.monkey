@@ -308,7 +308,7 @@ Public
 	Return the new object.
 	#End	
 	Method Sort:Void(index:String = "y", order:Bool = ASCENDING)
-		_sortIndex = GetFirstNotNull().GetClass().GetField(index)
+		_sortIndex = GetFirstNotNull().GetClassInfo().GetField(index)
 		_sortDescending = order
 		
 		Select _sortIndex.Type.Name
@@ -335,7 +335,7 @@ Public
 		Local basic:FlxBasic = GetFirstNotNull()
 		If (basic = Null) Return
 		
-		Local f:FieldInfo = basic.GetClass().GetField(variableName)
+		Local f:FieldInfo = basic.GetClassInfo().GetField(variableName)
 
 		If (f = Null) Then
 			_SetAllProperties(variableName, value, recurse)
@@ -361,7 +361,7 @@ Public
 		Local basic:FlxBasic = GetFirstNotNull()
 		If (basic = Null) Return
 		
-		Local m:MethodInfo = basic.GetClass().GetMethod(functionName,[])
+		Local m:MethodInfo = basic.GetClassInfo().GetMethod(functionName,[])
 		Local i:Int = 0
 
 		While(i < _length)
@@ -384,7 +384,7 @@ Public
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null And Not basic.exists And 
-					(objectClass = Null Or basic.GetClass().ExtendsClass(objectClass))) Return basic
+					(objectClass = Null Or basic.GetClassInfo().ExtendsClass(objectClass))) Return basic
 			i+=1
 		Wend
 
@@ -729,7 +729,7 @@ Private
 		
 		Local prop:MethodInfo
 		
-		prop = basic.GetClass().GetMethod(variableName,[MonkeyGetClass(value)])
+		prop = basic.GetClassInfo().GetMethod(variableName,[MonkeyGetClass(value)])
 		If (prop = Null) Return
 		
 		Local i:Int = 0

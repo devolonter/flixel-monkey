@@ -34,7 +34,7 @@ Public
 		Local classInfo:ClassInfo
 		
 		If (FlxBasic(object) <> Null) Then
-			classInfo = FlxBasic(object).GetClass()
+			classInfo = FlxBasic(object).GetClassInfo()
 			
 			If (FlxObject(object) <> Null) Then
 				FlxObject(object).immovable = True

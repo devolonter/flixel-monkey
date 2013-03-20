@@ -10,8 +10,6 @@ Import flxcamera
 Import flxg
 Import system.tweens.flxtween
 
-Alias MonkeyGetClass = reflection.GetClass
-
 #Rem
 summary:This is a useful "generic" Flixel object.
 Both [a flxobject.monkey.html]FlxObject[/a] and [a flxgroup.monkey.html]FlxGroup[/a] extend this class, 
@@ -81,7 +79,7 @@ Private
 		ignoreDrawDebug = False
 		autoClear = True
 		
-		_classInfo = MonkeyGetClass(Object(Self))
+		_classInfo = GetClass(Object(Self))
 	End Method	
 	
 	#Rem
@@ -242,7 +240,7 @@ Private
 		Return(_tweens <> Null)
 	End Method
 	
-	Method GetClass:ClassInfo()
+	Method GetClassInfo:ClassInfo()
 		Return _classInfo
 	End Method
 	
