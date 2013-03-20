@@ -96,6 +96,9 @@ Public
 		_members = _members.Resize(_length)
 		_cameras = Null
 		
+		_sortIndex = Null
+		_sortMethod = Null
+		
 		Super.Destroy()
 	End Method
 	
