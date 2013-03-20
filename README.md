@@ -11,7 +11,7 @@ Monkey v60 or higher
 
 ###Supported targets
 
-HTML5, Flash, Android, iOS, XNA, GLFW, PSM
+HTML5, Flash, Android, iOS, XNA, GLFW, PSM, Win8, WP8
 
 ###Install
 
@@ -21,7 +21,7 @@ HTML5, Flash, Android, iOS, XNA, GLFW, PSM
 	* Optionally. Do `git submodule update --init` to get bananas
 	
 * For users without git:
-	* Download archive [flixel-monkey-lastest-stable.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads section 
+	* Download archive [flixel-monkey-lastest-stable.zip](http://devolonter.ru/flixel/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](http://devolonter.ru/flixel/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads section 
 	* Extract archive into the Monkey modules directory
 	
 ###Upgrade to new version

@@ -662,7 +662,7 @@ Public
 	End Function
 	
 	Function UpdateInput:Void()
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
+	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
 		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End		
 	
@@ -682,7 +682,7 @@ Public
 		End If
 	#End
 	
-	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
+	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
 		For Local i:Int = 0 Until _TOUCH_COUNT
 			_Touch[i].Update(TouchX(i), TouchY(i))
 			

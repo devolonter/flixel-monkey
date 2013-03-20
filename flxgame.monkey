@@ -18,7 +18,7 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-#If TARGET = "xna" Or TARGET = "psm"
+#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
 	Import "data/beep_flx.wav"
 #ElseIf TARGET = "html5"
 	Import "data/beep_flx.ogg"
@@ -384,7 +384,7 @@ Private
 	Method _Draw:Void()
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
 	
-	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm" And TARGET <> "win8"
 		If( Not FlxG.Mobile) Then
 			PushMatrix()
 		End If
@@ -415,7 +415,7 @@ Private
 			i+=1
 		Wend
 		
-	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm" And TARGET <> "win8"
 		If( Not FlxG.Mobile) Then
 			PopMatrix()
 			_DrawSoundTray()
@@ -482,8 +482,10 @@ Private
 		If (FlxG.Updaterate <> _updaterate) Then			
 			_ResetFramerate()
 		End If
+		
+		Local date:Int[] = GetDate()
 				
-		Seed = SystemMillisecs()
+		Seed = (date[3] * 3600 + date[4] * 60 + date[5]) * 1000 + date[6]
 		FlxG.UpdateDevice()
 	End Method
 	

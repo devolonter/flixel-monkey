@@ -33,6 +33,9 @@ ______________________________________________________
 * Artsiom Trubchyk (programmer)
 * Arthur Ostapenko (Arthur)
 * Shanon Fernald (Shanon)
+* Rachid Abdul (Neuro)
+* Ryan Clark
+* appbackr inc.
 
 ______________________________________________________
 

@@ -281,7 +281,7 @@ Public
 	End Method
 	
 	Function GetValidExt:String()
-	#If TARGET = "xna" Or TARGET = "psm"
+	#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
 		Return "wav"
 	#ElseIf TARGET = "html5"
 		If (IsIE()) Then

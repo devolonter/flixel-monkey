@@ -15,6 +15,10 @@ ______________________________________________________
 * Fixed incorrect length for FlxGroup in overlaps methods
 * Fixed loading tilemap bug when startIndex > 0
 
+###v1.0a5 (2013.03.19)
+* Compatibility with Monkey V67 and higher
+* Win8/WP8 targets support added
+
 ###v1.0a4 (2012.08.14)
 * Now minimal required Monkey version is V60
 * Added resolution policies. These allow you to easily control the behavior of the screen when you change the size of the device. The following resolution policies are available: FillResolutionPolicy (by default), RatioResolutionPolicy, FixedResolutionPolicy and RelativeResolutionPolicy. In order to set the resolution policy, use the `FlxG.SetResolutionPolicy:Void(resolutionPolicy:FlxResolutionPolicy)`

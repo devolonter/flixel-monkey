@@ -109,7 +109,7 @@ Public
 		Local keysRecord:Stack<KeyRecord>
 		Local mouseRecord:XYRecord
 	
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
+	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
 		accelRecord = FlxG.Accel.RecordXYZ()
 	#End	
 	
@@ -137,7 +137,7 @@ Public
 	
 	#End
 	
-	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm"
+	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
 		Local touchCount:Int = FlxG.TouchCount()
 		Local touchXYRecord:XYRecord
 	

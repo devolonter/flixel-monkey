@@ -212,11 +212,11 @@ Public
 		Return _image
 	End Method
 	
-	Function FromImage:FlxImageData(image:Image, withPixelsArray:Bool = False, paddingX:Int = 0, paddingY:Int)
+	Function FromImage:FlxImageData(image:Image, withPixelsArray:Bool, paddingX:Int, paddingY:Int)
 		Return _FromImage(image, withPixelsArray, paddingX, paddingY)
 	End Function
 	
-	Function FromImage:FlxImageData(image:Image, withPixelsArray:Bool = False, paddings:Int = 0)
+	Function FromImage:FlxImageData(image:Image, withPixelsArray:Bool, paddings:Int)
 		Local paddingX:Int, paddingY:Int
 
 		If (paddings & graphics.Image.XPadding) paddingX = 1

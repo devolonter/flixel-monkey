@@ -14,12 +14,15 @@ Alias MonkeyCeil = monkey.math.Ceil
 Alias MonkeyMin = monkey.math.Min
 Alias MonkeyMax = monkey.math.Max
 Alias MonkeyGetClass = reflection.GetClass
-Alias NativeOpenURL = flxextern.OpenURL
+
+#If TARGET <> "psm" And TARGET <> "xna"
+	Alias FlxOpenURL = mojo.app.OpenUrl
+#End
 
 Class FlxU
 
 	Function OpenURL:Void(url:String)
-		NativeOpenURL(url)
+		FlxOpenURL(url)
 	End Function
 
 	Function Abs:Float(value:Float)

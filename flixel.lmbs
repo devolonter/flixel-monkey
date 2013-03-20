@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <ModSignature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>Flixel for Monkey</Name>
-  <MajorVersion>12</MajorVersion>
-  <MinorVersion>08</MinorVersion>
-  <Revision>14</Revision>
-  <Build>NIGHTLY-A</Build>
+  <MajorVersion>13</MajorVersion>
+  <MinorVersion>03</MinorVersion>
+  <Revision>19</Revision>
+  <Build>A</Build>
   <Kind>ZipFolder</Kind>
-  <UpdateURL>https://github.com/downloads/devolonter/flixel-monkey/flixel-monkey-nightly.zip</UpdateURL>
-  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/nightly/flixel.lmbs</RemoteSignatureURL>
-  <ShortDescription>Nightly builds</ShortDescription>
+  <UpdateURL>http://devolonter.ru/flixel/flixel-monkey-lastest-stable.zip</UpdateURL>
+  <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/master/flixel.lmbs</RemoteSignatureURL>
+  <ShortDescription>v1.0a5</ShortDescription>
   <RequireCredentials>false</RequireCredentials>
   <MoreInfoURL>https://github.com/devolonter/flixel-monkey/blob/nightly/CHANGELOG.md</MoreInfoURL>
 </ModSignature>
