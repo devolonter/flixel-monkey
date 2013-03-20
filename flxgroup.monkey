@@ -10,8 +10,6 @@ Import flxbasic
 Import flxobject
 Import system.flxarray
 
-Alias MonkeyGetClass = reflection.GetClass
-
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
 [i][b]NOTE:[/b] Although FlxGroup extends [a flxbasic.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its members.[/i]
@@ -784,7 +782,7 @@ Private
 		
 		Local prop:MethodInfo
 		
-		prop = basic.GetClassInfo().GetMethod(variableName,[MonkeyGetClass(value)])
+		prop = basic.GetClassInfo().GetMethod(variableName,[GetClass(value)])
 		If (prop = Null) Return
 		
 		Local i:Int = 0
