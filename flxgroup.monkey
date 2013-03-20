@@ -43,6 +43,8 @@ Private
 	
 	Field _sortIndex:FieldInfo
 	
+	Field _sortMethod:MethodInfo
+	
 	Field _sortDescending:Bool
 	
 Public
@@ -326,8 +328,12 @@ Public
 				_QSortString(0, _length - 1)
 				
 			Default
-				_QSortString(0, _length - 1)
-		
+				_sortMethod = _sortIndex.Type.GetMethod("Compare",[_sortIndex.Type])
+				If (_sortMethod = Null) _sortMethod = _sortIndex.Type.GetMethod("Compare",[GetClass("Object")])
+				
+				If (_sortMethod <> Null) Then
+					_QSortObject(0, _length - 1)
+				End If
 		End Select
 	End Method	
 	
@@ -708,6 +714,52 @@ Private
 				End If
 			Else
 				If (UnboxString(_sortIndex.GetValue(basicToCompare)).Compare(UnboxString(_sortIndex.GetValue(basic))) <= 0) Then
+					_members[i] = _members[store]
+					_members[store] = basicToCompare
+					store+=1	
+				End If
+			End If
+			
+			i+=1
+		Wend
+		
+		basic = _members[store]
+		_members[store] = _members[right]
+		_members[right] = basic
+		Return store	
+	End Method
+	
+	Method _QSortObject:Void(left:Int, right:Int)
+		If (right > left) Then
+			Local pivot:Int = left + (right-left)/2
+			Local newPivot:Int = _DoSortObject(left, right, pivot)
+			
+			_QSortObject(left, newPivot - 1)
+			_QSortObject(newPivot + 1, right)
+		End If
+	End Method
+	
+	Method _DoSortObject:Int(left:Int, right:Int, pivot:Int)
+		Local basic:FlxBasic = _members[pivot]
+		
+		_members[pivot] = _members[right]
+		_members[right] = basic
+		
+		Local store:Int = left
+		Local basicToCompare:FlxBasic
+		Local i:Int = left
+		
+		While (i < right)
+			basicToCompare = _members[i]
+			
+			If (_sortDescending) Then
+				If (UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basicToCompare),[_sortIndex.GetValue(basic)])) >= 0) Then
+					_members[i] = _members[store]
+					_members[store] = basicToCompare
+					store+=1	
+				End If
+			Else
+				If (UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basicToCompare),[_sortIndex.GetValue(basic)])) <= 0) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
