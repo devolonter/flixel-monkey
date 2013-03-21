@@ -31,6 +31,8 @@ Class FlxGroup Extends FlxBasic
 	Const DESCENDING:Bool = True
 	
 Private
+	Global _Enumerator:Enumerator = New Enumerator(Null)
+
 	Field _maxSize:Int
 	
 	Field _marker:Int
@@ -831,10 +833,6 @@ Private
 	End Method
 
 End
-
-Private
-
-Global _Enumerator:Enumerator = New Enumerator(Null)
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
