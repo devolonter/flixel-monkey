@@ -21,6 +21,11 @@ Alias MonkeyGetClass = reflection.GetClass
 
 Class FlxU
 
+Private
+	Global _objClass:ClassInfo
+
+Public
+
 	Function OpenURL:Void(url:String)
 		FlxOpenURL(url)
 	End Function
@@ -287,6 +292,16 @@ Class FlxU
 	
 	Function GetClass:ClassInfo(name:String)
 		Return MonkeyGetClass(name)
+	End Function
+	
+	Function GetObjectClass:ClassInfo()
+		If (_objClass <> Null)
+			Return _objClass
+		End If
+		
+		_objClass = MonkeyGetClass("monkey.lang.Object")
+		
+		Return _objClass
 	End Function
 	
 	Function ComputeVelocity:Float(velocity:Float, acceleration:Float = 0, drag:Float = 0, max:Float = 10000)

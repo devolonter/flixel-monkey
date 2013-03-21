@@ -8,6 +8,7 @@ Import reflection
 Import flxextern
 Import flxbasic
 Import flxobject
+Import flxu
 Import system.flxarray
 
 #Rem
@@ -31,6 +32,7 @@ Class FlxGroup Extends FlxBasic
 	Const DESCENDING:Bool = True
 	
 Private
+
 	Global _Enumerator:Enumerator = New Enumerator(Null)
 
 	Field _maxSize:Int
@@ -41,9 +43,9 @@ Private
 	
 	Field _members:FlxBasic[]
 	
-	Field _sortIndex:FieldInfo
+	Field _comparators:StringMap<Comparator>
 	
-	Field _sortMethod:MethodInfo
+	Field _comparator:Comparator
 	
 	Field _sortDescending:Bool
 	
@@ -61,6 +63,7 @@ Public
 		_marker = 0
 		_length = 0
 		_cameras = Null
+		_comparators = New StringMap<Comparator>()
 	End Method
 	
 	#Rem
@@ -96,8 +99,13 @@ Public
 		_members = _members.Resize(_length)
 		_cameras = Null
 		
-		_sortIndex = Null
-		_sortMethod = Null
+		If (_comparator <> Null) Then
+			_comparator.Clear()
+			_comparator = Null
+		End If
+		
+		_comparators.Clear()
+		_comparators = Null
 		
 		Super.Destroy()
 	End Method
@@ -313,31 +321,10 @@ Public
 	Return the new object.
 	#End	
 	Method Sort:Void(index:String = "y", order:Bool = ASCENDING)
-		_sortIndex = GetFirstNotNull().GetClassInfo().GetField(index)
-		_sortDescending = order
-		
-		Select _sortIndex.Type.Name
-		
-			Case FloatClass().Name
-				_QSortFloat(0, _length - 1)
-		
-			Case IntClass().Name
-				_QSortInt(0, _length - 1)
-				
-			Case BoolClass().Name
-				_QSortBool(0, _length - 1)
-				
-			Case StringClass().Name
-				_QSortString(0, _length - 1)
-				
-			Default
-				_sortMethod = _sortIndex.Type.GetMethod("Compare",[_sortIndex.Type])
-				If (_sortMethod = Null) _sortMethod = _sortIndex.Type.GetMethod("Compare",[GetClass("Object")])
-				
-				If (_sortMethod <> Null) Then
-					_QSortObject(0, _length - 1)
-				End If
-		End Select
+		_comparator = _GetComparator(GetFirstNotNull().GetClassInfo().GetField(index))
+		If (_comparator = Null) Return
+	
+		_QSort(0, _length - 1)
 	End Method	
 	
 	Method SetAll:Void(variableName:String, value:Object, recurse:Bool = True)
@@ -548,17 +535,17 @@ Private
 		Return -1
 	End Method
 	
-	Method _QSortBool:Void(left:Int, right:Int)
+	Method _QSort:Void(left:Int, right:Int)
 		If (right > left) Then
 			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortBool(left, right, pivot)
+			Local newPivot:Int = _DoSort(left, right, pivot)
 			
-			_QSortBool(left, newPivot - 1)
-			_QSortBool(newPivot + 1, right)		
+			_QSort(left, newPivot - 1)
+			_QSort(newPivot + 1, right)
 		End If
 	End Method
 	
-	Method _DoSortBool:Int(left:Int, right:Int, pivot:Int)
+	Method _DoSort:Int(left:Int, right:Int, pivot:Int)
 		Local basic:FlxBasic = _members[pivot]
 		
 		_members[pivot] = _members[right]
@@ -572,13 +559,13 @@ Private
 			basicToCompare = _members[i]
 			
 			If (_sortDescending) Then
-				If (Int(UnboxBool(_sortIndex.GetValue(basicToCompare))) - Int(UnboxBool(_sortIndex.GetValue(basic))) >= 0) Then
+				If (_comparator.Compare(basic, basicToCompare) >= 0) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
 				End If
 			Else
-				If (Int(UnboxBool(_sortIndex.GetValue(basicToCompare))) - Int(UnboxBool(_sortIndex.GetValue(basic))) <= 0) Then
+				If (_comparator.Compare(basic, basicToCompare) <= 0) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
@@ -591,190 +578,7 @@ Private
 		basic = _members[store]
 		_members[store] = _members[right]
 		_members[right] = basic
-		Return store	
-	End Method
-	
-	Method _QSortInt:Void(left:Int, right:Int)
-		If (right > left) Then
-			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortInt(left, right, pivot)
-			
-			_QSortInt(left, newPivot - 1)
-			_QSortInt(newPivot + 1, right)		
-		End If
-	End Method
-	
-	Method _DoSortInt:Int(left:Int, right:Int, pivot:Int)
-		Local basic:FlxBasic = _members[pivot]
 		
-		_members[pivot] = _members[right]
-		_members[right] = basic
-		
-		Local store:Int = left
-		Local basicToCompare:FlxBasic
-		Local i:Int = left
-		
-		While (i < right)
-			basicToCompare = _members[i]
-			
-			If (_sortDescending) Then
-				If (UnboxInt(_sortIndex.GetValue(basicToCompare)) >= UnboxInt(_sortIndex.GetValue(basic))) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			Else
-				If (UnboxInt(_sortIndex.GetValue(basicToCompare)) <= UnboxInt(_sortIndex.GetValue(basic))) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			End If
-			
-			i+=1
-		Wend
-		
-		basic = _members[store]
-		_members[store] = _members[right]
-		_members[right] = basic
-		Return store	
-	End Method
-	
-	Method _QSortFloat:Void(left:Int, right:Int)
-		If (right > left) Then
-			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortFloat(left, right, pivot)
-			
-			_QSortFloat(left, newPivot - 1)
-			_QSortFloat(newPivot + 1, right)		
-		End If
-	End Method
-	
-	Method _DoSortFloat:Int(left:Int, right:Int, pivot:Int)
-		Local basic:FlxBasic = _members[pivot]
-		
-		_members[pivot] = _members[right]
-		_members[right] = basic
-		
-		Local store:Int = left
-		Local basicToCompare:FlxBasic
-		Local i:Int = left
-		
-		While (i < right)
-			basicToCompare = _members[i]
-			
-			If (_sortDescending) Then
-				If (UnboxFloat(_sortIndex.GetValue(basicToCompare)) >= UnboxFloat(_sortIndex.GetValue(basic))) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			Else
-				If (UnboxFloat(_sortIndex.GetValue(basicToCompare)) <= UnboxFloat(_sortIndex.GetValue(basic))) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			End If
-			
-			i+=1
-		Wend
-		
-		basic = _members[store]
-		_members[store] = _members[right]
-		_members[right] = basic
-		Return store	
-	End Method
-	
-	Method _QSortString:Void(left:Int, right:Int)
-		If (right > left) Then
-			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortString(left, right, pivot)
-			
-			_QSortString(left, newPivot - 1)
-			_QSortString(newPivot + 1, right)		
-		End If
-	End Method
-	
-	Method _DoSortString:Int(left:Int, right:Int, pivot:Int)
-		Local basic:FlxBasic = _members[pivot]
-		
-		_members[pivot] = _members[right]
-		_members[right] = basic
-		
-		Local store:Int = left
-		Local basicToCompare:FlxBasic
-		Local i:Int = left
-		
-		While (i < right)
-			basicToCompare = _members[i]
-			
-			If (_sortDescending) Then
-				If (UnboxString(_sortIndex.GetValue(basicToCompare)).Compare(UnboxString(_sortIndex.GetValue(basic))) >= 0) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			Else
-				If (UnboxString(_sortIndex.GetValue(basicToCompare)).Compare(UnboxString(_sortIndex.GetValue(basic))) <= 0) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			End If
-			
-			i+=1
-		Wend
-		
-		basic = _members[store]
-		_members[store] = _members[right]
-		_members[right] = basic
-		Return store	
-	End Method
-	
-	Method _QSortObject:Void(left:Int, right:Int)
-		If (right > left) Then
-			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortObject(left, right, pivot)
-			
-			_QSortObject(left, newPivot - 1)
-			_QSortObject(newPivot + 1, right)
-		End If
-	End Method
-	
-	Method _DoSortObject:Int(left:Int, right:Int, pivot:Int)
-		Local basic:FlxBasic = _members[pivot]
-		
-		_members[pivot] = _members[right]
-		_members[right] = basic
-		
-		Local store:Int = left
-		Local basicToCompare:FlxBasic
-		Local i:Int = left
-		
-		While (i < right)
-			basicToCompare = _members[i]
-			
-			If (_sortDescending) Then
-				If (UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basicToCompare),[_sortIndex.GetValue(basic)])) >= 0) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			Else
-				If (UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basicToCompare),[_sortIndex.GetValue(basic)])) <= 0) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			End If
-			
-			i+=1
-		Wend
-		
-		basic = _members[store]
-		_members[store] = _members[right]
-		_members[right] = basic
 		Return store	
 	End Method
 	
@@ -800,6 +604,57 @@ Private
 			End If
 			i+=1		
 		Wend
+	End Method
+	
+	Method _GetComparator:Comparator(sortIndex:FieldInfo)
+		If (sortIndex = Null) Return Null
+	
+		Local key:String = sortIndex.Type.Name
+	
+		If (sortIndex.Type.ExtendsClass(FlxU.GetObjectClass())) Then
+			key = FlxU.GetObjectClass().Name
+		End If
+	
+		Local comparator:Comparator = _comparators.Get(key)
+		
+		If (comparator = Null) Then
+			Select key
+				Case FloatClass().Name
+					comparator = New FloatComparator()
+			
+				Case IntClass().Name
+					comparator = New IntComparator()
+					
+				Case BoolClass().Name
+					comparator = New BoolComparator()
+					
+				Case StringClass().Name
+					comparator = New StringComparator()
+					
+				Default
+					comparator = New ObjectComparator()
+					
+			End Select
+			
+			_comparators.Set(key, comparator)
+		End If
+		
+		comparator.Clear()
+		
+		If (key <> FlxU.GetObjectClass().Name) Then
+			comparator.Reset(sortIndex)
+		Else
+			Local sortMethod:MethodInfo = sortIndex.Type.GetMethod("Compare",[sortIndex.Type])
+			If (sortMethod = Null) sortMethod = sortIndex.Type.GetMethod("Compare",[FlxU.GetObjectClass()])
+			
+			If (sortMethod <> Null) Then
+				comparator.Reset(sortIndex, sortMethod)
+			Else
+				comparator = Null
+			End If
+		End If
+		
+		Return comparator
 	End Method
 	
 End Class
@@ -833,6 +688,72 @@ Private
 	End Method
 
 End
+
+Private
+
+Class Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic) Abstract
+	
+	Method Reset:Comparator(sortIndex:FieldInfo, sortMethod:MethodInfo = Null)
+		_sortIndex = sortIndex
+		_sortMethod = sortMethod
+		
+		Return Self
+	End Method
+	
+	Method Clear:Void()
+		_sortIndex = Null
+		_sortMethod = Null
+	End Method
+	
+Private
+
+	Field _sortIndex:FieldInfo
+	
+	Field _sortMethod:MethodInfo
+
+End Class
+
+Class BoolComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return Int(UnboxBool(_sortIndex.GetValue(basic2))) - Int(UnboxBool(_sortIndex.GetValue(basic1)))
+	End Method
+
+End Class
+
+Class IntComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxInt(_sortIndex.GetValue(basic1)) - UnboxInt(_sortIndex.GetValue(basic1))
+	End Method
+
+End Class
+
+Class FloatComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxFloat(_sortIndex.GetValue(basic1)) - UnboxFloat(_sortIndex.GetValue(basic1))
+	End Method
+
+End Class
+
+Class StringComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxString(_sortIndex.GetValue(basic2)).Compare(UnboxString(_sortIndex.GetValue(basic1)))
+	End Method
+
+End Class
+
+Class ObjectComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basic2),[_sortIndex.GetValue(basic1)]))
+	End Method
+
+End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
