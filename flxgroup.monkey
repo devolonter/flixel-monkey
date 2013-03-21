@@ -558,7 +558,18 @@ Private
 		
 		While (i < right)
 			basicToCompare = _members[i]
-			
+
+			If (basicToCompare = Null Or basic = Null) Then
+				If (basicToCompare <> Null And basic = Null) Then
+					_members[i] = _members[store]
+					_members[store] = basicToCompare
+					store+=1	
+				End If
+				
+				i += 1
+				Continue
+			End If
+				
 			If (_sortDescending) Then
 				If (_comparator.Compare(basic, basicToCompare) >= 0) Then
 					_members[i] = _members[store]
