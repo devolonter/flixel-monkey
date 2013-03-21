@@ -3,12 +3,17 @@ Changelog
 ______________________________________________________
 ###Development Version
 * FlxG.Framerate are removed. Use FlxG.Updaterate instead FlxG.Framerate
+* Method FlxBasic.GetClass renamed to FlxBasic.GetClassInfo. To avoid conflicts with Monkey GetClass function
 * #FLX_WEBGL_ENABLED config setting added. False by default
 * BlitzMax target support added
 * New class FlxImageData added. It's a simple OO wrapper similar with flash BitmapData to work with image pixels
 * New functions FlxU.SetImageMask and FlxU.SetImagePadding added
+* Improved enumerator of FlxGroup. Now it creates less garbage and skips Null elements
+* Improved sorting of FlxGroup. All Null objects are moved to the end of the list when sorting
+* Added ability to sort in groups by field of Object type. The object class must implement the Compare method
 * Added OnContentInit hook function
 * Game update method has moved to App.OnUpdate and uses a pure Monkey updaterate control
+* The use of #REFLECTION_FILTER was improved. Now the string "flixel.flx*|flixel.plugin*" is added automatically
 * Moves field for FlxText, FlxTileblock and FlxTilemap now is False by default
 * Fixed FlxSprite transformation bug when scale.x <> scale.y
 * Fixed FlxQuadTree null pointer error
