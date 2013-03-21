@@ -675,16 +675,37 @@ End Class
 Class Enumerator
 
 	Method New(group:FlxGroup)
-		_group = group
+		_Reset(group)
 	End
 
 	Method HasNext:Bool()
-		Return _index < _group.Length
+		If (_dirty) Then
+			_dirty = False
+			_hasNext = False
+			_nextIndex = _index
+			
+			Repeat
+				If (_nextIndex = _group._length) Then
+					Return _hasNext
+				End If
+			
+				_basic = _group._members[_nextIndex]
+				
+				_nextIndex += 1
+			Until (_basic <> Null)
+			
+			_hasNext = True
+		End If
+		
+		Return _hasNext
 	End
 
 	Method NextObject:FlxBasic()
-		_index+=1
-		Return _group.Members[_index-1]
+		If ( Not HasNext()) Return Null
+		
+		_dirty = True
+		_index = _nextIndex
+		Return _basic
 	End
 
 Private
@@ -693,9 +714,20 @@ Private
 	
 	Field _index:Int
 	
+	Field _nextIndex:Int
+	
+	Field _hasNext:Bool
+	
+	Field _dirty:Bool
+	
+	Field _basic:FlxBasic
+	
 	Method _Reset:Enumerator(group:FlxGroup)
 		_group = group
 		_index = 0
+		_nextIndex = 0
+		_hasNext = False
+		_dirty = True
 		
 		Return Self
 	End Method
