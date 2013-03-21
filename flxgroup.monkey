@@ -531,7 +531,7 @@ Public
 	End Method
 	
 	Method ObjectEnumerator:Enumerator()
-		Return New Enumerator(Self)
+		Return _Enumerator._Reset(Self)
 	End
 	
 Private
@@ -820,9 +820,21 @@ Class Enumerator
 Private
 
 	Field _group:FlxGroup
+	
 	Field _index:Int
+	
+	Method _Reset:Enumerator(group:FlxGroup)
+		_group = group
+		_index = 0
+		
+		Return Self
+	End Method
 
 End
+
+Private
+
+Global _Enumerator:Enumerator = New Enumerator(Null)
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.
