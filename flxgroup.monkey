@@ -685,7 +685,6 @@ Class Enumerator
 		If (_dirty) Then
 			_dirty = False
 			_hasNext = False
-			_nextIndex = _index
 			
 			Repeat
 				If (_nextIndex = _group._length) Then
@@ -704,10 +703,9 @@ Class Enumerator
 	End
 
 	Method NextObject:FlxBasic()
-		If ( Not HasNext()) Return Null
+		If (_dirty And Not HasNext()) Return Null
 		
 		_dirty = True
-		_index = _nextIndex
 		Return _basic
 	End
 	
@@ -732,7 +730,6 @@ Private
 	
 	Method _Reset:Enumerator(group:FlxGroup)
 		_group = group
-		_index = 0
 		_nextIndex = 0
 		_hasNext = False
 		_dirty = True
