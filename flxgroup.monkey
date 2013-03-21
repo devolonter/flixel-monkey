@@ -33,8 +33,6 @@ Class FlxGroup Extends FlxBasic
 	
 Private
 
-	Global _Enumerator:Enumerator = New Enumerator(Null)
-
 	Field _maxSize:Int
 	
 	Field _marker:Int
@@ -48,6 +46,8 @@ Private
 	Field _comparator:Comparator
 	
 	Field _sortDescending:Bool
+	
+	Field _enumerator:Enumerator
 	
 Public
 	#Rem
@@ -64,6 +64,7 @@ Public
 		_length = 0
 		_cameras = Null
 		_comparators = New StringMap<Comparator>()
+		_enumerator = New Enumerator(Null)
 	End Method
 	
 	#Rem
@@ -520,7 +521,7 @@ Public
 	End Method
 	
 	Method ObjectEnumerator:Enumerator()
-		Return _Enumerator._Reset(Self)
+		Return _enumerator._Reset(Self)
 	End
 	
 Private
