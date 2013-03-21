@@ -325,6 +325,7 @@ Public
 		_comparator = _GetComparator(GetFirstNotNull().GetClassInfo().GetField(index))
 		If (_comparator = Null) Return
 	
+		_sortDescending = order
 		_QSort(0, _length - 1)
 	End Method	
 	
@@ -571,13 +572,13 @@ Private
 			End If
 				
 			If (_sortDescending) Then
-				If (_comparator.Compare(basic, basicToCompare) >= 0) Then
+				If (_comparator.Compare(basicToCompare, basic) >= 0) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
 				End If
 			Else
-				If (_comparator.Compare(basic, basicToCompare) <= 0) Then
+				If (_comparator.Compare(basicToCompare, basic) <= 0) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
@@ -730,7 +731,7 @@ End Class
 Class BoolComparator Extends Comparator
 	
 	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
-		Return Int(UnboxBool(_sortIndex.GetValue(basic2))) - Int(UnboxBool(_sortIndex.GetValue(basic1)))
+		Return Int(UnboxBool(_sortIndex.GetValue(basic1))) - Int(UnboxBool(_sortIndex.GetValue(basic2)))
 	End Method
 
 End Class
@@ -738,7 +739,7 @@ End Class
 Class IntComparator Extends Comparator
 	
 	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
-		Return UnboxInt(_sortIndex.GetValue(basic1)) - UnboxInt(_sortIndex.GetValue(basic1))
+		Return UnboxInt(_sortIndex.GetValue(basic1)) - UnboxInt(_sortIndex.GetValue(basic2))
 	End Method
 
 End Class
@@ -746,7 +747,7 @@ End Class
 Class FloatComparator Extends Comparator
 	
 	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
-		Return UnboxFloat(_sortIndex.GetValue(basic1)) - UnboxFloat(_sortIndex.GetValue(basic1))
+		Return UnboxFloat(_sortIndex.GetValue(basic1)) - UnboxFloat(_sortIndex.GetValue(basic2))
 	End Method
 
 End Class
@@ -754,7 +755,7 @@ End Class
 Class StringComparator Extends Comparator
 	
 	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
-		Return UnboxString(_sortIndex.GetValue(basic2)).Compare(UnboxString(_sortIndex.GetValue(basic1)))
+		Return UnboxString(_sortIndex.GetValue(basic1)).Compare(UnboxString(_sortIndex.GetValue(basic2)))
 	End Method
 
 End Class
@@ -762,7 +763,7 @@ End Class
 Class ObjectComparator Extends Comparator
 	
 	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
-		Return UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basic2),[_sortIndex.GetValue(basic1)]))
+		Return UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basic1),[_sortIndex.GetValue(basic2)]))
 	End Method
 
 End Class
