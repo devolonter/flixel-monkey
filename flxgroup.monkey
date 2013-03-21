@@ -108,6 +108,9 @@ Public
 		_comparators.Clear()
 		_comparators = Null
 		
+		_enumerator.Destroy()
+		_enumerator = Null
+		
 		Super.Destroy()
 	End Method
 	
@@ -707,6 +710,11 @@ Class Enumerator
 		_index = _nextIndex
 		Return _basic
 	End
+	
+	Method Destroy:Void()
+		_Reset(Null)
+		_basic = Null
+	End Method
 
 Private
 
