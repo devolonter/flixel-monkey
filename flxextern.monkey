@@ -3,7 +3,7 @@ Strict
 Import "native/flixel.${TARGET}.${LANG}"
 
 #If TARGET = "html5"
-	#If FLX_WEBGL_ENABLED = 1
+	#If FLX_WEBGL_ENABLED = "1"
 		Import "native/webgl/mojo.${TARGET}.gl.min.${LANG}" 
 	#End
 #End
