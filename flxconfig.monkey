@@ -1,4 +1,10 @@
 
 #REFLECTION_FILTER += "flixel.flx*|flixel.plugin*"
 
-#FLX_WEBGL_ENABLED  =False
+#If CONFIG = "debug"
+	#FLX_DEBUG_ENABLED = True
+#Else
+	#FLX_DEBUG_ENABLED = False
+#End
+
+#FLX_WEBGL_ENABLED  = False
