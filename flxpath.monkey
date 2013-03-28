@@ -37,13 +37,17 @@ Public
 		debugColor = FlxG.WHITE
 		ignoreDrawDebug = False
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		Local debugPathDisplay:DebugPathDisplay = Manager()
-		If (debugPathDisplay <> Null) debugPathDisplay.Add(Self)			
+		If (debugPathDisplay <> Null) debugPathDisplay.Add(Self)
+	#End			
 	End Method
 
 	Method Destroy:Void()
+	#If FLX_DEBUG_ENABLED = "1"
 		Local debugPathDisplay:DebugPathDisplay = Manager()
 		If (debugPathDisplay <> Null) debugPathDisplay.Remove(Self)
+	#End
 		
 		debugScrollFactor = Null
 		_point = Null

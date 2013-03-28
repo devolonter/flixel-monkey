@@ -344,7 +344,9 @@ Public
 			End If
 		PopMatrix()		
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		_VisibleCount += 1
+	#End
 	End Method
 	
 	Method GetData:Int[](simple:Bool = False)

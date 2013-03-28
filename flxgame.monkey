@@ -186,7 +186,9 @@ Public
 	End Method
 	
 	Method OnRender:Int()
+	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._VisibleCount = 0
+	#End	
 		_Draw()
 		Return 0
 	End Method
@@ -198,9 +200,15 @@ Public
 	End Method
 	
 	Method OnResume:Int()
+	#If FLX_DEBUG_ENABLED = "1"
 		If (Not _debuggerUp And Not useSystemCursor) Then
 			HideMouse()
 		End If
+	#Else
+		If ( Not useSystemCursor) Then
+			HideMouse()
+		End If
+	#End
 		
 		FlxG.ResetInput()
 		FlxG.ResumeSounds()
@@ -225,10 +233,12 @@ Private
 		FlxG.ResetCameras()
 		FlxG.ResetInput()
 		FlxG.DestroySounds()
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_debugger <> Null) Then
 			'TODO!
 		End If
+	#End
 		
 		Local timeManager:TimerManager = FlxTimer.Manager()
 		If (timeManager <> Null) timeManager.Clear()		
@@ -257,27 +267,33 @@ Private
 			_recordingRequested = False
 			_replay.Create(FlxG.GlobalSeed)
 			_recording = True
-			
+		
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
 				'TODO
 				FlxG.Log("FLIXEL: starting new flixel gameplay record.")
 			End If
+		#End
 			
 		ElseIf (_replayRequested)
 			_replayRequested = False
 			_replay.Rewind()
 			FlxG.GlobalSeed = _replay.seed
-			
+		
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
 				'TODO
 			End If
+		#End
 			
 			_replaying = True
 		End If
 		
 		If (_state <> _requestedState) _SwitchState()
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._ActiveCount = 0
+	#End
 		
 		If (_replaying) Then		
 			If (_replayCancelKeys.Length() > 0 And Not KeyDown(192) And Not KeyDown(220)) Then
@@ -324,26 +340,34 @@ Private
 				End If
 			End If
 			
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
 				'TODO
 			End If
+		#End
+				
 		Else
 			FlxG.UpdateInput()
 		End If
 		
 		If (_recording) Then
 			_replay.RecordFrame()
-						
+		
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
 				'TODO
 			End If
+		#End
+		
 		End If
 		
 		_Update()
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_debugger <> Null) Then
 			'TODO
 		End If
+	#End	
 	End Method	
 	
 	Method _Update:Void()
@@ -358,10 +382,12 @@ Private
 		End If
 		
 		FlxG.UpdateCameras()
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_debuggerUp) Then
 			'TODO!
 		End If
+	#End	
 	End Method
 	
 	Method _UpdateSoundTray:Void(ms:Int)

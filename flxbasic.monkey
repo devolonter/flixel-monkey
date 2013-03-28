@@ -100,7 +100,9 @@ Private
 	Pre-update is called right before [a #Update]Update()[/a] on each object in the game loop.
 	#End
 	Method PreUpdate:Void()
-		_ActiveCount+=1
+	#If FLX_DEBUG_ENABLED = "1"
+		_ActiveCount += 1
+	#End	
 	End Method
 	
 	#Rem
@@ -121,8 +123,10 @@ Private
 	summary:Override this function to control how the object is drawn.
 	Overriding [a #Draw]Draw()[/a] is rarely necessary, but can be very useful.
 	#End
-	Method Draw:Void()		
-		_VisibleCount+=1
+	Method Draw:Void()
+	#If FLX_DEBUG_ENABLED = "1"
+		_VisibleCount += 1
+	#End	
 	End Method
 	
 	#Rem

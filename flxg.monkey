@@ -60,7 +60,7 @@ Class FlxG
 	
 	Global Paused:Bool
 	
-#If CONFIG = "debug"
+#If FLX_DEBUG_ENABLED = "1"
 	Global Debug:Bool = True
 #Else
 	Global Debug:Bool = False
@@ -213,9 +213,11 @@ Public
 	Function StopReplay:Void()
 		_Game._replaying = False
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_Game._debugger <> Null) Then
 			'TODO
 		End If
+	#End
 		
 		ResetInput()
 	End Function
@@ -232,10 +234,12 @@ Public
 	
 	Function StopRecording:String()
 		_Game._recording = False
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"	
 		If (_Game._debugger <> Null) Then
 			'TODO
-		End if
+		End If
+	#End
 		
 		Return _Game._replay.Save()
 	End Function
@@ -621,7 +625,10 @@ Public
 		FlxG.Cameras = New Stack<FlxCamera>()		
 		
 		Plugins = New Stack<FlxBasic>
+		
+	#If FLX_DEBUG_ENABLED = "1"
 		AddPlugin(New DebugPathDisplay())
+	#End
 		AddPlugin(New TimerManager())
 		
 		FlxG.Accel = New AccelInput()
@@ -657,8 +664,11 @@ Public
 		FlxG.GlobalSeed = Rnd(1, 10000000)
 		FlxG.WorldBounds = New FlxRect(-10, -10, FlxG.Width + 20, FlxG.Height + 20)
 		FlxG.WorldDivisions = 6
+		
+	#If FLX_DEBUG_ENABLED = "1"
 		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(ClassInfo(DebugPathDisplay.ClassObject)))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
+	#End
 	End Function
 	
 	Function UpdateInput:Void()
@@ -716,10 +726,14 @@ Public
 	#If TARGET = "android" Or TARGET = "psm"
 		Keys.Update()
 	#End
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"	
 		If (Not _Game._debuggerUp Or Not _Game._debugger.hasMouse) Then
 			Mouse.Update(MouseX(), MouseY())
 		End If
+	#Else
+		Mouse.Update(MouseX(), MouseY())
+	#End
 	End Function
 	
 	Function UpdateCameras:Void()

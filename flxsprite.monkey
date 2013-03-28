@@ -364,8 +364,10 @@ Public
 			End If		
 		End If
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		_VisibleCount += 1;
-		If(FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
+		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
+	#End
 	End Method
 	
 	Method DrawFrame:Void(force:Bool = False)

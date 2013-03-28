@@ -225,8 +225,10 @@ Public
 	End Method
 	
 	Method PreUpdate:Void()
+	#If FLX_DEBUG_ENABLED = "1"
 		_ActiveCount += 1
-		
+	#End
+			
 		If (_flickerTimer <> 0) Then
 			If (_flickerTimer > 0) Then
 				_flickerTimer -= FlxG.Elapsed				
@@ -255,9 +257,11 @@ Public
 	Method Draw:Void()
 		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera.ID)) Return	
 		If (Not OnScreen(FlxG._CurrentCamera)) Return
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"	
 		_VisibleCount += 1
-		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._CurrentCamera)	
+		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._CurrentCamera)
+	#End	
 	End Method
 	
 	Method DrawDebug:Void(camera:FlxCamera = Null)
