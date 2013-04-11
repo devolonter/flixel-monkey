@@ -25,6 +25,7 @@ Import system.resolutionpolicy.fill
 Import system.flxresourcesmanager
 Import system.flxquadtree
 Import system.flxreplay
+Import system.flximagedata
 
 Import plugin.timermanager
 Import plugin.debugpathdisplay
@@ -393,6 +394,28 @@ Public
 	
 	Function CheckBitmapCache:Bool(key:String)
 		Return _BitmapCache.CheckResource(key)
+	End Function
+	
+	Function CreateBitmap:Image(width:Int, height:Int, color:Int, unigue:Bool, key:String = "")
+		If (key.Length() = 0) Then
+			key = width + "x" + height + ":" + color
+			
+			If (unigue And CheckBitmapCache(key)) Then
+				Local inc:Int = 0
+				Local ukey:String
+				
+				Repeat
+					ukey = key + inc
+					inc += 1
+				Until (CheckBitmapCache(ukey))
+				
+				key = ukey
+			End If
+		End If
+		
+		If ( Not CheckBitmapCache(key)) Then
+			_BitmapCache.Resources.Set(key, (New FlxImageData(width, height, False, color)).Image)
+		End If
 	End Function
 	
 	Function AddBitmap:Image(graphic:String, graphicLoader:FlxResourceLoader<Image>, unique:Bool = False, key:String = "")
