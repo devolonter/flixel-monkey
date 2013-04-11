@@ -174,7 +174,7 @@ Public
 	End Method
 		
 	Method Draw:Void()
-		if (Not _pixels) Return
+		If (_pixels = Null) Return
 	
 		If (_flickerTimer <> 0) Then
 			_flicker = Not _flicker

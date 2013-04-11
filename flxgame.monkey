@@ -85,6 +85,8 @@ Private
 	Field _soundTrayLabel:FlxText
 	
 	Field _updaterate:Int
+	
+	Field _stateReady:Bool
 
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, useSystemCursor:Bool = False)
@@ -188,7 +190,14 @@ Public
 	Method OnRender:Int()
 	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._VisibleCount = 0
-	#End	
+	#End
+	
+		If ( Not _stateReady) Then
+			_state.Create()
+			_stateReady = True
+			Return 0
+		End If
+	
 		_Draw()
 		Return 0
 	End Method
@@ -246,7 +255,7 @@ Private
 		If (_state <> Null) _state.Destroy()		
 		
 		_state = _requestedState
-		_state.Create()
+		_stateReady = False
 		
 		If (FlxG.Updaterate <> _updaterate) Then
 			_ResetFramerate()
@@ -289,7 +298,12 @@ Private
 			_replaying = True
 		End If
 		
-		If (_state <> _requestedState) _SwitchState()
+		If (_state <> _requestedState) Then
+			_SwitchState()
+			Return
+		End If
+		
+		if (Not _stateReady) Return
 		
 	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._ActiveCount = 0
