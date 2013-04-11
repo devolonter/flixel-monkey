@@ -416,6 +416,8 @@ Public
 		If ( Not CheckBitmapCache(key)) Then
 			_BitmapCache.Resources.Set(key, (New FlxImageData(width, height, False, color)).Image)
 		End If
+		
+		Return _BitmapCache.Resources.Get(key)
 	End Function
 	
 	Function AddBitmap:Image(graphic:String, graphicLoader:FlxResourceLoader<Image>, unique:Bool = False, key:String = "")
