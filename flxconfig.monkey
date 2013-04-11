@@ -1,5 +1,9 @@
 
-#REFLECTION_FILTER += "flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER += "flixel.flxbasic*|flixel.flxbutton*|flixel.flxcamera*|flixel.flxemitter*"
+#REFLECTION_FILTER += "flixel.flxgroup*|flixel.flxmusic*|flixel.flxobject*|flixel.flxparticle*"
+#REFLECTION_FILTER += "flixel.flxpath*|flixel.flxpoint*|flixel.flxrect*|flixel.flxsound*"
+#REFLECTION_FILTER += "flixel.flxsprite*|flixel.flxstate*|flixel.flxtext*|flixel.flxtileblock*"
+#REFLECTION_FILTER += "flixel.flxtilemap*|flixel.plugin*"
 
 #If CONFIG = "debug"
 	#FLX_DEBUG_ENABLED = True
