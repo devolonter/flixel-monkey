@@ -5,6 +5,7 @@ ______________________________________________________
 * FlxG.Framerate are removed. Use FlxG.Updaterate instead FlxG.Framerate
 * Method FlxBasic.GetClass renamed to FlxBasic.GetClassInfo. To avoid conflicts with Monkey GetClass function
 * #FLX_WEBGL_ENABLED config setting added. False by default
+* #FLX_DEBUG_ENABLED config setting added
 * BlitzMax target support added
 * New class FlxImageData added. It's a simple OO wrapper similar with flash BitmapData to work with image pixels
 * New functions FlxU.SetImageMask and FlxU.SetImagePadding added
