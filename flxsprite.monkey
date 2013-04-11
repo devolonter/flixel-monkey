@@ -43,6 +43,8 @@ Class FlxSprite Extends FlxObject
 	
 Private
 	Global _GraphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
+	
+	Global _Matrix:Float[6]
 
 	Field _animations:StringMap<FlxAnim>
 	
@@ -67,8 +69,6 @@ Private
 	Field _bakedRotation:Float
 	
 	Field _pixels:Image
-	
-	Field _mx0:Float, _mx1:Float, _mx2:Float, _mx3:Float, _mx4:Float, _mx5:Float
 	
 	Field _halfWidth:Float
 	
@@ -258,25 +258,28 @@ Public
 		Else							
 			PushMatrix()
 				'Translate
-				_mx4 = _point.x + origin.x
-				_mx5 = _point.y + origin.y
+				_Matrix[4] = _point.x + origin.x
+				_Matrix[5] = _point.y + origin.y
 				
 				'Scale
-				_mx0 = scale.x
-				_mx3 = scale.y
+				_Matrix[0] = scale.x
+				_Matrix[3] = scale.y
 				
 				'Rotate
 				If (angle <> 0 And _bakedRotation = 0) Then						
 					Local sin:Float = Sin(angle)
 					Local cos:Float = Cos(angle)
 					
-					_mx1 = sin * _mx0
-					_mx2 = -sin * _mx3
-					_mx0 *= cos
-					_mx3 *= cos
+					_Matrix[1] = sin * _Matrix[0]
+					_Matrix[2] = -sin * _Matrix[3]
+					_Matrix[0] *= cos
+					_Matrix[3] *= cos
+				Else
+					_Matrix[1] = 0
+					_Matrix[2] = 0
 				End If
 								
-				Transform(_mx0, _mx1, _mx2, _mx3, _mx4, _mx5)
+				Transform(_Matrix[0], _Matrix[1], _Matrix[2], _Matrix[3], _Matrix[4], _Matrix[5])
 				
 				If (_flipNeeded) Then
 					Transform(-1, 0, 0, 1, _halfWidth - origin.x, _halfHeight - origin.y)
