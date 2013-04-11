@@ -5,7 +5,7 @@ Import mojo
 Import flxsprite
 Import flxg
 
-Class FlxTileblock Extends FlxSprite
+Class FlxTileblock Extends FlxSprite Implements FlxSpriteRenderer
 
 	Global ClassObject:Object
 
@@ -18,6 +18,7 @@ Public
 	Method New(x:Int, y:Int, width:Int, height:Int)
 		Super.New(x, y)
 		
+		SetRenderer(Self)
 		MakeGraphic(width, height, 0)
 		active = False
 		immovable = True
@@ -97,7 +98,7 @@ Public
 		Return Self	
 	End Method	
 	
-	Method _DrawSurface:Void(x:Float, y:Float)		
+	Method OnRender:Void(x:Float, y:Float)
 		If (_tilePixels = Null) Return
 			
 		Local i:Int = 0

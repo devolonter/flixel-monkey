@@ -11,7 +11,7 @@ Import flxg
 Import system.flxcolor
 Import system.flxassetsmanager
 
-Class FlxText Extends FlxSprite
+Class FlxText Extends FlxSprite Implements FlxSpriteRenderer
 
 	Global ClassObject:Object
 	
@@ -35,8 +35,7 @@ Public
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:ClassInfo = Null)
 		Super.New(x, y)
 		
-		Pixels = Null
-		
+		SetRenderer(Self)
 		_shadow = New FlxColor(0)		
 		
 		If (driver = Null) Then
@@ -140,7 +139,7 @@ Public
 		Return _driver.GetFontObject()
 	End Method
 	
-	Method _DrawSurface:Void(x:Float, y:Float)	
+	Method OnRender:Void(x:Float, y:Float)
 		If (_shadow.argb <> 0) Then
 			Local oldColor:Int = FlxG._LastDrawingColor
 			Local oldAlpha:Int = FlxG._LastDrawingAlpha

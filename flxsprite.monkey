@@ -73,6 +73,8 @@ Private
 	Field _halfWidth:Float
 	
 	Field _halfHeight:Float
+	
+	Field _renderer:FlxSpriteRenderer
 
 Public
 	Method New(x:Float = 0, y:Float = 0, simpleGraphic:String = "")
@@ -121,6 +123,7 @@ Public
 		_color = Null
 		_mixedColor = Null
 		_camera = Null
+		_renderer = Null
 		
 		Super.Destroy()
 	End Method
@@ -173,9 +176,7 @@ Public
 		_UpdateAnimation()
 	End Method
 		
-	Method Draw:Void()
-		If (_pixels = Null) Return
-	
+	Method Draw:Void()	
 		If (_flickerTimer <> 0) Then
 			_flicker = Not _flicker
 			If (_flicker) Return
@@ -237,12 +238,21 @@ Public
 		End If
 		
 		If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
-			If (Not _flipNeeded) Then
-				DrawImage(_pixels, _point.x, _point.y, _curIndex)					
+			If ( Not _flipNeeded) Then
+				If (_renderer = Null) Then
+					DrawImage(_pixels, _point.x, _point.y, _curIndex)
+				Else
+					_renderer.OnRender(_point.x, _point.y)
+				End If
 			Else
 				PushMatrix()						
-					Transform(-1, 0, 0, 1, _point.x + _halfWidth, _point.y + _halfHeight)						
-					DrawImage(_pixels, -_halfWidth, -_halfHeight, _curIndex)
+					Transform(-1, 0, 0, 1, _point.x + _halfWidth, _point.y + _halfHeight)
+					
+					If (_renderer = Null) Then
+						DrawImage(_pixels, -_halfWidth, -_halfHeight, _curIndex)
+					Else
+						_renderer.OnRender(-_halfWidth, -_halfHeight)
+					End If
 				PopMatrix()									
 			End If		
 		Else							
@@ -271,165 +281,14 @@ Public
 				If (_flipNeeded) Then
 					Transform(-1, 0, 0, 1, _halfWidth - origin.x, _halfHeight - origin.y)
 				End If
-										
-				DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
+				
+				If (_renderer = Null) Then
+					DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
+				Else
+					_renderer.OnRender(-origin.x, -origin.y)
+				End If
 			PopMatrix()				
 		End If
-	
-		#Rem
-		If (_pixels <> Null) Then
-			If (_camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_color, _camera._color)
-				
-				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
-					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-					FlxG._LastDrawingColor = _mixedColor.argb
-				End If				
-			Else
-				If (FlxG._LastDrawingColor <> _color.argb) Then
-					SetColor(_color.r, _color.g, _color.b)
-					FlxG._LastDrawingColor = _color.argb
-				End If		
-			End If
-			
-			If (_camera.Alpha < 1) Then
-				Local _mixedAlpha:Float = _camera.Alpha * _alpha
-				
-				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
-					SetAlpha(_mixedAlpha)
-					FlxG._LastDrawingAlpha = _mixedAlpha					
-				End If
-			Else
-				If (FlxG._LastDrawingAlpha <> _alpha) Then
-					SetAlpha(_alpha)
-					FlxG._LastDrawingAlpha = _alpha					
-				End If
-			End If
-			
-			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
-				If (Not _flipNeeded) Then
-					DrawImage(_pixels, _point.x, _point.y, _curIndex)					
-				Else
-					PushMatrix()						
-						Transform(-1, 0, 0, 1, _point.x + _halfWidth, _point.y + _halfHeight)						
-						DrawImage(_pixels, -_halfWidth, -_halfHeight, _curIndex)
-					PopMatrix()									
-				End If		
-			Else							
-				PushMatrix()
-					'Translate
-					_mx4 = _point.x + origin.x
-					_mx5 = _point.y + origin.y
-					
-					'Scale
-					_mx0 = scale.x
-					_mx3 = scale.y
-					
-					'Rotate
-					If (angle <> 0 And _bakedRotation = 0) Then						
-						Local sin:Float = Sin(angle)
-						Local cos:Float = Cos(angle)
-						
-						_mx1 = sin * _mx0
-						_mx2 = -sin * _mx3
-						_mx0 *= cos
-						_mx3 *= cos
-					End If
-									
-					Transform(_mx0, _mx1, _mx2, _mx3, _mx4, _mx5)
-					
-					If (_flipNeeded) Then						
-						Transform(-1, 0, 0, 1, _halfWidth - origin.x, _halfHeight - origin.y)
-					End If
-											
-					DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
-				PopMatrix()				
-			End If
-		Else		
-			If (_camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_surfaceColor, _camera._color)
-				
-				If (_color.argb <> FlxG.WHITE) Then
-					_mixedColor.MixRGB(_color)					
-				End If
-				
-				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
-					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-					FlxG._LastDrawingColor = _mixedColor.argb
-				End If
-			Else
-				If (_color.argb <> FlxG.WHITE) Then
-					_mixedColor.MixRGB(_surfaceColor, _color)
-					
-					If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
-						SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-						FlxG._LastDrawingColor = _mixedColor.argb
-					End If
-				Else
-					If (FlxG._LastDrawingColor <> _surfaceColor.argb) Then
-						SetColor(_surfaceColor.r, _surfaceColor.g, _surfaceColor.b)
-						FlxG._LastDrawingColor = _surfaceColor.argb
-					End If						
-				End If			
-			End If
-			
-			If (_camera.Alpha < 1) Then
-				Local _mixedAlpha:Float = _camera.Alpha * _alpha
-				
-				If (_surfaceColor.a < 1) Then
-					_mixedAlpha *= _surfaceColor.a				
-				End If
-				
-				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
-					SetAlpha(_mixedAlpha)
-					FlxG._LastDrawingAlpha = _mixedAlpha					
-				End If
-			Else
-				If (_surfaceColor.a < 1) Then
-					Local _mixedAlpha:Float = _surfaceColor.a * _alpha
-					
-					If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
-						SetAlpha(_mixedAlpha)
-						FlxG._LastDrawingAlpha = _mixedAlpha	
-					End If
-				Else
-					If (FlxG._LastDrawingAlpha <> _alpha) Then
-						SetAlpha(_alpha)
-						FlxG._LastDrawingAlpha = _alpha		
-					End If	
-				End If				
-			End If
-		
-			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
-				_DrawSurface(_point.x, _point.y)
-			Else
-				PushMatrix()
-					'Translate
-					_mx4 = _point.x + origin.x
-					_mx5 = _point.y + origin.y
-					
-					'Scale
-					_mx0 = scale.x
-					_mx3 = scale.y
-					
-					'Rotate
-					If (angle <> 0 And _bakedRotation = 0) Then						
-						Local sin:Float = Sin(angle)
-						Local cos:Float = Cos(angle)
-						
-						_mx1 = sin * _mx0
-						_mx2 = -sin * _mx3
-						_mx0 *= cos
-						_mx3 *= cos
-					End If
-									
-					Transform(_mx0, _mx1, _mx2, _mx3, _mx4, _mx5)
-										
-					_DrawSurface(-origin.x, -origin.y)
-				PopMatrix()
-			End If		
-		End If
-		#End
 		
 	#If FLX_DEBUG_ENABLED = "1"
 		_VisibleCount += 1;
@@ -578,8 +437,12 @@ Public
 		Return _point.x + radius > 0 And _point.x - radius < camera.Width And _point.y + radius > 0 And _point.y - radius < camera.Height
 	End Method
 	
-	Method _DrawSurface:Void(x:Float, y:Float)
-		DrawRect(x, y, frameWidth, frameHeight)
+	Method SetRenderer:Void(render:FlxSpriteRenderer)
+		_renderer = render
+	End Method
+	
+	Method ClearRenderer:Void()
+		_renderer = Null
 	End Method
 	
 	Method _ResetHelpers:Void()
@@ -640,6 +503,12 @@ Private
 	End Method
 	
 End Class
+
+Interface FlxSpriteRenderer
+	
+	Method OnRender:Void(x:Float, y:Float)
+
+End Interface
 
 Private
 Class FlxGraphicLoader Extends FlxResourceLoader<Image>
