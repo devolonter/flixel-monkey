@@ -31,7 +31,9 @@ Public
 	
 	Method Apply:Void(data:Object)
 		If ( Not enabled) Return
-		If (_instant) Remove()		
+		If (_instant) Remove()
+		
+		_listener.OnSignalEmit(_signal, data)
 	End Method
 	
 	Method Remove:Void()
