@@ -37,7 +37,7 @@ Public
 	End Method
 	
 	Method Remove:Void()
-		_signal.Remove(Self)
+		_signal.Remove(listener)
 	End Method
 
 	Method Priority:Int() Property

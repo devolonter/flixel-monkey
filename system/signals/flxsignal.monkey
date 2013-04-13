@@ -1,6 +1,6 @@
 Strict
 
-Import flxsignalobserverlist
+Import flxsignalobserver
 
 Class FlxSignal
 	
@@ -50,23 +50,94 @@ Public
 		Return observer
 	End Method
 
-	Method Remove:FlxSignalObserver(observer:FlxSignalObserver)
-		Return _observers.RemoveFirst(observer)
+	Method Remove:FlxSignalObserver(listener:FlxSignalListener)
+		Return _observers.Remove(listener)
 	End Method
 	
 	Method Clear:Void()
 		_observers.Clear()
 	End Method
 	
-	Method Emit:Void()
-		If (IsEmpty()) Return Null
-	
+	Method Emit:Void(data:Object)
+		Local node:list.Node<FlxSignalObserver> = _observers.FirstNode()
+		
+		While (node <> Null)
+			node.Value().Apply(data)
+			node = node.NextNode()
+		Wend
+	End Method
+
+End Class
+
+Private
+Class FlxSignalObserverList Extends List<FlxSignalObserver>
+
+	Method Destroy:Void()
 		Local node:list.Node<FlxSignalObserver> = FirstNode()
 		
 		While (node <> Null)
-			node.Value().Apply()
+			node.Value().Destroy()
+			node.Remove()
+			
 			node = node.NextNode()
 		Wend
+	End Method
+	
+	Method InsertWithPriority:list.Node<FlxSignalObserver>(signalObserver:FlxSignalObserver)
+		If (IsEmpty()) Then
+			Return AddFirst(signalObserver)
+		End If
+		
+		Local node:list.Node<FlxSignalObserver> = FirstNode()
+		Local priority:Int = signalObserver.Priority
+		
+		If (priority > node.Value().Priority) Then
+			Return AddFirst(signalObserver)
+		End If
+		
+		Repeat
+			node = node.NextNode()
+			If (node = Null) Exit
+			
+			If (priority > node.Value().Priority) Then
+				Return New list.Node<T>(node, node.PrevNode(), signalObserver)
+			End If
+		Forever
+		
+		Return AddLast(signalObserver)
+	End Method
+	
+	Method Remove:FlxSignalObserver(listener:FlxSignalListener)
+		Local node:list.Node<FlxSignalObserver> = FirstNode()
+		
+		While (node <> Null)
+			If (node.Value().listener = listener) Then
+				node.Remove()
+				Return node.Value()
+			End If
+			
+			node = node.NextNode()
+		Wend
+		
+		Return Null
+	End Method
+	
+	Method Get:FlxSignalObserver(listener:FlxSignalListener)
+		Local node:list.Node<FlxSignalObserver> = FirstNode()
+		
+		While (node <> Null)
+			If (node.Value().listener = listener) Then
+				Return node.Value()
+			End If
+			
+			node = node.NextNode()
+		Wend
+		
+		Return Null
+	End Method
+	
+	Method Contains:Bool(listener:FlxSignalListener)
+		Return (Get(listener) <> Null)
 	End Method
 
 End Class
