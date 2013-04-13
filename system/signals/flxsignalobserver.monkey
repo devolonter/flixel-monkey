@@ -6,10 +6,10 @@ Class FlxSignalObserver
 
 	Field enabled:Bool
 	
+	Field listener:FlxSignalListener
+	
 Private
 	Field _signal:FlxSignal
-	
-	Field _listener:FlxSignalListener
 	
 	Field _instant:Bool
 	
@@ -19,21 +19,21 @@ Public
 	Method New(listener:FlxSignalListener, instant:Bool = False, signal:FlxSignal = Null, priority:Int = 0)
 		_signal = signal
 		enabled = True
-		_listener = listener
+		Self.listener = listener
 		_instant = instant
 		_priority = priority
 	End Method
 	
 	Method Destroy:Void()
 		_signal = Null
-		_listener = Null
+		listener = Null
 	End Method
 	
 	Method Apply:Void(data:Object)
 		If ( Not enabled) Return
 		If (_instant) Remove()
 		
-		_listener.OnSignalEmitted(_signal, data)
+		listener.OnSignalEmitted(_signal, data)
 	End Method
 	
 	Method Remove:Void()
