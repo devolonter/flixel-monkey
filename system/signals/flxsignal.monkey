@@ -18,6 +18,8 @@ Public
 	End Method
 	
 	Method RegisterListener:FlxSignalObserver(listener:FlxSignalListener)
+		If (listener = Null) Return Null
+		
 		Local observer:FlxSignalObserver = _observers.Get(listener)
 		
 		If (observer = Null) Then
@@ -29,6 +31,8 @@ Public
 	End Method
 	
 	Method RegisterListener:FlxSignalObserver(listener:FlxSignalListener, instant:Bool)
+		If (listener = Null) Return Null
+		
 		Local observer:FlxSignalObserver = _observers.Get(listener)
 		
 		If (observer = Null) Then
@@ -39,7 +43,9 @@ Public
 		Return observer
 	End Method
 	
-	Method RegisterListener:FlxSignalObserver(listener:FlxSignalListener, instant:Bool, priority:Bool)
+	Method RegisterListener:FlxSignalObserver(listener:FlxSignalListener, instant:Bool, priority:Int)
+		If (listener = Null) Return Null
+		
 		Local observer:FlxSignalObserver = _observers.Get(listener)
 		
 		If (observer = Null) Then
@@ -100,7 +106,7 @@ Class FlxSignalObserverList Extends List<FlxSignalObserver>
 			If (node = Null) Exit
 			
 			If (priority > node.Value().Priority) Then
-				Return New list.Node<T>(node, node.PrevNode(), signalObserver)
+				Return New list.Node<FlxSignalObserver>(node, node.PrevNode(), signalObserver)
 			End If
 		Forever
 		
