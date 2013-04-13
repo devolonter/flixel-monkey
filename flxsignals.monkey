@@ -19,6 +19,41 @@ Public
 		_functionSlots = New List<FlxFunctionSlot>()
 	End Method
 	
+	Method Destroy:Void(signalID:Int)
+		Local s:FlxSignal = _signals.Get(signalID)
+		If (s <> Null) s.Destroy()
+	End Method
+	
+	Method Destroy:Void()
+		For Local signal:FlxSignal = EachIn _signals.Values()
+			signal.Destroy()
+		Next
+		
+		_signals.Clear()
+		
+		Local methodSlotNode:list.Node<FlxMethodSlot> = _methodSlots.FirstNode()
+		
+		While (methodSlotNode <> Null)
+			methodSlotNode.Value().Destroy()
+			methodSlotNode.Remove()
+			
+			methodSlotNode = methodSlotNode.NextNode()
+		Wend
+		
+		Local functionSlotNode:list.Node<FlxFunctionSlot> = _functionSlots.FirstNode()
+		
+		While (methodSlotNode <> Null)
+			functionSlotNode.Value().Destroy()
+			functionSlotNode.Remove()
+			
+			functionSlotNode = functionSlotNode.NextNode()
+		Wend
+		
+		_signals = Null
+		_methodSlots = Null
+		_functionSlots = Null
+	End Method
+	
 	Method Connect:Void(signalID:Int, listener:FlxSignalListener)
 		_GetSignal(signalID).RegisterListener(listener)
 	End Method
@@ -110,9 +145,20 @@ Public
 		Next
 	End Method
 	
-	Method EmitAll:Void(data:Object)
+	Method Emit:Void(data:Object = Null)
 		For Local signal:FlxSignal = EachIn _signals.Values()
 			signal.Emit(data)
+		Next
+	End Method
+	
+	Method Clear:Void(signalID:Int)
+		Local s:FlxSignal = _signals.Get(signalID)
+		If (s <> Null) s.Clear()
+	End Method
+	
+	Method Clear:Void()
+		For Local signal:FlxSignal = EachIn _signals.Values()
+			signal.Clear()
 		Next
 	End Method
 	
@@ -187,6 +233,11 @@ Public
 		_method = methodInfo
 	End Method
 	
+	Method Destroy:Void()
+		_context = Null
+		_method = Null
+	End Method
+	
 	Method OnSignalEmitted:Void(signal:FlxSignal, data:Object)
 		_method.Invoke(_context,[])
 	End Method
@@ -201,6 +252,10 @@ Private
 Public
 	Method New(functionInfo:FunctionInfo)
 		_function = functionInfo
+	End Method
+	
+	Method Destroy:Void()
+		_function = Null
 	End Method
 	
 	Method OnSignalEmitted:Void(signal:FlxSignal, data:Object)
