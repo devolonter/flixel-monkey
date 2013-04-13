@@ -42,5 +42,25 @@ Class FlxSignalObserverList Extends List<FlxSignalObserver>
 	Method Remove:FlxSignalObserver(signalObserver:FlxSignalObserver)
 		Self.RemoveFirst(signalObserver)
 	End Method
+	
+	Method Get:FlxSignalObserver(listener:FlxSignalListener)
+		If (IsEmpty()) Return Null
+	
+		Local node:list.Node<FlxSignalObserver> = FirstNode()
+		
+		While (node <> Null)
+			If (node.Value().listener = listener) Then
+				Return node.Value()
+			End If
+			
+			node = node.NextNode()
+		Wend
+		
+		Return Null
+	End Method
+	
+	Method Contains:Bool(listener:FlxSignalListener)
+		Return (Get(listener) <> Null)
+	End Method
 
 End Class
