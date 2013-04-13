@@ -6,10 +6,13 @@ Class FlxSignal
 	
 Private
 	Field _observers:FlxSignalObserverList
+	
+	Field _id:Int
 
 Public
-	Method New()
+	Method New(id:Int)
 		_observers = New FlxSignalObserverList()
+		_id = id
 	End Method
 	
 	Method Destroy:Void()
@@ -56,7 +59,8 @@ Public
 		Return observer
 	End Method
 
-	Method Remove:FlxSignalObserver(listener:FlxSignalListener)
+	Method RemoveListener:FlxSignalObserver(listener:FlxSignalListener)
+		If (listener = Null) Return Null
 		Return _observers.Remove(listener)
 	End Method
 	
@@ -71,6 +75,10 @@ Public
 			node.Value().Apply(data)
 			node = node.NextNode()
 		Wend
+	End Method
+	
+	Method ID:Int() Property
+		Return _id
 	End Method
 
 End Class
@@ -140,10 +148,6 @@ Class FlxSignalObserverList Extends List<FlxSignalObserver>
 		Wend
 		
 		Return Null
-	End Method
-	
-	Method Contains:Bool(listener:FlxSignalListener)
-		Return (Get(listener) <> Null)
 	End Method
 
 End Class
