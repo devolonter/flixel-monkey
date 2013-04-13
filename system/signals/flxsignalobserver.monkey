@@ -33,7 +33,7 @@ Public
 		If ( Not enabled) Return
 		If (_instant) Remove()
 		
-		_listener.OnSignalEmit(_signal, data)
+		_listener.OnSignalEmitted(_signal, data)
 	End Method
 	
 	Method Remove:Void()
@@ -48,6 +48,6 @@ End Class
 
 Interface FlxSignalListener
 	
-	Method OnSignalEmit:Void(signal:FlxSignal, data:Object)
+	Method OnSignalEmitted:Void(signal:FlxSignal, data:Object)
 
 End Interface
