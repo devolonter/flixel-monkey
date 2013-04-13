@@ -3,6 +3,17 @@ Strict
 Import flxsignalobserver
 
 Class FlxSignalObserverList Extends List<FlxSignalObserver>
+
+	Method Destroy:Void()
+		Local node:list.Node<FlxSignalObserver> = FirstNode()
+		
+		While (node <> Null)
+			node.Value().Destroy()
+			node.Remove()
+			
+			node = node.NextNode()
+		Wend
+	End Method
 	
 	Method InsertWithPriority:list.Node<FlxSignalObserver>(signalObserver:FlxSignalObserver)
 		If (IsEmpty()) Then
