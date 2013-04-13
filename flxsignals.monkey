@@ -20,47 +20,47 @@ Public
 	End Method
 	
 	Method Connect:Void(signalID:Int, listener:FlxSignalListener)
-		GetSignal(signalID).RegisterListener(listener)
+		_GetSignal(signalID).RegisterListener(listener)
 	End Method
 	
 	Method Connect:Void(signalID:Int, listener:FlxSignalListener, instant:Bool)
-		GetSignal(signalID).RegisterListener(listener, instant)
+		_GetSignal(signalID).RegisterListener(listener, instant)
 	End Method
 	
 	Method Connect:Void(signalID:Int, listener:FlxSignalListener, instant:Bool, priority:Int)
-		GetSignal(signalID).RegisterListener(listener, instant, priority)
+		_GetSignal(signalID).RegisterListener(listener, instant, priority)
 	End Method
 	
 	Method Connect:Void(signalID:Int, methodName:String, context:Object)
-		Connect(signalID, GetMethodSlot(methodName, context))
+		Connect(signalID, _GetMethodSlot(methodName, context))
 	End Method
 	
 	Method Connect:Void(signalID:Int, methodName:String, context:Object, instant:Bool)
-		Connect(signalID, GetMethodSlot(methodName, context), instant)
+		Connect(signalID, _GetMethodSlot(methodName, context), instant)
 	End Method
 	
 	Method Connect:Void(signalID:Int, methodName:String, context:Object, instant:Bool, priority:Int)
-		Connect(signalID, GetMethodSlot(methodName, context), instant, priority)
+		Connect(signalID, _GetMethodSlot(methodName, context), instant, priority)
 	End Method
 	
 	Method Connect:Void(signalID:Int, functionName:String)
-		Connect(signalID, GetFunctionSlot(functionName))
+		Connect(signalID, _GetFunctionSlot(functionName))
 	End Method
 	
 	Method Connect:Void(signalID:Int, functionName:String, instant:Bool)
-		Connect(signalID, GetFunctionSlot(functionName), instant)
+		Connect(signalID, _GetFunctionSlot(functionName), instant)
 	End Method
 	
 	Method Connect:Void(signalID:Int, functionName:String, instant:Bool, priority:Int)
-		Connect(signalID, GetFunctionSlot(functionName), instant, priority)
+		Connect(signalID, _GetFunctionSlot(functionName), instant, priority)
 	End Method
 	
 	Method Emit:Void(signalID:Int, data:Object = Null)
-		GetSignal(signalID).Emit(data)
+		_GetSignal(signalID).Emit(data)
 	End Method
 	
 Private
-	Method GetSignal:FlxSignal(signalID:Int)
+	Method _GetSignal:FlxSignal(signalID:Int)
 		Local s:FlxSignal = _signals.Get(signalID)
 		
 		If (s = Null) Then
@@ -71,7 +71,7 @@ Private
 		Return s
 	End Method
 	
-	Method GetMethodSlot:FlxMethodSlot(methodName:String, context:Object)
+	Method _GetMethodSlot:FlxMethodSlot(methodName:String, context:Object)
 		Local classInfo:ClassInfo = GetClass(context)
 		
 		If (classInfo <> Null) Then
@@ -95,7 +95,7 @@ Private
 		Return Null
 	End Method
 	
-	Method GetFunctionSlot:FlxFunctionSlot(functionName:String)
+	Method _GetFunctionSlot:FlxFunctionSlot(functionName:String)
 		Local functionInfo:FunctionInfo = GetFunction(functionName,[])
 		
 		If (functionInfo <> Null) Then
