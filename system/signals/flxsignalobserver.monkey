@@ -31,13 +31,13 @@ Public
 	
 	Method Apply:Void(data:Object)
 		If ( Not enabled) Return
-		If (_instant) Remove()
+		If (_instant) Disconnect()
 		
 		listener.OnSignalEmitted(_signal, data)
 	End Method
 	
-	Method Remove:Void()
-		_signal.Remove(listener)
+	Method Disconnect:Void()
+		_signal.RemoveListener(listener)
 	End Method
 
 	Method Priority:Int() Property
