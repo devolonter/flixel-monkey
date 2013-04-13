@@ -684,7 +684,7 @@ Public
 		FlxG.DestroySounds(True)
 		FlxG.ClearSoundCache()
 		FlxG.ResetInput()
-		FlxG.DestroySignals()
+		FlxG.Signals.Destroy()
 		FlxG.Levels.Clear()
 		FlxG.Scores.Clear()
 		FlxG.Level = 0		
@@ -846,11 +846,6 @@ Public
 		tweener.AddTween(tween)
 		
 		Return tween
-	End Function
-	
-	Function DestroySignals:Void()
-		FlxG.Signals.Destroy()
-		FlxG.Signals = Null
 	End Function
 	
 Private

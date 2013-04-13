@@ -49,9 +49,8 @@ Public
 			functionSlotNode = functionSlotNode.NextNode()
 		Wend
 		
-		_signals = Null
-		_methodSlots = Null
-		_functionSlots = Null
+		_methodSlots.Clear()
+		_functionSlots.Clear()
 	End Method
 	
 	Method Connect:Void(signalID:Int, listener:FlxSignalListener)
