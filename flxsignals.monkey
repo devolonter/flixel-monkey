@@ -79,6 +79,27 @@ Public
 		Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])), instant, priority)
 	End Method
 	
+	Method Disconnect:Void(signalID:Int, listener:FlxSignalListener)
+		Local s:FlxSignal = _signals.Get(signalID)
+		If (s <> Null) s.RemoveListener(listener)
+	End Method
+	
+	Method Disconnect:Void(signalID:Int, methodInfo:MethodInfo, context:Object)
+		Disconnect(signalID, _GetMethodSlot(methodInfo, context))
+	End Method
+	
+	Method Disconnect:Void(signalID:Int, functionInfo:FunctionInfo)
+		Disconnect(signalID, _GetFunctionSlot(functionInfo))
+	End Method
+	
+	Method DisconnectM:Void(signalID:Int, methodName:String, context:Object)
+		Disconnect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context))
+	End Method
+	
+	Method DisconnectF:Void(signalID:Int, functionName:String)
+		Disconnect(signalID, _GetFunctionSlot(GetFunction(functionName,[])))
+	End Method
+	
 	Method Emit:Void(signalID:Int, data:Object = Null)
 		_GetSignal(signalID).Emit(data)
 	End Method
@@ -100,7 +121,7 @@ Private
 		Local s:FlxSignal = _signals.Get(signalID)
 		
 		If (s = Null) Then
-			s = New FlxSignal()
+			s = New FlxSignal(signalID)
 			_signals.Set(signalID, s)
 		End If
 		
