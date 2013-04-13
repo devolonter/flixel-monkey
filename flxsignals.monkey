@@ -6,51 +6,51 @@ Import system.signals.flxsignal
 Class FlxSignals
 	
 Private
-	Field _signals:StringMap<FlxSignal>
+	Field _signals:IntMap<FlxSignal>
 	
 	Field _methodSlots:List<FlxMethodSlot>
 	
 Public
 	Method New()
-		_signals = New StringMap<FlxSignal>()
+		_signals = New IntMap<FlxSignal>()
 		_methodSlots = New List<FlxMethodSlot>()
 	End Method
 	
-	Method Connect:Void(signal:String, listener:FlxSignalListener)
-		GetSignal(signal).RegisterListener(listener)
+	Method Connect:Void(signalID:Int, listener:FlxSignalListener)
+		GetSignal(signalID).RegisterListener(listener)
 	End Method
 	
-	Method Connect:Void(signal:String, listener:FlxSignalListener, instant:Bool)
-		GetSignal(signal).RegisterListener(listener, instant)
+	Method Connect:Void(signalID:Int, listener:FlxSignalListener, instant:Bool)
+		GetSignal(signalID).RegisterListener(listener, instant)
 	End Method
 	
-	Method Connect:Void(signal:String, listener:FlxSignalListener, instant:Bool, priority:Int)
-		GetSignal(signal).RegisterListener(listener, instant, priority)
+	Method Connect:Void(signalID:Int, listener:FlxSignalListener, instant:Bool, priority:Int)
+		GetSignal(signalID).RegisterListener(listener, instant, priority)
 	End Method
 	
-	Method Connect:Void(signal:String, methodName:String, context:Object)
-		Connect(signal, GetMethodSlot(methodName, context))
+	Method Connect:Void(signalID:Int, methodName:String, context:Object)
+		Connect(signalID, GetMethodSlot(methodName, context))
 	End Method
 	
-	Method Connect:Void(signal:String, methodName:String, context:Object, instant:Bool)
-		Connect(signal, GetMethodSlot(methodName, context), instant)
+	Method Connect:Void(signalID:Int, methodName:String, context:Object, instant:Bool)
+		Connect(signalID, GetMethodSlot(methodName, context), instant)
 	End Method
 	
-	Method Connect:Void(signal:String, methodName:String, context:Object, instant:Bool, priority:Int)
-		Connect(signal, GetMethodSlot(methodName, context), instant, priority)
+	Method Connect:Void(signalID:Int, methodName:String, context:Object, instant:Bool, priority:Int)
+		Connect(signalID, GetMethodSlot(methodName, context), instant, priority)
 	End Method
 	
-	Method Emit:Void(signal:String, data:Object = Null)
-		GetSignal(signal).Emit(data)
+	Method Emit:Void(signalID:Int, data:Object = Null)
+		GetSignal(signalID).Emit(data)
 	End Method
 	
 Private
-	Method GetSignal:FlxSignal(signal:String)
-		Local s:FlxSignal = _signals.Get(signal)
+	Method GetSignal:FlxSignal(signalID:Int)
+		Local s:FlxSignal = _signals.Get(signalID)
 		
 		If (s = Null) Then
 			s = New FlxSignal()
-			_signals.Add(signal, s)
+			_signals.Set(signalID, s)
 		End If
 		
 		Return s
