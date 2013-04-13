@@ -8,6 +8,7 @@ Import flxbasic
 Import flxgame
 Import flxcamera
 Import flxobject
+Import flxsignals
 Import flxsound
 Import flxmusic
 Import flxu
@@ -120,6 +121,8 @@ Class FlxG
 	Global Updaterate:Int
 	
 	Global Tweener:FlxBasic
+	
+	Global Signals:FlxSignals
 	
 	Global _DeviceScaleFactorX:Float = 1	
 	
@@ -638,6 +641,7 @@ Public
 		FlxG.Height = height
 		
 		FlxG.Tweener = New FlxBasic()
+		FlxG.Signals = New FlxSignals()
 		
 		FlxG.Mute = False
 		FlxG._Volume = .5
@@ -679,7 +683,8 @@ Public
 		FlxG.ClearBitmapCache()
 		FlxG.DestroySounds(True)
 		FlxG.ClearSoundCache()
-		FlxG.ResetInput()		
+		FlxG.ResetInput()
+		FlxG.DestroySignals()
 		FlxG.Levels.Clear()
 		FlxG.Scores.Clear()
 		FlxG.Level = 0		
@@ -841,6 +846,11 @@ Public
 		tweener.AddTween(tween)
 		
 		Return tween
+	End Function
+	
+	Function DestroySignals:Void()
+		FlxG.Signals.Destroy()
+		FlxG.Signals = Null
 	End Function
 	
 Private
