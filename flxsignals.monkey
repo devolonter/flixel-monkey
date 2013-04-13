@@ -10,10 +10,13 @@ Private
 	
 	Field _methodSlots:List<FlxMethodSlot>
 	
+	Field _functionSlots:List<FlxFunctionSlot>
+	
 Public
 	Method New()
 		_signals = New IntMap<FlxSignal>()
 		_methodSlots = New List<FlxMethodSlot>()
+		_functionSlots = New List<FlxFunctionSlot>()
 	End Method
 	
 	Method Connect:Void(signalID:Int, listener:FlxSignalListener)
@@ -38,6 +41,18 @@ Public
 	
 	Method Connect:Void(signalID:Int, methodName:String, context:Object, instant:Bool, priority:Int)
 		Connect(signalID, GetMethodSlot(methodName, context), instant, priority)
+	End Method
+	
+	Method Connect:Void(signalID:Int, functionName:String)
+		Connect(signalID, GetFunctionSlot(functionName))
+	End Method
+	
+	Method Connect:Void(signalID:Int, functionName:String, instant:Bool)
+		Connect(signalID, GetFunctionSlot(functionName), instant)
+	End Method
+	
+	Method Connect:Void(signalID:Int, functionName:String, instant:Bool, priority:Int)
+		Connect(signalID, GetFunctionSlot(functionName), instant, priority)
 	End Method
 	
 	Method Emit:Void(signalID:Int, data:Object = Null)
@@ -79,6 +94,26 @@ Private
 		
 		Return Null
 	End Method
+	
+	Method GetFunctionSlot:FlxFunctionSlot(functionName:String)
+		Local functionInfo:FunctionInfo = GetFunction(functionName,[])
+		
+		If (functionInfo <> Null) Then
+			Local node:list.Node<FlxFunctionSlot> = _functionSlots.FirstNode()
+	
+			While (node <> Null)
+				If (node.Value()._function = functionInfo) Then
+					Return node.Value()
+				End If
+
+				node = node.NextNode()
+			Wend
+			
+			Return _functionSlots.AddLast(New FlxFunctionSlot(functionInfo)).Value()
+		End If
+		
+		Return Null
+	End Method
 
 End Class
 
@@ -99,6 +134,22 @@ Public
 	
 	Method OnSignalEmitted:Void(signal:FlxSignal, data:Object)
 		_method.Invoke(_context,[])
+	End Method
+
+End Class
+
+Class FlxFunctionSlot Implements FlxSignalListener
+
+Private
+	Field _function:FunctionInfo
+	
+Public
+	Method New(functionInfo:FunctionInfo)
+		_function = functionInfo
+	End Method
+	
+	Method OnSignalEmitted:Void(signal:FlxSignal, data:Object)
+		_function.Invoke([])
 	End Method
 
 End Class
