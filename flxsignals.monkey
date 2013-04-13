@@ -31,28 +31,52 @@ Public
 		_GetSignal(signalID).RegisterListener(listener, instant, priority)
 	End Method
 	
-	Method Connect:Void(signalID:Int, methodName:String, context:Object)
-		Connect(signalID, _GetMethodSlot(methodName, context))
+	Method Connect:Void(signalID:Int, methodInfo:MethodInfo, context:Object)
+		Connect(signalID, _GetMethodSlot(methodInfo, context))
 	End Method
 	
-	Method Connect:Void(signalID:Int, methodName:String, context:Object, instant:Bool)
-		Connect(signalID, _GetMethodSlot(methodName, context), instant)
+	Method Connect:Void(signalID:Int, methodInfo:MethodInfo, context:Object, instant:Bool)
+		Connect(signalID, _GetMethodSlot(methodInfo, context), instant)
 	End Method
 	
-	Method Connect:Void(signalID:Int, methodName:String, context:Object, instant:Bool, priority:Int)
-		Connect(signalID, _GetMethodSlot(methodName, context), instant, priority)
+	Method Connect:Void(signalID:Int, methodInfo:MethodInfo, context:Object, instant:Bool, priority:Int)
+		Connect(signalID, _GetMethodSlot(methodInfo, context), instant, priority)
 	End Method
 	
-	Method Connect:Void(signalID:Int, functionName:String)
-		Connect(signalID, _GetFunctionSlot(functionName))
+	Method Connect:Void(signalID:Int, functionInfo:FunctionInfo)
+		Connect(signalID, _GetFunctionSlot(functionInfo))
 	End Method
 	
-	Method Connect:Void(signalID:Int, functionName:String, instant:Bool)
-		Connect(signalID, _GetFunctionSlot(functionName), instant)
+	Method Connect:Void(signalID:Int, functionInfo:FunctionInfo, instant:Bool)
+		Connect(signalID, _GetFunctionSlot(functionInfo), instant)
 	End Method
 	
-	Method Connect:Void(signalID:Int, functionName:String, instant:Bool, priority:Int)
-		Connect(signalID, _GetFunctionSlot(functionName), instant, priority)
+	Method Connect:Void(signalID:Int, functionInfo:FunctionInfo, instant:Bool, priority:Int)
+		Connect(signalID, _GetFunctionSlot(functionInfo), instant, priority)
+	End Method
+	
+	Method ConnectM:Void(signalID:Int, methodName:String, context:Object)
+		Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context))
+	End Method
+	
+	Method ConnectM:Void(signalID:Int, methodName:String, context:Object, instant:Bool)
+		Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context), instant)
+	End Method
+	
+	Method ConnectM:Void(signalID:Int, methodName:String, context:Object, instant:Bool, priority:Int)
+		Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context), instant, priority)
+	End Method
+	
+	Method ConnectF:Void(signalID:Int, functionName:String)
+		Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])))
+	End Method
+	
+	Method ConnectF:Void(signalID:Int, functionName:String, instant:Bool)
+		Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])), instant)
+	End Method
+	
+	Method ConnectF:Void(signalID:Int, functionName:String, instant:Bool, priority:Int)
+		Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])), instant, priority)
 	End Method
 	
 	Method Emit:Void(signalID:Int, data:Object = Null)
@@ -71,48 +95,46 @@ Private
 		Return s
 	End Method
 	
-	Method _GetMethodSlot:FlxMethodSlot(methodName:String, context:Object)
+	Method _GetMethodInfo:MethodInfo(methodName:String, context:Object)
 		Local classInfo:ClassInfo = GetClass(context)
 		
 		If (classInfo <> Null) Then
-			Local methodInfo:MethodInfo = classInfo.GetMethod(methodName,[])
-			
-			If (methodInfo <> Null) Then
-				Local node:list.Node<FlxMethodSlot> = _methodSlots.FirstNode()
-		
-				While (node <> Null)
-					If (node.Value()._method = methodInfo And node.Value()._context = context) Then
-						Return node.Value()
-					End If
-
-					node = node.NextNode()
-				Wend
-				
-				Return _methodSlots.AddLast(New FlxMethodSlot(context, methodInfo)).Value()
-			End If
+			Return classInfo.GetMethod(methodName,[])
 		End If
 		
 		Return Null
 	End Method
 	
-	Method _GetFunctionSlot:FlxFunctionSlot(functionName:String)
-		Local functionInfo:FunctionInfo = GetFunction(functionName,[])
-		
-		If (functionInfo <> Null) Then
-			Local node:list.Node<FlxFunctionSlot> = _functionSlots.FirstNode()
-	
-			While (node <> Null)
-				If (node.Value()._function = functionInfo) Then
-					Return node.Value()
-				End If
+	Method _GetMethodSlot:FlxMethodSlot(methodInfo:MethodInfo, context:Object)
+		If (methodInfo = Null) Return Null
 
-				node = node.NextNode()
-			Wend
-			
-			Return _functionSlots.AddLast(New FlxFunctionSlot(functionInfo)).Value()
-		End If
+		Local node:list.Node<FlxMethodSlot> = _methodSlots.FirstNode()
+
+		While (node <> Null)
+			If (node.Value()._method = methodInfo And node.Value()._context = context) Then
+				Return node.Value()
+			End If
+
+			node = node.NextNode()
+		Wend
 		
-		Return Null
+		Return _methodSlots.AddLast(New FlxMethodSlot(context, methodInfo)).Value()
+	End Method
+	
+	Method _GetFunctionSlot:FlxFunctionSlot(functionInfo:FunctionInfo)
+		If (functionInfo = Null) Return Null
+
+		Local node:list.Node<FlxFunctionSlot> = _functionSlots.FirstNode()
+
+		While (node <> Null)
+			If (node.Value()._function = functionInfo) Then
+				Return node.Value()
+			End If
+
+			node = node.NextNode()
+		Wend
+		
+		Return _functionSlots.AddLast(New FlxFunctionSlot(functionInfo)).Value()
 	End Method
 
 End Class
