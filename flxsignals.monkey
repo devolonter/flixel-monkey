@@ -83,6 +83,18 @@ Public
 		_GetSignal(signalID).Emit(data)
 	End Method
 	
+	Method Emit:Void(signalIDs:Int[], data:Object = Null)
+		For Local id:Int = EachIn signalIDs
+			_GetSignal(id).Emit(data)
+		Next
+	End Method
+	
+	Method EmitAll:Void(data:Object)
+		For Local signal:FlxSignal = EachIn _signals.Values()
+			signal.Emit(data)
+		Next
+	End Method
+	
 Private
 	Method _GetSignal:FlxSignal(signalID:Int)
 		Local s:FlxSignal = _signals.Get(signalID)
