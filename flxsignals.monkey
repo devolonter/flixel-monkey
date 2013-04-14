@@ -53,85 +53,87 @@ Public
 		_functionSlots.Clear()
 	End Method
 	
-	Method Connect:Void(signalID:Int, listener:FlxSignalListener)
-		_GetSignal(signalID).RegisterListener(listener)
+	Method Connect:FlxSignalObserver(signalID:Int, listener:FlxSignalListener)
+		Return _GetSignal(signalID).RegisterListener(listener)
 	End Method
 	
-	Method Connect:Void(signalID:Int, listener:FlxSignalListener, instant:Bool)
-		_GetSignal(signalID).RegisterListener(listener, instant)
+	Method Connect:FlxSignalObserver(signalID:Int, listener:FlxSignalListener, instant:Bool)
+		Return _GetSignal(signalID).RegisterListener(listener, instant)
 	End Method
 	
-	Method Connect:Void(signalID:Int, listener:FlxSignalListener, instant:Bool, priority:Int)
-		_GetSignal(signalID).RegisterListener(listener, instant, priority)
+	Method Connect:FlxSignalObserver(signalID:Int, listener:FlxSignalListener, instant:Bool, priority:Int)
+		Return _GetSignal(signalID).RegisterListener(listener, instant, priority)
 	End Method
 	
-	Method Connect:Void(signalID:Int, methodInfo:MethodInfo, context:Object)
-		Connect(signalID, _GetMethodSlot(methodInfo, context))
+	Method Connect:FlxSignalObserver(signalID:Int, methodInfo:MethodInfo, context:Object)
+		Return Connect(signalID, _GetMethodSlot(methodInfo, context))
 	End Method
 	
-	Method Connect:Void(signalID:Int, methodInfo:MethodInfo, context:Object, instant:Bool)
-		Connect(signalID, _GetMethodSlot(methodInfo, context), instant)
+	Method Connect:FlxSignalObserver(signalID:Int, methodInfo:MethodInfo, context:Object, instant:Bool)
+		Return Connect(signalID, _GetMethodSlot(methodInfo, context), instant)
 	End Method
 	
-	Method Connect:Void(signalID:Int, methodInfo:MethodInfo, context:Object, instant:Bool, priority:Int)
-		Connect(signalID, _GetMethodSlot(methodInfo, context), instant, priority)
+	Method Connect:FlxSignalObserver(signalID:Int, methodInfo:MethodInfo, context:Object, instant:Bool, priority:Int)
+		Return Connect(signalID, _GetMethodSlot(methodInfo, context), instant, priority)
 	End Method
 	
-	Method Connect:Void(signalID:Int, functionInfo:FunctionInfo)
-		Connect(signalID, _GetFunctionSlot(functionInfo))
+	Method Connect:FlxSignalObserver(signalID:Int, functionInfo:FunctionInfo)
+		Return Connect(signalID, _GetFunctionSlot(functionInfo))
 	End Method
 	
-	Method Connect:Void(signalID:Int, functionInfo:FunctionInfo, instant:Bool)
-		Connect(signalID, _GetFunctionSlot(functionInfo), instant)
+	Method Connect:FlxSignalObserver(signalID:Int, functionInfo:FunctionInfo, instant:Bool)
+		Return Connect(signalID, _GetFunctionSlot(functionInfo), instant)
 	End Method
 	
-	Method Connect:Void(signalID:Int, functionInfo:FunctionInfo, instant:Bool, priority:Int)
-		Connect(signalID, _GetFunctionSlot(functionInfo), instant, priority)
+	Method Connect:FlxSignalObserver(signalID:Int, functionInfo:FunctionInfo, instant:Bool, priority:Int)
+		Return Connect(signalID, _GetFunctionSlot(functionInfo), instant, priority)
 	End Method
 	
-	Method ConnectM:Void(signalID:Int, methodName:String, context:Object)
-		Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context))
+	Method ConnectM:FlxSignalObserver(signalID:Int, methodName:String, context:Object)
+		Return Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context))
 	End Method
 	
-	Method ConnectM:Void(signalID:Int, methodName:String, context:Object, instant:Bool)
-		Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context), instant)
+	Method ConnectM:FlxSignalObserver(signalID:Int, methodName:String, context:Object, instant:Bool)
+		Return Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context), instant)
 	End Method
 	
-	Method ConnectM:Void(signalID:Int, methodName:String, context:Object, instant:Bool, priority:Int)
-		Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context), instant, priority)
+	Method ConnectM:FlxSignalObserver(signalID:Int, methodName:String, context:Object, instant:Bool, priority:Int)
+		Return Connect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context), instant, priority)
 	End Method
 	
-	Method ConnectF:Void(signalID:Int, functionName:String)
-		Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])))
+	Method ConnectF:FlxSignalObserver(signalID:Int, functionName:String)
+		Return Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])))
 	End Method
 	
-	Method ConnectF:Void(signalID:Int, functionName:String, instant:Bool)
-		Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])), instant)
+	Method ConnectF:FlxSignalObserver(signalID:Int, functionName:String, instant:Bool)
+		Return Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])), instant)
 	End Method
 	
-	Method ConnectF:Void(signalID:Int, functionName:String, instant:Bool, priority:Int)
-		Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])), instant, priority)
+	Method ConnectF:FlxSignalObserver(signalID:Int, functionName:String, instant:Bool, priority:Int)
+		Return Connect(signalID, _GetFunctionSlot(GetFunction(functionName,[])), instant, priority)
 	End Method
 	
-	Method Disconnect:Void(signalID:Int, listener:FlxSignalListener)
+	Method Disconnect:FlxSignalObserver(signalID:Int, listener:FlxSignalListener)
 		Local s:FlxSignal = _signals.Get(signalID)
-		If (s <> Null) s.RemoveListener(listener)
+		If (s <> Null) Return s.RemoveListener(listener)
+		
+		Return Null
 	End Method
 	
-	Method Disconnect:Void(signalID:Int, methodInfo:MethodInfo, context:Object)
-		Disconnect(signalID, _GetMethodSlot(methodInfo, context))
+	Method Disconnect:FlxSignalObserver(signalID:Int, methodInfo:MethodInfo, context:Object)
+		Return Disconnect(signalID, _GetMethodSlot(methodInfo, context))
 	End Method
 	
-	Method Disconnect:Void(signalID:Int, functionInfo:FunctionInfo)
-		Disconnect(signalID, _GetFunctionSlot(functionInfo))
+	Method Disconnect:FlxSignalObserver(signalID:Int, functionInfo:FunctionInfo)
+		Return Disconnect(signalID, _GetFunctionSlot(functionInfo))
 	End Method
 	
-	Method DisconnectM:Void(signalID:Int, methodName:String, context:Object)
-		Disconnect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context))
+	Method DisconnectM:FlxSignalObserver(signalID:Int, methodName:String, context:Object)
+		Return Disconnect(signalID, _GetMethodSlot(_GetMethodInfo(methodName, context), context))
 	End Method
 	
-	Method DisconnectF:Void(signalID:Int, functionName:String)
-		Disconnect(signalID, _GetFunctionSlot(GetFunction(functionName,[])))
+	Method DisconnectF:FlxSignalObserver(signalID:Int, functionName:String)
+		Return Disconnect(signalID, _GetFunctionSlot(GetFunction(functionName,[])))
 	End Method
 	
 	Method Emit:Void(signalID:Int, data:Object = Null)
