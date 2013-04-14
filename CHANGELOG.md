@@ -3,6 +3,7 @@ Changelog
 ______________________________________________________
 ###Development Version
 * FlxG.Framerate are removed. Use FlxG.Updaterate instead FlxG.Framerate
+* Added signals and slots system for event managment 
 * Method FlxBasic.GetClass renamed to FlxBasic.GetClassInfo. To avoid conflicts with Monkey GetClass function
 * #FLX_WEBGL_ENABLED config setting added. False by default
 * #FLX_DEBUG_ENABLED config setting added
@@ -14,7 +15,7 @@ ______________________________________________________
 * Added ability to sort in groups by field of Object type. The object class must implement the Compare method
 * Added OnContentInit hook function
 * Game update method has moved to App.OnUpdate and uses a pure Monkey updaterate control
-* The use of #REFLECTION_FILTER was improved. Now the string "flixel.flx*|flixel.plugin*" is added automatically
+* The use of #REFLECTION_FILTER was improved.
 * Moves field for FlxText, FlxTileblock and FlxTilemap now is False by default
 * Fixed FlxSprite transformation bug when scale.x <> scale.y
 * Fixed FlxQuadTree null pointer error
