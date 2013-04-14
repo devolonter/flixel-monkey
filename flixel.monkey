@@ -41,7 +41,6 @@ Import system.resolutionpolicy.relative
 Import system.resolutionpolicy.ratio
 
 Import system.signals.flxsignal
-Import system.signals.flxsignalobserver
 
 Import system.tweens.misc.alarm
 Import system.tweens.misc.angletween
