@@ -73,7 +73,7 @@ Public
 		Local node:list.Node<FlxSignalObserver> = _observers.FirstNode()
 		
 		While (node <> Null)
-			node.Value().Apply(data)
+			node.Value()._Apply(data)
 			node = node.NextNode()
 		Wend
 	End Method
@@ -109,15 +109,9 @@ Public
 	End Method
 	
 	Method Destroy:Void()
+		Disconnect()
 		_signal = Null
 		_listener = Null
-	End Method
-	
-	Method Apply:Void(data:Object)
-		If ( Not enabled) Return
-		If (_instant) Disconnect()
-		
-		_listener.OnSignalEmitted(_signal, data)
 	End Method
 	
 	Method Connect:Void()
@@ -140,6 +134,14 @@ Public
 	
 	Method Listener:FlxSignalListener() Property
 		Return _listener
+	End Method
+	
+Private
+	Method _Apply:Void(data:Object)
+		If ( Not enabled) Return
+		If (_instant) Disconnect()
+		
+		_listener.OnSignalEmitted(_signal, data)
 	End Method
 
 End Class
