@@ -98,7 +98,7 @@ Public
 		Return Self	
 	End Method	
 	
-	Method OnRender:Void(x:Float, y:Float)
+	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_tilePixels = Null) Return
 			
 		Local i:Int = 0

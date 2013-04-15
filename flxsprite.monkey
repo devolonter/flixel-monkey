@@ -242,7 +242,7 @@ Public
 				If (_renderer = Null) Then
 					DrawImage(_pixels, _point.x, _point.y, _curIndex)
 				Else
-					_renderer.OnRender(_point.x, _point.y)
+					_renderer.OnSpriteRender(_point.x, _point.y)
 				End If
 			Else
 				PushMatrix()						
@@ -251,7 +251,7 @@ Public
 					If (_renderer = Null) Then
 						DrawImage(_pixels, -_halfWidth, -_halfHeight, _curIndex)
 					Else
-						_renderer.OnRender(-_halfWidth, -_halfHeight)
+						_renderer.OnSpriteRender(-_halfWidth, -_halfHeight)
 					End If
 				PopMatrix()									
 			End If		
@@ -288,7 +288,7 @@ Public
 				If (_renderer = Null) Then
 					DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
 				Else
-					_renderer.OnRender(-origin.x, -origin.y)
+					_renderer.OnSpriteRender(-origin.x, -origin.y)
 				End If
 			PopMatrix()				
 		End If
@@ -509,7 +509,7 @@ End Class
 
 Interface FlxSpriteRenderer
 	
-	Method OnRender:Void(x:Float, y:Float)
+	Method OnSpriteRender:Void(x:Float, y:Float)
 
 End Interface
 

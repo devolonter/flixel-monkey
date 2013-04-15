@@ -139,7 +139,7 @@ Public
 		Return _driver.GetFontObject()
 	End Method
 	
-	Method OnRender:Void(x:Float, y:Float)
+	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_shadow.argb <> 0) Then
 			Local oldColor:Int = FlxG._LastDrawingColor
 			Local oldAlpha:Int = FlxG._LastDrawingAlpha
