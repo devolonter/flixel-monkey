@@ -15,11 +15,11 @@ Private
 	Field _stamps:Stack<FlxStamp>
 
 Public	
-	Method New(x:Int, y:Int, width:Int, height:Int)
+	Method New(x:Int, y:Int, width:Int, height:Int, makeGraphic:Bool = False)
 		Super.New(x, y)
 		
 		SetRenderer(Self)
-		MakeGraphic(width, height, 0)
+		If (makeGraphic) MakeGraphic(width, height, 0)
 		active = False
 		immovable = True
 		moves = False
