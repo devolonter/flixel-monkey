@@ -1,5 +1,7 @@
 Strict
 
+Import "vendor/${FLX_TEXT_DRIVER}/${FLX_TEXT_DRIVER}.monkey"
+
 Import reflection
 
 Import flxextern
