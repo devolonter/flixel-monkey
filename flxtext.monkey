@@ -57,15 +57,33 @@ Class FlxText Extends FlxSprite Implements FlxSpriteRenderer
 	Const SYSTEM_FONT:String = "system"
 	
 Private
+	Global _FontLoader:FlxFontLoader = New FlxFontLoader()
+	
+	Global _FontsManager:FlxFontsManager = New FlxFontsManager()
+
 	Field _shadow:FlxColor
 	
-	Field _textObject:FlxTextInternalObject
+	Field _value:String
+	
+	Field _lines:FlxTextLine[]
+	
+	Field _countLines:Int
+
+	Field _alignment:Float
+	
+	Field _fontFamily:String
+	
+	Field _fontSize:Int
+	
+	Field _fontHeight:Int
+
+#If FLX_TEXT_DRIVER = "angelfont"	
+	Field _fontObject:AngelFont
+#End
 
 Public
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "")
 		Super.New(x, y)
-		
-		_textObject = New FlxTextInternalObject()
 		
 		SetRenderer(Self)
 		_shadow = New FlxColor(0)
@@ -79,20 +97,28 @@ Public
 	End Method
 	
 	Method Destroy:Void()
-		_textObject.Destroy()
-		_textObject = Null
+		Local i:Int = 0, l:Int = _lines.Length()
+		
+		While (i < l)
+			_lines[i] = Null
+			i += 1
+		Wend
+		
+		_fontObject = Null
 		_shadow = Null
 	
 		Super.Destroy()
 	End Method
 	
 	Method SetFormat:FlxText(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
-		_textObject.SetFormat(font, FlxAssetsManager.GetFont(font).GetValidSize(size), alignment)
+		_alignment = alignment
+		_fontFamily = font
+		_fontSize = FlxAssetsManager.GetFont(font).GetValidSize(size)
+		
 		Self.Color = color
 		Shadow = shadowColor
 		
-		Self.height = _textObject.GetHeight()
-		frameHeight = Self.height
+		_ResetFont()
 		_ResetHelpers()
 		
 		Return Self
@@ -101,53 +127,45 @@ Public
 	Method SetWidth:Void(width:Float)
 		Self.width = width
 		frameWidth = Self.width
-		
-		_textObject.SetWidth(width)
 		_ResetHelpers()
 	End Method
 	
 	Method Text:String() Property
-		Return _textObject.value
+		Return _value
 	End Method
 	
 	Method Text:Void(text:String) Property
-		_textObject.SetText(text)
-		
-		height = _textObject.GetHeight()
-		frameHeight = height
+		_value = text
 		_ResetHelpers()
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_textObject.SetFontSize(FlxAssetsManager.GetFont(_textObject._fontFamily).GetValidSize(size))
-		
-		height = _textObject.GetHeight()
-		frameHeight = height
+		_fontSize = FlxAssetsManager.GetFont(_fontFamily).GetValidSize(size)
+		_ResetFont()
 		_ResetHelpers()
 	End Method
 	
 	Method Size:Int() Property
-		Return _textObject._fontSize
+		Return _fontSize
 	End Method
 	
 	Method Font:String() Property
-		Return _textObject._fontFamily
+		Return _fontFamily
 	End Method
 	
 	Method Font:Void(font:String) Property
-		_textObject.SetFontFamily(font)
-		
-		height = _textObject.GetHeight()
-		frameHeight = height
+		_fontFamily = font
+		_ResetFont()
 		_ResetHelpers()
 	End Method
 	
 	Method Alignment:Float() Property
-		Return _textObject._alignment
+		Return _alignment
 	End Method
 	
 	Method Alignment:Void(alignment:Float) Property
-		_textObject.SetAlignment(alignment)
+		_alignment = alignment
+		_ResetAlignment()
 	End Method
 	
 	Method Shadow:Int() Property
@@ -157,12 +175,6 @@ Public
 	Method Shadow:Void(color:Int) Property
 		_shadow.SetARGB(color)
 	End Method
-
-#If FLX_TEXT_DRIVER = "angelfont"	
-	Method GetFontObject:AngelFont()
-		Return _textObject._font
-	End Method
-#End
 	
 	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_shadow.argb <> 0) Then
@@ -193,121 +205,65 @@ Public
 				End If
 			End If					
 			
-			_textObject._font._FlxDrawText(_textObject, x + 1, y + 1)
+			_fontObject.DrawText(Self, x + 1, y + 1)
 			
 			_mixedColor.SetRGB(oldColor)
 			SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
 			SetAlpha(oldAlpha)
 		End If		
 		
-		_textObject._font._FlxDrawText(_textObject, x, y)
+		_fontObject.DrawText(Self, x, y)
 	End Method
-	
-End Class
-
-Class FlxTextInternalObject
-	
-	Field value:String
-	
-	Field lines:FlxTextInternalLine[]
-	
-	Field countLines:Int
 	
 Private
-	Global _FontLoader:FlxFontLoader = New FlxFontLoader()
-	
-	Global _FontsManager:FlxFontsManager = New FlxFontsManager()
-	
-	Field _width:Int
-
-	Field _alignment:Float
-	
-	Field _fontFamily:String
-	
-	Field _fontSize:Int
-
-#If FLX_TEXT_DRIVER = "angelfont"	
-	Field _font:AngelFont
-#End
-	
-	Method Destroy:Void()
-		Local i:Int = 0, l:Int = lines.Length()
-		
-		While (i < l)
-			lines[i] = Null
-		Wend
-	End Method
-	
-	Method SetWidth:Void(width:Int)
-		_width = width
-		If (value.Length() > 0) _ParseText()
-	End Method
-	
-	Method SetText:Void(text:String)
-		value = text
-		If (value.Length() > 0) _ParseText()
-	End Method
-	
-	Method SetFormat:Void(fontFamily:String, fontSize:Int, alignment:Float)
-		_alignment = alignment
-		_fontFamily = fontFamily
-		_fontSize = fontSize
-		
-		_ResetFont()
-		If (value.Length() > 0) _ParseText()
-	End Method
-	
-	Method SetFontFamily:Void(fontFamily:String)
-		_fontFamily = fontFamily
+	Method _ResetHelpers:Void()
+		If (_value.Length() > 0) Then
+			If (width <> 0) Then
+				_ParseText()
+			Else
+				_countLines = 1
+			End If
 			
-		_ResetFont()
-		If (value.Length() > 0) _ParseText()
-	End Method
-	
-	Method SetFontSize:Void(fontSize:Int) Property
-		_fontSize = fontSize
+			Self.height = _GetHeight()
+			frameHeight = Self.height
+		Else
+			Self.height = 0
+			frameHeight = 0
+		End If
 		
-		_ResetFont()
-		If (value.Length() > 0) _ParseText()
+		Super._ResetHelpers()
 	End Method
-	
-	Method SetAlignment:Void(alignment:Float) Property
-		_alignment = alignment
-		If (value.Length() > 0) _ResetAlignment(alignment)
-	End Method
-	
-	Method GetHeight:Int()
-		Local h:Int = 0
-	
-		For Local line:Int = 0 Until countLines
-			h += _font._FlxGetTextHeight(Self, lines[line].startPos, lines[line].endPos) * 1.5
-		Next
-		
-		Return h
-	End Method
-	
-Private
+
 	Method _ResetFont:Void()
 		_FontLoader.fontFamily = _fontFamily
 		_FontLoader.fontSize = _fontSize
 		
-		_font = _FontsManager.GetResource(_fontFamily + _fontSize, _FontLoader)
+		_fontObject = _FontsManager.GetResource(_fontFamily + _fontSize, _FontLoader)
+		_fontHeight = _fontObject.GetTextHeight(Self)
 	End Method
 
-	Method _ResetAlignment:Void(alignment:Float) Property
-		_alignment = alignment
+	Method _ResetAlignment:Void()
+		If (_value.Length() = 0) Return
 		
-		If (value.Length() = 0) Return
-		
-		For Local line:Int = 0 Until countLines
-			lines[line].x = (_width - lines[line].width) * alignment
+		For Local line:Int = 0 Until _countLines
+			_lines[line].x = (width - _lines[line].width) * _alignment
 		Next
+	End Method
+	
+	Method _GetHeight:Int()
+		If (width = 0) Then
+			Return _fontHeight
+		Else
+			Return _fontHeight + _fontObject.lineGap * (_countLines - 1)
+		End If
 	End Method
 
 	Method _ParseText:Void()
+		_countLines = 0
+	
 		Local prevOffset:Int = 0
-		Local offsetN:Int = value.Find("~n", 0)
-		Local offsetR:Int = value.Find("~r", 0)
+		Local offsetN:Int = _value.Find("~n", 0)
+		Local offsetR:Int = _value.Find("~r", 0)
 		Local offset:Int = 0
 		
 		If (offsetN >= 0 And offsetR >= 0) Then
@@ -322,8 +278,8 @@ Private
 				
 				prevOffset = offset + 1
 				
-				offsetN = value.Find("~n", prevOffset)
-				offsetR = value.Find("~r", prevOffset)
+				offsetN = _value.Find("~n", prevOffset)
+				offsetR = _value.Find("~r", prevOffset)
 								
 				If (offsetN >= 0 And offsetR >= 0) Then
 					offset = Min(offsetN, offsetR)
@@ -332,25 +288,25 @@ Private
 				End if
 			Wend
 			
-			_BuildLines(prevOffset, value.Length())
+			_BuildLines(prevOffset, _value.Length())
 		Else			
-			_BuildLines(0, value.Length())
+			_BuildLines(0, _value.Length())
 		End If
-		
-		_ResetAlignment(_alignment)
+
+		_ResetAlignment()
 	End Method
 	
 	Method _BuildLines:Void(startPos:Int, endPos:Int)
-		Local textWidth:Int = _font._FlxGetTextWidth(Self, startPos, endPos)
+		Local textWidth:Int = _fontObject.GetTextWidth(Self, startPos, endPos)
 
-		If (_width < textWidth) Then		
+		If (width < textWidth) Then
 			Local textLength:Int = startPos - endPos
 			
-			Local range:Int = Ceil(textLength / Float(Floor(textWidth / Float(_width)) + 1))
+			Local range:Int = Ceil(textLength / Float(Floor(textWidth / Float(width)) + 1))
 			Repeat
 				range += 1
-				textWidth = _font._FlxGetTextWidth(Self, 0, range)
-			Until (textWidth >= _width)
+				textWidth = _fontObject.GetTextWidth(Self, 0, range)
+			Until (textWidth >= width)
 
 			Local maxOffset:Int = range
 			Local minOffset:Int = 0
@@ -369,13 +325,13 @@ Private
 					
 					tmpOffset = -1
 					For Local i:Int = offset - 1 To minOffset Step - 1
-						If (value[i] = KEY_SPACE) tmpOffset = i
+						If (_value[i] = KEY_SPACE) tmpOffset = i
 					Next
 					
 					If (tmpOffset < 0) Then
 						tmpOffset = _GetMinOffset(minOffset, offset)
 					Else
-						If (offset - minOffset > 1 And value[offset] = KEY_SPACE) Then
+						If (offset - minOffset > 1 And _value[offset] = KEY_SPACE) Then
 							minOffset += 1
 							offset +=  Min(offset + 2, maxOffset)
 							Continue	
@@ -383,15 +339,15 @@ Private
 					End If
 					
 					offset = tmpOffset + minOffset
-					textWidth = _font._FlxGetTextWidth(Self, minOffset, offset)
-				Until (textWidth <= _width)
+					textWidth = _fontObject.GetTextWidth(Self, minOffset, offset)
+				Until (textWidth <= width)
 			
 				dirty = False
-				finalTextWidth = _font._FlxGetTextWidth(Self, minOffset)
+				finalTextWidth = _fontObject.GetTextWidth(Self, minOffset)
 				
-				If (finalTextWidth > _width And textLength - minOffset > 1) Then
+				If (finalTextWidth > width And textLength - minOffset > 1) Then
 					For Local i:Int = minOffset Until offset
-						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+						If (_value[i] = KEY_SPACE Or _value[i] = KEY_TAB) Then
 							minOffset += 1
 							dirty = True
 						Else
@@ -400,7 +356,7 @@ Private
 					Next
 					
 					For Local i:Int = offset - 1 To minOffset Step - 1
-						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+						If (_value[i] = KEY_SPACE Or _value[i] = KEY_TAB) Then
 							offset -= 1
 							dirty = True
 						Else
@@ -413,17 +369,17 @@ Private
 					If ( Not dirty) Then
 						_AddLine(minOffset, offset, textWidth)
 					Else
-						_AddLine(minOffset, offset, _font._FlxGetTextWidth(Self, minOffset, offset))
+						_AddLine(minOffset, offset, _fontObject.GetTextWidth(Self, minOffset, offset))
 					End If
 					
 					minOffset = offset
 					maxOffset = minOffset + range
 					offset = maxOffset
 				Else
-					Local l:Int = value.Length()
+					Local l:Int = _value.Length()
 				
 					For Local i:Int = minOffset Until l
-						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+						If (_value[i] = KEY_SPACE Or _value[i] = KEY_TAB) Then
 							minOffset += 1
 							dirty = True
 						Else
@@ -432,7 +388,7 @@ Private
 					Next
 					
 					For Local i:Int = l - 1 To minOffset Step - 1
-						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+						If (_value[i] = KEY_SPACE Or _value[i] = KEY_TAB) Then
 							l -= 1
 							dirty = True
 						Else
@@ -445,7 +401,7 @@ Private
 					If ( Not dirty) Then
 						_AddLine(minOffset, l, finalTextWidth)
 					Else
-						_AddLine(minOffset, offset, _font._FlxGetTextWidth(Self, minOffset, l))
+						_AddLine(minOffset, offset, _fontObject.GetTextWidth(Self, minOffset, l))
 					End If
 					
 					Exit
@@ -459,7 +415,7 @@ Private
 	Method _GetMinOffset:Int(startPos:Int, endPos:Int)
 		Local offset:Int = startPos - endPos
 		
-		While (_font._FlxGetTextWidth(Self, 0, offset) > _width)
+		While (_fontObject.GetTextWidth(Self, 0, offset) > width)
 			offset -= 1			
 			If (offset = 0) Return offset		
 		Wend
@@ -467,32 +423,31 @@ Private
 		Return offset		
 	End Method
 	
-	Method _AddLine:FlxTextInternalLine(startPos:Int, endPos:Int, width:Int)
-		Local line:FlxTextInternalLine
-		
-		Print value[startPos..endPos]
+	Method _AddLine:FlxTextLine(startPos:Int, endPos:Int, width:Int)
+		Local line:FlxTextLine
 	
-		If (countLines = lines.Length()) Then
-			lines = lines.Resize(countLines * 2 + 10)
-			line = New FlxTextInternalLine(startPos, endPos, width)
-			lines[countLines] = line
+		If (_countLines = _lines.Length()) Then
+			_lines = _lines.Resize(_countLines * 2 + 10)
+			line = New FlxTextLine(startPos, endPos, width)
+			_lines[_countLines] = line
 		Else
-			line = lines[countLines]
+			line = _lines[_countLines]
 			If (line = Null) Then
-				line = New FlxTextInternalLine(startPos, endPos, width)
-				lines[countLines] = line
+				line = New FlxTextLine(startPos, endPos, width)
+				_lines[_countLines] = line
 			Else
 				line.Reset(startPos, endPos, width)
 			End If
 		End If
 		
-		countLines += 1
+		_countLines += 1
 		Return line
 	End Method
-
+	
 End Class
 
-Class FlxTextInternalLine
+Private
+Class FlxTextLine
 
 	Field x:Float
 	
@@ -515,7 +470,6 @@ Class FlxTextInternalLine
 
 End Class
 
-Private
 #If FLX_TEXT_DRIVER = "angelfont"
 	Class FlxFontLoader Extends FlxResourceLoader<AngelFont>
 		
@@ -525,6 +479,8 @@ Private
 		Method Load:AngelFont(name:String)
 			Local font:AngelFont = New AngelFont()
 			font.LoadFontXml(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize))
+			
+			Return font
 		End Method
 	
 	End Class
@@ -551,6 +507,8 @@ Private
 	
 		Field height:Int = 0
 		Field heightOffset:Int = 9999
+		
+		Field lineGap:Int = 5
 		
 		Method LoadFontXml:Void(url:String)
 			iniText = LoadString(url+".fnt")
@@ -603,14 +561,14 @@ Private
 			End
 		End
 		
-		Method GetTextWidth:Int(txt:FlxTextInternalObject, startPos:Int = 0, endPos:Int = -1)
+		Method GetTextWidth:Int(txt:FlxText, startPos:Int = 0, endPos:Int = -1)
 			Local prevChar:Int = 0
 			Local width:Int = 0
 			
-			If (endPos < 0) endPos = txt.value.Length()
+			If (endPos < 0) endPos = txt._value.Length()
 			
 			For Local i:= startPos Until endPos
-				Local asc:Int = txt.value[i]
+				Local asc:Int = txt._value[i]
 				Local ac:Char = chars[asc]
 				Local thisChar:Int = asc
 				If ac  <> Null
@@ -631,33 +589,29 @@ Private
 			Return width
 		End Method
 		
-		Method GetTextHeight:Int(txt:FlxTextInternalObject, startPos:Int = 0, endPos:Int = -1)
+		Method GetTextHeight:Int(txt:FlxText, startPos:Int = 0, endPos:Int = -1)
 			Local h:Int = 0
 			
-			If (endPos < 0) endPos = txt.value.Length()
+			If (endPos < 0) endPos = txt._value.Length()
 			
 			For Local i:= startPos Until endPos
-				Local asc:Int = txt.value[i]
+				Local asc:Int = txt._value[i]
 				Local ac:Char = chars[asc]
 				If ac.height+ac.yOffset > h h = ac.height+ac.yOffset
 			Next
 			Return h
 		End
 		
-		Method DrawText:Void(txt:FlxTextInternalObject, x:Int, y:Int)
-			Local prevChar:Int = 0
-			xOffset = 0
-			yOffset = 0
-			height = 0
-			
-			For Local line:Int = 0 Until txt.countLines
-				height = 0
+		Method DrawText:Void(txt:FlxText, x:Int, y:Int)
+			If (txt._countLines = 1) Then
+				Local prevChar:Int = 0
+				xOffset = 0
 				
-				For Local i:= txt.lines[line].startPos Until txt.lines[line].endPos
-					Local asc:Int = txt.value[i]
-					Local ac:Char = chars[asc]
-					Local thisChar:Int = asc
-					If ac  <> Null
+				Local i:Int = 0, l:Int = txt._value.Length
+				Local asc:Int, ac:Char, thisChar:Int
+				
+				While (i < l)
+					If ac <> Null
 						If useKerning
 							firstKp = kernPairs.Get(prevChar)
 							If firstKp <> Null
@@ -667,15 +621,45 @@ Private
 								End
 							Endif
 						Endif
-						ac.Draw(image[ac.page], x + xOffset, y + yOffset)
+						ac.Draw(image[ac.page], x + xOffset, y)
 						xOffset += ac.xAdvance
-						If (height < ac.yOffset + ac.height) height = ac.yOffset + ac.height
 						prevChar = thisChar
 					Endif
-				Next
-			
-				yOffset += height
-			Next
+				
+					i += 1
+				Wend
+			Else
+				Local line:Int, countLines:Int = txt._countLines
+				
+				Local prevChar:Int = 0, xOffset:Int = 0, yOffset:Int = 0
+				
+				Local i:Int = 0, l:Int = txt._value.Length
+				Local asc:Int, ac:Char, thisChar:Int
+				
+				While (line < countLines)
+					While (i < l)
+						If ac <> Null
+							If useKerning
+								firstKp = kernPairs.Get(prevChar)
+								If firstKp <> Null
+									secondKp = firstKp.Get(thisChar)
+									If secondKp <> Null
+										xOffset += secondKp.amount
+									End
+								Endif
+							Endif
+							ac.Draw(image[ac.page], x + xOffset, y + yOffset)
+							xOffset += ac.xAdvance
+							prevChar = thisChar
+						Endif
+					
+						i += 1
+					Wend
+					
+					yOffset += txt._fontHeight + lineGap
+					line += 1
+				Wend
+			End If
 		End Method
 	
 	End Class
