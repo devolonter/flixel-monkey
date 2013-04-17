@@ -1,39 +1,39 @@
 Strict
 
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.txt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.fnt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.fnt"
 
 Import flxextern
 Import flxsprite
@@ -300,9 +300,10 @@ Private
 		Local textWidth:Int = _fontObject.GetTextWidth(Self, startPos, endPos)
 
 		If (width < textWidth) Then
-			Local textLength:Int = startPos - endPos
+			Local textLength:Int = endPos - startPos
 			
 			Local range:Int = Ceil(textLength / Float(Floor(textWidth / Float(width)) + 1))
+
 			Repeat
 				range += 1
 				textWidth = _fontObject.GetTextWidth(Self, 0, range)
@@ -520,13 +521,13 @@ End Class
 				lines = lineList.ToArray()
 				iniText = "~n".Join(lines)
 			End	
-			
-			
+
 			Local pageCount:Int = 0
 			
 			Local config:= LoadConfig(iniText)
 			
-			Local nodes := config.FindNodesByPath("font/chars/char")
+			Local nodes:= config.FindNodesByPath("font/chars/char")
+			
 			For Local node:= EachIn nodes
 				Local id:Int = Int(node.GetAttribute("id"))
 				Local page:Int = Int(node.GetAttribute("page"))
@@ -538,17 +539,22 @@ End Class
 			Next
 			
 			nodes = config.FindNodesByPath("font/kernings/kerning")
-			For Local node:= EachIn nodes
-				Local first:Int = Int(node.GetAttribute("first"))
-				firstKp = kernPairs.Get(first)
-				If firstKp = Null
-					kernPairs.Add(first, New IntMap<KernPair>)
+			
+			If (nodes <> Null) Then
+				For Local node:= EachIn nodes
+					Local first:Int = Int(node.GetAttribute("first"))
 					firstKp = kernPairs.Get(first)
+					If firstKp = Null
+						kernPairs.Add(first, New IntMap<KernPair>)
+						firstKp = kernPairs.Get(first)
+					End
+					
+					Local second:Int = Int(node.GetAttribute("second"))
+					firstKp.Add(second, New KernPair(first, second, Int(node.GetAttribute("amount"))))
 				End
-				
-				Local second:Int = Int(node.GetAttribute("second"))
-				firstKp.Add(second, New KernPair(first, second, Int(node.GetAttribute("amount"))))
-			End
+			Else
+				useKerning = False
+			End If
 			
 			If pageCount = 0
 				image[0] = LoadImage(url+".png")
@@ -583,7 +589,7 @@ End Class
 					Endif
 					width += ac.xAdvance
 					prevChar = thisChar
-				Endif
+				EndIf
 			Next
 			
 			Return width
@@ -608,14 +614,17 @@ End Class
 				xOffset = 0
 				
 				Local i:Int = 0, l:Int = txt._value.Length
-				Local asc:Int, ac:Char, thisChar:Int
+				Local asc:Int, ac:Char
 				
 				While (i < l)
+					asc = txt._value[i]
+					ac = chars[asc]
+				
 					If ac <> Null
 						If useKerning
 							firstKp = kernPairs.Get(prevChar)
 							If firstKp <> Null
-								secondKp = firstKp.Get(thisChar)
+								secondKp = firstKp.Get(asc)
 								If secondKp <> Null
 									xOffset += secondKp.amount
 								End
@@ -623,7 +632,7 @@ End Class
 						Endif
 						ac.Draw(image[ac.page], x + xOffset, y)
 						xOffset += ac.xAdvance
-						prevChar = thisChar
+						prevChar = asc
 					Endif
 				
 					i += 1
@@ -634,15 +643,18 @@ End Class
 				Local prevChar:Int = 0, xOffset:Int = 0, yOffset:Int = 0
 				
 				Local i:Int = 0, l:Int = txt._value.Length
-				Local asc:Int, ac:Char, thisChar:Int
+				Local asc:Int, ac:Char
 				
 				While (line < countLines)
 					While (i < l)
+						asc = txt._value[i]
+						ac = chars[asc]
+					
 						If ac <> Null
 							If useKerning
 								firstKp = kernPairs.Get(prevChar)
 								If firstKp <> Null
-									secondKp = firstKp.Get(thisChar)
+									secondKp = firstKp.Get(asc)
 									If secondKp <> Null
 										xOffset += secondKp.amount
 									End
@@ -650,7 +662,7 @@ End Class
 							Endif
 							ac.Draw(image[ac.page], x + xOffset, y + yOffset)
 							xOffset += ac.xAdvance
-							prevChar = thisChar
+							prevChar = asc
 						Endif
 					
 						i += 1
