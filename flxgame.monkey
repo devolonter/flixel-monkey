@@ -540,12 +540,12 @@ Private
 		
 		Local minSystemFontSize:Int = 8
 		Local maxSystemFontSize:Int = 24
-		Local fontPathPrefix:String = FlxText.SYSTEM_FONT + "_font_"
+		Local fontPathPrefix:String = "fonts/${FLX_TEXT_DRIVER}/" + FlxText.SYSTEM_FONT + "_font_"
 		
 		Local system:FlxFont = 	FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT)	
 		
 		For Local size:Int = minSystemFontSize To maxSystemFontSize
-			system.SetPath(size, fontPathPrefix + Min(size, 17) +  FlxG.DATA_SUFFIX + ".png")
+			system.SetPath(size, fontPathPrefix + size + FlxG.DATA_SUFFIX + ".png")
 		Next
 		
 		FlxAssetsManager.AddImage("default" + FlxG.DATA_SUFFIX, "default" +  FlxG.DATA_SUFFIX + ".png")
