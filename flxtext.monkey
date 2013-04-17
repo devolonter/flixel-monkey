@@ -523,11 +523,160 @@ Private
 		Field fontSize:Int
 		
 		Method Load:AngelFont(name:String)
-			Return New AngelFont(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize))
+			Local font:AngelFont = New AngelFont()
+			font.LoadFontXml(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize))
 		End Method
 	
 	End Class
 	
 	Class FlxFontsManager Extends FlxResourcesManager<AngelFont>
+	End Class
+	
+	Class AngelFont
+	Private
+		Field image:Image[] = New Image[1]
+		Field chars:Char[256]
+		
+		Field kernPairs:IntMap<IntMap<KernPair>> = New IntMap<IntMap<KernPair>>
+		Global firstKp:IntMap<KernPair>
+		Global secondKp:KernPair
+
+		Field iniText:String
+	
+		Field xOffset:Int
+		Field yOffset:Int
+	
+	Public
+		Field useKerning:Bool = True
+	
+		Field height:Int = 0
+		Field heightOffset:Int = 9999
+		
+		Method LoadFontXml:Void(url:String)
+			iniText = LoadString(url+".fnt")
+			Local lines:String[] = iniText.Split(String.FromChar(10))
+			Local firstLine:String = lines[0]
+			If firstLine.Contains("<?xml")
+				Local lineList:List<String> = New List<String>(lines)
+				lineList.RemoveFirst()
+				lines = lineList.ToArray()
+				iniText = "~n".Join(lines)
+			End	
+			
+			
+			Local pageCount:Int = 0
+			
+			Local config:= LoadConfig(iniText)
+			
+			Local nodes := config.FindNodesByPath("font/chars/char")
+			For Local node:= EachIn nodes
+				Local id:Int = Int(node.GetAttribute("id"))
+				Local page:Int = Int(node.GetAttribute("page"))
+				If pageCount < page pageCount = page
+				chars[id] = New Char(Int(node.GetAttribute("x")), Int(node.GetAttribute("y")), Int(node.GetAttribute("width")), Int(node.GetAttribute("height")),  Int(node.GetAttribute("xoffset")),  Int(node.GetAttribute("yoffset")),  Int(node.GetAttribute("xadvance")), page)
+				Local ch := chars[id]
+				If ch.height > Self.height Self.height = ch.height
+				If ch.yOffset < Self.heightOffset Self.heightOffset = ch.yOffset
+			Next
+			
+			nodes = config.FindNodesByPath("font/kernings/kerning")
+			For Local node:= EachIn nodes
+				Local first:Int = Int(node.GetAttribute("first"))
+				firstKp = kernPairs.Get(first)
+				If firstKp = Null
+					kernPairs.Add(first, New IntMap<KernPair>)
+					firstKp = kernPairs.Get(first)
+				End
+				
+				Local second:Int = Int(node.GetAttribute("second"))
+				firstKp.Add(second, New KernPair(first, second, Int(node.GetAttribute("amount"))))
+			End
+			
+			If pageCount = 0
+				image[0] = LoadImage(url+".png")
+				If image[0] = Null image[0] = LoadImage(url+"_0.png")
+			Else
+				For Local page:= 0 To pageCount
+					If image.Length < page+1 image = image.Resize(page+1)
+					image[page] = LoadImage(url+"_"+page+".png")
+				End
+			End
+		End
+		
+		Method GetTextWidth:Int(txt:FlxTextInternalObject, startPos:Int = 0, endPos:Int = -1)
+			Local prevChar:Int = 0
+			Local width:Int = 0
+			
+			If (endPos < 0) endPos = txt.value.Length()
+			
+			For Local i:= startPos Until endPos
+				Local asc:Int = txt.value[i]
+				Local ac:Char = chars[asc]
+				Local thisChar:Int = asc
+				If ac  <> Null
+					If useKerning
+						Local firstKp:= kernPairs.Get(prevChar)
+						If firstKp <> Null
+							Local secondKp:= firstKp.Get(thisChar)
+							If secondKp <> Null
+								xOffset += secondKp.amount
+							End							
+						Endif
+					Endif
+					width += ac.xAdvance
+					prevChar = thisChar
+				Endif
+			Next
+			
+			Return width
+		End Method
+		
+		Method GetTextHeight:Int(txt:FlxTextInternalObject, startPos:Int = 0, endPos:Int = -1)
+			Local h:Int = 0
+			
+			If (endPos < 0) endPos = txt.value.Length()
+			
+			For Local i:= startPos Until endPos
+				Local asc:Int = txt.value[i]
+				Local ac:Char = chars[asc]
+				If ac.height+ac.yOffset > h h = ac.height+ac.yOffset
+			Next
+			Return h
+		End
+		
+		Method DrawText:Void(txt:FlxTextInternalObject, x:Int, y:Int)
+			Local prevChar:Int = 0
+			xOffset = 0
+			yOffset = 0
+			height = 0
+			
+			For Local line:Int = 0 Until txt.countLines
+				height = 0
+				
+				For Local i:= txt.lines[line].startPos Until txt.lines[line].endPos
+					Local asc:Int = txt.value[i]
+					Local ac:Char = chars[asc]
+					Local thisChar:Int = asc
+					If ac  <> Null
+						If useKerning
+							firstKp = kernPairs.Get(prevChar)
+							If firstKp <> Null
+								secondKp = firstKp.Get(thisChar)
+								If secondKp <> Null
+									xOffset += secondKp.amount
+								End
+							Endif
+						Endif
+						ac.Draw(image[ac.page], x + xOffset, y + yOffset)
+						xOffset += ac.xAdvance
+						If (height < ac.yOffset + ac.height) height = ac.yOffset + ac.height
+						prevChar = thisChar
+					Endif
+				Next
+			
+				yOffset += height
+			Next
+		End Method
+	
 	End Class
 #End
