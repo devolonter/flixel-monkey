@@ -12,3 +12,5 @@
 #End
 
 #FLX_WEBGL_ENABLED  = False
+
+#FLX_TEXT_DRIVER = "angelfont"
