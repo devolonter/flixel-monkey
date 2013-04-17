@@ -1,76 +1,97 @@
 Strict
 
-Import "vendor/${FLX_TEXT_DRIVER}/${FLX_TEXT_DRIVER}.monkey"
-
-Import reflection
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.txt"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.txt"
 
 Import flxextern
 Import flxsprite
 Import flxcamera
-Import flxtext.driver
-Import flxtext.driver.native
 Import flxg
 Import system.flxcolor
 Import system.flxassetsmanager
+
+#If FLX_TEXT_DRIVER = "angelfont"
+	Import vendor.angelfont
+#End
 
 Class FlxText Extends FlxSprite Implements FlxSpriteRenderer
 
 	Global ClassObject:Object
 	
 	Const ALIGN_LEFT:Float = 0
+	Const ALIGN_CENTER:Float = 0.5
 	Const ALIGN_RIGHT:Float = 1
-	Const ALIGN_CENTER:Float = .5
-	
-	Const DRIVER_NATIVE:Int = 0
-	Const DRIVER_FONTMACHINE:Int = 1	
-	'ANGELFONT must be last
-	Const DRIVER_ANGELFONT:Int = 2
 	
 	Const SYSTEM_FONT:String = "system"
 	
 Private
-	Global _DefaultDriver:ClassInfo
-	Field _driver:FlxTextDriver
 	Field _shadow:FlxColor
+	
+	Field _textObject:FlxTextInternalObject
 
 Public
-	Method New(x:Float, y:Float, width:Int = 0, text:String = "", driver:ClassInfo = Null)
+	Method New(x:Float, y:Float, width:Int = 0, text:String = "")
 		Super.New(x, y)
 		
+		_textObject = New FlxTextInternalObject()
+		
 		SetRenderer(Self)
-		_shadow = New FlxColor(0)		
-		
-		If (driver = Null) Then
-			If (_DefaultDriver = Null) _DefaultDriver = ClassInfo(FlxTextNativeDriver.ClassObject)
-		
-			driver = _DefaultDriver
-		End If
-		
-		_driver = FlxTextDriver(driver.NewInstance())
+		_shadow = New FlxColor(0)
 		
 		Self.width = width
 		frameWidth = Self.width
 		moves = False
-		
-		_driver.Width = width
+
 		SetFormat(SYSTEM_FONT)
-		Text = text		
+		Text = text
 	End Method
 	
 	Method Destroy:Void()
-		_driver.Destroy()
-		_driver = Null
+		_textObject.Destroy()
+		_textObject = Null
 		_shadow = Null
 	
 		Super.Destroy()
 	End Method
 	
 	Method SetFormat:FlxText(font:String = "", size:Int = 0, color:Int = FlxG.WHITE, alignment:Float = ALIGN_LEFT, shadowColor:Int = 0)
-		_driver.SetFormat(font, FlxAssetsManager.GetFont(font, _driver.ID).GetValidSize(size), alignment)
+		_textObject.SetFormat(font, FlxAssetsManager.GetFont(font).GetValidSize(size), alignment)
 		Self.Color = color
-		Shadow = shadowColor		
+		Shadow = shadowColor
 		
-		Self.height = _driver.GetTextHeight()
+		Self.height = _textObject.GetHeight()
 		frameHeight = Self.height
 		_ResetHelpers()
 		
@@ -81,52 +102,52 @@ Public
 		Self.width = width
 		frameWidth = Self.width
 		
-		_driver.Width = width
+		_textObject.SetWidth(width)
 		_ResetHelpers()
 	End Method
 	
 	Method Text:String() Property
-		Return _driver.Text
+		Return _textObject.value
 	End Method
 	
 	Method Text:Void(text:String) Property
-		_driver.Text = text
+		_textObject.SetText(text)
 		
-		Self.height = _driver.GetTextHeight()
-		frameHeight = Self.height
+		height = _textObject.GetHeight()
+		frameHeight = height
 		_ResetHelpers()
 	End Method
 	
 	Method Size:Void(size:Int) Property
-		_driver.Size = FlxAssetsManager.GetFont(_driver.Font, _driver.ID).GetValidSize(size)
+		_textObject.SetFontSize(FlxAssetsManager.GetFont(_textObject._fontFamily).GetValidSize(size))
 		
-		Self.height = _driver.GetTextHeight()
-		frameHeight = Self.height
+		height = _textObject.GetHeight()
+		frameHeight = height
 		_ResetHelpers()
 	End Method
 	
 	Method Size:Int() Property
-		Return _driver.Size
+		Return _textObject._fontSize
 	End Method
 	
 	Method Font:String() Property
-		Return _driver.Font
+		Return _textObject._fontFamily
 	End Method
 	
 	Method Font:Void(font:String) Property
-		_driver.Font = font
+		_textObject.SetFontFamily(font)
+		
+		height = _textObject.GetHeight()
+		frameHeight = height
+		_ResetHelpers()
 	End Method
 	
 	Method Alignment:Float() Property
-		Return _driver.Alignment
+		Return _textObject._alignment
 	End Method
 	
 	Method Alignment:Void(alignment:Float) Property
-		_driver.Alignment = alignment
-		
-		Self.height = _driver.GetTextHeight()
-		frameHeight = Self.height
-		_ResetHelpers()
+		_textObject.SetAlignment(alignment)
 	End Method
 	
 	Method Shadow:Int() Property
@@ -136,10 +157,12 @@ Public
 	Method Shadow:Void(color:Int) Property
 		_shadow.SetARGB(color)
 	End Method
-	
-	Method GetFontObject:Object()
-		Return _driver.GetFontObject()
+
+#If FLX_TEXT_DRIVER = "angelfont"	
+	Method GetFontObject:AngelFont()
+		Return _textObject._font
 	End Method
+#End
 	
 	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_shadow.argb <> 0) Then
@@ -169,18 +192,342 @@ Public
 					SetAlpha(_shadow.a)					
 				End If
 			End If					
-			_driver.Draw(x+1, y+1)
+			
+			_textObject._font._FlxDrawText(_textObject, x + 1, y + 1)
 			
 			_mixedColor.SetRGB(oldColor)
 			SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
 			SetAlpha(oldAlpha)
 		End If		
 		
-		_driver.Draw(x, y)
+		_textObject._font._FlxDrawText(_textObject, x, y)
 	End Method
 	
-	Function SetDefaultDriver:Void(driver:ClassInfo)
-		_DefaultDriver = driver
-	End Function
-	
 End Class
+
+Class FlxTextInternalObject
+	
+	Field value:String
+	
+	Field lines:FlxTextInternalLine[]
+	
+	Field countLines:Int
+	
+Private
+	Global _FontLoader:FlxFontLoader = New FlxFontLoader()
+	
+	Global _FontsManager:FlxFontsManager = New FlxFontsManager()
+	
+	Field _width:Int
+
+	Field _alignment:Float
+	
+	Field _fontFamily:String
+	
+	Field _fontSize:Int
+
+#If FLX_TEXT_DRIVER = "angelfont"	
+	Field _font:AngelFont
+#End
+	
+	Method Destroy:Void()
+		Local i:Int = 0, l:Int = lines.Length()
+		
+		While (i < l)
+			lines[i] = Null
+		Wend
+	End Method
+	
+	Method SetWidth:Void(width:Int)
+		_width = width
+		If (value.Length() > 0) _ParseText()
+	End Method
+	
+	Method SetText:Void(text:String)
+		value = text
+		If (value.Length() > 0) _ParseText()
+	End Method
+	
+	Method SetFormat:Void(fontFamily:String, fontSize:Int, alignment:Float)
+		_alignment = alignment
+		_fontFamily = fontFamily
+		_fontSize = fontSize
+		
+		_ResetFont()
+		If (value.Length() > 0) _ParseText()
+	End Method
+	
+	Method SetFontFamily:Void(fontFamily:String)
+		_fontFamily = fontFamily
+			
+		_ResetFont()
+		If (value.Length() > 0) _ParseText()
+	End Method
+	
+	Method SetFontSize:Void(fontSize:Int) Property
+		_fontSize = fontSize
+		
+		_ResetFont()
+		If (value.Length() > 0) _ParseText()
+	End Method
+	
+	Method SetAlignment:Void(alignment:Float) Property
+		_alignment = alignment
+		If (value.Length() > 0) _ResetAlignment(alignment)
+	End Method
+	
+	Method GetHeight:Int()
+		Local h:Int = 0
+	
+		For Local line:Int = 0 Until countLines
+			h += _font._FlxGetTextHeight(Self, lines[line].startPos, lines[line].endPos) * 1.5
+		Next
+		
+		Return h
+	End Method
+	
+Private
+	Method _ResetFont:Void()
+		_FontLoader.fontFamily = _fontFamily
+		_FontLoader.fontSize = _fontSize
+		
+		_font = _FontsManager.GetResource(_fontFamily + _fontSize, _FontLoader)
+	End Method
+
+	Method _ResetAlignment:Void(alignment:Float) Property
+		_alignment = alignment
+		
+		If (value.Length() = 0) Return
+		
+		For Local line:Int = 0 Until countLines
+			lines[line].x = (_width - lines[line].width) * alignment
+		Next
+	End Method
+
+	Method _ParseText:Void()
+		Local prevOffset:Int = 0
+		Local offsetN:Int = value.Find("~n", 0)
+		Local offsetR:Int = value.Find("~r", 0)
+		Local offset:Int = 0
+		
+		If (offsetN >= 0 And offsetR >= 0) Then
+			offset = Min(offsetN, offsetR)
+		Else
+			offset = Max(offsetN, offsetR)
+		End if
+		
+		If (offset >= 0) Then
+			While (offset >= 0)			
+				_BuildLines(prevOffset, offset)
+				
+				prevOffset = offset + 1
+				
+				offsetN = value.Find("~n", prevOffset)
+				offsetR = value.Find("~r", prevOffset)
+								
+				If (offsetN >= 0 And offsetR >= 0) Then
+					offset = Min(offsetN, offsetR)
+				Else
+					offset = Max(offsetN, offsetR)
+				End if
+			Wend
+			
+			_BuildLines(prevOffset, value.Length())
+		Else			
+			_BuildLines(0, value.Length())
+		End If
+		
+		_ResetAlignment(_alignment)
+	End Method
+	
+	Method _BuildLines:Void(startPos:Int, endPos:Int)
+		Local textWidth:Int = _font._FlxGetTextWidth(Self, startPos, endPos)
+
+		If (_width < textWidth) Then		
+			Local textLength:Int = startPos - endPos
+			
+			Local range:Int = Ceil(textLength / Float(Floor(textWidth / Float(_width)) + 1))
+			Repeat
+				range += 1
+				textWidth = _font._FlxGetTextWidth(Self, 0, range)
+			Until (textWidth >= _width)
+
+			Local maxOffset:Int = range
+			Local minOffset:Int = 0
+			Local offset:Int = maxOffset
+			Local tmpOffset:Int = 0
+			Local dirty:Bool = False
+			Local finalTextWidth:Int = 0
+						
+			Repeat
+				Repeat
+					offset -= 1
+					If (offset - minOffset <= 1) Then
+						offset = minOffset + 1
+						Exit
+					End if
+					
+					tmpOffset = -1
+					For Local i:Int = offset - 1 To minOffset Step - 1
+						If (value[i] = KEY_SPACE) tmpOffset = i
+					Next
+					
+					If (tmpOffset < 0) Then
+						tmpOffset = _GetMinOffset(minOffset, offset)
+					Else
+						If (offset - minOffset > 1 And value[offset] = KEY_SPACE) Then
+							minOffset += 1
+							offset +=  Min(offset + 2, maxOffset)
+							Continue	
+						EndIf		
+					End If
+					
+					offset = tmpOffset + minOffset
+					textWidth = _font._FlxGetTextWidth(Self, minOffset, offset)
+				Until (textWidth <= _width)
+			
+				dirty = False
+				finalTextWidth = _font._FlxGetTextWidth(Self, minOffset)
+				
+				If (finalTextWidth > _width And textLength - minOffset > 1) Then
+					For Local i:Int = minOffset Until offset
+						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+							minOffset += 1
+							dirty = True
+						Else
+							Exit
+						End If
+					Next
+					
+					For Local i:Int = offset - 1 To minOffset Step - 1
+						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+							offset -= 1
+							dirty = True
+						Else
+							Exit
+						End If
+					Next
+								
+					If (offset - minOffset = 0) Continue
+					
+					If ( Not dirty) Then
+						_AddLine(minOffset, offset, textWidth)
+					Else
+						_AddLine(minOffset, offset, _font._FlxGetTextWidth(Self, minOffset, offset))
+					End If
+					
+					minOffset = offset
+					maxOffset = minOffset + range
+					offset = maxOffset
+				Else
+					Local l:Int = value.Length()
+				
+					For Local i:Int = minOffset Until l
+						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+							minOffset += 1
+							dirty = True
+						Else
+							Exit
+						End If
+					Next
+					
+					For Local i:Int = l - 1 To minOffset Step - 1
+						If (value[i] = KEY_SPACE Or value[i] = KEY_TAB) Then
+							l -= 1
+							dirty = True
+						Else
+							Exit
+						End If
+					Next
+					
+					If (offset - l = 0) Continue
+					
+					If ( Not dirty) Then
+						_AddLine(minOffset, l, finalTextWidth)
+					Else
+						_AddLine(minOffset, offset, _font._FlxGetTextWidth(Self, minOffset, l))
+					End If
+					
+					Exit
+				End If
+			Forever
+		Else
+			_AddLine(startPos, endPos, textWidth)
+		End If	
+	End Method
+	
+	Method _GetMinOffset:Int(startPos:Int, endPos:Int)
+		Local offset:Int = startPos - endPos
+		
+		While (_font._FlxGetTextWidth(Self, 0, offset) > _width)
+			offset -= 1			
+			If (offset = 0) Return offset		
+		Wend
+
+		Return offset		
+	End Method
+	
+	Method _AddLine:FlxTextInternalLine(startPos:Int, endPos:Int, width:Int)
+		Local line:FlxTextInternalLine
+		
+		Print value[startPos..endPos]
+	
+		If (countLines = lines.Length()) Then
+			lines = lines.Resize(countLines * 2 + 10)
+			line = New FlxTextInternalLine(startPos, endPos, width)
+			lines[countLines] = line
+		Else
+			line = lines[countLines]
+			If (line = Null) Then
+				line = New FlxTextInternalLine(startPos, endPos, width)
+				lines[countLines] = line
+			Else
+				line.Reset(startPos, endPos, width)
+			End If
+		End If
+		
+		countLines += 1
+		Return line
+	End Method
+
+End Class
+
+Class FlxTextInternalLine
+
+	Field x:Float
+	
+	Field y:Float
+	
+	Field startPos:Int
+	
+	Field endPos:Int
+	
+	Field width:Int
+	
+	Method New(startPos:Int, endPos:Int, width:Int)
+		Reset(startPos, endPos, width)
+	End Method
+	
+	Method Reset:Void(startPos:Int, endPos:Int, width:Int)
+		Self.startPos = startPos
+		Self.endPos = endPos
+	End Method
+
+End Class
+
+Private
+#If FLX_TEXT_DRIVER = "angelfont"
+	Class FlxFontLoader Extends FlxResourceLoader<AngelFont>
+		
+		Field fontFamily:String = FlxText.SYSTEM_FONT
+		Field fontSize:Int
+		
+		Method Load:AngelFont(name:String)
+			Return New AngelFont(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize))
+		End Method
+	
+	End Class
+	
+	Class FlxFontsManager Extends FlxResourcesManager<AngelFont>
+	End Class
+#End

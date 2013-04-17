@@ -7,6 +7,7 @@ Import mojo
 
 Import char
 Import kernpair
+Import flixel.flxtext
 
 Import config	'thanks to skn3 - you can find the latest version of this file in bananas/skn3/config folder.
 
@@ -76,7 +77,7 @@ Class AngelFont
 		
 		err = ""
 		current = Self
-		iniText = LoadString(url+".txt")
+		iniText = LoadString(url)
 		Local lines:= iniText.Split(String.FromChar(10))
 		For Local line:= Eachin lines
 		
@@ -123,7 +124,8 @@ Class AngelFont
 			Endif
 		Next
 		
-		image[0] = LoadImage(url+".png")
+		'image[0] = LoadImage(url+".png")
+		image[0] = LoadImage(url.Replace(".txt", ".png"))
 	End Method
 	
 	Method LoadFontXml:Void(url:String)
@@ -389,5 +391,81 @@ Class AngelFont
 		Next
 		Return h
 	End
+	
+	Method _FlxGetTextWidth:Int(txt:FlxTextInternalObject, startPos:Int = 0, endPos:Int = -1)
+		Local prevChar:Int = 0
+		Local width:Int = 0
+		
+		If (endPos < 0) endPos = txt.value.Length()
+		
+		For Local i:= startPos Until endPos
+			Local asc:Int = txt.value[i]
+			Local ac:Char = chars[asc]
+			Local thisChar:Int = asc
+			If ac  <> Null
+				If useKerning
+					Local firstKp:= kernPairs.Get(prevChar)
+					If firstKp <> Null
+						Local secondKp:= firstKp.Get(thisChar)
+						If secondKp <> Null
+							xOffset += secondKp.amount
+						End							
+					Endif
+				Endif
+				width += ac.xAdvance
+				prevChar = thisChar
+			Endif
+		Next
+		
+		Return width
+	End Method
+	
+	Method _FlxGetTextHeight:Int(txt:FlxTextInternalObject, startPos:Int = 0, endPos:Int = -1)
+		Local h:Int = 0
+		
+		If (endPos < 0) endPos = txt.value.Length()
+		
+		For Local i:= startPos Until endPos
+			Local asc:Int = txt.value[i]
+			Local ac:Char = chars[asc]
+			If ac.height+ac.yOffset > h h = ac.height+ac.yOffset
+		Next
+		Return h
+	End
+	
+	Method _FlxDrawText:Void(txt:FlxTextInternalObject, x:Int, y:Int)
+'		Local prevChar:String = ""
+		Local prevChar:Int = 0
+		xOffset = 0
+		yOffset = 0
+		height = 0
+		
+		For Local line:Int = 0 Until txt.countLines
+			height = 0
+			
+			For Local i:= txt.lines[line].startPos Until txt.lines[line].endPos
+				Local asc:Int = txt.value[i]
+				Local ac:Char = chars[asc]
+				Local thisChar:Int = asc
+				If ac  <> Null
+					If useKerning
+						firstKp = kernPairs.Get(prevChar)
+						If firstKp <> Null
+							secondKp = firstKp.Get(thisChar)
+							If secondKp <> Null
+								xOffset += secondKp.amount
+							End
+						Endif
+					Endif
+					ac.Draw(image[ac.page], x + xOffset, y + yOffset)
+					xOffset += ac.xAdvance
+					If (height < ac.yOffset + ac.height) height = ac.yOffset + ac.height
+					prevChar = thisChar
+				Endif
+			Next
+		
+			yOffset += height
+		Next
+	End Method
 
 End Class
