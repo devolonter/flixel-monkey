@@ -2,8 +2,6 @@ Strict
 
 Import "native/flixel.${TARGET}.${LANG}"
 
-Import "vendor/${FLX_TEXT_DRIVER}/${FLX_TEXT_DRIVER}.monkey"
-
 #If TARGET = "html5"
 	#If FLX_WEBGL_ENABLED = "1"
 		Import "native/webgl/mojo.${TARGET}.gl.min.${LANG}" 

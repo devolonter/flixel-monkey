@@ -17,7 +17,6 @@ Import flxsignals
 Import flxsound
 Import flxsprite
 Import flxstate
-Import flxtext
 Import flxtileblock
 Import flxtilemap
 Import flxtimer
@@ -74,3 +73,6 @@ Import system.flxtile
 
 Import plugin.debugpathdisplay
 Import plugin.timermanager
+
+Import "vendor/${FLX_TEXT_DRIVER}/${FLX_TEXT_DRIVER}.monkey"
+Import "flxtext/${FLX_TEXT_DRIVER}.monkey"
