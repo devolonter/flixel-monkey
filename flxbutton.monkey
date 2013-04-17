@@ -54,11 +54,11 @@ Private
 	Field _initialized:Bool
 	
 Public
-	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonClickListener = Null, driver:ClassInfo = Null)
+	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonClickListener = Null)
 		Super.New(x, y)
 		
 		If (label.Length() > 0) Then
-			Self.label = New FlxText(0, 0, 80, label, driver)
+			Self.label = New FlxText(0, 0, 80, label)
 			Self.label.SetFormat(FlxText.SYSTEM_FONT, 8, $FF333333, FlxText.ALIGN_CENTER)
 			labelOffset = New FlxPoint(-1, 3)
 		End If
