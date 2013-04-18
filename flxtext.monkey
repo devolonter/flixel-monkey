@@ -335,11 +335,11 @@ Private
 
 			Repeat			
 				range += 1
-				textWidth = _fontObject.GetTextWidth(Self, 0, range)
+				textWidth = _fontObject.GetTextWidth(Self, startPos, range)
 			Until (textWidth >= width)
 
 			Local maxOffset:Int = range
-			Local minOffset:Int = 0
+			Local minOffset:Int = startPos
 			Local offset:Int = maxOffset
 			Local tmpOffset:Int = 0
 			Local dirty:Bool = False
