@@ -164,6 +164,7 @@ Public
 	End Method
 	
 	Method Alignment:Void(alignment:Float) Property
+		If (_alignment = alignment) Return
 		_alignment = alignment
 		_ResetAlignment()
 	End Method
@@ -221,7 +222,9 @@ Private
 			If (width <> 0) Then
 				_ParseText()
 			Else
-				_countLines = 1
+				_countLines = 0
+				_AddLine(0, _value.Length(), _fontObject.GetTextWidth(Self, 0, _value.Length()))
+				_ResetAlignment()
 			End If
 			
 			Self.height = _GetHeight()
@@ -247,6 +250,7 @@ Private
 		
 		For Local line:Int = 0 Until _countLines
 			_lines[line].x = (width - _lines[line].width) * _alignment
+			_lines[line].y = (_fontObject.lineGap + _fontHeight) * line
 		Next
 	End Method
 	
@@ -572,23 +576,25 @@ End Class
 			Local width:Int = 0
 			
 			If (endPos < 0) endPos = txt._value.Length()
-			
+			Local asc:Int, ac:Char
+		
 			For Local i:= startPos Until endPos
-				Local asc:Int = txt._value[i]
-				Local ac:Char = chars[asc]
-				Local thisChar:Int = asc
-				If ac  <> Null
+				asc = txt._value[i]
+				ac = chars[asc]
+
+				If ac <> Null
 					If useKerning
 						Local firstKp:= kernPairs.Get(prevChar)
 						If firstKp <> Null
-							Local secondKp:= firstKp.Get(thisChar)
+							Local secondKp:= firstKp.Get(asc)
 							If secondKp <> Null
 								xOffset += secondKp.amount
 							End							
 						Endif
-					Endif
+					EndIf
+					
 					width += ac.xAdvance
-					prevChar = thisChar
+					prevChar = asc
 				EndIf
 			Next
 			
@@ -609,13 +615,17 @@ End Class
 		End
 		
 		Method DrawText:Void(txt:FlxText, x:Int, y:Int)
-			If (txt._countLines = 1) Then
-				Local prevChar:Int = 0
-				xOffset = 0
+			Local lineIndex:Int = 0, countLines:Int = txt._countLines, line:FlxTextLine
 				
-				Local i:Int = 0, l:Int = txt._value.Length
-				Local asc:Int, ac:Char
-				
+			Local prevChar:Int = 0, xOffset:Int = 0
+			Local i:Int = 0, l:Int
+			Local asc:Int, ac:Char
+			
+			While (lineIndex < countLines)
+				line = txt._lines[lineIndex]
+				i = line.startPos
+				l = line.endPos
+			
 				While (i < l)
 					asc = txt._value[i]
 					ac = chars[asc]
@@ -630,48 +640,17 @@ End Class
 								End
 							Endif
 						Endif
-						ac.Draw(image[ac.page], x + xOffset, y)
+												
+						ac.Draw(image[ac.page], x + xOffset + line.x, y + line.y)
 						xOffset += ac.xAdvance
 						prevChar = asc
 					Endif
-				
+					
 					i += 1
 				Wend
-			Else
-				Local line:Int, countLines:Int = txt._countLines
-				
-				Local prevChar:Int = 0, xOffset:Int = 0, yOffset:Int = 0
-				
-				Local i:Int = 0, l:Int = txt._value.Length
-				Local asc:Int, ac:Char
-				
-				While (line < countLines)
-					While (i < l)
-						asc = txt._value[i]
-						ac = chars[asc]
-					
-						If ac <> Null
-							If useKerning
-								firstKp = kernPairs.Get(prevChar)
-								If firstKp <> Null
-									secondKp = firstKp.Get(asc)
-									If secondKp <> Null
-										xOffset += secondKp.amount
-									End
-								Endif
-							Endif
-							ac.Draw(image[ac.page], x + xOffset, y + yOffset)
-							xOffset += ac.xAdvance
-							prevChar = asc
-						Endif
-					
-						i += 1
-					Wend
-					
-					yOffset += txt._fontHeight + lineGap
-					line += 1
-				Wend
-			End If
+
+				lineIndex += 1
+			Wend
 		End Method
 	
 	End Class
