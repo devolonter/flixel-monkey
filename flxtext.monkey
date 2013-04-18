@@ -1,40 +1,5 @@
 Strict
 
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.fnt"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx_0.png"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.fnt"
-
 Import flxextern
 Import flxsprite
 Import flxcamera
@@ -42,9 +7,50 @@ Import flxg
 Import system.flxcolor
 Import system.flxassetsmanager
 
+Private
+
 #If FLX_TEXT_DRIVER = "angelfont"
 	Import vendor.angelfont
+#ElseIf FLX_TEXT_DRIVER = "fontmachine"
+	Import vendor.fontmachine
 #End
+
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.${FLX_FONT_EXTENSION}"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.${FLX_FONT_EXTENSION}"
+
+Public
 
 Class FlxText Extends FlxSprite Implements FlxSpriteRenderer
 

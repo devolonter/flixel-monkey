@@ -8,6 +8,7 @@
 'For more information about AngelFont look here: http://www.monkeycoder.co.nz/Community/posts.php?topic=141
 
 #TEXT_FILES += "*.fnt"
+#FLX_FONT_EXTENSION = "fnt"
 
 Import char
 Import kernpair
