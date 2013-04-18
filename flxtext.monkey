@@ -730,8 +730,8 @@ End Class
 			
 	Private
 		
-		Field _drawShadow:Bool = true
-		Field _drawBorder:Bool = true
+		Field _drawShadow:Bool = False
+		Field _drawBorder:Bool = False
 		Field borderChars:BitMapChar[]
 		Field faceChars:BitMapChar[]
 		Field shadowChars:BitMapChar[]
@@ -783,7 +783,9 @@ End Class
 							borderChars[char].SetImageResourceName  prefixName + "_BORDER_" + char + ".png"
 						endif
 						index+=5
-						index+=1 ' control point for future use
+						index += 1 ' control point for future use
+						
+						_drawBorder = True
 	
 					Case "{SH"
 						index+=3 '3 control point for future use
@@ -806,7 +808,9 @@ End Class
 						'shadowChars[char].image.SetHandle(-shadowChars[char].drawingMetrics.drawingOffset.x,-shadowChars[char].drawingMetrics.drawingOffset.y)
 	
 						index+=5
-						index+=1 ' control point for future use
+						index += 1 ' control point for future use
+						
+						_drawShadow = True
 						
 					Case "{FC"
 						index+=3 '3 control point for future use
@@ -872,12 +876,14 @@ End Class
 					Case "B"
 						borderChars[charIndex] = New BitMapChar
 						char = borderChars[charIndex]
+						_drawBorder = True
 					Case "F"
 						faceChars [charIndex] = New BitMapChar
 						char = faceChars[charIndex]
 					Case "S"
 						shadowChars [charIndex] = New BitMapChar
 						char = shadowChars[charIndex]
+						_drawShadow = True
 				End Select
 				char.packedFontIndex = Int(chrdata[2])
 				if packedImages[char.packedFontIndex] = null Then
@@ -938,31 +944,6 @@ End Class
 				lineIndex += 1
 				dry += lineHeight
 			Wend
-			
-			#Rem
-			For Local i:Int = startPos to endPos 'text.Length
-				Local char:Int = text[i-1]
-				if char>=0 And char<=target.Length Then
-					if char = 10 Then
-						dry += Int(faceChars[32].drawingMetrics.drawingSize.y) + Kerning.y
-						Self.DrawCharsText(text, oldX, dry, target, align, i + 1, endPos)
-						return
-					ElseIf target[char] <> null Then
-						if target[char].CharImageLoaded() = false Then
-							target[char].LoadCharImage()
-						End
-						if target[char].image <> null Then
-							DrawImage(target[char].image,drx-xOffset,dry)
-						ElseIf target[char].packedFontIndex > 0 Then
-							DrawImageRect(packedImages[target[char].packedFontIndex],-xOffset+drx+target[char].drawingMetrics.drawingOffset.x,dry+target[char].drawingMetrics.drawingOffset.y,target[char].packedPosition.x,target[char].packedPosition.y,target[char].packedSize.x,target[char].packedSize.y)
-						Endif
-						drx+=faceChars[char].drawingMetrics.drawingWidth  + Kerning.x
-					endif
-				Else
-				'	Print "Char " + char + " out of scope."
-				EndIf
-			Next
-			#End
 		End Method
 	
 		Field _kerning:drawingpoint.DrawingPoint
