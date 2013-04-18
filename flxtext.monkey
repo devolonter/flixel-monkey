@@ -318,6 +318,7 @@ Private
 			Local tmpOffset:Int = 0
 			Local dirty:Bool = False
 			Local finalTextWidth:Int = 0
+			Local success:Bool
 						
 			Repeat
 				Repeat
@@ -329,16 +330,20 @@ Private
 					
 					tmpOffset = -1
 					For Local i:Int = offset - 1 To minOffset Step - 1
+						success = False
+					
 						If (_value[i] = KEY_SPACE Or _value[i] = KEY_TAB) Then
 							tmpOffset = i
+							success = True
 							Exit
 						End If
 					Next
 					
 					If (tmpOffset < 0) Then
 						tmpOffset = _GetMinOffset(minOffset, offset)
+						'tmpOffset = minOffset + 1
 					Else
-						If (offset - minOffset > 1 And (_value[minOffset] = KEY_SPACE Or _value[minOffset] = KEY_TAB)) Then
+						If (_value[minOffset] = KEY_SPACE Or _value[minOffset] = KEY_TAB) Then
 							For Local i:Int = minOffset To offset
 								If (_value[i] <> KEY_SPACE And _value[i] <> KEY_TAB) Then
 									minOffset = i
@@ -383,6 +388,7 @@ Private
 					End If
 					
 					minOffset = offset
+					If (success) minOffset += 1
 					maxOffset = minOffset + range
 					offset = maxOffset
 				Else
@@ -425,12 +431,12 @@ Private
 	Method _GetMinOffset:Int(startPos:Int, endPos:Int)
 		Local offset:Int = endPos - startPos
 		
-		While (_fontObject.GetTextWidth(Self, 0, offset) > width)
+		While (_fontObject.GetTextWidth(Self, startPos, startPos + offset) > width)
 			offset -= 1			
-			If (offset = 0) Return offset		
+			If (offset = 1) Return offset
 		Wend
 
-		Return offset		
+		Return startPos + offset
 	End Method
 	
 	Method _AddLine:FlxTextLine(startPos:Int, endPos:Int, width:Int)
