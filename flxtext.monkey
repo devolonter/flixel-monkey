@@ -246,7 +246,7 @@ Private
 		_FontLoader.fontSize = _fontSize
 		
 		_fontObject = _FontsManager.GetResource(_fontFamily + _fontSize, _FontLoader)
-		_fontHeight = _fontObject.GetTextHeight(Self)
+		_fontHeight = _fontObject.GetFontHeight(Self)
 	End Method
 
 	Method _ResetAlignment:Void()
@@ -261,7 +261,7 @@ Private
 		If (width = 0) Then
 			Return _fontHeight
 		Else
-			Return _fontHeight + _fontObject.lineGap * (_countLines - 1)
+			Return _fontObject.GetTextHeight(Self)
 		End If
 	End Method
 
@@ -609,13 +609,13 @@ End Class
 			Return width
 		End Method
 		
-		Method GetTextHeight:Int(txt:FlxText, startPos:Int = 0, endPos:Int = -1)
+		Method GetFontHeight:Int(txt:FlxText)
 			Local h:Int = 0
 			
-			If (endPos < 0) endPos = txt._value.Length()
+			If (txt._value.Length() <> 0) Then
+				Local l:Int = txt._value.Length()
 			
-			If (endPos <> 0) Then
-				For Local i:= startPos Until endPos
+				For Local i:= 0 Until l
 					Local asc:Int = txt._value[i]
 					Local ac:Char = chars[asc]
 					If ac.height+ac.yOffset > h h = ac.height+ac.yOffset
@@ -626,6 +626,10 @@ End Class
 		
 			Return h
 		End
+		
+		Method GetTextHeight:Int(txt:FlxText)
+			Return ( (txt._fontHeight + lineGap) * txt._countLines) - lineGap
+		End Method
 		
 		Method DrawText:Void(txt:FlxText, x:Int, y:Int)
 			Local lineIndex:Int = 0, countLines:Int = txt._countLines, line:FlxTextLine
@@ -673,17 +677,294 @@ End Class
 	
 #ElseIf FLX_TEXT_DRIVER = "fontmachine"
 
-	Class FlxFontLoader Extends FlxResourceLoader<BitmapFont>
+	Class FlxBitmapFont Implements Font
+
+		Method New(fontDescriptionFilePath:String)
+			Local text:String = LoadString(fontDescriptionFilePath + ".txt")
+			if text = "" Then Print "FONT " + fontDescriptionFilePath + " WAS NOT FOUND!!!"
+			LoadFontData(text, fontDescriptionFilePath, False)
+		End
+
+		Method GetTextWidth:Float(text:FlxText, fromChar:Int = 0, toChar:Int = -1)
+			Local twidth:Float
+			Local char:Int
+			Local lastchar:Int = 0
+			
+			If (toChar < 0) toChar = text._value.Length()
+					
+			For Local i:Int = fromChar Until toChar
+				char = text._value[i]
+				
+				If faceChars[char] <> Null Then
+					lastchar = char
+					twidth = twidth + faceChars[char].drawingMetrics.drawingWidth + Kerning.x
+				End If
+			Next
+
+			Return twidth - faceChars[lastchar].drawingMetrics.drawingWidth + faceChars[lastchar].drawingMetrics.drawingSize.x
+		End Method
+
+		Method GetTextHeight:Float(text:FlxText)
+			Return ( (text._fontHeight + Kerning.y) * text._countLines) - Kerning.y
+		End
+
+		Method GetFontHeight:Int(txt:FlxText)
+			If faceChars[32] = Null Then Return 0
+			Return faceChars[32].drawingMetrics.drawingSize.y 
+		End Method
 		
-		Field fontFamily:String = FlxText.SYSTEM_FONT
-		Field fontSize:Int
+		Method DrawText:Void(text:FlxText, x:Float, y:Float)
+			'If (_drawShadow) DrawChars(text, x, y, shadowChars)
+			'If (_drawBorder) DrawChars(text, x, y, borderChars)
+			DrawChars(text, x, y, faceChars)
+		End
 		
-		Method Load:AngelFont(name:String)
-			Return New BitmapFont(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize), False)
+		Method Kerning:drawingpoint.DrawingPoint() property
+			if _kerning = null Then _kerning = New drawingpoint.DrawingPoint
+			Return _kerning
+		End
+	
+		Method Kerning:void(value:drawingpoint.DrawingPoint) property
+			_kerning = value			
+		End
+			
+	Private
+		
+		Field _drawShadow:Bool = true
+		Field _drawBorder:Bool = true
+		Field borderChars:BitMapChar[]
+		Field faceChars:BitMapChar[]
+		Field shadowChars:BitMapChar[]
+			
+		Method LoadFontData:Void(Info:String, fontName:String, dynamicLoad:bool)
+			if Info.StartsWith("P1") Then
+				LoadPacked(Info,fontName,dynamicLoad)				
+				return
+			EndIf
+			Local tokenStream:String[] = Info.Split(",") 
+			local index:Int = 0 
+			borderChars = New BitMapChar[65536]
+			faceChars = New BitMapChar[65536]
+			shadowChars = New BitMapChar[65536]
+			
+			Local prefixName:String = fontName
+			if prefixName.ToLower().EndsWith(".txt") Then prefixName = prefixName[..-4]
+			
+			Local char:Int = 0
+			while index<tokenStream.Length
+				'We get char to load:
+				Local strChar:String = tokenStream[index]
+				if strChar.Trim() = "" Then 
+					'Print "This is going to fail..."
+					index+=1
+					Exit    
+				endif
+				char = int(strChar)
+				'Print "Loading char: " + char + " at index: " + index
+				index+=1
+				
+				Local kind:String = tokenStream[index]
+				'Print "Found kind= " + kind 
+				index +=1
+				
+				Select kind
+					Case "{BR"
+						index+=3 '3 control point for future use
+						borderChars[char] = New BitMapChar
+						borderChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
+						borderChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
+						borderChars[char].drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
+						borderChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
+						borderChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
+						if dynamicLoad  = False then
+							borderChars[char].image = LoadImage(prefixName + "_BORDER_" + char + ".png")
+							borderChars[char].image.SetHandle(-borderChars[char].drawingMetrics.drawingOffset.x,-borderChars[char].drawingMetrics.drawingOffset.y)
+						Else
+							borderChars[char].SetImageResourceName  prefixName + "_BORDER_" + char + ".png"
+						endif
+						index+=5
+						index+=1 ' control point for future use
+	
+					Case "{SH"
+						index+=3 '3 control point for future use
+						shadowChars[char] = New BitMapChar
+						shadowChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
+						shadowChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
+						shadowChars[char].drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
+						shadowChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
+						shadowChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
+						Local filename:String = prefixName + "_SHADOW_" + char + ".png"
+						if dynamicLoad  = False then
+							shadowChars[char].image = LoadImage(filename)
+							shadowChars[char].image.SetHandle(-shadowChars[char].drawingMetrics.drawingOffset.x,-shadowChars[char].drawingMetrics.drawingOffset.y)
+						Else
+							shadowChars[char].SetImageResourceName  filename 
+						endif
+	
+						
+						'shadowChars[char].image = LoadImage(filename)
+						'shadowChars[char].image.SetHandle(-shadowChars[char].drawingMetrics.drawingOffset.x,-shadowChars[char].drawingMetrics.drawingOffset.y)
+	
+						index+=5
+						index+=1 ' control point for future use
+						
+					Case "{FC"
+						index+=3 '3 control point for future use
+						faceChars[char] = New BitMapChar
+						faceChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
+						faceChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
+						faceChars[char].drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
+						faceChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
+						faceChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
+						if dynamicLoad = False then
+							faceChars[char].image = LoadImage(prefixName + "_" + char + ".png")
+							faceChars[char].image.SetHandle(-faceChars[char].drawingMetrics.drawingOffset.x,-faceChars[char].drawingMetrics.drawingOffset.y)
+						Else
+							faceChars[char].SetImageResourceName prefixName + "_" + char + ".png" 
+						endif
+						index+=5 
+						index+=1 ' control point for future use
+	
+					Default 
+					Print "Error loading font! Char = " + char
+					
+				End
+			Wend
+			borderChars = borderChars[..char+1]
+			faceChars = faceChars[..char+1]
+			shadowChars = shadowChars[..char+1]
+		End
+		
+		Field packedImages:Image[]
+		
+		Method LoadPacked:Void(info:String, fontName:String, dynamicLoad:bool)
+	
+			Local header:String = info[.. info.Find(",")]
+			
+			Local separator:String
+			Select header
+				Case "P1"
+					separator = "."
+				Case "P1.01"
+					separator = "_P_"
+			End Select
+			info = info[info.Find(",")+1..]
+			borderChars = New BitMapChar[65536]
+			faceChars = New BitMapChar[65536]
+			shadowChars = New BitMapChar[65536]
+			packedImages = New Image[256]
+			Local maxPacked:Int = 0
+			Local maxChar:Int = 0
+	
+			Local prefixName:String = fontName
+			if prefixName.ToLower().EndsWith(".txt") Then prefixName = prefixName[..-4]
+	
+			Local charList:string[] = info.Split(";")
+			For local chr:String = EachIn charList
+	
+				Local chrdata:string[] = chr.Split(",")
+				if chrdata.Length() <2 Then Exit 
+				Local char:bitmapchar.BitMapChar 
+				Local charIndex:Int = int(chrdata[0])
+				if maxChar<charIndex Then maxChar = charIndex 
+				
+				select chrdata[1]
+					Case "B"
+						borderChars[charIndex] = New BitMapChar
+						char = borderChars[charIndex]
+					Case "F"
+						faceChars [charIndex] = New BitMapChar
+						char = faceChars[charIndex]
+					Case "S"
+						shadowChars [charIndex] = New BitMapChar
+						char = shadowChars[charIndex]
+				End Select
+				char.packedFontIndex = Int(chrdata[2])
+				if packedImages[char.packedFontIndex] = null Then
+					packedImages[char.packedFontIndex] = LoadImage(prefixName + separator + char.packedFontIndex +  ".png")
+					if maxPacked<char.packedFontIndex Then maxPacked = char.packedFontIndex
+				endif
+				char.packedPosition.x = Int(chrdata[3])
+				char.packedPosition.y = Int(chrdata[4])
+				char.packedSize.x = Int(chrdata[5])
+				char.packedSize.y = Int(chrdata[6])
+				char.drawingMetrics.drawingOffset.x = Int(chrdata[8])
+				char.drawingMetrics.drawingOffset.y = Int(chrdata[9])
+				char.drawingMetrics.drawingSize.x = Int(chrdata[10])
+				char.drawingMetrics.drawingSize.y = Int(chrdata[11])
+				char.drawingMetrics.drawingWidth = Int(chrdata[12])
+	
+			Next
+			
+			borderChars = borderChars[..maxChar+1]
+			faceChars = faceChars[..maxChar+1]
+			shadowChars = shadowChars[..maxChar+1]
+			packedImages = packedImages[..maxPacked+1]
+			
+		End
+		
+		Method DrawChars:Void(text:FlxText, x:Float, y:Float, target:BitMapChar[])
+			Local lineIndex:Int = 0, countLines:Int = text._countLines, line:FlxTextLine
+				
+			Local drx:Int = x, dry:Int = y
+			Local i:Int = 0, l:Int
+			Local char:Int
+			
+			Local lineHeight:Int = text._fontHeight + Kerning.y
+			Local targetLength:Int = target.Length()
+			
+			While (lineIndex < countLines)
+				line = text._lines[lineIndex]
+				i = line.startPos
+				l = line.endPos
+				drx = x + line.xOffset
+			
+				While (i < l)
+					char = text._value[i]
+				
+					If char >= 0 And char <= targetLength Then
+						If target[char].packedFontIndex > 0 Then
+								DrawImageRect(packedImages[target[char].packedFontIndex], drx + target[char].drawingMetrics.drawingOffset.x, dry + target[char].drawingMetrics.drawingOffset.y, target[char].packedPosition.x, target[char].packedPosition.y, target[char].packedSize.x, target[char].packedSize.y)
+						ElseIf target[char].image <> Null Then
+							DrawImage(target[char].image, drx, dry)
+						EndIf
+						
+						drx += faceChars[char].drawingMetrics.drawingWidth + Kerning.x
+					End If
+					
+					i += 1
+				Wend
+
+				lineIndex += 1
+				dry += lineHeight
+			Wend
+			
+			#Rem
+			For Local i:Int = startPos to endPos 'text.Length
+				Local char:Int = text[i-1]
+				if char>=0 And char<=target.Length Then
+					if char = 10 Then
+						dry += Int(faceChars[32].drawingMetrics.drawingSize.y) + Kerning.y
+						Self.DrawCharsText(text, oldX, dry, target, align, i + 1, endPos)
+						return
+					ElseIf target[char] <> null Then
+						if target[char].CharImageLoaded() = false Then
+							target[char].LoadCharImage()
+						End
+						if target[char].image <> null Then
+							DrawImage(target[char].image,drx-xOffset,dry)
+						ElseIf target[char].packedFontIndex > 0 Then
+							DrawImageRect(packedImages[target[char].packedFontIndex],-xOffset+drx+target[char].drawingMetrics.drawingOffset.x,dry+target[char].drawingMetrics.drawingOffset.y,target[char].packedPosition.x,target[char].packedPosition.y,target[char].packedSize.x,target[char].packedSize.y)
+						Endif
+						drx+=faceChars[char].drawingMetrics.drawingWidth  + Kerning.x
+					endif
+				Else
+				'	Print "Char " + char + " out of scope."
+				EndIf
+			Next
+			#End
 		End Method
 	
-	End Class
-	
-	Class FlxFontsManager Extends FlxResourcesManager<BitmapFont>
-	End Class
+		Field _kerning:drawingpoint.DrawingPoint
+	End
 #End
