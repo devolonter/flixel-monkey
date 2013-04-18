@@ -9,6 +9,7 @@
 
 #TEXT_FILES += "*.fnt"
 #FLX_FONT_EXTENSION = "fnt"
+#FLX_FONT_IMAGE_MASK = "0.png"
 
 Import char
 Import kernpair

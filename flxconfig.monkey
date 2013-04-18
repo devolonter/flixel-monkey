@@ -15,3 +15,4 @@
 
 #FLX_TEXT_DRIVER = "angelfont"
 #FLX_FONT_EXTENSION = ""
+#FLX_FONT_IMAGE_MASK = ""

@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #End
 
 #FLX_FONT_EXTENSION = "txt"
+#FLX_FONT_IMAGE_MASK = "P_1.png"
 
 Import fontmachine.fontmachine
 Import fontmachine.bitmapchar 

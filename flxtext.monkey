@@ -15,39 +15,39 @@ Private
 	Import vendor.fontmachine
 #End
 
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_8_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_9_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_10_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_11_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_12_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_13_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_14_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_15_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_16_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_17_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_18_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_19_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_20_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_21_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_22_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_23_flx.${FLX_FONT_EXTENSION}"
-Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx_0.png"
+Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx_${FLX_FONT_IMAGE_MASK}"
 Import "data/fonts/${FLX_TEXT_DRIVER}/system_font_24_flx.${FLX_FONT_EXTENSION}"
 
 Public
@@ -578,7 +578,7 @@ End Class
 			
 			If pageCount = 0
 				image[0] = LoadImage(url+".png")
-				If image[0] = Null image[0] = LoadImage(url+"_0.png")
+				If image[0] = Null image[0] = LoadImage(url + "_0.png")
 			Else
 				For Local page:= 0 To pageCount
 					If image.Length < page+1 image = image.Resize(page+1)
