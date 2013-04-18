@@ -249,8 +249,7 @@ Private
 		If (_value.Length() = 0) Return
 		
 		For Local line:Int = 0 Until _countLines
-			_lines[line].x = (width - _lines[line].width) * _alignment
-			_lines[line].y = (_fontObject.lineGap + _fontHeight) * line
+			_lines[line].xOffset = (width - _lines[line].width) * _alignment
 		Next
 	End Method
 	
@@ -454,9 +453,7 @@ End Class
 Private
 Class FlxTextLine
 
-	Field x:Float
-	
-	Field y:Float
+	Field xOffset:Float
 	
 	Field startPos:Int
 	
@@ -471,6 +468,7 @@ Class FlxTextLine
 	Method Reset:Void(startPos:Int, endPos:Int, width:Int)
 		Self.startPos = startPos
 		Self.endPos = endPos
+		Self.width = width
 	End Method
 
 End Class
@@ -617,9 +615,10 @@ End Class
 		Method DrawText:Void(txt:FlxText, x:Int, y:Int)
 			Local lineIndex:Int = 0, countLines:Int = txt._countLines, line:FlxTextLine
 				
-			Local prevChar:Int = 0, xOffset:Int = 0
+			Local prevChar:Int = 0, xOffset:Int = 0, yOffset:Int = 0
 			Local i:Int = 0, l:Int
 			Local asc:Int, ac:Char
+			Local lineHeight:Int = txt._fontHeight + lineGap
 			
 			While (lineIndex < countLines)
 				line = txt._lines[lineIndex]
@@ -641,7 +640,7 @@ End Class
 							Endif
 						Endif
 												
-						ac.Draw(image[ac.page], x + xOffset + line.x, y + line.y)
+						ac.Draw(image[ac.page], x + xOffset + line.xOffset, y + yOffset)
 						xOffset += ac.xAdvance
 						prevChar = asc
 					Endif
@@ -650,6 +649,7 @@ End Class
 				Wend
 
 				lineIndex += 1
+				yOffset += lineHeight
 			Wend
 		End Method
 	
