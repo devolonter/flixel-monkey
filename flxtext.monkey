@@ -320,7 +320,7 @@ Private
 			Local finalTextWidth:Int = 0
 			Local success:Bool
 						
-			Repeat
+			Repeat			
 				Repeat
 					offset -= 1
 					If (offset - minOffset <= 1) Then
@@ -341,7 +341,6 @@ Private
 					
 					If (tmpOffset < 0) Then
 						tmpOffset = _GetMinOffset(minOffset, offset)
-						'tmpOffset = minOffset + 1
 					Else
 						If (_value[minOffset] = KEY_SPACE Or _value[minOffset] = KEY_TAB) Then
 							For Local i:Int = minOffset To offset
@@ -389,6 +388,7 @@ Private
 					
 					minOffset = offset
 					If (success) minOffset += 1
+					
 					maxOffset = minOffset + range
 					offset = maxOffset
 				Else
@@ -412,7 +412,7 @@ Private
 						End If
 					Next
 					
-					If (offset - l = 0) Continue
+					If (l - minOffset <= 0) Exit
 					
 					If ( Not dirty) Then
 						_AddLine(minOffset, l, finalTextWidth)
