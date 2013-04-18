@@ -312,7 +312,7 @@ Private
 				textWidth = _fontObject.GetTextWidth(Self, 0, range)
 			Until (textWidth >= width)
 
-			Local maxOffset:Int = range - 1
+			Local maxOffset:Int = range
 			Local minOffset:Int = 0
 			Local offset:Int = maxOffset
 			Local tmpOffset:Int = 0
@@ -320,7 +320,7 @@ Private
 			Local finalTextWidth:Int = 0
 						
 			Repeat
-				Repeat				
+				Repeat
 					offset -= 1
 					If (offset - minOffset <= 1) Then
 						offset = minOffset + 1
@@ -339,18 +339,18 @@ Private
 						tmpOffset = _GetMinOffset(minOffset, offset)
 					Else
 						If (offset - minOffset > 1 And (_value[minOffset] = KEY_SPACE Or _value[minOffset] = KEY_TAB)) Then
-							minOffset += 1
-							offset += Min(offset + 2, maxOffset)
-							Continue	
-						EndIf		
+							For Local i:Int = minOffset To offset
+								If (_value[i] <> KEY_SPACE And _value[i] <> KEY_TAB) Then
+									minOffset = i
+									Exit
+								End If
+							Next
+						End If
 					End If
 					
-					offset = tmpOffset + minOffset
+					offset = tmpOffset
 					textWidth = _fontObject.GetTextWidth(Self, minOffset, offset)
 				Until (textWidth <= width)
-				
-				'Print _value[minOffset .. offset]
-				'Print "..."
 			
 				dirty = False
 				finalTextWidth = _fontObject.GetTextWidth(Self, minOffset)
