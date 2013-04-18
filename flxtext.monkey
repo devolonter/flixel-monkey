@@ -620,11 +620,12 @@ End Class
 							If secondKp <> Null
 								xOffset += secondKp.amount
 							End							
-						Endif
+						EndIf
+						
+						prevChar = asc
 					EndIf
 					
 					width += ac.xAdvance
-					prevChar = asc
 				EndIf
 			Next
 			
@@ -656,7 +657,7 @@ End Class
 		Method DrawText:Void(txt:FlxText, x:Int, y:Int)
 			Local lineIndex:Int = 0, countLines:Int = txt._countLines, line:FlxTextLine
 				
-			Local prevChar:Int = 0, xOffset:Int = 0, yOffset:Int = 0
+			Local prevChar:Int = 0, xOffset:Int = 0, yOffset:Int = y
 			Local i:Int = 0, l:Int
 			Local asc:Int, ac:Char
 			Local lineHeight:Int = txt._fontHeight + lineGap
@@ -665,7 +666,7 @@ End Class
 				line = txt._lines[lineIndex]
 				i = line.startPos
 				l = line.endPos
-				xOffset = 0
+				xOffset = x + line.xOffset
 			
 				While (i < l)
 					asc = txt._value[i]
@@ -679,12 +680,13 @@ End Class
 								If secondKp <> Null
 									xOffset += secondKp.amount
 								End
-							Endif
+							EndIf
+							
+							prevChar = asc
 						Endif
 												
-						ac.Draw(image[ac.page], x + xOffset + line.xOffset, y + yOffset)
+						ac.Draw(image[ac.page], xOffset, yOffset)
 						xOffset += ac.xAdvance
-						prevChar = asc
 					Endif
 					
 					i += 1
@@ -703,7 +705,9 @@ End Class
 
 		Method New(fontDescriptionFilePath:String)
 			Local text:String = LoadString(fontDescriptionFilePath + ".txt")
-			if text = "" Then Print "FONT " + fontDescriptionFilePath + " WAS NOT FOUND!!!"
+			If text = "" Then Print "FONT " + fontDescriptionFilePath + " WAS NOT FOUND!!!"
+			
+			_kerning = New drawingpoint.DrawingPoint
 			LoadFontData(text, fontDescriptionFilePath, False)
 		End
 
@@ -719,7 +723,7 @@ End Class
 				
 				If faceChars[char] <> Null Then
 					lastchar = char
-					twidth = twidth + faceChars[char].drawingMetrics.drawingWidth + Kerning.x
+					twidth = twidth + faceChars[char].drawingMetrics.drawingWidth + _kerning.x
 				End If
 			Next
 
@@ -727,7 +731,7 @@ End Class
 		End Method
 
 		Method GetTextHeight:Float(text:FlxText)
-			Return ( (text._fontHeight + Kerning.y) * text._countLines) - Kerning.y
+			Return ( (text._fontHeight + _kerning.y) * text._countLines) - _kerning.y
 		End
 
 		Method GetFontHeight:Int(txt:FlxText)
@@ -739,15 +743,6 @@ End Class
 			If (_drawShadow) DrawChars(text, x, y, shadowChars)
 			If (_drawBorder) DrawChars(text, x, y, borderChars)
 			DrawChars(text, x, y, faceChars)
-		End
-		
-		Method Kerning:drawingpoint.DrawingPoint() property
-			if _kerning = null Then _kerning = New drawingpoint.DrawingPoint
-			Return _kerning
-		End
-	
-		Method Kerning:void(value:drawingpoint.DrawingPoint) property
-			_kerning = value			
 		End
 			
 	Private
@@ -938,7 +933,7 @@ End Class
 			Local i:Int = 0, l:Int
 			Local char:Int
 			
-			Local lineHeight:Int = text._fontHeight + Kerning.y
+			Local lineHeight:Int = text._fontHeight + _kerning.y
 			Local targetLength:Int = target.Length()
 			
 			While (lineIndex < countLines)
@@ -957,7 +952,7 @@ End Class
 							DrawImage(target[char].image, drx, dry)
 						EndIf
 						
-						drx += faceChars[char].drawingMetrics.drawingWidth + Kerning.x
+						drx += faceChars[char].drawingMetrics.drawingWidth + _kerning.x
 					End If
 					
 					i += 1
