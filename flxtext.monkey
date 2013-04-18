@@ -714,8 +714,8 @@ End Class
 		End Method
 		
 		Method DrawText:Void(text:FlxText, x:Float, y:Float)
-			'If (_drawShadow) DrawChars(text, x, y, shadowChars)
-			'If (_drawBorder) DrawChars(text, x, y, borderChars)
+			If (_drawShadow) DrawChars(text, x, y, shadowChars)
+			If (_drawBorder) DrawChars(text, x, y, borderChars)
 			DrawChars(text, x, y, faceChars)
 		End
 		
@@ -922,7 +922,7 @@ End Class
 				While (i < l)
 					char = text._value[i]
 				
-					If char >= 0 And char <= targetLength Then
+					If char >= 0 And char <= targetLength And target[char] <> Null Then
 						If target[char].packedFontIndex > 0 Then
 								DrawImageRect(packedImages[target[char].packedFontIndex], drx + target[char].drawingMetrics.drawingOffset.x, dry + target[char].drawingMetrics.drawingOffset.y, target[char].packedPosition.x, target[char].packedPosition.y, target[char].packedSize.x, target[char].packedSize.y)
 						ElseIf target[char].image <> Null Then
