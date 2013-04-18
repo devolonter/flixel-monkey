@@ -1,4 +1,4 @@
-#rem
+﻿#rem
 	header:This module contains the DrawingPoint class.
 	This class is a simple X and Y vector.
 #end

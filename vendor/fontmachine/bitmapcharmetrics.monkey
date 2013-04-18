@@ -1,4 +1,4 @@
-#rem
+﻿#rem
 	header: This module contains the BitMapCharMetrics class.
 	This class contains all the information about a character size and spacing.
 #end

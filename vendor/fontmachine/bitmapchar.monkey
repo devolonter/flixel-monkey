@@ -1,4 +1,4 @@
-#rem
+﻿#rem
 	header: This module contains the BitMapChar class.
 	This class represent a character in a BitmapFont.
 #end

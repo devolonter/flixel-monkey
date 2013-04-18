@@ -1,4 +1,4 @@
-#rem
+﻿#rem
 summary:This is the base font interface. Any font should implement this interface.
 This is just an interface provided for easy integration with other font libraries.
 The real bitmapfont objects used by this module are defined as [b]BitmapFont[/b] class objects.
