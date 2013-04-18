@@ -345,9 +345,12 @@ Private
 						EndIf		
 					End If
 					
-					offset = tmpOffset + minOffset					
+					offset = tmpOffset + minOffset
 					textWidth = _fontObject.GetTextWidth(Self, minOffset, offset)
 				Until (textWidth <= width)
+				
+				'Print _value[minOffset .. offset]
+				'Print "..."
 			
 				dirty = False
 				finalTextWidth = _fontObject.GetTextWidth(Self, minOffset)
@@ -607,11 +610,16 @@ End Class
 			
 			If (endPos < 0) endPos = txt._value.Length()
 			
-			For Local i:= startPos Until endPos
-				Local asc:Int = txt._value[i]
-				Local ac:Char = chars[asc]
-				If ac.height+ac.yOffset > h h = ac.height+ac.yOffset
-			Next
+			If (endPos <> 0) Then
+				For Local i:= startPos Until endPos
+					Local asc:Int = txt._value[i]
+					Local ac:Char = chars[asc]
+					If ac.height+ac.yOffset > h h = ac.height+ac.yOffset
+				Next
+			Else
+				h = chars[KEY_SPACE].height + chars[KEY_SPACE].yOffset
+			End If
+		
 			Return h
 		End
 		
