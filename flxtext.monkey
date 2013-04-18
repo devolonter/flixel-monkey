@@ -181,6 +181,22 @@ Public
 		_shadow.SetARGB(color)
 	End Method
 	
+	Method SetFontShadowEnabled:Void(enabled:Bool)
+	#If FLX_TEXT_DRIVER = "angelfont"
+		Return
+	#ElseIf FLX_TEXT_DRIVER = "fontmachine"
+		_fontObject._drawShadow = enabled
+	#End
+	End Method
+	
+	Method SetFontBoderEnabled:Void(enabled:Bool)
+	#If FLX_TEXT_DRIVER = "angelfont"
+		Return
+	#ElseIf FLX_TEXT_DRIVER = "fontmachine"
+		_fontObject._drawBorder = enabled
+	#End
+	End Method
+	
 	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_shadow.argb <> 0) Then
 			Local oldColor:Int = FlxG._LastDrawingColor
