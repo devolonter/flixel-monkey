@@ -273,10 +273,10 @@ Private
 			offset = Min(offsetN, offsetR)
 		Else
 			offset = Max(offsetN, offsetR)
-		End if
+		End If
 		
 		If (offset >= 0) Then
-			While (offset >= 0)			
+			While (offset >= 0)
 				_BuildLines(prevOffset, offset)
 				
 				prevOffset = offset + 1
@@ -292,7 +292,7 @@ Private
 			Wend
 			
 			_BuildLines(prevOffset, _value.Length())
-		Else			
+		Else
 			_BuildLines(0, _value.Length())
 		End If
 
@@ -307,12 +307,12 @@ Private
 			
 			Local range:Int = Ceil(textLength / Float(Floor(textWidth / Float(width)) + 1))
 
-			Repeat
+			Repeat			
 				range += 1
 				textWidth = _fontObject.GetTextWidth(Self, 0, range)
 			Until (textWidth >= width)
 
-			Local maxOffset:Int = range
+			Local maxOffset:Int = range - 1
 			Local minOffset:Int = 0
 			Local offset:Int = maxOffset
 			Local tmpOffset:Int = 0
@@ -320,7 +320,7 @@ Private
 			Local finalTextWidth:Int = 0
 						
 			Repeat
-				Repeat
+				Repeat				
 					offset -= 1
 					If (offset - minOffset <= 1) Then
 						offset = minOffset + 1
@@ -329,20 +329,23 @@ Private
 					
 					tmpOffset = -1
 					For Local i:Int = offset - 1 To minOffset Step - 1
-						If (_value[i] = KEY_SPACE) tmpOffset = i
+						If (_value[i] = KEY_SPACE Or _value[i] = KEY_TAB) Then
+							tmpOffset = i
+							Exit
+						End If
 					Next
 					
 					If (tmpOffset < 0) Then
 						tmpOffset = _GetMinOffset(minOffset, offset)
 					Else
-						If (offset - minOffset > 1 And _value[offset] = KEY_SPACE) Then
+						If (offset - minOffset > 1 And (_value[minOffset] = KEY_SPACE Or _value[minOffset] = KEY_TAB)) Then
 							minOffset += 1
-							offset +=  Min(offset + 2, maxOffset)
+							offset += Min(offset + 2, maxOffset)
 							Continue	
 						EndIf		
 					End If
 					
-					offset = tmpOffset + minOffset
+					offset = tmpOffset + minOffset					
 					textWidth = _fontObject.GetTextWidth(Self, minOffset, offset)
 				Until (textWidth <= width)
 			
@@ -417,7 +420,7 @@ Private
 	End Method
 	
 	Method _GetMinOffset:Int(startPos:Int, endPos:Int)
-		Local offset:Int = startPos - endPos
+		Local offset:Int = endPos - startPos
 		
 		While (_fontObject.GetTextWidth(Self, 0, offset) > width)
 			offset -= 1			
@@ -624,6 +627,7 @@ End Class
 				line = txt._lines[lineIndex]
 				i = line.startPos
 				l = line.endPos
+				xOffset = 0
 			
 				While (i < l)
 					asc = txt._value[i]
