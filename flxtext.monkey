@@ -640,7 +640,7 @@ End Class
 				For Local i:= 0 Until l
 					Local asc:Int = txt._value[i]
 					Local ac:Char = chars[asc]
-					If ac.height+ac.yOffset > h h = ac.height+ac.yOffset
+					If ac <> Null And ac.height + ac.yOffset > h h = ac.height + ac.yOffset
 				Next
 			Else
 				h = chars[KEY_SPACE].height + chars[KEY_SPACE].yOffset
