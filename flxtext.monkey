@@ -285,30 +285,36 @@ Private
 		_countLines = 0
 	
 		Local prevOffset:Int = 0
-		Local offsetN:Int = _value.Find("~n", 0)
-		Local offsetR:Int = _value.Find("~r", 0)
-		Local offset:Int = 0
+		Local offset:Int = -1
 		
-		If (offsetN >= 0 And offsetR >= 0) Then
-			offset = Min(offsetN, offsetR)
-		Else
-			offset = Max(offsetN, offsetR)
-		End If
+		Local i:Int = 0, l:Int = _value.Length()
 		
+		While (i < l)
+			If (_value[i] = 10 Or _value[i] = KEY_ENTER) Then
+				offset = i
+				Exit
+			End If
+			
+			i += 1
+		Wend
+
 		If (offset >= 0) Then
 			While (offset >= 0)
 				_BuildLines(prevOffset, offset)
 				
 				prevOffset = offset + 1
 				
-				offsetN = _value.Find("~n", prevOffset)
-				offsetR = _value.Find("~r", prevOffset)
-								
-				If (offsetN >= 0 And offsetR >= 0) Then
-					offset = Min(offsetN, offsetR)
-				Else
-					offset = Max(offsetN, offsetR)
-				End if
+				i = prevOffset
+				offset = -1
+		
+				While (i < l)
+					If (_value[i] = 10 Or _value[i] = KEY_ENTER) Then
+						offset = i
+						Exit
+					End If
+					
+					i += 1
+				Wend
 			Wend
 			
 			_BuildLines(prevOffset, _value.Length())
