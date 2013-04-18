@@ -65,7 +65,7 @@ Class FlxText Extends FlxSprite Implements FlxSpriteRenderer
 Private
 	Global _FontLoader:FlxFontLoader = New FlxFontLoader()
 	
-	Global _FontsManager:FlxFontsManager = New FlxFontsManager()
+	Global _FontsManager:FlxResourcesManager<FlxBitmapFont> = New FlxResourcesManager<FlxBitmapFont>()
 
 	Field _shadow:FlxColor
 	
@@ -83,9 +83,7 @@ Private
 	
 	Field _fontHeight:Int
 
-#If FLX_TEXT_DRIVER = "angelfont"	
-	Field _fontObject:AngelFont
-#End
+	Field _fontObject:FlxBitmapFont
 
 Public
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "")
@@ -491,25 +489,19 @@ Class FlxTextLine
 
 End Class
 
-#If FLX_TEXT_DRIVER = "angelfont"
-	Class FlxFontLoader Extends FlxResourceLoader<AngelFont>
+Class FlxFontLoader Extends FlxResourceLoader<FlxBitmapFont>
 		
-		Field fontFamily:String = FlxText.SYSTEM_FONT
-		Field fontSize:Int
-		
-		Method Load:AngelFont(name:String)
-			Local font:AngelFont = New AngelFont()
-			font.LoadFontXml(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize))
-			
-			Return font
-		End Method
+	Field fontFamily:String = FlxText.SYSTEM_FONT
+	Field fontSize:Int
 	
-	End Class
-	
-	Class FlxFontsManager Extends FlxResourcesManager<AngelFont>
-	End Class
-	
-	Class AngelFont
+	Method Load:FlxBitmapFont(name:String)
+		Return New FlxBitmapFont(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize))
+	End Method
+
+End Class
+
+#If FLX_TEXT_DRIVER = "angelfont"	
+	Class FlxBitmapFont
 	Private
 		Field image:Image[] = New Image[1]
 		Field chars:Char[256]
@@ -531,7 +523,7 @@ End Class
 		
 		Field lineGap:Int = 5
 		
-		Method LoadFontXml:Void(url:String)
+		Method New(url:String)
 			iniText = LoadString(url+".fnt")
 			Local lines:String[] = iniText.Split(String.FromChar(10))
 			Local firstLine:String = lines[0]
@@ -677,5 +669,21 @@ End Class
 			Wend
 		End Method
 	
+	End Class
+	
+#ElseIf FLX_TEXT_DRIVER = "fontmachine"
+
+	Class FlxFontLoader Extends FlxResourceLoader<BitmapFont>
+		
+		Field fontFamily:String = FlxText.SYSTEM_FONT
+		Field fontSize:Int
+		
+		Method Load:AngelFont(name:String)
+			Return New BitmapFont(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize), False)
+		End Method
+	
+	End Class
+	
+	Class FlxFontsManager Extends FlxResourcesManager<BitmapFont>
 	End Class
 #End
