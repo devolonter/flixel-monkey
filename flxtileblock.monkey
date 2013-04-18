@@ -19,7 +19,20 @@ Public
 		Super.New(x, y)
 		
 		SetRenderer(Self)
-		If (makeGraphic) MakeGraphic(width, height, 0)
+		
+		If (makeGraphic) Then
+			MakeGraphic(width, height, 0)
+		Else
+			Pixels = Null
+		
+			Self.width = width
+			frameWidth = width
+			Self.height = height
+			frameHeight = height
+			
+			_ResetHelpers()
+		End If
+		
 		active = False
 		immovable = True
 		moves = False
