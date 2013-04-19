@@ -1,7 +1,5 @@
 Strict
 
-Import mojo.input
-
 Class FlxColor	
 
 Public
