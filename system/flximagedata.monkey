@@ -9,6 +9,8 @@ Class FlxImageData
 
 Private
 	Global _ZeroPoint:FlxPoint = New FlxPoint()
+	
+	Global _Pixels:Int[]
 
 	Field _width:Int
 	
@@ -50,7 +52,7 @@ Public
 		If (_withPixelsArray) _pixels = New Int[_width * _height]
 		
 		If (_color.a > 0) Then
-			If ( Not _withPixelsArray) _pixels = New Int[_width * _height]
+			If ( Not _withPixelsArray) _Pixels = New Int[_width * _height]
 			_WritePixels(0, 0, _width, _height, fillColor)
 		End If
 	End Method
@@ -111,16 +113,25 @@ Public
 	Method ColorReplace:Void(color:Int, byColor:Int)
 		If ( Not _withPixelsArray)
 			_ReadPixels(0, 0, _width, _height)
+			
+			Local i:Int = 0, l:Int = _Pixels.Length()
+		
+			While (i < l)
+				If (_Pixels[i] = color) _Pixels[i] = byColor
+				i += 1
+			Wend
+			
+			_image.WritePixels(_Pixels, 0, 0, _width, _height)
+		Else
+			Local i:Int = 0, l:Int = _pixels.Length()
+		
+			While (i < l)
+				If (_pixels[i] = color) _pixels[i] = byColor
+				i += 1
+			Wend
+			
+			_image.WritePixels(_pixels, 0, 0, _width, _height)
 		End If
-		
-		Local i:Int = 0, l:Int = _pixels.Length()
-		
-		While (i < l)
-			If (_pixels[i] = color) _pixels[i] = byColor
-			i += 1
-		Wend
-		
-		_WritePixels(0, 0, _width, _height, _pixels)
 	End Method
 	
 	Method Dispose:Void()
@@ -140,7 +151,7 @@ Public
 	Method GetPixel:Int(x:Float, y:Float)
 		If ( Not _withPixelsArray) Then
 			_ReadPixels(x, y, 1, 1)
-			Return _pixels[0]
+			Return _Pixels[0]
 		Else
 			Return _pixels[x + y * _width]
 		End If
@@ -154,7 +165,7 @@ Public
 			_ReadPixels(rect.x, rect.y, rect.width, rect.height)
 			
 			While (i < l)
-				result[i] = _pixels[i]
+				result[i] = _Pixels[i]
 				i += 1
 			Wend
 		Else
@@ -294,8 +305,8 @@ Private
 	End Method
 
 	Method _CheckPixelsArray:Void(width:Int, height:Int)
-		If (_pixels.Length() < width * height) Then
-			_pixels = _pixels.Resize(width * height)
+		If (_Pixels.Length() < width * height) Then
+			_Pixels = _Pixels.Resize(width * height)
 		End If
 	End Method
 	
@@ -305,7 +316,7 @@ Private
 	
 		If ( Not _withPixelsArray) Then
 			_CheckPixelsArray(width, height)
-			ReadPixels(_pixels, x, y, width, height)
+			ReadPixels(_Pixels, x, y, width, height)
 		Else
 			Local offset:Int = x + y * width
 			ReadPixels(_pixels, x, y, width, height, offset, _width)
@@ -319,7 +330,7 @@ Private
 		If ( Not _withPixelsArray) Then
 			_CheckPixelsArray(width, height)
 			ReadPixels(_pixels, x, y, width, height)
-			_image.WritePixels(_pixels, destX, destY, width, height)
+			_image.WritePixels(_Pixels, destX, destY, width, height)
 		Else
 			Local offset:Int = destX + destY * width
 		
@@ -339,11 +350,11 @@ Private
 			_CheckPixelsArray(width, height)
 			
 			While (i < l)
-				_pixels[i] = color
+				_Pixels[i] = color
 				i += 1
 			Wend
 			
-			_image.WritePixels(_pixels, x, y, width, height)
+			_image.WritePixels(_Pixels, x, y, width, height)
 		Else
 			Local i:Int, j:Int, k:Int = x + y * width
 		
