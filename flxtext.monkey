@@ -335,6 +335,7 @@ Private
 
 			Repeat			
 				range += 1
+				If (range >= textLength) range = textLength + 1
 				textWidth = _fontObject.GetTextWidth(Self, startPos, range)
 			Until (textWidth >= width)
 
@@ -415,7 +416,7 @@ Private
 					minOffset = offset
 					If (success) minOffset += 1
 					
-					maxOffset = minOffset + range
+					maxOffset = Min(minOffset + range, textLength)
 					offset = maxOffset
 				Else
 					Local l:Int = _value.Length()
@@ -451,7 +452,7 @@ Private
 			Forever
 		Else
 			_AddLine(startPos, endPos, textWidth)
-		End If	
+		End If
 	End Method
 	
 	Method _GetMinOffset:Int(startPos:Int, endPos:Int)
