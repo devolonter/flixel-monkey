@@ -672,7 +672,7 @@ Public
 			_Touch[i] = New TouchInput(i)
 		Next
 		
-		FlxG.Mobile = IsMobile()
+		FlxG.Mobile = FlxIsMobile()
 		
 		FlxG.Scores = New Stack<Int>()
 		FlxG.Levels = New Stack<Int>()

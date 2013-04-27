@@ -284,7 +284,7 @@ Public
 	#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
 		Return "wav"
 	#ElseIf TARGET = "html5"
-		If (IsIE()) Then
+		If (FlxIsIE()) Then
 			Return "mp3"
 		Else
 			Return "ogg"

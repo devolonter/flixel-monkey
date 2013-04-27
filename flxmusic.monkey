@@ -79,7 +79,7 @@ Public
 	#If TARGET = "glfw" Or TARGET = "bmax"
 		Return "ogg"
 	#ElseIf TARGET = "html5"
-		If (IsIE()) Then
+		If (FlxIsIE()) Then
 			Return "mp3"
 		Else
 			Return "ogg"

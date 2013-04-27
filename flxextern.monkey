@@ -16,11 +16,11 @@ Strict
 Extern
 
 #If LANG="cpp"
-	Function IsMobile:Bool() = "flixel::isMobile"
+	Function FlxIsMobile:Bool() = "flixel::isMobile"
 #ElseIf TARGET = "xna" Or TARGET = "psm"
-	Function IsMobile:Bool() = "flixel.functions.isMobile"
+	Function FlxIsMobile:Bool() = "flixel.functions.isMobile"
 #Else
-	Function IsMobile:Bool() = "flixel.isMobile"
+	Function FlxIsMobile:Bool() = "flixel.isMobile"
 #End
 
 #If TARGET = "xna" Or TARGET = "psm"
@@ -28,13 +28,13 @@ Extern
 #End
 
 #If TARGET = "html5"
-	Function IsIE:Bool() = "flixel.isIE"
+	Function FlxIsIE:Bool() = "flixel.isIE"
 #End
 
 Public
 
 #If FLX_NATIVE_IMPLEMENTED = "0" Then
-	Function IsMobile:Bool()
+	Function FlxIsMobile:Bool()
 		Return False
 	End Function
 #End

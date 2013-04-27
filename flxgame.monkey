@@ -113,7 +113,7 @@ Public
 		
 		_state = Null
 		
-		useSoundHotKeys = Not IsMobile()
+		useSoundHotKeys = Not FlxIsMobile()
 		Self.useSystemCursor = useSystemCursor
 		
 		If (Not useSystemCursor) HideMouse()
