@@ -2,6 +2,16 @@ Changelog
 =
 ______________________________________________________
 ###Development Version
+* Added FlxColor.FromString(val:String) function
+* FlxColor.ARGB and FlxColor.RGB functions now return Int instead FlxColor
+* Added method FlxSprite.SetRenderer to be able to redefine render.
+* Removed internal method FlxSprite._DrawSurface
+* FlxSprite.MakeGraphic now really makes the graphics, instead of emulating it
+* In the constructor FlxTileBlock was added a second parameter - makeGraphic, which determines whether to create the graphics for the block. False by default
+* Added config setting #FLX_TEXT_DRIVER. This parameter can take the following values​​: “angelfont” and “fontmachine”.
+* Class FlxText was optimized and now generates less garbage.
+* Added new methods FlxText.SetFontShadowEnabled and FlxText.SetFontBoderEnabled, which work only with  #FLX_TEXT_DRIVER = "fontmachine"
+* Removed the support of standard Monkey fonts
 * FlxG.Framerate are removed. Use FlxG.Updaterate instead FlxG.Framerate
 * Added signals and slots system for event managment 
 * Method FlxBasic.GetClass renamed to FlxBasic.GetClassInfo. To avoid conflicts with Monkey GetClass function
