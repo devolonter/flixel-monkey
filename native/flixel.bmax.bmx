@@ -1,39 +1,11 @@
 
 Type flixel
-
-	Function systemMillisecs:Int()
-		Return Millisecs()
-	End Function
-	
-	Function hideMouse()
-		bmxHideMouse()
-	End Function
-	
-	Function showMouse()
-		bmxShowMouse()
-	End Function
 	
 	Function isMobile:Int()
 		Return False
 	End Function
-	
-	Function openURL(url:String)
-		bmxOpenURL(url)
-	End Function
 
 End Type
-
-Function bmxHideMouse()
-	HideMouse()
-EndFunction
-
-Function bmxShowMouse()
-	ShowMouse()
-EndFunction
-
-Function bmxOpenURL(url:String)
-	OpenURL(url)
-End Function
 
 Function resize_array_array_XYZRecord:bb_xyzrecord__1X_1Y_1Z_1Record[][] (arr:bb_xyzrecord__1X_1Y_1Z_1Record[][], leng:Int)
 	Local i:Int = arr.length
@@ -51,8 +23,4 @@ Function resize_array_array_XYZRecord:bb_xyzrecord__1X_1Y_1Z_1Record[][] (arr:bb
 	Wend
 	
 	Return arr
-End Function
-
-Function bb_input__1Set_1Input_1Device:Int(device:gxtkInput)
-	Return bb_input2__1Set_1Input_1Device(device)
 End Function
