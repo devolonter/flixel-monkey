@@ -84,10 +84,17 @@ Private
 	Field _fontHeight:Int
 
 	Field _fontObject:FlxBitmapFont
+	
+	Field _fontShadowEnabled:Bool
+	
+	Field _fontBorderEnabled:Bool
 
 Public
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "")
 		Super.New(x, y)
+		
+		_fontShadowEnabled = False
+		_fontBorderEnabled = False
 		
 		SetRenderer(Self)
 		_shadow = New FlxColor(0)
@@ -182,19 +189,11 @@ Public
 	End Method
 	
 	Method SetFontShadowEnabled:Void(enabled:Bool)
-	#If FLX_TEXT_DRIVER = "angelfont"
-		Return
-	#ElseIf FLX_TEXT_DRIVER = "fontmachine"
-		_fontObject._drawShadow = enabled
-	#End
+		_fontShadowEnabled = enabled
 	End Method
 	
 	Method SetFontBoderEnabled:Void(enabled:Bool)
-	#If FLX_TEXT_DRIVER = "angelfont"
-		Return
-	#ElseIf FLX_TEXT_DRIVER = "fontmachine"
-		_fontObject._drawBorder = enabled
-	#End
+		_fontBorderEnabled = enabled
 	End Method
 	
 	Method OnSpriteRender:Void(x:Float, y:Float)
@@ -741,15 +740,12 @@ End Class
 		End Method
 		
 		Method DrawText:Void(text:FlxText, x:Float, y:Float)
-			If (_drawShadow) DrawChars(text, x, y, shadowChars)
-			If (_drawBorder) DrawChars(text, x, y, borderChars)
+			If (text._fontShadowEnabled) DrawChars(text, x, y, shadowChars)
+			If (text._fontBorderEnabled) DrawChars(text, x, y, borderChars)
 			DrawChars(text, x, y, faceChars)
 		End
 			
 	Private
-		
-		Field _drawShadow:Bool = False
-		Field _drawBorder:Bool = False
 		Field borderChars:BitMapChar[]
 		Field faceChars:BitMapChar[]
 		Field shadowChars:BitMapChar[]
@@ -769,25 +765,21 @@ End Class
 			if prefixName.ToLower().EndsWith(".txt") Then prefixName = prefixName[..-4]
 			
 			Local char:Int = 0
-			while index<tokenStream.Length
-				'We get char to load:
+			While index < tokenStream.Length
 				Local strChar:String = tokenStream[index]
-				if strChar.Trim() = "" Then 
-					'Print "This is going to fail..."
-					index+=1
+				If strChar.Trim() = "" Then
+					index += 1
 					Exit    
 				endif
 				char = int(strChar)
-				'Print "Loading char: " + char + " at index: " + index
-				index+=1
+				index += 1
 				
 				Local kind:String = tokenStream[index]
-				'Print "Found kind= " + kind 
-				index +=1
+				index += 1
 				
 				Select kind
 					Case "{BR"
-						index+=3 '3 control point for future use
+						index += 3
 						borderChars[char] = New BitMapChar
 						borderChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
 						borderChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
@@ -800,13 +792,11 @@ End Class
 						Else
 							borderChars[char].SetImageResourceName  prefixName + "_BORDER_" + char + ".png"
 						endif
-						index+=5
-						index += 1 ' control point for future use
-						
-						_drawBorder = True
+						index += 5
+						index += 1
 	
 					Case "{SH"
-						index+=3 '3 control point for future use
+						index += 3
 						shadowChars[char] = New BitMapChar
 						shadowChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
 						shadowChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
@@ -821,17 +811,11 @@ End Class
 							shadowChars[char].SetImageResourceName  filename 
 						endif
 	
-						
-						'shadowChars[char].image = LoadImage(filename)
-						'shadowChars[char].image.SetHandle(-shadowChars[char].drawingMetrics.drawingOffset.x,-shadowChars[char].drawingMetrics.drawingOffset.y)
-	
 						index+=5
-						index += 1 ' control point for future use
-						
-						_drawShadow = True
+						index += 1
 						
 					Case "{FC"
-						index+=3 '3 control point for future use
+						index += 3
 						faceChars[char] = New BitMapChar
 						faceChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
 						faceChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
@@ -844,11 +828,11 @@ End Class
 						Else
 							faceChars[char].SetImageResourceName prefixName + "_" + char + ".png" 
 						endif
-						index+=5 
-						index+=1 ' control point for future use
+						index += 5
+						index += 1
 	
 					Default 
-					Print "Error loading font! Char = " + char
+						Print "Error loading font! Char = " + char
 					
 				End
 			Wend
@@ -894,14 +878,12 @@ End Class
 					Case "B"
 						borderChars[charIndex] = New BitMapChar
 						char = borderChars[charIndex]
-						_drawBorder = True
 					Case "F"
 						faceChars [charIndex] = New BitMapChar
 						char = faceChars[charIndex]
 					Case "S"
 						shadowChars [charIndex] = New BitMapChar
 						char = shadowChars[charIndex]
-						_drawShadow = True
 				End Select
 				char.packedFontIndex = Int(chrdata[2])
 				if packedImages[char.packedFontIndex] = null Then
