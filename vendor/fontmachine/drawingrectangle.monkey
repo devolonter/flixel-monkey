@@ -2,7 +2,7 @@
 	header:This module contains the DrawingRectangle class.
 	This class is a simple X and Y vector, with additional Width and Height
 #end
-Import fontmachine.drawingpoint 
+Import drawingpoint 
 #rem
 	summary: This class contains the math representation of a rectangle.
 #end
