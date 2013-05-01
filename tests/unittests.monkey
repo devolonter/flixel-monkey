@@ -851,13 +851,6 @@ Class FlxGroupDestroyUnitTest Extends FlxGroupUnitTestBase
 		Next
 		
 		group.Destroy()		
-		
-		Local i:Int = 0
-		For Local basic:FlxBasic = EachIn group
-			i+=1
-		Next
-
-		If (Not UnitTest.AssertEqualsI(0, i)) Return False
 			
 		Return UnitTest.AssertEqualsI(0, group.Members.Length())
 	End Method
