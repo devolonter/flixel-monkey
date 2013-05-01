@@ -275,7 +275,7 @@ Class ConfigNode
 	End
 
 	Method Remove()
-		If parent parent.children.Remove(Self)
+		If parent parent.children.RemoveEach(Self)
 	End
 End
 
