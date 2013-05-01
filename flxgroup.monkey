@@ -626,11 +626,6 @@ Private
 		If (sortIndex = Null) Return Null
 	
 		Local key:String = sortIndex.Type.Name
-	
-		If (sortIndex.Type.ExtendsClass(FlxU.GetObjectClass())) Then
-			key = FlxU.GetObjectClass().Name
-		End If
-	
 		Local comparator:Comparator = _comparators.Get(key)
 		
 		If (comparator = Null) Then
@@ -648,8 +643,10 @@ Private
 					comparator = New StringComparator()
 					
 				Default
-					comparator = New ObjectComparator()
+					key = FlxU.GetObjectClass().Name
+					comparator = _comparators.Get(key)
 					
+					If (comparator = Null) comparator = New ObjectComparator()
 			End Select
 			
 			_comparators.Set(key, comparator)
