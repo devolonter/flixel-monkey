@@ -166,8 +166,7 @@ Private
 	
 	Global _ResolutionPolicy:FlxResolutionPolicy = New FillResolutionPolicy()
 	
-	Global _Point:FlxPoint = New FlxPoint()
-	
+	Global _Point:FlxPoint = New FlxPoint()	
 
 Public
 	Function GetLibraryName:String()
@@ -182,6 +181,22 @@ Public
 	Function Random:Float()
 		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223)|0
 		Return FlxU.Srand(FlxG.GlobalSeed)
+	End Function
+	
+	Function Random:Float(range:Float)
+		Return FlxG.Random() * range
+	End Function
+	
+	Function Random:Float(low:Float, high:Float)
+		Return FlxG.Random(high - low) + low
+	End Function
+	
+	Function Random:Int(range:Int)
+		Return Int(Rnd() * (1 + range))
+	End Function
+	
+	Function Random:Int(low:Int, high:Int)
+		Return FlxG.Random(high - low) + low
 	End Function
 	
 	#Rem
