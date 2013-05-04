@@ -307,6 +307,23 @@ Public
 		_animations.Set(name, New FlxAnim(name, frames, frameRate, looped))
 	End Method
 	
+	Method AddAnimation:Void(name:String, startFrame:Int, endFrame:Int, frameRate:Float = 0, looped:Bool = True)
+		Local i:Int = 0
+		Local l:Int = endFrame - startFrame
+		Local frames:Int[] = New Int[l]
+		
+		While (i < l)
+			frames[i] = i
+			i += 1
+		Wend
+		
+		AddAnimation(name, frames, frameRate, looped)
+	End Method
+	
+	Method AddAnimation:Void(name:String, frameRate:Float = 0, looped:Bool = True)
+		AddAnimation(name, 0, _pixels.Frames(), frameRate, looped)
+	End Method
+	
 	Method AddAnimationCallback:Void(animationCallback:FlxAnimationListener)
 		_callback = animationCallback
 	End Method
