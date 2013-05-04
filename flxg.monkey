@@ -179,7 +179,7 @@ Public
 	End Function	
 
 	Function Random:Float()
-		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223)|0
+		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223) | 0
 		Return FlxU.Srand(FlxG.GlobalSeed)
 	End Function
 	
@@ -192,7 +192,7 @@ Public
 	End Function
 	
 	Function Random:Int(range:Int)
-		Return Int(Rnd() * (1 + range))
+		Return Int(FlxG.Random() * (1 + range))
 	End Function
 	
 	Function Random:Int(low:Int, high:Int)
@@ -706,7 +706,7 @@ Public
 		FlxG.Score = 0	
 		FlxG.TimeScale = 1
 		FlxG.Elapsed = 0 
-		FlxG.GlobalSeed = Rnd(1, 10000000)
+		FlxG.GlobalSeed = Seed
 		FlxG.WorldBounds = New FlxRect(-10, -10, FlxG.Width + 20, FlxG.Height + 20)
 		FlxG.WorldDivisions = 6
 		
