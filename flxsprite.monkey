@@ -309,7 +309,7 @@ Public
 	
 	Method AddAnimation:Void(name:String, startFrame:Int, endFrame:Int, frameRate:Float = 0, looped:Bool = True)
 		Local i:Int = 0
-		Local l:Int = endFrame - startFrame
+		Local l:Int = endFrame - startFrame + 1
 		Local frames:Int[] = New Int[l]
 		
 		While (i < l)
