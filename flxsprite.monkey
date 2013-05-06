@@ -349,6 +349,7 @@ Public
 		_curFrame = 0
 		_curIndex = 0
 		_frameTimer = 0
+		_paused = False
 		
 		Local anim:FlxAnim = _animations.Get(animName)
 		
@@ -463,6 +464,7 @@ Public
 	Method Frame:Void(frame:Int) Property
 		_curAnim = Null
 		_curIndex = frame
+		_paused = False
 		dirty = True
 	End Method	
 	
