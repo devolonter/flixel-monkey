@@ -224,6 +224,22 @@ Public
 		Return 0
 	End Method
 	
+	Method OnBack:Int()
+		If (_state = Null Or _state.Back()) Then
+			Return Super.OnBack()
+		End If
+		
+		Return 0
+	End Method
+	
+	Method OnClose:Int()
+		If (_state = Null Or _state.Close()) Then
+			Return Super.OnClose()
+		End If
+		
+		Return 0
+	End Method
+	
 	Method OnContentInit:Void()
 	End Method
 	
