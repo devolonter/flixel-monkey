@@ -193,6 +193,8 @@ Public
 	#End
 	
 		If ( Not _stateReady) Then
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+		
 			_state.Create()
 			_stateReady = True
 			Return 0
