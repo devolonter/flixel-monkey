@@ -332,6 +332,14 @@ Public
 		_callback = animationCallback
 	End Method
 	
+	Method GetAnimation:FlxAnim(animName:String)
+		Return _animations.Get(animName)
+	End Method
+	
+	Method GetAnimation:FlxAnim()
+		Return _curAnim
+	End Method
+	
 	Method Play:Void(animName:String, force:Bool = False)
 		If (Not force And _curAnim <> Null And animName = _curAnim.name And( _curAnim.looped Or Not finished )) Return
 		
@@ -358,12 +366,8 @@ Public
 		FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
 	End Method
 	
-	Method GetAnimation:FlxAnim(animName:String)
-		Return _animations.Get(animName)
-	End Method
-	
-	Method GetAnimation:FlxAnim()
-		Return _curAnim
+	Method Stop:Void()
+		Frame = 0
 	End Method
 	
 	Method RandomFrame:Void()
