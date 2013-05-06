@@ -60,6 +60,8 @@ Private
 	
 	Field _frameTimer:Float
 	
+	Field _paused:Bool
+	
 	Field _callback:FlxAnimationListener
 	
 	Field _facing:Int
@@ -97,6 +99,7 @@ Public
 		_curFrame = 0
 		_curIndex = 0
 		_frameTimer = 0
+		_paused = False
 		
 		_callback = Null
 
@@ -370,6 +373,14 @@ Public
 		Frame = 0
 	End Method
 	
+	Method Pause:Void()
+		_paused = True
+	End Method
+	
+	Method Resume:Void()
+		_paused = False
+	End Method
+	
 	Method RandomFrame:Void()
 		_curAnim = Null
 		
@@ -505,9 +516,13 @@ Private
 			If (angleHelper < 0) angleHelper += 360
 			_curIndex = angleHelper / _bakedRotation + 0.5
 			
-			If (oldIndex <> _curIndex) dirty = True
+			If (oldIndex <> _curIndex) _CalcFrame()
+			Return
+		End If
 		
-		ElseIf (_curAnim <> Null And _curAnim.delay > 0 And (_curAnim.looped Or Not finished))
+		If (_paused) Return
+		
+		If (_curAnim <> Null And _curAnim.delay > 0 And (_curAnim.looped Or Not finished))
 			_frameTimer += FlxG.Elapsed
 			While (_frameTimer > _curAnim.delay)
 				_frameTimer -= _curAnim.delay
