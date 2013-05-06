@@ -4,8 +4,7 @@ Import flxgroup
 
 Class FlxState Extends FlxGroup Abstract
 	
-	Method Create:Void()		
-	End Method
+	Method Create:Void() Abstract
 	
 	Method Back:Bool()
 		Return True
