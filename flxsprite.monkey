@@ -303,11 +303,14 @@ Public
 		If (force Or dirty) _CalcFrame()
 	End Method
 	
-	Method AddAnimation:Void(name:String, frames:Int[], frameRate:Float = 0, looped:Bool = True)
-		_animations.Set(name, New FlxAnim(name, frames, frameRate, looped))
+	Method AddAnimation:FlxAnim(name:String, frames:Int[], frameRate:Float = 0, looped:Bool = True)
+		Local anim:FlxAnim = New FlxAnim(name, frames, frameRate, looped)
+		_animations.Set(name, anim)
+		
+		Return anim
 	End Method
 	
-	Method AddAnimation:Void(name:String, startFrame:Int, endFrame:Int, frameRate:Float = 0, looped:Bool = True)
+	Method AddAnimation:FlxAnim(name:String, startFrame:Int, endFrame:Int, frameRate:Float = 0, looped:Bool = True)
 		Local i:Int = 0
 		Local l:Int = endFrame - startFrame + 1
 		Local frames:Int[] = New Int[l]
@@ -317,11 +320,11 @@ Public
 			i += 1
 		Wend
 		
-		AddAnimation(name, frames, frameRate, looped)
+		Return AddAnimation(name, frames, frameRate, looped)
 	End Method
 	
-	Method AddAnimation:Void(name:String, frameRate:Float = 0, looped:Bool = True)
-		AddAnimation(name, 0, _pixels.Frames(), frameRate, looped)
+	Method AddAnimation:FlxAnim(name:String, frameRate:Float = 0, looped:Bool = True)
+		Return AddAnimation(name, 0, _pixels.Frames(), frameRate, looped)
 	End Method
 	
 	Method AddAnimationCallback:Void(animationCallback:FlxAnimationListener)
