@@ -354,6 +354,14 @@ Public
 		FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
 	End Method
 	
+	Method GetAnimation:FlxAnim(animName:String)
+		Return _animations.Get(animName)
+	End Method
+	
+	Method GetAnimation:FlxAnim()
+		Return _curAnim
+	End Method
+	
 	Method RandomFrame:Void()
 		_curAnim = Null
 		
