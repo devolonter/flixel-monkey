@@ -197,6 +197,8 @@ Public
 		
 			_state.Create()
 			_stateReady = True
+			
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
 			Return 0
 		End If
 	
