@@ -16,6 +16,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 Import bitmapchar
 Import drawingrectangle
-Import fontinterface
 Import edrawalign
 Import edrawmode

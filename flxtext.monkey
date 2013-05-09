@@ -701,7 +701,7 @@ End Class
 	
 #ElseIf FLX_TEXT_DRIVER = "fontmachine"
 
-	Class FlxBitmapFont Implements Font
+	Class FlxBitmapFont
 
 		Method New(fontDescriptionFilePath:String)
 			Local text:String = LoadString(fontDescriptionFilePath + ".txt")
