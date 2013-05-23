@@ -319,7 +319,7 @@ Public
 		Local frames:Int[] = New Int[l]
 		
 		While (i < l)
-			frames[i] = i
+			frames[i] = startFrame + i
 			i += 1
 		Wend
 		
