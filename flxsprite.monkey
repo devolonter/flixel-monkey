@@ -328,7 +328,7 @@ Public
 	
 	Method AddAnimation:FlxAnim(name:String, frameRate:Float = 0, looped:Bool = True)
 		If (_pixels = Null) Return Null
-		Return AddAnimation(name, 0, _pixels.Frames(), frameRate, looped)
+		Return AddAnimation(name, 0, _pixels.Frames() -1, frameRate, looped)
 	End Method
 	
 	Method AddAnimationCallback:Void(animationCallback:FlxAnimationListener)
