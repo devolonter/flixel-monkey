@@ -348,8 +348,8 @@ Public
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).SetAll(variableName, value, recurse)	
+				If (FlxGroup(basic) <> Null) Then
+					If (recurse) FlxGroup(basic).SetAll(variableName, value, recurse)
 				Else
 					f.SetValue(basic, value)
 				End If
@@ -368,8 +368,8 @@ Public
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).CallAll(functionName, recurse)	
+				If (FlxGroup(basic) <> Null) Then
+					If (recurse) FlxGroup(basic).CallAll(functionName, recurse)
 				Else
 					m.Invoke(basic,[])
 				End If
@@ -612,8 +612,8 @@ Private
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).SetAll(variableName, value, recurse)	
+				If (FlxGroup(basic) <> Null) Then
+					If (recurse) FlxGroup(basic).SetAll(variableName, value, recurse)
 				Else
 					prop.Invoke(basic,[value])
 				End If
