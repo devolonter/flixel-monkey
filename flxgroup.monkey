@@ -504,7 +504,13 @@ Public
 			
 		While(i < _length)
 			basic = _members[i]
-			If (basic <> Null And Not basic.exists) basic.Revive()
+			If (basic <> Null And Not basic.exists) Then
+				If (FlxGroup(basic) <> Null) Then
+					FlxGroup(basic).ReviveAll()
+				Else
+					basic.Revive()
+				End If
+			End If
 			i+=1
 		Wend
 
