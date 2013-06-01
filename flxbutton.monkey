@@ -198,7 +198,7 @@ Private
 						status = PRESSED
 						
 						If (onDown <> Null) Then
-							onDown.OnButtonDown()
+							onDown.OnButtonDown(Self)
 						End If
 						
 						If (soundDown <> Null) Then
@@ -215,7 +215,7 @@ Private
 						status = HIGHLIGHT
 						
 						If (onOver <> Null) Then
-							onOver.OnButtonOver()
+							onOver.OnButtonOver(Self)
 						End If
 						
 						If (soundOver <> Null) Then
@@ -230,7 +230,7 @@ Private
 			If(offAll) Then
 				If (status <> NORMAL) Then
 					If (onOut <> Null) Then
-						onOut.OnButtonOut()
+						onOut.OnButtonOut(Self)
 					End If
 					
 					If (soundOut <> Null) Then
@@ -243,7 +243,7 @@ Private
 			
 			If(click) Then
 				If (onUp <> Null) Then
-					onUp.OnButtonClick()
+					onUp.OnButtonClick(Self)
 				End If
 				
 				If (soundUp <> Null) Then
@@ -273,24 +273,24 @@ End Class
 
 Interface FlxButtonClickListener
 	
-	Method OnButtonClick:Void()
+	Method OnButtonClick:Void(button:FlxButton)
 
 End Interface
 
 Interface FlxButtonDownListener
 	
-	Method OnButtonDown:Void()
+	Method OnButtonDown:Void(button:FlxButton)
 
 End Interface
 
 Interface FlxButtonOverListener
 	
-	Method OnButtonOver:Void()
+	Method OnButtonOver:Void(button:FlxButton)
 
 End Interface
 
 Interface FlxButtonOutListener
 	
-	Method OnButtonOut:Void()
+	Method OnButtonOut:Void(button:FlxButton)
 
 End Interface
