@@ -148,6 +148,10 @@ Public
 		If (FlxG.Updaterate <> _updaterate) Then
 			_ResetFramerate()
 		End If
+		
+	#If FLX_ASYNC_EVENTS_ENABLED = "1"
+		UpdateAsyncEvents()
+	#End
 	
 		FlxG.UpdateDevice()
 		_Step()

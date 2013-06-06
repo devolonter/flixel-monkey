@@ -14,6 +14,7 @@
 #End
 
 #FLX_WEBGL_ENABLED  = False
+#FLX_ASYNC_EVENTS_ENABLED = False
 
 #FLX_TEXT_DRIVER = "angelfont"
 #FLX_FONT_EXTENSION = ""
