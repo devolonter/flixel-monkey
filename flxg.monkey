@@ -898,6 +898,12 @@ Private
 
 End Class
 
+Interface FlxVolumeChangeListener
+
+	Method OnVolumeChange:Void(volume:Float)
+
+ End Interface
+
 Private
 Class FlxCollideProcessListener Implements FlxOverlapProcessListener
 	

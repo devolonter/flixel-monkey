@@ -243,7 +243,7 @@ Public
 			_fxFlashAlpha -= FlxG.Elapsed / _fxFlashDuration
 			
 			If (_fxFlashAlpha <= 0 And _fxFlashComplete <> Null) Then
-				_fxFlashComplete.OnFlashComplete()
+				_fxFlashComplete.OnCameraFlashComplete(Self)
 				_fxFlashComplete = Null
 			End If
 		End If
@@ -254,7 +254,7 @@ Public
 			If (_fxFadeAlpha >= 1) Then
 				_fxFadeAlpha = 1				
 				If (_fxFadeComplete <> Null) Then
-					_fxFadeComplete.OnFadeComplete()
+					_fxFadeComplete.OnCameraFadeComplete(Self)
 					_fxFadeComplete = Null
 				End If				
 			End If
@@ -266,7 +266,7 @@ Public
 				_fxShakeOffset.Make()
 								
 				If (_fxShakeComplete <> Null) Then
-					_fxShakeComplete.OnShakeComplete()
+					_fxShakeComplete.OnCameraShakeComplete(Self)
 					_fxShakeComplete = Null
 				End If
 			Else
@@ -525,18 +525,18 @@ End Class
 
 Interface FlxCameraFlashListener
 	
-	Method OnFlashComplete:Void()
+	Method OnCameraFlashComplete:Void(camera:FlxCamera)
 
 End Interface
 
 Interface FlxCameraFadeListener
 	
-	Method OnFadeComplete:Void()
+	Method OnCameraFadeComplete:Void(camera:FlxCamera)
 
 End Interface
 
 Interface FlxCameraShakeListener
 	
-	Method OnShakeComplete:Void()
+	Method OnCameraShakeComplete:Void(camera:FlxCamera)
 
 End Interface

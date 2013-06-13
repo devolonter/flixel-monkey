@@ -134,7 +134,7 @@ Public
 		End Select
 		
 		_finish = False
-		If (complete <> Null) complete.OnTweenComplete()
+		If (complete <> Null) complete.OnTweenComplete(Self)
 	End Method
 	
 	Method Percent:Float() Property
@@ -153,6 +153,6 @@ End Class
 
 Interface FlxTweenListener
 	
-	Method OnTweenComplete:Void()
+	Method OnTweenComplete:Void(tween:FlxTween)
 
 End Interface

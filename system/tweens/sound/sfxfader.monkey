@@ -62,14 +62,14 @@ Public
 		If (_crossSfx <> Null) _crossSfx.Volume = _crossRange * _t
 	End Method
 	
-	Method OnTweenComplete:Void()
+	Method OnTweenComplete:Void(tween:FlxTween)
 		If (_crossSfx <> Null) Then
 			If (_sfx <> Null) _sfx.Stop()
 			_sfx = _crossSfx
 			_crossSfx = Null
 		End If
 		
-		If (_complete <> Null) _complete.OnTweenComplete()
+		If (_complete <> Null) _complete.OnTweenComplete(Self)
 	End Method
 
 End Class

@@ -551,9 +551,9 @@ Private
 	Method _CalcFrame:Void()	
 		If (_callback <> Null) Then
 			If (_curAnim <> Null) Then
-				_callback.OnAnimationFrame(_curAnim.name, _curFrame, _curIndex)
+				_callback.OnAnimationFrame(_curAnim, _curFrame, _curIndex)
 			Else
-				_callback.OnAnimationFrame("", _curFrame, _curIndex)
+				_callback.OnAnimationFrame(Null, _curFrame, _curIndex)
 			End If
 		End If
 		dirty = False
