@@ -47,6 +47,10 @@ Private
 	
 	Field _sortDescending:Bool
 	
+	Field _dirty:Bool
+	
+	Field _defrag:Bool
+	
 	Field _enumerator:Enumerator
 	
 Public
@@ -65,6 +69,8 @@ Public
 		_cameras = Null
 		_comparators = New StringMap<Comparator>()
 		_enumerator = New Enumerator(Null)
+		_dirty = False
+		_defrag = False
 	End Method
 	
 	#Rem
@@ -198,7 +204,8 @@ Public
 	Return the same [a flxbasic.monkey.html]FlxBasic[/a] object that was passed in.
 	#End
 	Method Add:FlxBasic(object:FlxBasic)		
-		If (_IndexOf(object) >= 0) Return object		
+		If (_IndexOf(object) >= 0) Return object
+		_dirty = True
 		
 		Local i:Int = 0
 
@@ -247,10 +254,11 @@ Public
 	[/list]
 	Return a reference to the object that was created. Don't forget to cast it back to the objectClass you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassClass))).
 	#End
-	Method Recycle:FlxBasic(objectClass:ClassInfo = null)
+	Method Recycle:FlxBasic(objectClass:ClassInfo = Null)
 		If (_maxSize > 0) Then
 			If (_length < _maxSize) Then
-				If (objectClass = Null) Return Null				
+				If (objectClass = Null) Return Null
+				_dirty = True
 				Return Add(FlxBasic(objectClass.NewInstance()))
 			Else				
 				Local basic:FlxBasic = _members[_marker]
@@ -262,6 +270,7 @@ Public
 			Local basic:FlxBasic = GetFirstAvailable(objectClass)
 			If (basic <> Null) Return basic
 			If (objectClass = Null) Return Null
+			_dirty = True
 			Return Add(FlxBasic(objectClass.NewInstance()))				
 		End If
 	End Method
@@ -294,6 +303,7 @@ Public
 			_members[index] = Null
 		End If
 		
+		_dirty = True
 		Return object
 	End Method
 	
@@ -311,6 +321,7 @@ Public
 		If (index < 0) Return Null
 		
 		_members[index] = newObject
+		_dirty = True
 		Return newObject
 	End Method
 	
@@ -333,49 +344,19 @@ Public
 	End Method	
 	
 	Method SetAll:Void(variableName:String, value:Object, recurse:Bool = True)
-		Local basic:FlxBasic = GetFirstNotNull()
-		If (basic = Null) Return
+		If (_dirty) _Validate()
 		
-		Local f:FieldInfo = basic.GetClassInfo().GetField(variableName)
-
-		If (f = Null) Then
-			_SetAllProperties(variableName, value, recurse)
-			Return
+		If ( Not _defrag) Then
+			_FastSetAll(variableName, value, recurse)
 		End If
-		
-		Local i:Int = 0
-		
-		While(i < _length)
-			basic = _members[i]
-			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).SetAll(variableName, value, recurse)
-				Else
-					f.SetValue(basic, value)
-				End If
-			End If
-			i+=1		
-		Wend
 	End Method
 	
 	Method CallAll:Void(functionName:String, recurse:Bool = True)
-		Local basic:FlxBasic = GetFirstNotNull()
-		If (basic = Null) Return
+		If (_dirty) _Validate()
 		
-		Local m:MethodInfo = basic.GetClassInfo().GetMethod(functionName,[])
-		Local i:Int = 0
-
-		While(i < _length)
-			basic = _members[i]
-			If (basic <> Null) Then				
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).CallAll(functionName, recurse)
-				Else
-					m.Invoke(basic,[])
-				End If
-			End If
-			i+=1		
-		Wend
+		If ( Not _defrag) Then
+			_FastCallAll(functionName, recurse)
+		End If
 	End Method
 	
 	Method GetFirstAvailable:FlxBasic(objectClass:ClassInfo = null)
@@ -535,6 +516,98 @@ Public
 	End
 	
 Private
+	Method _FastSetAll:Void(variableName:String, value:Object, recurse:Bool = True)
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Return
+		
+		Local f:FieldInfo = basic.GetClassInfo().GetField(variableName)
+
+		If (f = Null) Then
+			Local prop:MethodInfo = basic.GetClassInfo().GetMethod(variableName,[GetClass(value)])
+			If (prop <> Null) _FastCallAll(prop,[value], recurse)
+			Return
+		End If
+		
+		Local i:Int = 0
+		
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null) Then
+				If (FlxGroup(basic) <> Null) Then
+					If (recurse) FlxGroup(basic).SetAll(variableName, value, recurse)
+					Local groupField:FieldInfo = basic.GetClassInfo().GetField(variableName)
+					
+					If (groupField = Null) Then
+						Local groupProp:MethodInfo = basic.GetClassInfo().GetMethod(variableName,[GetClass(value)])
+						If (groupProp <> Null) _FastCallAll(groupProp,[value], recurse)
+						Continue
+					End If
+					
+					groupField.SetValue(basic, value)
+				Else
+					f.SetValue(basic, value)
+				End If
+			End If
+			i+=1		
+		Wend
+	End Method
+	
+	Method _FastCallAll:Void(methodName:String, recurse:Bool = True)
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Return
+		
+		Local m:MethodInfo = basic.GetClassInfo().GetMethod(methodName,[])
+		If (m <> Null) Then
+			_FastCallAll(m,[], recurse)
+		End If
+	End Method
+	
+	Method _FastCallAll:Void(methodObject:MethodInfo, values:Object[], recurse:Bool = True)
+		Local basic:FlxBasic
+		Local i:Int = 0
+
+		While(i < _length)
+			basic = _members[i]
+			If (basic <> Null) Then				
+				If (FlxGroup(basic) <> Null) Then
+					If (recurse) FlxGroup(basic)._FastCallAll(methodObject, values, recurse)
+					Local groupMethod:MethodInfo
+					
+					If (values.Length() > 0) Then
+						groupMethod = basic.GetClassInfo().GetMethod(methodObject.Name,[GetClass(values[0])])
+					Else
+						groupMethod = basic.GetClassInfo().GetMethod(methodObject.Name,[])
+					End If
+					
+					If (groupMethod <> Null) groupMethod.Invoke(basic, values)
+				Else
+					methodObject.Invoke(basic, values)
+				End If
+			End If
+			i+=1		
+		Wend
+	End Method
+
+	Method _Validate:Void()
+		_dirty = False
+		_defrag = False
+		
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Then Return
+	
+		Local i:Int = 0
+		Local first:ClassInfo = basic.GetClassInfo()
+			
+		While(i < _length)
+			If ( Not first.ExtendsClass(_members[i].GetClassInfo()) And FlxGroup(_members[i]) = Null) Then
+				_defrag = True
+				Return
+			End If
+			
+			i+=1		
+		Wend
+	End Method
+
 	Method _IndexOf:Int(object:FlxBasic)
 		Local i:Int = 0		
 			
@@ -602,30 +675,6 @@ Private
 		_members[right] = basic
 		
 		Return store	
-	End Method
-	
-	Method _SetAllProperties:Void(variableName:String, value:Object, recurse:Bool = True)
-		Local basic:FlxBasic = GetFirstNotNull()
-		If (basic = Null) Return
-		
-		Local prop:MethodInfo
-		
-		prop = basic.GetClassInfo().GetMethod(variableName,[GetClass(value)])
-		If (prop = Null) Return
-		
-		Local i:Int = 0
-			
-		While(i < _length)
-			basic = _members[i]
-			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).SetAll(variableName, value, recurse)
-				Else
-					prop.Invoke(basic,[value])
-				End If
-			End If
-			i+=1		
-		Wend
 	End Method
 	
 	Method _GetComparator:Comparator(sortIndex:FieldInfo)
