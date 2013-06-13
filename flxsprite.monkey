@@ -335,6 +335,10 @@ Public
 		_callback = animationCallback
 	End Method
 	
+	Method ClearAnimationCallback:Void()
+		_callback = Null
+	End Method
+	
 	Method GetAnimation:FlxAnim(animName:String)
 		Return _animations.Get(animName)
 	End Method
