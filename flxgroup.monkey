@@ -348,6 +348,8 @@ Public
 		
 		If ( Not _defrag) Then
 			_FastSetAll(variableName, value, recurse)
+		Else
+			_SlowSetAll(variableName, value, recurse)
 		End If
 	End Method
 	
@@ -356,6 +358,8 @@ Public
 		
 		If ( Not _defrag) Then
 			_FastCallAll(functionName, recurse)
+		Else
+			_SlowCallAll(functionName, recurse)
 		End If
 	End Method
 	
@@ -532,6 +536,7 @@ Private
 		
 		While(i < _length)
 			basic = _members[i]
+			
 			If (basic <> Null) Then
 				If (FlxGroup(basic) <> Null) Then
 					If (recurse) FlxGroup(basic).SetAll(variableName, value, recurse)
@@ -540,15 +545,41 @@ Private
 					If (groupField = Null) Then
 						Local groupProp:MethodInfo = basic.GetClassInfo().GetMethod(variableName,[GetClass(value)])
 						If (groupProp <> Null) _FastCallAll(groupProp,[value], recurse)
-						Continue
+					Else
+						groupField.SetValue(basic, value)
 					End If
-					
-					groupField.SetValue(basic, value)
 				Else
 					f.SetValue(basic, value)
 				End If
 			End If
+			
 			i+=1		
+		Wend
+	End Method
+	
+	Method _SlowSetAll:Void(variableName:String, value:Object, recurse:Bool = True)
+		Local basic:FlxBasic, f:FieldInfo, p:MethodInfo
+		Local valClass:ClassInfo[] =[GetClass(value)]
+		Local valArray:Object[] =[value]
+		
+		Local i:Int = 0
+		
+		While (i < _length)
+			basic = _members[i]
+			
+			If (basic <> Null) Then
+				If (recurse And FlxGroup(basic) <> Null) _SlowSetAll(variableName, value, recurse)
+				f = basic.GetClassInfo().GetField(variableName)
+				
+				If (f = Null) Then
+					p = basic.GetClassInfo().GetMethod(variableName, valClass)
+					If (p <> Null) p.Invoke(basic, valArray)
+				Else
+					f.SetValue(basic, value)
+				End If
+			End If
+			
+			i += 1
 		Wend
 	End Method
 	
@@ -568,6 +599,7 @@ Private
 
 		While(i < _length)
 			basic = _members[i]
+			
 			If (basic <> Null) Then				
 				If (FlxGroup(basic) <> Null) Then
 					If (recurse) FlxGroup(basic)._FastCallAll(methodObject, values, recurse)
@@ -584,7 +616,28 @@ Private
 					methodObject.Invoke(basic, values)
 				End If
 			End If
-			i+=1		
+			
+			i+=1
+		Wend
+	End Method
+	
+	Method _SlowCallAll:Void(methodName:String, recurse:Bool = True)
+		Local basic:FlxBasic, m:MethodInfo
+		Local i:Int = 0
+		
+		While (i < _length)
+			basic = _members[i]
+			
+			If (basic <> Null) Then
+				If (recurse And FlxGroup(basic) <> Null) _SlowCallAll(methodName, recurse)
+				m = basic.GetClassInfo().GetMethod(methodName,[])
+				
+				If (m <> Null) Then
+					m.Invoke(basic,[])
+				End If
+			End If
+			
+			i += 1
 		Wend
 	End Method
 
@@ -598,8 +651,8 @@ Private
 		Local i:Int = 0
 		Local first:ClassInfo = basic.GetClassInfo()
 			
-		While(i < _length)
-			If ( Not first.ExtendsClass(_members[i].GetClassInfo()) And FlxGroup(_members[i]) = Null) Then
+		While (i < _length)
+			If (_members[i] <> Null And Not first.ExtendsClass(_members[i].GetClassInfo()) And FlxGroup(_members[i]) = Null) Then
 				_defrag = True
 				Return
 			End If
