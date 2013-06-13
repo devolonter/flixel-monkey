@@ -194,6 +194,8 @@ Private
 	End Method
 	
 	Method RemoveTween:FlxTween(tween:FlxTween, destroy:Bool = False)
+		If (_tweens = Null) Return
+	
 		If (tween._parent <> Self) Then
 			FlxG.Log("WARNING: Core object does not contain FlxTween")
 			Return tween
@@ -208,6 +210,8 @@ Private
 	End Method
 	
 	Method ClearTweens:Void(destroy:Bool = False)
+		If (_tweens = Null) Return
+	
 		Local node:= _tweens.FirstNode()
 		Local tween:FlxTween
 				
@@ -222,6 +226,8 @@ Private
 	End Method
 	
 	Method UpdateTweens:Void()
+		If (_tweens = Null) Return
+	
 		Local node:= _tweens.FirstNode()
 		Local tween:FlxTween
 				
