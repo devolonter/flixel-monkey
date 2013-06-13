@@ -45,6 +45,8 @@ Private
 	
 	Field _comparator:Comparator
 	
+	Field _slowIndex:String
+	
 	Field _sortDescending:Bool
 	
 	Field _dirty:Bool
@@ -336,11 +338,22 @@ Public
 	Return the new object.
 	#End	
 	Method Sort:Void(index:String = "y", order:Bool = ASCENDING)
-		_comparator = _GetComparator(GetFirstNotNull().GetClassInfo().GetField(index))
-		If (_comparator = Null) Return
-	
-		_sortDescending = order
-		_QSort(0, _length - 1)
+		If (_dirty) _Validate()
+		
+		If ( Not _defrag) Then
+			Local b:FlxBasic = GetFirstNotNull()
+			If (b = Null) Return
+			
+			_comparator = _GetComparator(GetFirstNotNull().GetClassInfo().GetField(index))
+			If (_comparator = Null) Return
+		
+			_sortDescending = order
+			_FastQSort(0, _length - 1)
+		Else
+			_slowIndex = index
+			_sortDescending = order
+			_SlowQSort(0, _length - 1)
+		End If
 	End Method	
 	
 	Method SetAll:Void(variableName:String, value:Object, recurse:Bool = True)
@@ -617,7 +630,7 @@ Private
 				End If
 			End If
 			
-			i+=1
+			i += 1
 		Wend
 	End Method
 	
@@ -672,17 +685,17 @@ Private
 		Return -1
 	End Method
 	
-	Method _QSort:Void(left:Int, right:Int)
+	Method _FastQSort:Void(left:Int, right:Int)
 		If (right > left) Then
 			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSort(left, right, pivot)
+			Local newPivot:Int = _FastDoSort(left, right, pivot)
 			
-			_QSort(left, newPivot - 1)
-			_QSort(newPivot + 1, right)
+			_FastQSort(left, newPivot - 1)
+			_FastQSort(newPivot + 1, right)
 		End If
 	End Method
 	
-	Method _DoSort:Int(left:Int, right:Int, pivot:Int)
+	Method _FastDoSort:Int(left:Int, right:Int, pivot:Int)
 		Local basic:FlxBasic = _members[pivot]
 		
 		_members[pivot] = _members[right]
@@ -730,6 +743,67 @@ Private
 		Return store	
 	End Method
 	
+	Method _SlowQSort:Void(left:Int, right:Int)
+		If (right > left) Then
+			Local pivot:Int = left + (right-left)/2
+			Local newPivot:Int = _SlowDoSort(left, right, pivot)
+			
+			_SlowQSort(left, newPivot - 1)
+			_SlowQSort(newPivot + 1, right)
+		End If
+	End Method
+	
+	Method _SlowDoSort:Int(left:Int, right:Int, pivot:Int)
+		Local basic:FlxBasic = _members[pivot]
+		
+		_members[pivot] = _members[right]
+		_members[right] = basic
+		
+		Local store:Int = left
+		Local basicToCompare:FlxBasic
+		Local i:Int = left
+		
+		While (i < right)
+			basicToCompare = _members[i]
+
+			If (basicToCompare = Null Or basic = Null) Then
+				If (basicToCompare <> Null And basic = Null) Then
+					_members[i] = _members[store]
+					_members[store] = basicToCompare
+					store+=1	
+				End If
+				
+				i += 1
+				Continue
+			End If
+			
+			_comparator = _GetComparator(basicToCompare.GetClassInfo().GetField(_slowIndex))
+			
+			If (_comparator <> Null) Then
+				If (_sortDescending) Then
+					If (_comparator.Compare(basicToCompare, basic) >= 0) Then
+						_members[i] = _members[store]
+						_members[store] = basicToCompare
+						store+=1	
+					End If
+				Else
+					If (_comparator.Compare(basicToCompare, basic) <= 0) Then
+						_members[i] = _members[store]
+						_members[store] = basicToCompare
+						store+=1	
+					End If
+				End If
+			End If
+			
+			i+=1
+		Wend
+		
+		basic = _members[store]
+		_members[store] = _members[right]
+		_members[right] = basic
+		
+		Return store	
+	End Method
 	Method _GetComparator:Comparator(sortIndex:FieldInfo)
 		If (sortIndex = Null) Return Null
 	
