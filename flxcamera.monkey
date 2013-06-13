@@ -101,10 +101,6 @@ Private
 	Field _fxShakeDirection:Int
 	
 	Field _fill:FlxColor
-	
-	Field _id:Int
-	
-	Global _Inkrement:Int
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
@@ -141,9 +137,6 @@ Public
 		active = True
 		
 		_fill = New FlxColor(0)
-		
-		_id = _Inkrement
-		_Inkrement += 1
 	End Method
 	
 	Method Destroy:Void()
@@ -521,10 +514,6 @@ Public
 			If (alphaComponent <= 0) alphaComponent = $FF 
 			Fill(((alphaComponent * _fxFadeAlpha) Shl 24) + (_fxFadeColor & $00FFFFFF))	
 		End If
-	End Method
-	
-	Method ID:Int() Property
-		Return _id
 	End Method
 	
 Private
