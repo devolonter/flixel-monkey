@@ -60,7 +60,7 @@ Class FlxBasic
 	
 	Field autoClear:Bool
 	
-	Field _cameras:IntSet
+	Field _cameras:Stack<FlxCamera>
 	
 Private
 	Field _tweens:List<FlxTween>
@@ -160,21 +160,23 @@ Private
 		exists = True
 	End Method
 	
-	Method Cameras:Void(cameras:Int[]) Property
+	Method Cameras:Void(cameras:FlxCamera[]) Property
 		If (cameras.Length() = 0) Then
-			_cameras = Null
+			If (_cameras <> Null) Then
+				_cameras.Clear()
+				_cameras = Null
+			End If
+			
 			Return
 		End If
 		
-		If (_cameras = Null) _cameras = New IntSet()
+		If (_cameras = Null) Then
+			_cameras = New Stack<FlxCamera>(cameras)
+			Return
+		End If
 		
-		Local l:Int = cameras.Length()
-		Local i:Int = 0
-		
-		While (i < l)
-			_cameras.Insert(cameras[i])
-			i += 1
-		Wend
+		_cameras.Clear()
+		_cameras.Push(cameras)
 	End Method
 	
 	Method AddTween:FlxTween(tween:FlxTween, start:Bool = False)
@@ -194,7 +196,7 @@ Private
 	End Method
 	
 	Method RemoveTween:FlxTween(tween:FlxTween, destroy:Bool = False)
-		If (_tweens = Null) Return
+		If (_tweens = Null) Return tween
 	
 		If (tween._parent <> Self) Then
 			FlxG.Log("WARNING: Core object does not contain FlxTween")

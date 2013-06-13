@@ -255,7 +255,7 @@ Public
 	End Method
 	
 	Method Draw:Void()
-		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera.ID)) Return	
+		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera)) Return
 		If (Not OnScreen(FlxG._CurrentCamera)) Return
 	
 	#If FLX_DEBUG_ENABLED = "1"	
