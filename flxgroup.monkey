@@ -581,7 +581,7 @@ Private
 			basic = _members[i]
 			
 			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) _SlowSetAll(variableName, value, recurse)
+				If (recurse And FlxGroup(basic) <> Null) FlxGroup(basic)._SlowSetAll(variableName, value, recurse)
 				f = basic.GetClassInfo().GetField(variableName)
 				
 				If (f = Null) Then
@@ -642,7 +642,7 @@ Private
 			basic = _members[i]
 			
 			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) _SlowCallAll(methodName, recurse)
+				If (recurse And FlxGroup(basic) <> Null) FlxGroup(basic)._SlowCallAll(methodName, recurse)
 				m = basic.GetClassInfo().GetMethod(methodName,[])
 				
 				If (m <> Null) Then
