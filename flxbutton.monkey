@@ -189,6 +189,12 @@ Private
 			
 			While (i < l)
 				camera = cameras.Get(i)
+				
+				If (_cameras <> Null And Not _cameras.Contains(camera)) Then
+					i += 1
+					Continue
+				End If
+				
 				FlxG.Mouse.GetWorldPosition(camera, _point)
 				
 				If (OverlapsPoint(_point, True, camera)) Then
