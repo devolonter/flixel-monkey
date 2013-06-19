@@ -492,10 +492,16 @@ Public
 	
 	Method SetRenderer:Void(render:FlxSpriteRenderer)
 		_renderer = render
+		frameWidth = width
+		frameHeight = height
+		_ResetHelpers()
 	End Method
 	
 	Method ClearRenderer:Void()
 		_renderer = Null
+		frameWidth = width
+		frameHeight = height
+		_ResetHelpers()
 	End Method
 	
 	Method _ResetHelpers:Void()
