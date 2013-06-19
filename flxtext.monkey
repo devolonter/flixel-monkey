@@ -88,6 +88,8 @@ Private
 	Field _fontShadowEnabled:Bool
 	
 	Field _fontBorderEnabled:Bool
+	
+	Field _isEmpty:Bool
 
 Public
 	Method New(x:Float, y:Float, width:Int = 0, text:String = "")
@@ -197,6 +199,8 @@ Public
 	End Method
 	
 	Method OnSpriteRender:Void(x:Float, y:Float)
+		If (_isEmpty) Return
+	
 		If (_shadow.argb <> 0) Then
 			Local oldColor:Int = FlxG._LastDrawingColor
 			Local oldAlpha:Int = FlxG._LastDrawingAlpha
@@ -256,9 +260,11 @@ Private
 			
 			Self.height = _GetHeight()
 			frameHeight = Self.height
+			_isEmpty = False
 		Else
 			Self.height = 0
 			frameHeight = 0
+			_isEmpty = True
 		End If
 		
 		Super.ResetHelpers()
