@@ -235,6 +235,14 @@ Public
 		_fontObject.DrawText(Self, x, y)
 	End Method
 	
+	Method GetTextWidth:Int()
+		Return _fontObject.GetTextWidth(Self)
+	End Method
+	
+	Method GetTextHeight:Int()
+		Return height
+	End Method
+	
 Private
 	Method _ResetHelpers:Void()
 		If (_value.Length() > 0) Then
