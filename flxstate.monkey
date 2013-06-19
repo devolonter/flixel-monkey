@@ -10,6 +10,14 @@ Class FlxState Extends FlxGroup Abstract
 	
 	Method Create:Void() Abstract
 	
+	Method Destroy:Void()
+		Super.Destroy()
+		
+		If (_subState <> Null And _subState._initialized) Then
+			_subState.Destroy()
+		End If
+	End Method
+	
 	Method OnBack:Bool()
 		Return True
 	End Method
@@ -129,6 +137,10 @@ Class FlxSubState Extends FlxGroup Abstract
 		_preventDefault = False
 		_stopPropagation = False
 		_parent.CloseSubState()
+	End Method
+	
+	Method GetParent:FlxState()
+		Return _parent
 	End Method
 	
 	Method OnClose:Bool()
