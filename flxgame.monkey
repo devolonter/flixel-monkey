@@ -220,7 +220,7 @@ Public
 	End Method
 	
 	Method OnBack:Int()
-		If (_state = Null Or _state.Back()) Then
+		If (_state = Null Or _state.DoBack()) Then
 			Return Super.OnBack()
 		End If
 		
@@ -228,7 +228,7 @@ Public
 	End Method
 	
 	Method OnClose:Int()
-		If (_state = Null Or _state.Close()) Then
+		If (_state = Null Or _state.DoClose()) Then
 			Return Super.OnClose()
 		End If
 		
@@ -399,7 +399,7 @@ Private
 				
 		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		
-		_state.Update()
+		_state.DoUpdate()
 		
 		If (FlxG.Tweener.active And FlxG.Tweener.HasTween) Then
 			FlxG.Tweener.UpdateTweens()
@@ -457,7 +457,7 @@ Private
 			If (FlxG._CurrentCamera <> Null And FlxG._CurrentCamera.active And FlxG._CurrentCamera.exists And FlxG._CurrentCamera.visible) Then
 				FlxG._CurrentCamera.DrawFX() 'not really draw. Only calculation
 				FlxG._CurrentCamera.Lock()			
-				_state.Draw()
+				_state.DoDraw()
 				FlxG.DrawPlugins()			
 				FlxG._CurrentCamera.Unlock()
 			End If
