@@ -130,7 +130,7 @@ Public
 		Shadow = shadowColor
 		
 		_ResetFont()
-		_ResetHelpers()
+		ResetHelpers()
 		
 		Return Self
 	End Method
@@ -138,7 +138,7 @@ Public
 	Method SetWidth:Void(width:Float)
 		Self.width = width
 		frameWidth = Self.width
-		_ResetHelpers()
+		ResetHelpers()
 	End Method
 	
 	Method Text:String() Property
@@ -147,13 +147,13 @@ Public
 	
 	Method Text:Void(text:String) Property
 		_value = text
-		_ResetHelpers()
+		ResetHelpers()
 	End Method
 	
 	Method Size:Void(size:Int) Property
 		_fontSize = FlxAssetsManager.GetFont(_fontFamily).GetValidSize(size)
 		_ResetFont()
-		_ResetHelpers()
+		ResetHelpers()
 	End Method
 	
 	Method Size:Int() Property
@@ -167,7 +167,7 @@ Public
 	Method Font:Void(font:String) Property
 		_fontFamily = font
 		_ResetFont()
-		_ResetHelpers()
+		ResetHelpers()
 	End Method
 	
 	Method Alignment:Float() Property
@@ -244,7 +244,7 @@ Public
 	End Method
 	
 Private
-	Method _ResetHelpers:Void()
+	Method ResetHelpers:Void()
 		If (_value.Length() > 0) Then
 			If (width <> 0) Then
 				_ParseText()
@@ -261,7 +261,7 @@ Private
 			frameHeight = 0
 		End If
 		
-		Super._ResetHelpers()
+		Super.ResetHelpers()
 	End Method
 
 	Method _ResetFont:Void()

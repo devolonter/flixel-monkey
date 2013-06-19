@@ -30,7 +30,7 @@ Public
 			Self.height = height
 			frameHeight = height
 			
-			_ResetHelpers()
+			ResetHelpers()
 		End If
 		
 		active = False

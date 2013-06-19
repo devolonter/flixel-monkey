@@ -149,7 +149,7 @@ Public
 		Self.height = _pixels.Height()
 		frameHeight = Self.height
 		
-		_ResetHelpers()
+		ResetHelpers()
 	
 		Return Self
 	End Method
@@ -169,7 +169,7 @@ Public
 		Self.height = height
 		frameHeight = height
 		
-		_ResetHelpers()
+		ResetHelpers()
 		
 		Return Self
 	End Method
@@ -430,7 +430,7 @@ Public
 		
 		frameWidth = width
 		frameHeight = height
-		_ResetHelpers()
+		ResetHelpers()
 	End Method
 	
 	Method Facing:Int() Property
@@ -494,17 +494,17 @@ Public
 		_renderer = render
 		frameWidth = width
 		frameHeight = height
-		_ResetHelpers()
+		ResetHelpers()
 	End Method
 	
 	Method ClearRenderer:Void()
 		_renderer = Null
 		frameWidth = width
 		frameHeight = height
-		_ResetHelpers()
+		ResetHelpers()
 	End Method
 	
-	Method _ResetHelpers:Void()
+	Method ResetHelpers:Void()
 		_halfWidth = frameWidth * .5
 		_halfHeight = frameHeight * .5
 		origin.Make(_halfWidth, _halfHeight)

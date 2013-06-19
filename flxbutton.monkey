@@ -143,8 +143,8 @@ Public
 		End If
 	End Method
 	
-	Method _ResetHelpers:Void()
-		Super._ResetHelpers()
+	Method ResetHelpers:Void()
+		Super.ResetHelpers()
 		
 		If (label <> Null) Then
 			label.SetWidth(width)			
