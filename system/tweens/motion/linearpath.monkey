@@ -76,7 +76,10 @@ Public
 	
 	Method GetPoint:FlxPoint(index:Int = 0)
 		If (_points.Length() = 0) Then
-			FlxG.Log("No points have been added to the path yet")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("No points have been added to the path yet")
+			#End
+			
 			Return Null
 		End If
 		
@@ -153,7 +156,10 @@ Public
 Private
 	Method _UpdatePath:Void()
 		If (_points.Length() < 2) Then
-			FlxG.Log("WARNING: A LinearPath must have at least 2 points to operate")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("WARNING: A LinearPath must have at least 2 points to operate")
+			#End
+			
 			Return
 		End If
 		

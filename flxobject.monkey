@@ -327,7 +327,9 @@ Public
 	
 	Method FollowPath:Void(path:FlxPath, speed:Float = 100, mode:Int = PATH_FORWARD, autoRotate:Bool = False)		
 		If (path.nodes.Length() <= 0) Then
-			FlxG.Log("WARNING: Paths need at least one node in them to be followed.")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("WARNING: Paths need at least one node in them to be followed.")
+			#End
 			Return
 		End If
 		

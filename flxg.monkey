@@ -174,9 +174,11 @@ Public
 	End Function
 	
 	Function Log:Void(data:String)
+	#If FLX_DEBUG_ENABLED = "1"
+		'note: TODO: to add log objects
 		Print data
-		'TODO
-	End Function	
+	#End
+	End Function
 
 	Function Random:Float()
 		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223) | 0

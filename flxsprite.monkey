@@ -371,7 +371,9 @@ Public
 			Return
 		End If
 		
-		FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
+		#If FLX_DEBUG_ENABLED = "1"
+			FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
+		#End
 	End Method
 	
 	Method Stop:Void()

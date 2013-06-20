@@ -357,8 +357,11 @@ Private
 				If (_NextChannel >= _CHANNELS_COUNT) _NextChannel = 0
 				
 				counter += 1
-				If (counter >= _CHANNELS_COUNT) Then
-					FlxG.Log("Free channels for sound " + name + " are not found")
+				If (counter >= _CHANNELS_COUNT) Then				
+					#If FLX_DEBUG_ENABLED = "1"
+						FlxG.Log("Free channels for sound " + name + " are not found")
+					#End
+				
 					Exit
 				End If
 			Until (Not _LoopedChannels[_NextChannel])		

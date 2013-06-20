@@ -181,7 +181,10 @@ Private
 	
 	Method AddTween:FlxTween(tween:FlxTween, start:Bool = False)
 		If (tween._parent <> Null) Then
-			FlxG.Log("WARNING: Cannot add a FlxTween object more than once")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("WARNING: Cannot add a FlxTween object more than once")
+			#End
+			
 			Return tween
 		End If
 		
@@ -199,7 +202,10 @@ Private
 		If (_tweens = Null) Return tween
 	
 		If (tween._parent <> Self) Then
-			FlxG.Log("WARNING: Core object does not contain FlxTween")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("WARNING: Core object does not contain FlxTween")
+			#End
+			
 			Return tween
 		End If
 		
