@@ -40,6 +40,7 @@ Class FlxState Extends FlxGroup Abstract
 		End If
 		
 		_subState = subState
+			_subState._parent = Self
 		
 		If (_subState <> Null) Then
 			If ( Not _subState._initialized) Then
