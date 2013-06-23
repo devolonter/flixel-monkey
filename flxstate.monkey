@@ -50,6 +50,10 @@ Class FlxState Extends FlxGroup Abstract
 		End If
 	End Method
 	
+	Method GetSubState:FlxSubState()
+		Return _subState
+	End Method
+
 	Method CloseSubState:Void()
 		If (_subState = Null) Return
 		SetSubState(Null)
