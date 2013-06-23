@@ -33,7 +33,7 @@ Class FlxState Extends FlxGroup Abstract
 		If (_subState = subState) Return
 		
 		If (_subState <> Null) Then
-			If ( Not _subState.OnClose()) Then
+			If ( Not _subState.OnClose(_subState._closedBySystem)) Then
 				_subState.PreventDefault()
 				_subState.StopPropagation()
 				Return
@@ -98,6 +98,7 @@ Class FlxState Extends FlxGroup Abstract
 			Return OnBack()
 		End If
 		
+		_subState._closedBySystem = True
 		_subState.Close()
 		
 		If ( Not _subState._stopPropagation) Then
@@ -116,6 +117,7 @@ Class FlxState Extends FlxGroup Abstract
 			Return OnClose()
 		End If
 		
+		_subState._closedBySystem = True
 		_subState.Close()
 		
 		If ( Not _subState._stopPropagation) Then
@@ -141,15 +143,20 @@ Class FlxSubState Extends FlxGroup Abstract
 	
 	Method Destroy:Void()
 		Super.Destroy()
+		
 		_parent = Null
 		_initialized = False
 	End Method
 
 	Method Close:Void()
 		If (_parent = Null) Return
+		
 		_preventDefault = False
 		_stopPropagation = False
+		
 		_parent.CloseSubState()
+		
+		_closedBySystem = False
 	End Method
 	
 	Method GetParent:FlxState()
@@ -159,7 +166,7 @@ Class FlxSubState Extends FlxGroup Abstract
 	Method OnActivate:Void()
 	End Method
 	
-	Method OnClose:Bool()
+	Method OnClose:Bool(system:Bool)
 		Destroy()
 		Return True
 	End Method
@@ -181,5 +188,7 @@ Class FlxSubState Extends FlxGroup Abstract
 	Field _preventDefault:Bool
 	
 	Field _stopPropagation:Bool
+	
+	Field _closedBySystem:Bool
 	
 End Class
