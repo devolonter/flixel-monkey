@@ -42,8 +42,9 @@ Class FlxState Extends FlxGroup Abstract
 			_subState._parent = Null
 		End If
 		
-		If (subState <> Null) Then
-			_subState = subState
+		_subState = subState
+		
+		If (_subState <> Null) Then
 			_subState._parent = Self
 		
 			If ( Not _subState._initialized) Then
@@ -53,8 +54,7 @@ Class FlxState Extends FlxGroup Abstract
 			
 			_subState.OnActivate()
 		Else
-			If (_subState <> Null) OnActivate()
-			_subState = subState
+			OnActivate()
 		End If
 	End Method
 	
