@@ -598,8 +598,8 @@ Class PrimitiveSpriteRenderer Implements FlxSpriteRenderer Abstract
 	End Method
 	
 	Method OnSpriteUnbind:Void()
-		_sprite = Null
 		_sprite.Pixels = Null
+		_sprite = Null
 	End Method
 	
 	Method OnSpriteRender:Void(x:Float, y:Float) Abstract
