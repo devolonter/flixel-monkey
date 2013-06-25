@@ -507,8 +507,9 @@ Public
 	End Method
 	
 	Method ClearRenderer:Void()
-		_renderer.OnSpriteUnbind()
+		Local renderer:FlxSpriteRenderer = _renderer
 		_renderer = Null
+		renderer.OnSpriteUnbind()
 		
 		frameWidth = width
 		frameHeight = height
