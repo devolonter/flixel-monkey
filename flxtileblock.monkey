@@ -18,20 +18,15 @@ Public
 	Method New(x:Int, y:Int, width:Int, height:Int, makeGraphic:Bool = False)
 		Super.New(x, y)
 		
-		SetRenderer(Self)
-		
 		If (makeGraphic) Then
 			MakeGraphic(width, height, 0)
 		Else
 			Pixels = Null
-		
 			Self.width = width
-			frameWidth = width
 			Self.height = height
-			frameHeight = height
-			
-			ResetHelpers()
 		End If
+		
+		SetRenderer(Self)
 		
 		active = False
 		immovable = True
@@ -109,7 +104,13 @@ Public
 		Wend
 		
 		Return Self	
-	End Method	
+	End Method
+	
+	Method OnSpriteBind:Void(sprite:FlxSprite)
+	End Method
+	
+	Method OnSpriteUnbind:Void()	
+	End Method
 	
 	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_tilePixels = Null) Return

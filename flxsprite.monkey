@@ -422,17 +422,21 @@ Public
 	Method Pixels:Void(pixels:Image) Property
 		_pixels = pixels
 		
+		Local width:Int = 0
+		Local height:Int = 0
+		
 		If (_pixels <> Null) Then
 			width = pixels.Width()
-			height = pixels.Height()	
-		Else
-			width = 0
-			height = 0		
+			height = pixels.Height()		
 		End If
 		
-		frameWidth = width
-		frameHeight = height
-		ResetHelpers()
+		If (_pixels <> Null Or _renderer = Null) Then
+			Self.width = width
+			Self.height = height
+			frameWidth = width
+			frameHeight = height
+			ResetHelpers()
+		End If
 	End Method
 	
 	Method Facing:Int() Property
@@ -494,15 +498,21 @@ Public
 	
 	Method SetRenderer:Void(render:FlxSpriteRenderer)
 		_renderer = render
+		_renderer.OnSpriteBind(Self)
+		
 		frameWidth = width
 		frameHeight = height
+		
 		ResetHelpers()
 	End Method
 	
 	Method ClearRenderer:Void()
+		_renderer.OnSpriteUnbind()
 		_renderer = Null
+		
 		frameWidth = width
 		frameHeight = height
+		
 		ResetHelpers()
 	End Method
 	
@@ -570,6 +580,10 @@ Private
 End Class
 
 Interface FlxSpriteRenderer
+
+	Method OnSpriteBind:Void(sprite:FlxSprite)
+	
+	Method OnSpriteUnbind:Void()
 	
 	Method OnSpriteRender:Void(x:Float, y:Float)
 

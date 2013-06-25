@@ -98,11 +98,10 @@ Public
 		_fontShadowEnabled = False
 		_fontBorderEnabled = False
 		
-		SetRenderer(Self)
-		_shadow = New FlxColor(0)
-		
 		Self.width = width
-		frameWidth = Self.width
+		SetRenderer(Self)
+		
+		_shadow = New FlxColor(0)
 		moves = False
 
 		SetFormat(SYSTEM_FONT)
@@ -198,6 +197,13 @@ Public
 		_fontBorderEnabled = enabled
 	End Method
 	
+	Method OnSpriteBind:Void(sprite:FlxSprite)
+		Pixels = Null
+	End Method
+	
+	Method OnSpriteUnbind:Void()
+	End Method
+	
 	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_isEmpty) Return
 	
@@ -247,7 +253,6 @@ Public
 		Return height
 	End Method
 	
-Private
 	Method ResetHelpers:Void()
 		If (_value.Length() > 0) Then
 			If (width <> 0) Then
@@ -270,6 +275,8 @@ Private
 		Super.ResetHelpers()
 	End Method
 
+Private
+	
 	Method _ResetFont:Void()
 		_FontLoader.fontFamily = _fontFamily
 		_FontLoader.fontSize = _fontSize
