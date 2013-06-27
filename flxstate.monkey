@@ -10,7 +10,7 @@ Class FlxState Extends FlxGroup Abstract
 	
 	Method Create:Void() Abstract
 	
-	Method OnActivate:Void()
+	Method OnActivate:Void(prevSubstate:FlxSubState)
 	End Method
 	
 	Method Destroy:Void()
@@ -42,9 +42,8 @@ Class FlxState Extends FlxGroup Abstract
 			_subState._parent = Null
 		End If
 		
-		_subState = subState
-		
-		If (_subState <> Null) Then
+		If (subState <> Null) Then
+			_subState = subState
 			_subState._parent = Self
 		
 			If ( Not _subState._initialized) Then
@@ -54,7 +53,9 @@ Class FlxState Extends FlxGroup Abstract
 			
 			_subState.OnActivate()
 		Else
-			OnActivate()
+			subState = _subState
+			_subState = Null
+			OnActivate(subState)
 		End If
 	End Method
 	
