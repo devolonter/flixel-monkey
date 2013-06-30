@@ -21,7 +21,7 @@ Public
 	Method RegisterListener:FlxSignalObserver(listener:FlxSignalListener)
 		If (listener = Null) Return Null
 		
-		Local observer:FlxSignalObserver = _observers.Get(listener)
+		Local observer:FlxSignalObserver = _observers.GetByListener(listener)
 		
 		If (observer = Null) Then
 			observer = New FlxSignalObserver(listener, False, Self)
@@ -35,7 +35,7 @@ Public
 	Method RegisterListener:FlxSignalObserver(listener:FlxSignalListener, instant:Bool)
 		If (listener = Null) Return Null
 		
-		Local observer:FlxSignalObserver = _observers.Get(listener)
+		Local observer:FlxSignalObserver = _observers.GetByListener(listener)
 		
 		If (observer = Null) Then
 			observer = New FlxSignalObserver(listener, instant, Self)
@@ -49,7 +49,7 @@ Public
 	Method RegisterListener:FlxSignalObserver(listener:FlxSignalListener, instant:Bool, priority:Int)
 		If (listener = Null) Return Null
 		
-		Local observer:FlxSignalObserver = _observers.Get(listener)
+		Local observer:FlxSignalObserver = _observers.GetByListener(listener)
 		
 		If (observer = Null) Then
 			observer = New FlxSignalObserver(listener, instant, Self, priority)
@@ -62,7 +62,7 @@ Public
 
 	Method RemoveListener:FlxSignalObserver(listener:FlxSignalListener)
 		If (listener = Null) Return Null
-		Return _observers.Remove(listener)
+		Return _observers.RemoveByListener(listener)
 	End Method
 	
 	Method Clear:Void()
@@ -190,7 +190,7 @@ Class FlxSignalObserverList Extends List<FlxSignalObserver>
 		Return AddLast(signalObserver)
 	End Method
 	
-	Method Remove:FlxSignalObserver(listener:FlxSignalListener)
+	Method RemoveByListener:FlxSignalObserver(listener:FlxSignalListener)
 		Local node:list.Node<FlxSignalObserver> = FirstNode()
 		
 		While (node <> Null)
@@ -205,7 +205,7 @@ Class FlxSignalObserverList Extends List<FlxSignalObserver>
 		Return Null
 	End Method
 	
-	Method Get:FlxSignalObserver(listener:FlxSignalListener)
+	Method GetByListener:FlxSignalObserver(listener:FlxSignalListener)
 		Local node:list.Node<FlxSignalObserver> = FirstNode()
 		
 		While (node <> Null)
