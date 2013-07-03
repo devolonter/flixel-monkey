@@ -245,11 +245,11 @@ Public
 		_fontObject.DrawText(Self, x, y)
 	End Method
 	
-	Method GetTextWidth:Int()
+	Method GetTextWidth:Float()
 		Return _fontObject.GetTextWidth(Self)
 	End Method
 	
-	Method GetTextHeight:Int()
+	Method GetTextHeight:Float()
 		Return height
 	End Method
 	
@@ -622,9 +622,11 @@ End Class
 			End
 		End
 		
-		Method GetTextWidth:Int(txt:FlxText, startPos:Int = 0, endPos:Int = -1)
+		Method GetTextWidth:Float(txt:FlxText, startPos:Int = 0, endPos:Int = -1)
+			If (startPos = endPos) Return 0
+		
 			Local prevChar:Int = 0
-			Local width:Int = 0
+			Local width:Float = 0
 			
 			If (endPos < 0) endPos = txt._value.Length()
 			Local asc:Int, ac:Char
@@ -733,6 +735,8 @@ End Class
 		End
 
 		Method GetTextWidth:Float(text:FlxText, fromChar:Int = 0, toChar:Int = -1)
+			If (fromChar = toChar) Return 0
+		
 			Local twidth:Float
 			Local char:Int
 			Local lastchar:Int = 0
