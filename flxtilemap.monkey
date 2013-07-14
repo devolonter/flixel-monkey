@@ -895,6 +895,19 @@ Public
 		_firstAnimation = _animations.ObjectEnumerator().NextObject()
 	End Method
 	
+	Method AddAnimation:Void(tileIndex:Int, startFrame:Int, endFrame:Int, frameRate:Float = 0, looped:Bool = True)
+		Local i:Int = 0
+		Local l:Int = endFrame - startFrame + 1
+		Local frames:Int[] = New Int[l]
+		
+		While (i < l)
+			frames[i] = startFrame + i
+			i += 1
+		Wend
+		
+		AddAnimation(tileIndex, frames, frameRate, looped)
+	End Method
+	
 Private
 	Method _SimplifyPath:Void(points:Stack<FlxPoint>)
 		Local deltaPrevious:Float
