@@ -389,8 +389,8 @@ Public
 	#End
 	End Method
 	
-	Method Update:Void()
-		Super.Update()
+	Method PostUpdate:Void()
+		Super.PostUpdate()
 		
 		If (_animations <> Null) Then
 			Local node:map.Node<Int, FlxTileAnimation> = _firstAnimation
