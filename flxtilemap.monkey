@@ -322,9 +322,11 @@ Public
 						If (_rect <> Null) Then
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
 							
-							If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
-								'TODO
-							End If
+							#If FLX_DEBUG_ENABLED = "1"
+								If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
+									'TODO
+								End If
+							#End
 						End If
 						
 						_point.x += _tileWidth
@@ -362,9 +364,11 @@ Public
 						If (_rect <> Null) Then						
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height, 0, _buffer.scaleFixX, _buffer.scaleFixY)
 							
-							If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
-								'TODO
-							End If
+							#If FLX_DEBUG_ENABLED = "1"
+								If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
+									'TODO
+								End If
+							#End
 						End If
 						
 						_point.x -= _tileWidth
