@@ -70,6 +70,10 @@ Private
 	Field _screenRows:Int
 	
 	Field _screenColumns:Int
+
+	Field _animations:IntMap<FlxTileAnimation>
+	
+	Field _firstAnimation:map.Node<Int, FlxTileAnimation>
 	
 Public
 	Method New()
@@ -88,6 +92,7 @@ Public
 		_startingIndex = 0
 		_camera = Null
 		_buffer = Null
+		_animations = Null
 	End Method
 	
 	Method Destroy:Void()
@@ -109,6 +114,16 @@ Public
 		
 		_buffers.Clear()
 		_buffers = Null
+		
+		If (_animations <> Null)
+			For Local anim:FlxTileAnimation = EachIn _animations.Values()
+				anim.Destroy()
+			Next
+			
+			_animations.Clear()
+			_animations = Null
+			_firstAnimation = Null
+		End If
 		
 		Super.Destroy()
 	End Method
@@ -292,8 +307,18 @@ Public
 					_point.x = 0
 					
 					While (column < _screenColumns)
-						_rect = _rects[columnIndex]
-						
+						If (_animations <> Null) Then
+							Local tileAnimation:FlxTileAnimation = _animations.Get(_data[columnIndex])
+
+							If tileAnimation <> Null Then
+								_rect = tileAnimation.GetFrame()
+							Else 
+								_rect = _rects[columnIndex]
+							End If
+						Else
+							_rect = _rects[columnIndex]
+						End If
+
 						If (_rect <> Null) Then
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
 							
@@ -322,7 +347,17 @@ Public
 					columnIndex = rowIndex + column
 					
 					While (column >= 0)
-						_rect = _rects[columnIndex]
+						If (_animations <> Null) Then
+							Local tileAnimation:FlxTileAnimation = _animations.Get(_data[columnIndex])
+
+							If tileAnimation <> Null Then
+								_rect = tileAnimation.GetFrame()
+							Else 
+								_rect = _rects[columnIndex]
+							End If
+						Else
+							_rect = _rects[columnIndex]
+						End If
 						
 						If (_rect <> Null) Then						
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height, 0, _buffer.scaleFixX, _buffer.scaleFixY)
@@ -343,10 +378,24 @@ Public
 				Wend
 			End If
 		PopMatrix()		
+
 		
 	#If FLX_DEBUG_ENABLED = "1"
 		_VisibleCount += 1
 	#End
+	End Method
+	
+	Method Update:Void()
+		Super.Update()
+		
+		If (_animations <> Null) Then
+			Local node:map.Node<Int, FlxTileAnimation> = _firstAnimation
+		
+			While (node <> Null)
+				node.Value.Update()
+				node = node.NextNode()
+			Wend
+		End If
 	End Method
 	
 	Method GetData:Int[](simple:Bool = False)
@@ -833,6 +882,18 @@ Public
 		
 		Return csv.Join("")
 	End Function
+
+	Method AddAnimation:Void(tileIndex:Int, frames:Int[], frameRate:Float = 0, looped:Bool = True)
+		If (_animations = Null) Then
+			_animations = New IntMap<FlxTileAnimation>()
+			_animations.Values()
+		End If
+		
+		Local anim:FlxTileAnimation = New FlxTileAnimation(Self, frames, frameRate, looped)
+		_animations.Set(tileIndex, anim)
+		
+		_firstAnimation = _animations.ObjectEnumerator().NextObject()
+	End Method
 	
 Private
 	Method _SimplifyPath:Void(points:Stack<FlxPoint>)
@@ -1167,6 +1228,73 @@ Private
 End Class
 
 Private
+
+Class FlxTileAnimation
+
+Private 
+
+	Field _delay:Float = 0
+	Field _elapsed:Float = 0
+	Field _currentFrame:Int = 0
+
+	Field _rects:FlxRect[]
+
+	Field _frames:Int[]
+	Field _looped:Bool
+
+Public
+
+	Method New(tilemap:FlxTilemap, frames:Int[], frameRate:Float = 0, looped:Bool = True)
+		_frames = frames
+		_looped = looped
+
+		If (frameRate > 0) _delay = 1.0 / frameRate
+
+		_rects = New FlxRect[frames.Length()]
+
+		Local i:Int = 0
+		Local l:Int = _frames.Length() - 1
+		For Local i:Int = 0 To l
+			Local tile:FlxTile = tilemap._tileObjects[_frames[i]]
+
+			If (tile = Null Or Not tile.visible) Then
+				_rects[i] = Null
+				Continue
+			End If
+			
+			Local rx:Int = (frames[i] - tilemap._startingIndex) * tilemap._tileWidth
+			Local ry:Int = 0
+			
+			If (rx >= tilemap._tiles.Width()) Then
+				ry = Int(rx / tilemap._tiles.Width()) * tilemap._tileHeight
+				rx Mod= tilemap._tiles.Width()
+			End If
+			
+			_rects[i] = New FlxRect(rx, ry, tilemap._tileWidth, tilemap._tileHeight)
+		End For
+	End Method
+	
+	Method Destroy:Void()
+		For Local i:Int = 0 Until _rects.Length()
+			_rects[i] = Null
+		Next
+	End Method
+
+	Method GetFrame:FlxRect()
+		Return _rects[_currentFrame]
+	End Method
+
+	Method Update:Void()
+		_elapsed = _elapsed + FlxG.Elapsed
+		If _elapsed > _delay Then
+			_currentFrame = _currentFrame + 1
+			_currentFrame = _currentFrame Mod _frames.Length()
+			_elapsed = 0
+		End If
+	End Method
+
+End Class
+
 Class FlxTileLoader Extends FlxResourceLoader<Image>
 
 	Method Load:Image(name:String)
