@@ -66,8 +66,6 @@ Class FlxGame extends App
 Private
 	Field _iState:ClassInfo
 	
-	Field _created:Bool
-	
 	Field _step:Int
 	
 	Field _soundTrayTimer:Float
@@ -127,13 +125,12 @@ Public
 		
 		_iState = initialState
 		_requestedState = Null
-		_requestedReset = True
-		_created = False		
+		_requestedReset = True	
 	End Method
 	
 	Method OnCreate:Int()	
 		_InitData()		
-		_Step()
+		_Reset()
 
 		#Rem
 		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
@@ -279,12 +276,7 @@ Private
 
 	Method _Step:Void()
 		If (_requestedReset) Then
-			_requestedReset = False
-			_requestedState = FlxState(_iState.NewInstance())
-			_replayTimer = 0
-			_replayCancelKeys = []
 			_Reset()
-			FlxG.Reset()		
 		End If
 		
 		If (_recordingRequested) Then
@@ -529,6 +521,11 @@ Private
 	End Method
 	
 	Method _Reset:Void()
+		_requestedReset = False
+		_requestedState = FlxState(_iState.NewInstance())
+		_replayTimer = 0
+		_replayCancelKeys =[]
+	
 		If (FlxG.Updaterate <> _updaterate) Then			
 			_ResetFramerate()
 		End If
@@ -537,6 +534,8 @@ Private
 				
 		Seed = (date[3] * 3600 + date[4] * 60 + date[5]) * 1000 + date[6]
 		FlxG.UpdateDevice()
+		
+		FlxG.Reset()
 	End Method
 	
 	Method _ResetFramerate:Void()
