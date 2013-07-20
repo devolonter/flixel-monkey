@@ -119,6 +119,10 @@ Public
 		_Strings.Remove(name)
 	End Function
 	
+	Function GetStringPath:String(name:String)
+		Return _Strings.Get(name)
+	End Function
+	
 	Function GetString:String(name:String)
 		Return LoadString(_Strings.Get(name))
 	End Function
