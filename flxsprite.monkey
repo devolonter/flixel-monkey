@@ -315,11 +315,14 @@ Public
 	
 	Method AddAnimation:FlxAnim(name:String, startFrame:Int, endFrame:Int, frameRate:Float = 0, looped:Bool = True)
 		Local i:Int = 0
-		Local l:Int = endFrame - startFrame + 1
+		Local l:Int = Abs(endFrame - startFrame) + 1
 		Local frames:Int[] = New Int[l]
 		
+		Local dir:Int = 1
+		If (endFrame < startFrame) dir = -1
+		
 		While (i < l)
-			frames[i] = startFrame + i
+			frames[i] = startFrame + dir * i
 			i += 1
 		Wend
 		
