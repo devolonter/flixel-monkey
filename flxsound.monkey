@@ -284,11 +284,7 @@ Public
 	#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
 		Return "wav"
 	#ElseIf TARGET = "html5"
-		If (FlxIsIE()) Then
-			Return "mp3"
-		Else
-			Return "ogg"
-		End If
+		Return FlxGetValidAudioExt()
 	#ElseIf TARGET = "glfw" Or TARGET = "bmax"
 		Return "ogg"
 	#Else

@@ -31,6 +31,7 @@ Extern
 
 #If TARGET = "html5"
 	Function FlxIsIE:Bool() = "flixel.isIE"
+	Function FlxGetValidAudioExt:String() = "flixel.getValidAudioExt"
 #End
 
 Public
