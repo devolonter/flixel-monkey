@@ -4,10 +4,6 @@ var flixel = {
 	_validAudioExt: null,
 
 	isMobile: function(undefined) {
-		//console.log()
-		
-		console.log();
-	
 		if (window.Touch != undefined) {
 			return true;
 		}
