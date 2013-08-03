@@ -109,7 +109,7 @@ Public
 		
 		_state = Null
 		
-		useSoundHotKeys = Not FlxIsMobile()
+		useSoundHotKeys = Not FlxG.Mobile
 		Self.useSystemCursor = useSystemCursor
 		
 		If (Not useSystemCursor) HideMouse()
