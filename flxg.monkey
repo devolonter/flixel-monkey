@@ -630,6 +630,14 @@ Public
 		Return Null	
 	End Function
 	
+	Function GetPlugin:FlxBasic(objectOrClass:Object)
+		If (ClassInfo(objectOrClass) <> Null) Then
+			Return GetPlugin(ClassInfo(objectOrClass))
+		Else
+			Return GetPlugin(GetClass(objectOrClass))
+		End If
+	End Function
+	
 	Function RemovePlugin:FlxBasic(plugin:FlxBasic)
 		Plugins.RemoveEach(plugin)
 		Return plugin
