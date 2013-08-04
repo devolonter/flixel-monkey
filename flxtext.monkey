@@ -54,7 +54,7 @@ Public
 
 Class FlxText Extends FlxSprite Implements FlxSpriteRenderer
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 	Const ALIGN_LEFT:Float = 0
 	Const ALIGN_CENTER:Float = 0.5

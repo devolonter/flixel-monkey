@@ -8,7 +8,7 @@ Import flixel.flxtilemap
 
 Class FlxTile Extends FlxObject
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 	Field callback:FlxTileHitListener
 	

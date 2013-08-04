@@ -22,7 +22,7 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	#Rem
 	summary:See detail.

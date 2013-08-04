@@ -6,7 +6,7 @@ Import flixel.flxtimer
 
 Class TimerManager Extends FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 Private
 	Field _timers:Stack<FlxTimer>

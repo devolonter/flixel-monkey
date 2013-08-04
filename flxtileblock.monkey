@@ -7,7 +7,7 @@ Import flxg
 
 Class FlxTileblock Extends FlxSprite Implements FlxSpriteRenderer
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 Private
 	Field _tilePixels:Image

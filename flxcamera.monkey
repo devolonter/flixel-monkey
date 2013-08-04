@@ -11,7 +11,7 @@ Import system.flxcolor
 
 Class FlxCamera Extends FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	Const STYLE_LOCKON:Int = 0
 	

@@ -11,7 +11,7 @@ Import system.flxresourcesmanager
 
 Class FlxSound Extends FlxBasic
 	
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	Field x:Float
 	

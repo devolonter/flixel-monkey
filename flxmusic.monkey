@@ -7,7 +7,7 @@ Import system.flxassetsmanager
 
 Class FlxMusic Extends FlxSound
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 Private
 	Field _filename:String

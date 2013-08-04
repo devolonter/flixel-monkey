@@ -15,7 +15,7 @@ Import "data/default_flx.png"
 
 Class FlxSprite Extends FlxObject
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 	Field origin:FlxPoint
 	

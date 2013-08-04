@@ -20,7 +20,7 @@ Import "data/autotiles_flx.png"
 
 Class FlxTilemap Extends FlxObject
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	Const AUTOTILES:String =  "autotiles" + FlxG.DATA_SUFFIX
 	

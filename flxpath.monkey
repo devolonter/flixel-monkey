@@ -212,7 +212,7 @@ Public
 	End Method
 	
 	Function Manager:DebugPathDisplay()
-		Return DebugPathDisplay(FlxG.GetPlugin(ClassInfo(DebugPathDisplay.ClassObject)))
+		Return DebugPathDisplay(FlxG.GetPlugin(ClassInfo(DebugPathDisplay.__CLASS__)))
 	End Function
 
 End Class
