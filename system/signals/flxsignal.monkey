@@ -115,7 +115,7 @@ Public
 	End Method
 	
 	Method Connect:Void()
-		If (_signal._observers.Get(_listener) = Null) Then
+		If (_signal._observers.GetByListener(_listener) = Null) Then
 			If (_withPriority) Then
 				_signal._observers.InsertWithPriority(Self)
 			Else
