@@ -12,7 +12,7 @@ Import flxg
 
 Class FlxEmitter Extends FlxGroup
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 	Field x:Float
 	
