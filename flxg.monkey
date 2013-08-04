@@ -236,7 +236,7 @@ Public
 		
 	#If FLX_DEBUG_ENABLED = "1"
 		If (_Game._debugger <> Null) Then
-			'TODO
+			'note: TODO:
 		End If
 	#End
 		
@@ -258,7 +258,7 @@ Public
 	
 	#If FLX_DEBUG_ENABLED = "1"	
 		If (_Game._debugger <> Null) Then
-			'TODO
+			'note: TODO:
 		End If
 	#End
 		

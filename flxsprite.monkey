@@ -156,7 +156,7 @@ Public
 	
 	Method LoadRotatedGraphic:FlxSprite(graphic:String, rotations:Int = 16, frame:Int = -1)
 		Error "LoadRotatedGraphic not currenlty support in " + FlxG.LIBRARY_NAME
-		'TODO
+		'note: TODO:
 		Return Null
 	End Method
 	

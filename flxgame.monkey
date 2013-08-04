@@ -253,7 +253,7 @@ Private
 	
 	#If FLX_DEBUG_ENABLED = "1"
 		If (_debugger <> Null) Then
-			'TODO!
+			'note: TODO:!
 		End If
 	#End
 		
@@ -286,7 +286,7 @@ Private
 		
 		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 				FlxG.Log("FLIXEL: starting new flixel gameplay record.")
 			End If
 		#End
@@ -298,7 +298,7 @@ Private
 		
 		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 			End If
 		#End
 			
@@ -358,7 +358,7 @@ Private
 			
 		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 			End If
 		#End
 				
@@ -371,7 +371,7 @@ Private
 		
 		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 			End If
 		#End
 		
@@ -381,7 +381,7 @@ Private
 		
 	#If FLX_DEBUG_ENABLED = "1"
 		If (_debugger <> Null) Then
-			'TODO
+			'note: TODO:
 		End If
 	#End	
 	End Method	
@@ -401,7 +401,7 @@ Private
 	
 	#If FLX_DEBUG_ENABLED = "1"
 		If (_debuggerUp) Then
-			'TODO!
+			'note: TODO:!
 		End If
 	#End	
 	End Method
@@ -418,7 +418,7 @@ Private
 			If (_soundTrayY <= -_soundTrayHeight) Then
 				_soundTrayVisible = False
 				
-				'TODO Save sound settings
+				'note: TODO: Save sound settings
 			End If
 		End If
 	End Method

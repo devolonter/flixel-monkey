@@ -324,7 +324,7 @@ Public
 							
 							#If FLX_DEBUG_ENABLED = "1"
 								If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
-									'TODO
+									'note: TODO:
 								End If
 							#End
 						End If
@@ -366,7 +366,7 @@ Public
 							
 							#If FLX_DEBUG_ENABLED = "1"
 								If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
-									'TODO
+									'note: TODO:
 								End If
 							#End
 						End If
