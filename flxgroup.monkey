@@ -256,6 +256,7 @@ Public
 	Return a reference to the object that was created. Don't forget to cast it back to the objectClass you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassClass))).
 	#End
 	Method Recycle:FlxBasic(objectClass:ClassInfo = Null)
+		'note: TODO: check objectClass first
 		If (_maxSize > 0) Then
 			If (_length < _maxSize) Then
 				If (objectClass = Null) Return Null
