@@ -278,7 +278,7 @@ Public
 	End Method
 	
 	Method Recycle:FlxBasic(objectOrClass:Object)
-		If (ClassInfo(objectClass) <> Null) Then
+		If (ClassInfo(objectOrClass) <> Null) Then
 			Return Recycle(ClassInfo(objectOrClass))
 		Else
 			Return Recycle(GetClass(objectOrClass))
