@@ -11,6 +11,11 @@ Import flxobject
 Import flxu
 Import system.flxarray
 
+Private
+Import brl.pool
+
+Public
+
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
 [i][b]NOTE:[/b] Although FlxGroup extends [a flxbasic.monkey.html]FlxBasic[/a], it will not automatically add itself to the global collisions quad tree, it will only add its members.[/i]
@@ -53,8 +58,6 @@ Private
 	
 	Field _defrag:Bool
 	
-	Field _enumerator:Enumerator
-	
 Public
 	#Rem
 	summary:Constructor
@@ -70,7 +73,6 @@ Public
 		_length = 0
 		_cameras = Null
 		_comparators = New StringMap<Comparator>()
-		_enumerator = New Enumerator(Null)
 		_dirty = False
 		_defrag = False
 	End Method
@@ -115,9 +117,6 @@ Public
 		
 		_comparators.Clear()
 		_comparators = Null
-		
-		_enumerator.Destroy()
-		_enumerator = Null
 		
 		Super.Destroy()
 	End Method
@@ -529,7 +528,7 @@ Public
 	End Method
 	
 	Method ObjectEnumerator:Enumerator()
-		Return _enumerator._Reset(Self)
+		Return _Enumerators.Allocate()._Reset(Self)
 	End
 	
 Private
@@ -856,10 +855,6 @@ End Class
 
 Class Enumerator
 
-	Method New(group:FlxGroup)
-		_Reset(group)
-	End
-
 	Method HasNext:Bool()
 		If (_dirty) Then
 			_dirty = False
@@ -867,6 +862,7 @@ Class Enumerator
 			
 			Repeat
 				If (_nextIndex = _group._length) Then
+					_Enumerators.Free(Self)
 					Return _hasNext
 				End If
 			
@@ -878,6 +874,7 @@ Class Enumerator
 			_hasNext = True
 		End If
 		
+		If ( Not _hasNext) _Enumerators.Free(Self)
 		Return _hasNext
 	End
 
@@ -919,6 +916,8 @@ Private
 End
 
 Private
+
+Global _Enumerators:Pool<Enumerator> = New Pool<Enumerator>()
 
 Class Comparator
 	
