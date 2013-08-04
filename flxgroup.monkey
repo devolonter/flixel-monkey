@@ -276,6 +276,14 @@ Public
 		End If
 	End Method
 	
+	Method Recycle:FlxBasic(objectOrClass:Object)
+		If (ClassInfo(objectClass) <> Null) Then
+			Return Recycle(ClassInfo(objectOrClass))
+		Else
+			Return Recycle(GetClass(objectOrClass))
+		End If
+	End Method
+	
 	#Rem
 	summary:Removes an object from the group.
 	Params:
