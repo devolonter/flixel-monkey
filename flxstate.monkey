@@ -4,9 +4,9 @@ Import flxgroup
 
 Class FlxState Extends FlxGroup Abstract
 
-	Field persistantUpdate:Bool = False
+	Field persistentUpdate:Bool = False
 	
-	Field persistantDraw:Bool = True
+	Field persistentDraw:Bool = True
 	
 	Method Create:Void() Abstract
 	
@@ -74,7 +74,7 @@ Class FlxState Extends FlxGroup Abstract
 			Return
 		End If
 		
-		If (persistantUpdate) Then
+		If (persistentUpdate) Then
 			Update()
 		End If
 		
@@ -87,7 +87,7 @@ Class FlxState Extends FlxGroup Abstract
 			Return
 		End If
 		
-		If (persistantDraw) Then
+		If (persistentDraw) Then
 			Draw()
 		End If
 		
