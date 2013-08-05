@@ -81,7 +81,7 @@ Public
 		If (timerManger <> Null) timerManger.Remove(Self)			
 	End Method
 	
-	Method TimeLeft:Int() Property
+	Method TimeLeft:Float() Property
 		Return time - _timeCounter
 	End Method
 	
