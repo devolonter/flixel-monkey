@@ -90,7 +90,7 @@ Public
 	End Method
 	
 	Method Progress:Float() Property
-		If (time > 0) Return _timeCounter/Float(time)
+		If (time > 0) Return _timeCounter/time
 		
 		Return .0
 	End Method
