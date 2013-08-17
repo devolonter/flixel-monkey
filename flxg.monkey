@@ -502,6 +502,10 @@ Public
 		FlxG._Game._requestedState = state
 	End Function
 	
+	Function SetSwitchStateListener:Void(listener:FlxSwitchStateListener)
+		FlxG._Game.SetSwitchStateListener(listener)
+	End Function
+	
 	Function AddCamera:FlxCamera(newCamera:FlxCamera)
 		FlxG.Cameras.Push(newCamera)
 		Return newCamera
@@ -637,7 +641,7 @@ Public
 			Return GetPlugin(GetClass(objectOrClass))
 		End If
 	End Function
-	
+
 	Function RemovePlugin:FlxBasic(plugin:FlxBasic)
 		Plugins.RemoveEach(plugin)
 		Return plugin

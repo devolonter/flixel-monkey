@@ -194,3 +194,9 @@ Class FlxSubState Extends FlxGroup Abstract
 	Field _closedBySystem:Bool
 	
 End Class
+
+Interface FlxSwitchStateListener
+	
+	Method OnSwitchState:Void(oldState:FlxState, newState:FlxState)
+
+End Interface

@@ -83,6 +83,8 @@ Private
 	Field _soundTrayLabel:FlxText
 	
 	Field _updaterate:Int
+	
+	Field _switchStateListener:FlxSwitchStateListener
 
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, useSystemCursor:Bool = False)
@@ -231,6 +233,10 @@ Public
 		Return 0
 	End Method
 	
+	Method SetSwitchStateListener:Void(listener:FlxSwitchStateListener)
+		_switchStateListener = listener
+	End Method
+	
 	Method OnContentInit:Void()
 	End Method
 	
@@ -260,6 +266,8 @@ Private
 		If (timeManager <> Null) timeManager.Clear()		
 		
 		If (_state <> Null) _state.Destroy()
+		If (_switchStateListener <> Null) _switchStateListener.OnSwitchState(_state, _requestedState)
+		
 		_state = _requestedState
 		
 		BeginRender()
