@@ -118,18 +118,19 @@ Class FlxState Extends FlxGroup Abstract
 			Return OnClose()
 		End If
 		
-		_subState._closedBySystem = True
-		_subState.Close()
+		Local subState:FlxSubState = _subState
+		subState._closedBySystem = True
+		subState.Close()
 		
-		If ( Not _subState._stopPropagation) Then
-			If ( Not _subState._preventDefault) Then
+		If ( Not subState._stopPropagation) Then
+			If ( Not subState._preventDefault) Then
 				Return OnClose()
 			End If
 			
 			OnClose()
 		End If
 		
-		Return Not _subState._preventDefault
+		Return Not subState._preventDefault
 	End Method
 	
 	Private
