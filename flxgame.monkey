@@ -86,6 +86,13 @@ Private
 	
 	Field _switchStateListener:FlxSwitchStateListener
 
+	'note: BUG: It seems we have bug in HTML5 vesion fo mojo	
+#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+
+	Field _stateIsReady:Bool
+
+#End
+
 Public
 	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, useSystemCursor:Bool = False)
 		Local classObject:GlobalInfo
@@ -190,6 +197,19 @@ Public
 	Method OnRender:Int()
 	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._VisibleCount = 0
+	#End
+	
+	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+
+		If ( Not _stateIsReady) Then
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+			_state.Create()
+			_stateIsReady = True
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+			
+			Return 0
+		End If
+	
 	#End	
 		_Draw()
 		Return 0
@@ -270,11 +290,19 @@ Private
 		
 		_state = _requestedState
 		
+	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+	
+		_stateIsReady = False
+		
+	#Else
+	
 		BeginRender()
 			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
 			_state.Create()
 			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
-		EndRender()		
+		EndRender()
+		
+	#End				
 		
 		If (FlxG.Updaterate <> _updaterate) Then
 			_ResetFramerate()
@@ -312,7 +340,20 @@ Private
 			_replaying = True
 		End If
 		
+	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+	
+		If (_state <> _requestedState) Then
+			_SwitchState()
+			Return
+		End If
+		
+		If ( Not _stateIsReady) Return
+		
+	#Else
+	
 		If (_state <> _requestedState) _SwitchState()
+		
+	#end
 		
 	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._ActiveCount = 0
