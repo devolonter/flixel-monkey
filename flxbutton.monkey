@@ -182,6 +182,7 @@ Private
 		If (FlxG.Mobile Or FlxG.Mouse.Visible Or FlxG._Game.useSystemCursor) Then
 			Local cameras:Stack<FlxCamera> = FlxG.Cameras
 			Local camera:FlxCamera
+			Local touchInput:TouchInput
 			Local i:Int = 0
 			Local l:Int = cameras.Length()
 			Local offAll:Bool = True
@@ -190,45 +191,58 @@ Private
 			While (i < l)
 				camera = cameras.Get(i)
 				
-				If (_cameras <> Null And Not _cameras.Contains(camera)) Then
-					i += 1
-					Continue
-				End If
+			#If FLX_MULTITOUCH_ENABLED = "1"
+				Local tc:Int = FlxG.TouchCount()
+			#Else
+				Local tc:Int = 1
+			#End
 				
-				FlxG.Mouse.GetWorldPosition(camera, _point)
+				For Local ti:Int = 0 Until tc
+					touchInput = FlxG.Touch(ti)
+					If ( Not touchInput.Pressed() And Not touchInput.JustReleased()) Then
+						Exit
+					End If
+					
+					If (_cameras <> Null And Not _cameras.Contains(camera)) Then
+						i += 1
+						Continue
+					End If
+					
+					touchInput.GetWorldPosition(camera, _point)
 				
-				If (OverlapsPoint(_point, True, camera)) Then
-					offAll = False
-					
-					If (FlxG.Mouse.JustPressed()) Then
-						status = PRESSED
+					If (OverlapsPoint(_point, True, camera)) Then
+						offAll = False
 						
-						If (onDown <> Null) Then
-							onDown.OnButtonDown(Self)
+						If (touchInput.JustPressed()) Then
+							status = PRESSED
+							
+							If (onDown <> Null) Then
+								onDown.OnButtonDown(Self)
+							End If
+							
+							If (soundDown <> Null) Then
+								soundDown.Play(True)
+							End If
 						End If
 						
-						If (soundDown <> Null) Then
-							soundDown.Play(True)
+						If (touchInput.JustReleased() And status = PRESSED) Then
+							status = NORMAL
+							click = True
+						End If
+						
+						If (status = NORMAL) Then
+							status = HIGHLIGHT
+							
+							If (onOver <> Null) Then
+								onOver.OnButtonOver(Self)
+							End If
+							
+							If (soundOver <> Null) Then
+								soundOver.Play(True)
+							End If
 						End If
 					End If
-					
-					If (FlxG.Mouse.JustReleased() And status = PRESSED) Then
-						status = NORMAL
-						click = True
-					End If
-					
-					If (status = NORMAL) Then
-						status = HIGHLIGHT
-						
-						If (onOver <> Null) Then
-							onOver.OnButtonOver(Self)
-						End If
-						
-						If (soundOver <> Null) Then
-							soundOver.Play(True)
-						End If
-					End If
-				End If
+				Next
 				
 				i += 1
 			Wend
