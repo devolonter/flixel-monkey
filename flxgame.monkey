@@ -19,7 +19,7 @@ Import system.flxreplay
 Import plugin.timermanager
 
 #If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
-	Import "data/beep_flx.wav"
+	
 #ElseIf TARGET = "html5"
 	Import "data/beep_flx.ogg"
 	Import "data/beep_flx.mp3"

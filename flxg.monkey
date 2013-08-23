@@ -284,12 +284,7 @@ Public
 		
 		Accel.Reset()		
 		Mouse.Reset()
-		
-	#If TARGET <> "android" And TARGET <> "psm"
 		Keys.Reset()
-	#Else
-		Keys.Reset(KEY_BACKSPACE, KEY_QUOTES)
-	#End
 	End Function
 	
 	Function PlayMusic:Void(music:String, volume:Float = 1.0)
@@ -731,67 +726,38 @@ Public
 	End Function
 	
 	Function UpdateInput:Void()
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
-		Accel.Update(AccelX(), AccelY(), AccelZ())
-	#End		
+	#If FLX_MOUSE_ENABLED = "1"
+		#If FLX_DEBUG_ENABLED = "1"	
+			If (Not _Game._debuggerUp Or Not _Game._debugger.hasMouse) Then
+				Mouse.Update(MouseX(), MouseY())
+			End If
+		#Else
+			Mouse.Update(MouseX(), MouseY())
+		#End
+		
+		_Touch[0].Update(TouchX(), TouchY())
+	#End
 	
-	#If TARGET = "glfw" Or TARGET = "psm" Or TARGET = "bmax"
+	#If FLX_KEYBOARD_ENABLED = "1"
+		Keys.Update()
+	#End			
+	
+	#If FLX_JOYSTICK_ENABLED = "1"
 		For Local i:Int = 0 Until _JOY_UNITS_COUNT
 			_Joystick[i].Update()
 		Next
 	#End
 	
-	#If TARGET = "xna"
-		If (Not FlxG.Mobile) Then
-			For Local i:Int = 0 Until _JOY_UNITS_COUNT
-				_Joystick[i].Update()
-			Next
-		Else
-			Accel.Update(AccelX(), AccelY(), AccelZ())
-		End If
-	#End
-	
-	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
-		For Local i:Int = 0 Until _TOUCH_COUNT
+	#If FLX_MULTITOUCH_ENABLED = "1"
+		For Local i:Int = 1 Until _TOUCH_COUNT
 			_Touch[i].Update(TouchX(i), TouchY(i))
 			
-			If (i > 0 And Not _Touch[i].Used) Exit
+			If ( Not _Touch[i].Used) Exit
 		Next
-		
-	#ElseIf TARGET = "html5" Or TARGET = "flash"
-		If (Not FlxG.Mobile) Then
-			Keys.Update()
-		End If
-		
-		_Touch[0].Update(TouchX(), TouchY())
-		
-	#ElseIf TARGET = "xna"
-		If (Not FlxG.Mobile) Then
-			Keys.Update()
-			_Touch[0].Update(TouchX(), TouchY())
-		Else
-			For Local i:Int = 0 Until _TOUCH_COUNT
-				_Touch[i].Update(TouchX(i), TouchY(i))
-				
-				If (i > 0 And Not _Touch[i].Used) Exit
-			Next
-		End If
-				
-	#Else
-		Keys.Update()				
-		_Touch[0].Update(TouchX(), TouchY())
 	#End
 	
-	#If TARGET = "android" Or TARGET = "psm"
-		Keys.Update()
-	#End
-	
-	#If FLX_DEBUG_ENABLED = "1"	
-		If (Not _Game._debuggerUp Or Not _Game._debugger.hasMouse) Then
-			Mouse.Update(MouseX(), MouseY())
-		End If
-	#Else
-		Mouse.Update(MouseX(), MouseY())
+	#If FLX_ACCEL_ENABLED = "1"
+		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End
 	End Function
 	
