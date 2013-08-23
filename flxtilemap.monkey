@@ -811,12 +811,10 @@ Public
 				ry = ly + stepY * ((q - lx) / stepX)
 				
 				If (ry > tileY And ry < tileY + _tileHeight) Then
-					If (result = Null) Then
-						result = New FlxPoint()
+					If (result <> Null) Then
+						result.x = rx
+						result.y = ry
 					End If
-					
-					result.x = rx
-					result.y = ry
 					
 					Return False
 				End If
@@ -828,12 +826,10 @@ Public
 				ry = q
 				
 				If (rx > tileX And rx < tileX + _tileWidth) Then
-					If (result = Null) Then
-						result = New FlxPoint()
-					End If
-					
-					result.x = rx
-					result.y = ry
+					If (result <> Null) Then
+						result.x = rx
+						result.y = ry
+					End If					
 					
 					Return False
 				End If
