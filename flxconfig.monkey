@@ -51,8 +51,6 @@
 	#FLX_SOUND_EXTENSION = "unknown"
 	#FLX_MUSIC_EXTENSION = "unknown"
 	
-	#Print FLX_SOUND_EXTENSION
-	
 #ElseIf TARGET = "flash" Or TARGET = "android" Or TARGET = "ios"
 	#FLX_SOUND_EXTENSION = "mp3"
 	#FLX_MUSIC_EXTENSION = "mp3"
