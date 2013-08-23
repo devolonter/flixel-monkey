@@ -29,6 +29,8 @@ Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
 
+Import system.renderers.primitive
+
 Import system.replay.framerecord
 Import system.replay.keyrecord
 Import system.replay.xyrecord
