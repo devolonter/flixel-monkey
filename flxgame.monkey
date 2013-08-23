@@ -18,15 +18,16 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
-	
-#ElseIf TARGET = "html5"
+#If  FLX_SOUND_EXTENSION = "unknown"
+
+	Import "data/beep_flx.wav"
 	Import "data/beep_flx.ogg"
 	Import "data/beep_flx.mp3"
-#ElseIf TARGET = "glfw" Or TARGET = "bmax"
-	Import "data/beep_flx.ogg"
+
 #Else
-	Import "data/beep_flx.mp3"
+
+	Import "data/beep_flx.${FLX_SOUND_EXTENSION}"
+
 #End
 
 Class FlxGame extends App

@@ -11,6 +11,14 @@ var flixel = {
 		return false;
 	},
 	
+	getValidSoundExt: function() {
+		return flixel.getValidAudioExt();
+	},
+	
+	getValidMusicExt: function() {
+		return flixel.getValidAudioExt();
+	},
+	
 	getValidAudioExt: function() {	
 		if (flixel._validAudioExt === null) {
 			var a = document.createElement('audio');

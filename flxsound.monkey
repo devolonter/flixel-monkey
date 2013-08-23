@@ -269,7 +269,7 @@ Public
 		
 		If (_volume < 0) Then
 			_volume = 0
-		ElseIf (_volume > 1)
+		ElseIf(_volume > 1)
 			_volume = 1
 		End If
 		
@@ -280,15 +280,27 @@ Public
 		Return _volume * _volumeAdjust
 	End Method
 	
-	Function GetValidExt:String()
-	#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
+	Function GetValidExt:String()	
+	#If FLX_SOUND_EXTENSION = "wav"
 		Return "wav"
-	#ElseIf TARGET = "html5"
-		Return FlxGetValidAudioExt()
-	#ElseIf TARGET = "glfw" Or TARGET = "bmax"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "ogg"
 		Return "ogg"
-	#Else
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "mp3"
 		Return "mp3"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "m4a"
+		Return "m4a"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "caf"
+		Return "caf"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "aiff"
+		Return "aiff"
+		
+	#ElseIf FLX_SOUND_EXTENSION = "unknown"
+		Return FlxGetValidSoundExt()
 	#End
 	End Function
 	

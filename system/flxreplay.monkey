@@ -109,6 +109,7 @@ Public
 		Local keysRecord:Stack<KeyRecord>
 		Local mouseRecord:XYRecord
 	
+		
 	#If FLX_ACCEL_ENABLED = "1"
 		accelRecord = FlxG.Accel.RecordXYZ()
 	#End
@@ -145,12 +146,13 @@ Public
 			
 			keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
 		Next
+	#End
 		
 	#If FLX_KEYBOARD_ENABLED = "1"
 		keysRecord = FlxG.Keys.RecordKeys(keysRecord)
 	#End
 	
-	#If FLX_MOUSE_ENABLED = "1"
+	#If FLX_MOUSE_ENABLED = "1"	
 		mouseRecord = FlxG.Mouse.RecordXY()
 		Local touch0XYRecord:XYRecord = FlxG.Touch(0).RecordXY()
 		
@@ -160,8 +162,8 @@ Public
 		End If
 		
 		keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
-	#End 
-		
+	#End
+			
 		If (keysRecord = Null And mouseRecord = Null And joystickRecord = Null And touchRecord = Null And accelRecord = Null) Then
 			frame += 1
 			Return

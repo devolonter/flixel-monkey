@@ -76,12 +76,26 @@ Public
 	End Method
 	
 	Function GetValidExt:String()
-	#If TARGET = "glfw" Or TARGET = "bmax"
+	#If FLX_MUSIC_EXTENSION = "wav"
+		Return "wav"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "ogg"
 		Return "ogg"
-	#ElseIf TARGET = "html5"
-		Return FlxGetValidAudioExt()
-	#Else
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "mp3"
 		Return "mp3"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "m4a"
+		Return "m4a"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "caf"
+		Return "caf"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "aiff"
+		Return "aiff"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "unknown"
+		Return FlxGetValidSoundExt()
 	#End
 	End Function
 	
