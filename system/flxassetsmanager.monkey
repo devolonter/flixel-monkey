@@ -8,7 +8,7 @@ Import flixel.system.flxfont
 Class FlxAssetsManager
 
 Private
-	Global _Fonts:StringMap<FlxFont>[]
+	Global _Fonts:StringMap<FlxFont>
 	Global _Images:StringMap<String>
 	Global _Sounds:StringMap<String>
 	Global _Music:StringMap<String>
@@ -17,13 +17,7 @@ Private
 	
 Public	
 	Function Init:Void()
-		_Fonts = New StringMap<FlxFont>[FlxText.DRIVER_ANGELFONT+1]
-	
-		Local l:Int = _Fonts.Length()
-		For Local i:Int = 0 Until l
-			_Fonts[i] = New StringMap<FlxFont>()
-		Next
-		
+		_Fonts = New StringMap<FlxFont>()
 		_Images = New StringMap<String>()
 		_Sounds = New StringMap<String>()
 		_Music = New StringMap<String>()
@@ -31,26 +25,26 @@ Public
 		_Strings = New StringMap<String>()
 	End Function
 	
-	Function AddFont:FlxFont(name:String, driver:Int = FlxText.DRIVER_NATIVE)
-		Local font:FlxFont = _Fonts[driver].Get(name)
+	Function AddFont:FlxFont(name:String)
+		Local font:FlxFont = _Fonts.Get(name)
 		If (font <> Null) Return font
 		
 		font = New FlxFont(name)
-		_Fonts[driver].Set(name, font)
+		_Fonts.Set(name, font)
 		
 		Return font	
 	End Function
 	
-	Function RemoveFont:Void(name:String, driver:Int = FlxText.DRIVER_NATIVE)
-		_Fonts[driver].Remove(name)
+	Function RemoveFont:Void(name:String)
+		_Fonts.Remove(name)
 	End Function
 	
-	Function GetFonts:StringMap<FlxFont>(driver:Int = FlxText.DRIVER_NATIVE)
-		Return _Fonts[driver]
+	Function GetFonts:StringMap<FlxFont>()
+		Return _Fonts
 	End Function
 	
-	Function GetFont:FlxFont(name:String, driver:Int = FlxText.DRIVER_NATIVE)
-		Return _Fonts[driver].Get(name)
+	Function GetFont:FlxFont(name:String)
+		Return _Fonts.Get(name)
 	End Function
 	
 	Function AddImage:Void(name:String, path:String)
@@ -123,6 +117,10 @@ Public
 	
 	Function RemoveString:Void(name:String)
 		_Strings.Remove(name)
+	End Function
+	
+	Function GetStringPath:String(name:String)
+		Return _Strings.Get(name)
 	End Function
 	
 	Function GetString:String(name:String)

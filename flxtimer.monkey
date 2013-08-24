@@ -81,7 +81,7 @@ Public
 		If (timerManger <> Null) timerManger.Remove(Self)			
 	End Method
 	
-	Method TimeLeft:Int() Property
+	Method TimeLeft:Float() Property
 		Return time - _timeCounter
 	End Method
 	
@@ -90,13 +90,13 @@ Public
 	End Method
 	
 	Method Progress:Float() Property
-		If (time > 0) Return _timeCounter/Float(time)
+		If (time > 0) Return _timeCounter/time
 		
 		Return .0
 	End Method
 	
 	Function Manager:TimerManager()
-		Return TimerManager(FlxG.GetPlugin(ClassInfo(TimerManager.ClassObject)))		
+		Return TimerManager(FlxG.GetPlugin(TimerManager.__CLASS__))		
 	End Function
 	
 End Class

@@ -6,6 +6,7 @@ Import reflection
 Import flxextern
 Import flxpoint
 Import flxg
+Import system.flximagedata
 
 Alias MonkeyAbs = monkey.math.Abs
 Alias MonkeyFloor = monkey.math.Floor
@@ -19,6 +20,11 @@ Alias MonkeyGetClass = reflection.GetClass
 #End
 
 Class FlxU
+
+Private
+	Global _objClass:ClassInfo
+
+Public
 
 	Function OpenURL:Void(url:String)
 		FlxOpenURL(url)
@@ -288,6 +294,16 @@ Class FlxU
 		Return MonkeyGetClass(name)
 	End Function
 	
+	Function GetObjectClass:ClassInfo()
+		If (_objClass <> Null)
+			Return _objClass
+		End If
+		
+		_objClass = MonkeyGetClass("monkey.lang.Object")
+		
+		Return _objClass
+	End Function
+	
 	Function ComputeVelocity:Float(velocity:Float, acceleration:Float = 0, drag:Float = 0, max:Float = 10000)
 		If (acceleration <> 0) Then
 			velocity += acceleration * FlxG.Elapsed
@@ -417,6 +433,33 @@ Class FlxU
 		Local dy:Float = y1 - y2
 		
 		Return Sqrt(dx * dx + dy * dy)
+	End Function
+	
+	Function SetImageMask:Image(image:Image, maskColor:Int)
+		Local bitmapData:FlxImageData = FlxImageData.FromImage(image, True)
+		bitmapData.ColorReplace(maskColor, 0)
+		
+		Local result:Image = bitmapData.Image
+		bitmapData.Destroy()
+	
+		Return result
+	End Function
+	
+	Function SetImagePadding:Image(image:Image, paddings:Int = Image.XYPadding)
+		Local paddingX:Int, paddingY:Int
+		
+		If (paddings & Image.XPadding) paddingX = 1
+		If (paddings & Image.YPadding) paddingY = 1
+		
+		Return FlxU.SetImagePadding(image, paddingX, paddingY)
+	End Function
+	
+	Function SetImagePadding:Image(image:Image, paddingX:Int, paddingY:Int)
+		Local bitmapData:FlxImageData = FlxImageData.FromImage(image, False, paddingX, paddingY)
+		Local result:Image = bitmapData.Image
+		bitmapData.Destroy()
+		
+		Return result
 	End Function
 
 End Class

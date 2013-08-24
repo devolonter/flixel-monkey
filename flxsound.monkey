@@ -11,7 +11,7 @@ Import system.flxresourcesmanager
 
 Class FlxSound Extends FlxBasic
 	
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	Field x:Float
 	
@@ -269,7 +269,7 @@ Public
 		
 		If (_volume < 0) Then
 			_volume = 0
-		ElseIf (_volume > 1)
+		ElseIf(_volume > 1)
 			_volume = 1
 		End If
 		
@@ -280,19 +280,27 @@ Public
 		Return _volume * _volumeAdjust
 	End Method
 	
-	Function GetValidExt:String()
-	#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
+	Function GetValidExt:String()	
+	#If FLX_SOUND_EXTENSION = "wav"
 		Return "wav"
-	#ElseIf TARGET = "html5"
-		If (IsIE()) Then
-			Return "mp3"
-		Else
-			Return "ogg"
-		End If
-	#ElseIf TARGET = "glfw"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "ogg"
 		Return "ogg"
-	#Else
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "mp3"
 		Return "mp3"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "m4a"
+		Return "m4a"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "caf"
+		Return "caf"
+		
+	#ElseIf  FLX_SOUND_EXTENSION = "aiff"
+		Return "aiff"
+		
+	#ElseIf FLX_SOUND_EXTENSION = "unknown"
+		Return FlxGetValidSoundExt()
 	#End
 	End Function
 	
@@ -357,8 +365,11 @@ Private
 				If (_NextChannel >= _CHANNELS_COUNT) _NextChannel = 0
 				
 				counter += 1
-				If (counter >= _CHANNELS_COUNT) Then
-					FlxG.Log("Free channels for sound " + name + " are not found")
+				If (counter >= _CHANNELS_COUNT) Then				
+					#If FLX_DEBUG_ENABLED = "1"
+						FlxG.Log("Free channels for sound " + name + " are not found")
+					#End
+				
 					Exit
 				End If
 			Until (Not _LoopedChannels[_NextChannel])		
@@ -370,12 +381,6 @@ Private
 	End Method	
 
 End Class
-
-Interface FlxVolumeChangeListener
-
-	Method OnVolumeChange:Void(volume:Float)
-
- End Interface
 
 Private
 Class FlxSoundLoader Extends FlxResourceLoader<Sound>

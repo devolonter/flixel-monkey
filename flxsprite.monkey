@@ -15,7 +15,7 @@ Import "data/default_flx.png"
 
 Class FlxSprite Extends FlxObject
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 	Field origin:FlxPoint
 	
@@ -43,6 +43,8 @@ Class FlxSprite Extends FlxObject
 	
 Private
 	Global _GraphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
+	
+	Global _Matrix:Float[6]
 
 	Field _animations:StringMap<FlxAnim>
 	
@@ -58,6 +60,8 @@ Private
 	
 	Field _frameTimer:Float
 	
+	Field _paused:Bool
+	
 	Field _callback:FlxAnimationListener
 	
 	Field _facing:Int
@@ -68,13 +72,11 @@ Private
 	
 	Field _pixels:Image
 	
-	Field _matrix:Float[6]
-	
-	Field _surfaceColor:FlxColor	
-	
 	Field _halfWidth:Float
 	
 	Field _halfHeight:Float
+	
+	Field _renderer:FlxSpriteRenderer
 
 Public
 	Method New(x:Float = 0, y:Float = 0, simpleGraphic:String = "")
@@ -97,10 +99,10 @@ Public
 		_curFrame = 0
 		_curIndex = 0
 		_frameTimer = 0
+		_paused = False
 		
 		_callback = Null
-		
-		_surfaceColor = New FlxColor(FlxG.WHITE)
+
 		_mixedColor = New FlxColor(FlxG.WHITE)
 		
 		If (simpleGraphic.Length() = 0)
@@ -122,9 +124,9 @@ Public
 		_curAnim = Null
 		_callback = Null
 		_color = Null
-		_surfaceColor = Null
 		_mixedColor = Null
 		_camera = Null
+		_renderer = Null
 		
 		Super.Destroy()
 	End Method
@@ -147,28 +149,27 @@ Public
 		Self.height = _pixels.Height()
 		frameHeight = Self.height
 		
-		_ResetHelpers()
+		ResetHelpers()
 	
 		Return Self
 	End Method
 	
 	Method LoadRotatedGraphic:FlxSprite(graphic:String, rotations:Int = 16, frame:Int = -1)
 		Error "LoadRotatedGraphic not currenlty support in " + FlxG.LIBRARY_NAME
-		'TODO
+		'note: TODO:
 		Return Null
 	End Method
 	
-	Method MakeGraphic:FlxSprite(width:Int, height:Int, color:Int = FlxG.WHITE)
-		_pixels = Null
+	Method MakeGraphic:FlxSprite(width:Int, height:Int, color:Int = FlxG.WHITE, unique:Bool = False, key:String = "")
+		_pixels = FlxG.CreateBitmap(width, height, color, unique, key)		
 		_bakedRotation = 0
-		_surfaceColor.SetARGB(color)
 		
 		Self.width = width
 		frameWidth = width
 		Self.height = height
 		frameHeight = height
 		
-		_ResetHelpers()
+		ResetHelpers()
 		
 		Return Self
 	End Method
@@ -178,7 +179,7 @@ Public
 		_UpdateAnimation()
 	End Method
 		
-	Method Draw:Void()
+	Method Draw:Void()	
 		If (_flickerTimer <> 0) Then
 			_flicker = Not _flicker
 			If (_flicker) Return
@@ -186,7 +187,7 @@ Public
 		
 		_camera = FlxG._CurrentCamera
 		
-		If (_cameras <> Null And Not _cameras.Contains(_camera.ID)) Return
+		If (_cameras <> Null And Not _cameras.Contains(_camera)) Return
 		If (Not OnScreen(_camera)) Return
 		
 		If (dirty) _CalcFrame()		
@@ -210,173 +211,143 @@ Public
 		Else
 			_point.y -= 0.0000001			
 		End If
-	
-		If (_pixels <> Null) Then
-			If (_camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_color, _camera._color)
-				
-				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
-					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-					FlxG._LastDrawingColor = _mixedColor.argb
-				End If				
-			Else
-				If (FlxG._LastDrawingColor <> _color.argb) Then
-					SetColor(_color.r, _color.g, _color.b)
-					FlxG._LastDrawingColor = _color.argb
-				End If		
-			End If
-			
-			If (_camera.Alpha < 1) Then
-				Local _mixedAlpha:Float = _camera.Alpha * _alpha
-				
-				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
-					SetAlpha(_mixedAlpha)
-					FlxG._LastDrawingAlpha = _mixedAlpha					
-				End If
-			Else
-				If (FlxG._LastDrawingAlpha <> _alpha) Then
-					SetAlpha(_alpha)
-					FlxG._LastDrawingAlpha = _alpha					
-				End If
-			End If
-			
-			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
-				If (Not _flipNeeded) Then
-					DrawImage(_pixels, _point.x, _point.y, _curIndex)					
-				Else
-					PushMatrix()						
-						Transform(-1, 0, 0, 1, _point.x + _halfWidth, _point.y + _halfHeight)						
-						DrawImage(_pixels, -_halfWidth, -_halfHeight, _curIndex)
-					PopMatrix()									
-				End If		
-			Else							
-				PushMatrix()
-					'Translate
-					_matrix[4] = _point.x + origin.x
-					_matrix[5] = _point.y + origin.y
-					
-					'Scale
-					_matrix[0] = scale.x
-					_matrix[3] = scale.y
-					
-					'Rotate
-					If (angle <> 0 And _bakedRotation = 0) Then						
-						Local sin:Float = -Sin(angle)
-						Local cos:Float = Cos(angle)
-					
-						_matrix[1] = -sin * _matrix[3]
-						_matrix[2] = _matrix[0] * sin										
-						_matrix[0] *= cos						
-						_matrix[3] = cos * _matrix[3]
-					End If	
-									
-					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])
-					
-					If (_flipNeeded) Then						
-						Transform(-1, 0, 0, 1, _halfWidth - origin.x, _halfHeight - origin.y)
-					End If
-											
-					DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
-				PopMatrix()				
-			End If
-		Else		
-			If (_camera.Color <> FlxG.WHITE) Then
-				_mixedColor.MixRGB(_surfaceColor, _camera._color)
-				
-				If (_color.argb <> FlxG.WHITE) Then
-					_mixedColor.MixRGB(_color)					
-				End If
-				
-				If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
-					SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-					FlxG._LastDrawingColor = _mixedColor.argb
-				End If
-			Else
-				If (_color.argb <> FlxG.WHITE) Then
-					_mixedColor.MixRGB(_surfaceColor, _color)
-					
-					If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
-						SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
-						FlxG._LastDrawingColor = _mixedColor.argb
-					End If
-				Else
-					If (FlxG._LastDrawingColor <> _surfaceColor.argb) Then
-						SetColor(_surfaceColor.r, _surfaceColor.g, _surfaceColor.b)
-						FlxG._LastDrawingColor = _surfaceColor.argb
-					End If						
-				End If			
-			End If
-			
-			If (_camera.Alpha < 1) Then
-				Local _mixedAlpha:Float = _camera.Alpha * _alpha
-				
-				If (_surfaceColor.a < 1) Then
-					_mixedAlpha *= _surfaceColor.a				
-				End If
-				
-				If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
-					SetAlpha(_mixedAlpha)
-					FlxG._LastDrawingAlpha = _mixedAlpha					
-				End If
-			Else
-				If (_surfaceColor.a < 1) Then
-					Local _mixedAlpha:Float = _surfaceColor.a * _alpha
-					
-					If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
-						SetAlpha(_mixedAlpha)
-						FlxG._LastDrawingAlpha = _mixedAlpha	
-					End If
-				Else
-					If (FlxG._LastDrawingAlpha <> _alpha) Then
-						SetAlpha(_alpha)
-						FlxG._LastDrawingAlpha = _alpha		
-					End If	
-				End If				
-			End If
 		
-			If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
-				_DrawSurface(_point.x, _point.y)
-			Else
-				PushMatrix()
-					'Translate
-					_matrix[4] = _point.x + origin.x
-					_matrix[5] = _point.y + origin.y
-					
-					'Scale
-					_matrix[0] = scale.x
-					_matrix[3] = scale.y
-					
-					'Rotate
-					If (angle <> 0 And _bakedRotation = 0) Then						
-						Local sin:Float = -Sin(angle)
-						Local cos:Float = Cos(angle)
-					
-						_matrix[1] = -sin * _matrix[3]
-						_matrix[2] = _matrix[0] * sin										
-						_matrix[0] *= cos						
-						_matrix[3] = cos * _matrix[3]
-					End If			
-									
-					Transform(_matrix[0], _matrix[1], _matrix[2], _matrix[3], _matrix[4], _matrix[5])					
-					_DrawSurface(-origin.x, -origin.y)
-				PopMatrix()
+		If (_camera.Color <> FlxG.WHITE) Then
+			_mixedColor.MixRGB(_color, _camera._color)
+			
+			If (FlxG._LastDrawingColor <> _mixedColor.argb) Then
+				SetColor(_mixedColor.r, _mixedColor.g, _mixedColor.b)
+				FlxG._LastDrawingColor = _mixedColor.argb
+			End If				
+		Else
+			If (FlxG._LastDrawingColor <> _color.argb) Then
+				SetColor(_color.r, _color.g, _color.b)
+				FlxG._LastDrawingColor = _color.argb
 			End If		
 		End If
 		
+		If (_camera.Alpha < 1) Then
+			Local _mixedAlpha:Float = _camera.Alpha * _alpha
+			
+			If (FlxG._LastDrawingAlpha <> _mixedAlpha) Then
+				SetAlpha(_mixedAlpha)
+				FlxG._LastDrawingAlpha = _mixedAlpha					
+			End If
+		Else
+			If (FlxG._LastDrawingAlpha <> _alpha) Then
+				SetAlpha(_alpha)
+				FlxG._LastDrawingAlpha = _alpha					
+			End If
+		End If
+		
+		If ((angle = 0 Or _bakedRotation > 0) And scale.x = 1 And scale.y = 1) Then
+			If ( Not _flipNeeded) Then
+				If (_renderer = Null) Then
+					DrawImage(_pixels, _point.x, _point.y, _curIndex)
+				Else
+					_renderer.OnSpriteRender(_point.x, _point.y)
+				End If
+			Else
+				PushMatrix()						
+					Transform(-1, 0, 0, 1, _point.x + _halfWidth, _point.y + _halfHeight)
+					
+					If (_renderer = Null) Then
+						DrawImage(_pixels, -_halfWidth, -_halfHeight, _curIndex)
+					Else
+						_renderer.OnSpriteRender(-_halfWidth, -_halfHeight)
+					End If
+				PopMatrix()									
+			End If		
+		Else							
+			PushMatrix()
+				'Translate
+				_Matrix[4] = _point.x + origin.x
+				_Matrix[5] = _point.y + origin.y
+				
+				'Scale
+				_Matrix[0] = scale.x
+				_Matrix[3] = scale.y
+				
+				'Rotate
+				If (angle <> 0 And _bakedRotation = 0) Then						
+					Local sin:Float = Sin(angle)
+					Local cos:Float = Cos(angle)
+					
+					_Matrix[1] = sin * _Matrix[0]
+					_Matrix[2] = -sin * _Matrix[3]
+					_Matrix[0] *= cos
+					_Matrix[3] *= cos
+				Else
+					_Matrix[1] = 0
+					_Matrix[2] = 0
+				End If
+								
+				Transform(_Matrix[0], _Matrix[1], _Matrix[2], _Matrix[3], _Matrix[4], _Matrix[5])
+				
+				If (_flipNeeded) Then
+					Transform(-1, 0, 0, 1, _halfWidth - origin.x, _halfHeight - origin.y)
+				End If
+				
+				If (_renderer = Null) Then
+					DrawImage(_pixels, -origin.x, -origin.y, _curIndex)
+				Else
+					_renderer.OnSpriteRender(-origin.x, -origin.y)
+				End If
+			PopMatrix()				
+		End If
+		
+	#If FLX_DEBUG_ENABLED = "1"
 		_VisibleCount += 1;
-		If(FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
+		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
+	#End
 	End Method
 	
 	Method DrawFrame:Void(force:Bool = False)
 		If (force Or dirty) _CalcFrame()
 	End Method
 	
-	Method AddAnimation:Void(name:String, frames:Int[], frameRate:Float = 0, looped:Bool = True)
-		_animations.Set(name, New FlxAnim(name, frames, frameRate, looped))
+	Method AddAnimation:FlxAnim(name:String, frames:Int[], frameRate:Float = 0, looped:Bool = True)
+		Local anim:FlxAnim = New FlxAnim(name, frames, frameRate, looped)
+		_animations.Set(name, anim)
+		
+		Return anim
+	End Method
+	
+	Method AddAnimation:FlxAnim(name:String, startFrame:Int, endFrame:Int, frameRate:Float = 0, looped:Bool = True)
+		Local i:Int = 0
+		Local l:Int = Abs(endFrame - startFrame) + 1
+		Local frames:Int[] = New Int[l]
+		
+		Local dir:Int = 1
+		If (endFrame < startFrame) dir = -1
+		
+		While (i < l)
+			frames[i] = startFrame + dir * i
+			i += 1
+		Wend
+		
+		Return AddAnimation(name, frames, frameRate, looped)
+	End Method
+	
+	Method AddAnimation:FlxAnim(name:String, frameRate:Float = 0, looped:Bool = True)
+		If (_pixels = Null) Return Null
+		Return AddAnimation(name, 0, _pixels.Frames() -1, frameRate, looped)
 	End Method
 	
 	Method AddAnimationCallback:Void(animationCallback:FlxAnimationListener)
 		_callback = animationCallback
+	End Method
+	
+	Method ClearAnimationCallback:Void()
+		_callback = Null
+	End Method
+	
+	Method GetAnimation:FlxAnim(animName:String)
+		Return _animations.Get(animName)
+	End Method
+	
+	Method GetAnimation:FlxAnim()
+		Return _curAnim
 	End Method
 	
 	Method Play:Void(animName:String, force:Bool = False)
@@ -385,6 +356,7 @@ Public
 		_curFrame = 0
 		_curIndex = 0
 		_frameTimer = 0
+		_paused = False
 		
 		Local anim:FlxAnim = _animations.Get(animName)
 		
@@ -402,7 +374,21 @@ Public
 			Return
 		End If
 		
-		FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
+		#If FLX_DEBUG_ENABLED = "1"
+			FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
+		#End
+	End Method
+	
+	Method Stop:Void()
+		Frame = 0
+	End Method
+	
+	Method Pause:Void()
+		_paused = True
+	End Method
+	
+	Method Resume:Void()
+		_paused = False
 	End Method
 	
 	Method RandomFrame:Void()
@@ -439,17 +425,21 @@ Public
 	Method Pixels:Void(pixels:Image) Property
 		_pixels = pixels
 		
+		Local width:Int = 0
+		Local height:Int = 0
+		
 		If (_pixels <> Null) Then
 			width = pixels.Width()
-			height = pixels.Height()	
-		Else
-			width = 0
-			height = 0		
+			height = pixels.Height()		
 		End If
 		
-		frameWidth = width
-		frameHeight = height
-		_ResetHelpers()
+		If (_pixels <> Null Or _renderer = Null) Then
+			Self.width = width
+			Self.height = height
+			frameWidth = width
+			frameHeight = height
+			ResetHelpers()
+		End If
 	End Method
 	
 	Method Facing:Int() Property
@@ -487,6 +477,7 @@ Public
 	Method Frame:Void(frame:Int) Property
 		_curAnim = Null
 		_curIndex = frame
+		_paused = False
 		dirty = True
 	End Method	
 	
@@ -508,11 +499,28 @@ Public
 		Return _point.x + radius > 0 And _point.x - radius < camera.Width And _point.y + radius > 0 And _point.y - radius < camera.Height
 	End Method
 	
-	Method _DrawSurface:Void(x:Float, y:Float)
-		DrawRect(x, y, frameWidth, frameHeight)
+	Method SetRenderer:Void(render:FlxSpriteRenderer)
+		_renderer = render
+		_renderer.OnSpriteBind(Self)
+		
+		frameWidth = width
+		frameHeight = height
+		
+		ResetHelpers()
 	End Method
 	
-	Method _ResetHelpers:Void()
+	Method ClearRenderer:Void()
+		Local renderer:FlxSpriteRenderer = _renderer
+		_renderer = Null
+		renderer.OnSpriteUnbind()
+		
+		frameWidth = width
+		frameHeight = height
+		
+		ResetHelpers()
+	End Method
+	
+	Method ResetHelpers:Void()
 		_halfWidth = frameWidth * .5
 		_halfHeight = frameHeight * .5
 		origin.Make(_halfWidth, _halfHeight)
@@ -536,9 +544,13 @@ Private
 			If (angleHelper < 0) angleHelper += 360
 			_curIndex = angleHelper / _bakedRotation + 0.5
 			
-			If (oldIndex <> _curIndex) dirty = True
+			If (oldIndex <> _curIndex) _CalcFrame()
+			Return
+		End If
 		
-		ElseIf (_curAnim <> Null And _curAnim.delay > 0 And (_curAnim.looped Or Not finished))
+		If (_paused) Return
+		
+		If (_curAnim <> Null And _curAnim.delay > 0 And (_curAnim.looped Or Not finished))
 			_frameTimer += FlxG.Elapsed
 			While (_frameTimer > _curAnim.delay)
 				_frameTimer -= _curAnim.delay
@@ -561,15 +573,25 @@ Private
 	Method _CalcFrame:Void()	
 		If (_callback <> Null) Then
 			If (_curAnim <> Null) Then
-				_callback.OnAnimationFrame(_curAnim.name, _curFrame, _curIndex)
+				_callback.OnAnimationFrame(_curAnim, _curFrame, _curIndex)
 			Else
-				_callback.OnAnimationFrame("", _curFrame, _curIndex)
+				_callback.OnAnimationFrame(Null, _curFrame, _curIndex)
 			End If
 		End If
 		dirty = False
 	End Method
 	
 End Class
+
+Interface FlxSpriteRenderer
+
+	Method OnSpriteBind:Void(sprite:FlxSprite)
+	
+	Method OnSpriteUnbind:Void()
+	
+	Method OnSpriteRender:Void(x:Float, y:Float)
+
+End Interface
 
 Private
 Class FlxGraphicLoader Extends FlxResourceLoader<Image>

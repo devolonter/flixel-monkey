@@ -1,3 +1,4 @@
+Import flxconfig
 Import flxbasic
 Import flxbutton
 Import flxcamera
@@ -12,6 +13,7 @@ Import flxparticle
 Import flxpath
 Import flxpoint
 Import flxrect
+Import flxsignals
 Import flxsound
 Import flxsprite
 Import flxstate
@@ -27,6 +29,8 @@ Import system.input.keyboard
 Import system.input.mouse
 Import system.input.touch
 
+Import system.renderers.primitive
+
 Import system.replay.framerecord
 Import system.replay.keyrecord
 Import system.replay.xyrecord
@@ -37,6 +41,8 @@ Import system.resolutionpolicy.fill
 Import system.resolutionpolicy.fixed
 Import system.resolutionpolicy.relative
 Import system.resolutionpolicy.ratio
+
+Import system.signals.flxsignal
 
 Import system.tweens.misc.alarm
 Import system.tweens.misc.angletween
@@ -60,6 +66,7 @@ Import system.flxanim
 Import system.flxarray
 Import system.flxassetsmanager
 Import system.flxcolor
+Import system.flximagedata
 Import system.flxfont
 Import system.flxlist
 Import system.flxquadtree

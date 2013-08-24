@@ -5,9 +5,9 @@ Import mojo
 Import flxsprite
 Import flxg
 
-Class FlxTileblock Extends FlxSprite
+Class FlxTileblock Extends FlxSprite Implements FlxSpriteRenderer
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 Private
 	Field _tilePixels:Image
@@ -15,12 +15,22 @@ Private
 	Field _stamps:Stack<FlxStamp>
 
 Public	
-	Method New(x:Int, y:Int, width:Int, height:Int)
+	Method New(x:Int, y:Int, width:Int, height:Int, makeGraphic:Bool = False)
 		Super.New(x, y)
 		
-		MakeGraphic(width, height, 0)
+		If (makeGraphic) Then
+			MakeGraphic(width, height, 0)
+		Else
+			Pixels = Null
+			Self.width = width
+			Self.height = height
+		End If
+		
+		SetRenderer(Self)
+		
 		active = False
 		immovable = True
+		moves = False
 		
 		_stamps = New Stack<FlxStamp>()	
 	End Method
@@ -94,9 +104,15 @@ Public
 		Wend
 		
 		Return Self	
-	End Method	
+	End Method
 	
-	Method _DrawSurface:Void(x:Float, y:Float)		
+	Method OnSpriteBind:Void(sprite:FlxSprite)
+	End Method
+	
+	Method OnSpriteUnbind:Void()	
+	End Method
+	
+	Method OnSpriteRender:Void(x:Float, y:Float)
 		If (_tilePixels = Null) Return
 			
 		Local i:Int = 0

@@ -7,7 +7,7 @@ Import system.flxassetsmanager
 
 Class FlxMusic Extends FlxSound
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 Private
 	Field _filename:String
@@ -76,16 +76,26 @@ Public
 	End Method
 	
 	Function GetValidExt:String()
-	#If TARGET = "glfw"
+	#If FLX_MUSIC_EXTENSION = "wav"
+		Return "wav"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "ogg"
 		Return "ogg"
-	#ElseIf TARGET = "html5"
-		If (IsIE()) Then
-			Return "mp3"
-		Else
-			Return "ogg"
-		End If
-	#Else
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "mp3"
 		Return "mp3"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "m4a"
+		Return "m4a"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "caf"
+		Return "caf"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "aiff"
+		Return "aiff"
+		
+	#ElseIf  FLX_MUSIC_EXTENSION = "unknown"
+		Return FlxGetValidSoundExt()
 	#End
 	End Function
 	

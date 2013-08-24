@@ -10,8 +10,6 @@ Import flxcamera
 Import flxg
 Import system.tweens.flxtween
 
-Alias MonkeyGetClass = reflection.GetClass
-
 #Rem
 summary:This is a useful "generic" Flixel object.
 Both [a flxobject.monkey.html]FlxObject[/a] and [a flxgroup.monkey.html]FlxGroup[/a] extend this class, 
@@ -19,7 +17,7 @@ as do the plugins.  Has no size, position or graphical data.
 #End
 Class FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	Global _ActiveCount:Int
 	
@@ -62,7 +60,7 @@ Class FlxBasic
 	
 	Field autoClear:Bool
 	
-	Field _cameras:IntSet
+	Field _cameras:Stack<FlxCamera>
 	
 Private
 	Field _tweens:List<FlxTween>
@@ -81,7 +79,7 @@ Private
 		ignoreDrawDebug = False
 		autoClear = True
 		
-		_classInfo = MonkeyGetClass(Object(Self))
+		_classInfo = GetClass(Object(Self))
 	End Method	
 	
 	#Rem
@@ -102,7 +100,9 @@ Private
 	Pre-update is called right before [a #Update]Update()[/a] on each object in the game loop.
 	#End
 	Method PreUpdate:Void()
-		_ActiveCount+=1
+	#If FLX_DEBUG_ENABLED = "1"
+		_ActiveCount += 1
+	#End	
 	End Method
 	
 	#Rem
@@ -123,8 +123,10 @@ Private
 	summary:Override this function to control how the object is drawn.
 	Overriding [a #Draw]Draw()[/a] is rarely necessary, but can be very useful.
 	#End
-	Method Draw:Void()		
-		_VisibleCount+=1
+	Method Draw:Void()
+	#If FLX_DEBUG_ENABLED = "1"
+		_VisibleCount += 1
+	#End	
 	End Method
 	
 	#Rem
@@ -158,26 +160,31 @@ Private
 		exists = True
 	End Method
 	
-	Method Cameras:Void(cameras:Int[]) Property
+	Method Cameras:Void(cameras:FlxCamera[]) Property
 		If (cameras.Length() = 0) Then
-			_cameras = Null
+			If (_cameras <> Null) Then
+				_cameras.Clear()
+				_cameras = Null
+			End If
+			
 			Return
 		End If
 		
-		If (_cameras = Null) _cameras = New IntSet()
+		If (_cameras = Null) Then
+			_cameras = New Stack<FlxCamera>(cameras)
+			Return
+		End If
 		
-		Local l:Int = cameras.Length()
-		Local i:Int = 0
-		
-		While (i < l)
-			_cameras.Insert(cameras[i])
-			i += 1
-		Wend
+		_cameras.Clear()
+		_cameras.Push(cameras)
 	End Method
 	
 	Method AddTween:FlxTween(tween:FlxTween, start:Bool = False)
 		If (tween._parent <> Null) Then
-			FlxG.Log("WARNING: Cannot add a FlxTween object more than once")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("WARNING: Cannot add a FlxTween object more than once")
+			#End
+			
 			Return tween
 		End If
 		
@@ -192,8 +199,13 @@ Private
 	End Method
 	
 	Method RemoveTween:FlxTween(tween:FlxTween, destroy:Bool = False)
+		If (_tweens = Null) Return tween
+	
 		If (tween._parent <> Self) Then
-			FlxG.Log("WARNING: Core object does not contain FlxTween")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("WARNING: Core object does not contain FlxTween")
+			#End
+			
 			Return tween
 		End If
 		
@@ -206,6 +218,8 @@ Private
 	End Method
 	
 	Method ClearTweens:Void(destroy:Bool = False)
+		If (_tweens = Null) Return
+	
 		Local node:= _tweens.FirstNode()
 		Local tween:FlxTween
 				
@@ -220,6 +234,8 @@ Private
 	End Method
 	
 	Method UpdateTweens:Void()
+		If (_tweens = Null) Return
+	
 		Local node:= _tweens.FirstNode()
 		Local tween:FlxTween
 				
@@ -242,7 +258,7 @@ Private
 		Return(_tweens <> Null)
 	End Method
 	
-	Method GetClass:ClassInfo()
+	Method GetClassInfo:ClassInfo()
 		Return _classInfo
 	End Method
 	

@@ -1,5 +1,4 @@
 Flixel for Monkey
-=
 ______________________________________________________
 
 This is a port of flixel to the [Monkey](http://www.monkeycoder.co.nz/) language.
@@ -21,7 +20,7 @@ HTML5, Flash, Android, iOS, XNA, GLFW, PSM, Win8, WP8
 	* Optionally. Do `git submodule update --init` to get bananas
 	
 * For users without git:
-	* Download archive [flixel-monkey-lastest-stable.zip](http://devolonter.ru/flixel/flixel-monkey-lastest-stable.zip) or [flixel-monkey-lastest-stable-full.zip](http://devolonter.ru/flixel/flixel-monkey-lastest-stable-full.zip) (with bananas) from downloads section 
+	* Download archive [flixel-monkey-lastest-stable.zip](http://download.flixelmonkey.com/dist/v1.0.0-beta.1/flixel-monkey-v1.0.0-beta.1.zip) or [flixel-monkey-lastest-stable-full.zip](http://download.flixelmonkey.com/dist/v1.0.0-beta.1/flixel-monkey-v1.0.0-beta.1-full.zip) (with bananas) from downloads section 
 	* Extract archive into the Monkey modules directory
 	
 ###Upgrade to new version
@@ -66,7 +65,7 @@ HTML5, Flash, Android, iOS, XNA, GLFW, PSM, Win8, WP8
 ```
 Import flixel
 
-#REFLECTION_FILTER="your_app*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER="your_app*"
 
 Function Main()
 	New HelloWorld()

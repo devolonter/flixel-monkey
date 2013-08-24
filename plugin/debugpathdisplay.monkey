@@ -6,7 +6,7 @@ Import flixel.flxpath
 
 Class DebugPathDisplay extends FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 Private
 	Field _paths:Stack<FlxPath>

@@ -8,6 +8,7 @@ Import flxbasic
 Import flxgame
 Import flxcamera
 Import flxobject
+Import flxsignals
 Import flxsound
 Import flxmusic
 Import flxu
@@ -25,6 +26,7 @@ Import system.resolutionpolicy.fill
 Import system.flxresourcesmanager
 Import system.flxquadtree
 Import system.flxreplay
+Import system.flximagedata
 
 Import plugin.timermanager
 Import plugin.debugpathdisplay
@@ -60,7 +62,7 @@ Class FlxG
 	
 	Global Paused:Bool
 	
-#If CONFIG = "debug"
+#If FLX_DEBUG_ENABLED = "1"
 	Global Debug:Bool = True
 #Else
 	Global Debug:Bool = False
@@ -115,12 +117,12 @@ Class FlxG
 	Global Plugins:Stack<FlxBasic>
 	
 	Global VolumeHandler:FlxVolumeChangeListener	
-		
-	Global Framerate:Int
 	
 	Global Updaterate:Int
 	
 	Global Tweener:FlxBasic
+	
+	Global Signals:FlxSignals
 	
 	Global _DeviceScaleFactorX:Float = 1	
 	
@@ -164,8 +166,7 @@ Private
 	
 	Global _ResolutionPolicy:FlxResolutionPolicy = New FillResolutionPolicy()
 	
-	Global _Point:FlxPoint = New FlxPoint()
-	
+	Global _Point:FlxPoint = New FlxPoint()	
 
 Public
 	Function GetLibraryName:String()
@@ -173,13 +174,31 @@ Public
 	End Function
 	
 	Function Log:Void(data:String)
+	#If FLX_DEBUG_ENABLED = "1"
+		'note: TODO: to add log objects
 		Print data
-		'TODO
-	End Function	
+	#End
+	End Function
 
 	Function Random:Float()
-		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223)|0
+		FlxG.GlobalSeed = (FlxG.GlobalSeed * 1664525 + 1013904223) | 0
 		Return FlxU.Srand(FlxG.GlobalSeed)
+	End Function
+	
+	Function Random:Float(range:Float)
+		Return FlxG.Random() * range
+	End Function
+	
+	Function Random:Float(low:Float, high:Float)
+		Return FlxG.Random(high - low) + low
+	End Function
+	
+	Function Random:Int(range:Int)
+		Return Int(FlxG.Random() * (1 + range))
+	End Function
+	
+	Function Random:Int(low:Int, high:Int)
+		Return FlxG.Random(high - low) + low
 	End Function
 	
 	#Rem
@@ -215,9 +234,11 @@ Public
 	Function StopReplay:Void()
 		_Game._replaying = False
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_Game._debugger <> Null) Then
-			'TODO
+			'note: TODO:
 		End If
+	#End
 		
 		ResetInput()
 	End Function
@@ -234,16 +255,18 @@ Public
 	
 	Function StopRecording:String()
 		_Game._recording = False
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"	
 		If (_Game._debugger <> Null) Then
-			'TODO
-		End if
+			'note: TODO:
+		End If
+	#End
 		
 		Return _Game._replay.Save()
 	End Function
 	
 	Function ResetState:Void()
-		_Game._requestedState = FlxState(_Game._state.GetClass().NewInstance())
+		_Game._requestedState = FlxState(_Game._state.GetClassInfo().NewInstance())
 	End Function
 	
 	Function ResetGame:Void()
@@ -261,12 +284,7 @@ Public
 		
 		Accel.Reset()		
 		Mouse.Reset()
-		
-	#If TARGET <> "android" And TARGET <> "psm"
 		Keys.Reset()
-	#Else
-		Keys.Reset(KEY_BACKSPACE, KEY_QUOTES)
-	#End
 	End Function
 	
 	Function PlayMusic:Void(music:String, volume:Float = 1.0)
@@ -285,7 +303,7 @@ Public
 	End Function
 	
 	Function LoadSound:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = False, autoPlay:Bool = False, stopPrevious:Bool = True)
-		Local s:FlxSound = FlxSound(Sounds.Recycle(ClassInfo(FlxSound.ClassObject)))
+		Local s:FlxSound = FlxSound(Sounds.Recycle(FlxSound.__CLASS__))
 		
 		s.Load(sound, looped, autoDestroy, stopPrevious)
 		s.Volume = volume		
@@ -393,6 +411,30 @@ Public
 		Return _BitmapCache.CheckResource(key)
 	End Function
 	
+	Function CreateBitmap:Image(width:Int, height:Int, color:Int, unigue:Bool, key:String = "")
+		If (key.Length() = 0) Then
+			key = width + "x" + height + ":" + color
+			
+			If (unigue And CheckBitmapCache(key)) Then
+				Local inc:Int = 0
+				Local ukey:String
+				
+				Repeat
+					ukey = key + inc
+					inc += 1
+				Until (CheckBitmapCache(ukey))
+				
+				key = ukey
+			End If
+		End If
+		
+		If ( Not CheckBitmapCache(key)) Then
+			_BitmapCache.Resources.Set(key, (New FlxImageData(width, height, False, color)).Image)
+		End If
+		
+		Return _BitmapCache.Resources.Get(key)
+	End Function
+	
 	Function AddBitmap:Image(graphic:String, graphicLoader:FlxResourceLoader<Image>, unique:Bool = False, key:String = "")
 		If (key.Length() = 0) Then
 			key = graphic
@@ -453,6 +495,10 @@ Public
 	
 	Function SwitchState:Void(state:FlxState)
 		FlxG._Game._requestedState = state
+	End Function
+	
+	Function SetSwitchStateListener:Void(listener:FlxSwitchStateListener)
+		FlxG._Game.SetSwitchStateListener(listener)
 	End Function
 	
 	Function AddCamera:FlxCamera(newCamera:FlxCamera)
@@ -575,7 +621,7 @@ Public
 		
 		While(i < l)
 			plugin = pluginList.Get(i)
-			If (plugin.GetClass().ExtendsClass(objectClass)) Return plugin
+			If (plugin.GetClassInfo().ExtendsClass(objectClass)) Return plugin
 			
 			i+=1
 		Wend
@@ -583,6 +629,14 @@ Public
 		Return Null	
 	End Function
 	
+	Function GetPlugin:FlxBasic(objectOrClass:Object)
+		If (ClassInfo(objectOrClass) <> Null) Then
+			Return GetPlugin(ClassInfo(objectOrClass))
+		Else
+			Return GetPlugin(GetClass(objectOrClass))
+		End If
+	End Function
+
 	Function RemovePlugin:FlxBasic(plugin:FlxBasic)
 		Plugins.RemoveEach(plugin)
 		Return plugin
@@ -594,7 +648,7 @@ Public
 		Local i:Int = pluginList.Length() - 1	
 		
 		While(i >= 0)
-			If (pluginList.Get(i).GetClass().ExtendsClass(objectClass)) Then
+			If (pluginList.Get(i).GetClassInfo().ExtendsClass(objectClass)) Then
 				pluginList.Remove(i)
 				results = True	
 			End If
@@ -611,6 +665,7 @@ Public
 		FlxG.Height = height
 		
 		FlxG.Tweener = New FlxBasic()
+		FlxG.Signals = New FlxSignals()
 		
 		FlxG.Mute = False
 		FlxG._Volume = .5
@@ -623,7 +678,10 @@ Public
 		FlxG.Cameras = New Stack<FlxCamera>()		
 		
 		Plugins = New Stack<FlxBasic>
+		
+	#If FLX_DEBUG_ENABLED = "1"
 		AddPlugin(New DebugPathDisplay())
+	#End
 		AddPlugin(New TimerManager())
 		
 		FlxG.Accel = New AccelInput()
@@ -638,7 +696,7 @@ Public
 			_Touch[i] = New TouchInput(i)
 		Next
 		
-		FlxG.Mobile = IsMobile()
+		FlxG.Mobile = FlxIsMobile()
 		
 		FlxG.Scores = New Stack<Int>()
 		FlxG.Levels = New Stack<Int>()
@@ -649,79 +707,58 @@ Public
 		FlxG.ClearBitmapCache()
 		FlxG.DestroySounds(True)
 		FlxG.ClearSoundCache()
-		FlxG.ResetInput()		
+		FlxG.ResetInput()
+		FlxG.Signals.Destroy()
 		FlxG.Levels.Clear()
 		FlxG.Scores.Clear()
 		FlxG.Level = 0		
 		FlxG.Score = 0	
 		FlxG.TimeScale = 1
 		FlxG.Elapsed = 0 
-		FlxG.GlobalSeed = Rnd(1, 10000000)
+		FlxG.GlobalSeed = Seed
 		FlxG.WorldBounds = New FlxRect(-10, -10, FlxG.Width + 20, FlxG.Height + 20)
 		FlxG.WorldDivisions = 6
-		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(ClassInfo(DebugPathDisplay.ClassObject)))
+		
+	#If FLX_DEBUG_ENABLED = "1"
+		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.__CLASS__))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
+	#End
 	End Function
 	
 	Function UpdateInput:Void()
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
-		Accel.Update(AccelX(), AccelY(), AccelZ())
-	#End		
+	#If FLX_MOUSE_ENABLED = "1"
+		#If FLX_DEBUG_ENABLED = "1"	
+			If (Not _Game._debuggerUp Or Not _Game._debugger.hasMouse) Then
+				Mouse.Update(MouseX(), MouseY())
+			End If
+		#Else
+			Mouse.Update(MouseX(), MouseY())
+		#End
+		
+		_Touch[0].Update(TouchX(), TouchY())
+	#End
 	
-	#If TARGET = "glfw" Or TARGET = "psm"
+	#If FLX_KEYBOARD_ENABLED = "1"
+		Keys.Update()
+	#End			
+	
+	#If FLX_JOYSTICK_ENABLED = "1"
 		For Local i:Int = 0 Until _JOY_UNITS_COUNT
 			_Joystick[i].Update()
 		Next
 	#End
 	
-	#If TARGET = "xna"
-		If (Not FlxG.Mobile) Then
-			For Local i:Int = 0 Until _JOY_UNITS_COUNT
-				_Joystick[i].Update()
-			Next
-		Else
-			Accel.Update(AccelX(), AccelY(), AccelZ())
-		End If
-	#End
-	
-	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
-		For Local i:Int = 0 Until _TOUCH_COUNT
+	#If FLX_MULTITOUCH_ENABLED = "1"
+		For Local i:Int = 1 Until _TOUCH_COUNT
 			_Touch[i].Update(TouchX(i), TouchY(i))
 			
-			If (i > 0 And Not _Touch[i].Used) Exit
+			If ( Not _Touch[i].Used) Exit
 		Next
-		
-	#ElseIf TARGET = "html5" Or TARGET = "flash"
-		If (Not FlxG.Mobile) Then
-			Keys.Update()
-		End If
-		
-		_Touch[0].Update(TouchX(), TouchY())
-		
-	#ElseIf TARGET = "xna"
-		If (Not FlxG.Mobile) Then
-			Keys.Update()
-			_Touch[0].Update(TouchX(), TouchY())
-		Else
-			For Local i:Int = 0 Until _TOUCH_COUNT
-				_Touch[i].Update(TouchX(i), TouchY(i))
-				
-				If (i > 0 And Not _Touch[i].Used) Exit
-			Next
-		End If
-				
-	#Else
-		Keys.Update()				
-		_Touch[0].Update(TouchX(), TouchY())
 	#End
 	
-	#If TARGET = "android" Or TARGET = "psm"
-		Keys.Update()
+	#If FLX_ACCEL_ENABLED = "1"
+		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End
-		
-		If (Not _Game._debuggerUp Or Not _Game._debugger.hasMouse) Then
-			Mouse.Update(MouseX(), MouseY())
-		End If
 	End Function
 	
 	Function UpdateCameras:Void()
@@ -840,6 +877,12 @@ Private
 	End Function
 
 End Class
+
+Interface FlxVolumeChangeListener
+
+	Method OnVolumeChange:Void(volume:Float)
+
+ End Interface
 
 Private
 Class FlxCollideProcessListener Implements FlxOverlapProcessListener

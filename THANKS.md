@@ -1,5 +1,4 @@
 Thank you!
-=
 ______________________________________________________
 
 I want to thank everyone without whom this project never would exist:
@@ -36,6 +35,7 @@ ______________________________________________________
 * Rachid Abdul (Neuro)
 * Ryan Clark
 * appbackr inc.
+* Peter Edwards (Appy Media)
 
 ______________________________________________________
 

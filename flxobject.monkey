@@ -24,7 +24,7 @@ basic state information, sizes, scrolling, and basic physics and motion.
 #End
 Class FlxObject Extends FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 	'summary:Generic value for "left" Used by facing, allowCollisions, and touching.
 	Const LEFT:Int = 1
@@ -225,8 +225,10 @@ Public
 	End Method
 	
 	Method PreUpdate:Void()
+	#If FLX_DEBUG_ENABLED = "1"
 		_ActiveCount += 1
-		
+	#End
+			
 		If (_flickerTimer <> 0) Then
 			If (_flickerTimer > 0) Then
 				_flickerTimer -= FlxG.Elapsed				
@@ -253,11 +255,13 @@ Public
 	End Method
 	
 	Method Draw:Void()
-		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera.ID)) Return	
+		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera)) Return
 		If (Not OnScreen(FlxG._CurrentCamera)) Return
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"	
 		_VisibleCount += 1
-		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._CurrentCamera)	
+		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._CurrentCamera)
+	#End	
 	End Method
 	
 	Method DrawDebug:Void(camera:FlxCamera = Null)
@@ -323,7 +327,9 @@ Public
 	
 	Method FollowPath:Void(path:FlxPath, speed:Float = 100, mode:Int = PATH_FORWARD, autoRotate:Bool = False)		
 		If (path.nodes.Length() <= 0) Then
-			FlxG.Log("WARNING: Paths need at least one node in them to be followed.")
+			#If FLX_DEBUG_ENABLED = "1"
+				FlxG.Log("WARNING: Paths need at least one node in them to be followed.")
+			#End
 			Return
 		End If
 		
@@ -356,7 +362,7 @@ Public
 			Local results:Bool = False			
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
 			Local i:Int = 0
-			Local l:Int = members.Length()
+			Local l:Int = FlxGroup(objectOrGroup).Length
 			
 			While(i < l)
 				If (Overlaps(members[i], inScreenSpace, camera)) Then
@@ -395,7 +401,7 @@ Public
 			Local results:Bool = False			
 			Local members:FlxBasic[] = FlxGroup(objectOrGroup).Members
 			Local i:Int = 0
-			Local l:Int = members.Length()
+			Local l:Int = FlxGroup(objectOrGroup).Length
 			
 			While(i < l)
 				If (OverlapsAt(x, y, members[i], inScreenSpace, camera)) Then

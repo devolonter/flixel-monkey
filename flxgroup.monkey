@@ -8,9 +8,13 @@ Import reflection
 Import flxextern
 Import flxbasic
 Import flxobject
+Import flxu
 Import system.flxarray
 
-Alias MonkeyGetClass = reflection.GetClass
+Private
+Import brl.pool
+
+Public
 
 #Rem
 summary:This is an organizational class that can update and render a bunch of FlxBasics.
@@ -18,7 +22,7 @@ summary:This is an organizational class that can update and render a bunch of Fl
 #End
 Class FlxGroup Extends FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	#Rem
 	summary:See detail.
@@ -33,6 +37,7 @@ Class FlxGroup Extends FlxBasic
 	Const DESCENDING:Bool = True
 	
 Private
+
 	Field _maxSize:Int
 	
 	Field _marker:Int
@@ -41,9 +46,17 @@ Private
 	
 	Field _members:FlxBasic[]
 	
-	Field _sortIndex:FieldInfo
+	Field _comparators:StringMap<Comparator>
+	
+	Field _comparator:Comparator
+	
+	Field _slowIndex:String
 	
 	Field _sortDescending:Bool
+	
+	Field _dirty:Bool
+	
+	Field _defrag:Bool
 	
 Public
 	#Rem
@@ -59,6 +72,9 @@ Public
 		_marker = 0
 		_length = 0
 		_cameras = Null
+		_comparators = New StringMap<Comparator>()
+		_dirty = False
+		_defrag = False
 	End Method
 	
 	#Rem
@@ -93,6 +109,14 @@ Public
 		_length = 0
 		_members = _members.Resize(_length)
 		_cameras = Null
+		
+		If (_comparator <> Null) Then
+			_comparator.Clear()
+			_comparator = Null
+		End If
+		
+		_comparators.Clear()
+		_comparators = Null
 		
 		Super.Destroy()
 	End Method
@@ -129,7 +153,7 @@ Public
 	summary:Automatically goes through and calls render on everything you added.
 	#End
 	Method Draw:Void()
-		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera.ID)) Return
+		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera)) Return
 	
 		Local basic:FlxBasic
 		Local i:Int = 0	
@@ -181,7 +205,8 @@ Public
 	Return the same [a flxbasic.monkey.html]FlxBasic[/a] object that was passed in.
 	#End
 	Method Add:FlxBasic(object:FlxBasic)		
-		If (_IndexOf(object) >= 0) Return object		
+		If (_IndexOf(object) >= 0) Return object
+		_dirty = True
 		
 		Local i:Int = 0
 
@@ -230,10 +255,12 @@ Public
 	[/list]
 	Return a reference to the object that was created. Don't forget to cast it back to the objectClass you want (e.g. myObject = myObjectClass(myGroup.recycle(myObjectClassClass))).
 	#End
-	Method Recycle:FlxBasic(objectClass:ClassInfo = null)
+	Method Recycle:FlxBasic(objectClass:ClassInfo = Null)
+		'note: TODO: check objectClass first
 		If (_maxSize > 0) Then
 			If (_length < _maxSize) Then
-				If (objectClass = Null) Return Null				
+				If (objectClass = Null) Return Null
+				_dirty = True
 				Return Add(FlxBasic(objectClass.NewInstance()))
 			Else				
 				Local basic:FlxBasic = _members[_marker]
@@ -245,7 +272,16 @@ Public
 			Local basic:FlxBasic = GetFirstAvailable(objectClass)
 			If (basic <> Null) Return basic
 			If (objectClass = Null) Return Null
+			_dirty = True
 			Return Add(FlxBasic(objectClass.NewInstance()))				
+		End If
+	End Method
+	
+	Method Recycle:FlxBasic(objectOrClass:Object)
+		If (ClassInfo(objectOrClass) <> Null) Then
+			Return Recycle(ClassInfo(objectOrClass))
+		Else
+			Return Recycle(GetClass(objectOrClass))
 		End If
 	End Method
 	
@@ -277,6 +313,7 @@ Public
 			_members[index] = Null
 		End If
 		
+		_dirty = True
 		Return object
 	End Method
 	
@@ -294,6 +331,7 @@ Public
 		If (index < 0) Return Null
 		
 		_members[index] = newObject
+		_dirty = True
 		Return newObject
 	End Method
 	
@@ -308,73 +346,42 @@ Public
 	Return the new object.
 	#End	
 	Method Sort:Void(index:String = "y", order:Bool = ASCENDING)
-		_sortIndex = GetFirstNotNull().GetClass().GetField(index)
-		_sortDescending = order
+		If (_dirty) _Validate()
 		
-		Select _sortIndex.Type.Name
+		If ( Not _defrag) Then
+			Local b:FlxBasic = GetFirstNotNull()
+			If (b = Null) Return
+			
+			_comparator = _GetComparator(GetFirstNotNull().GetClassInfo().GetField(index))
+			If (_comparator = Null) Return
 		
-			Case FloatClass().Name
-				_QSortFloat(0, _length - 1)
-		
-			Case IntClass().Name
-				_QSortInt(0, _length - 1)
-				
-			Case BoolClass().Name
-				_QSortBool(0, _length - 1)
-				
-			Case StringClass().Name
-				_QSortString(0, _length - 1)
-				
-			Default
-				_QSortString(0, _length - 1)
-		
-		End Select
+			_sortDescending = order
+			_FastQSort(0, _length - 1)
+		Else
+			_slowIndex = index
+			_sortDescending = order
+			_SlowQSort(0, _length - 1)
+		End If
 	End Method	
 	
 	Method SetAll:Void(variableName:String, value:Object, recurse:Bool = True)
-		Local basic:FlxBasic = GetFirstNotNull()
-		If (basic = Null) Return
+		If (_dirty) _Validate()
 		
-		Local f:FieldInfo = basic.GetClass().GetField(variableName)
-
-		If (f = Null) Then
-			_SetAllProperties(variableName, value, recurse)
-			Return
+		If ( Not _defrag) Then
+			_FastSetAll(variableName, value, recurse)
+		Else
+			_SlowSetAll(variableName, value, recurse)
 		End If
-		
-		Local i:Int = 0
-		
-		While(i < _length)
-			basic = _members[i]
-			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).SetAll(variableName, value, recurse)	
-				Else
-					f.SetValue(basic, value)
-				End If
-			End If
-			i+=1		
-		Wend
 	End Method
 	
 	Method CallAll:Void(functionName:String, recurse:Bool = True)
-		Local basic:FlxBasic = GetFirstNotNull()
-		If (basic = Null) Return
+		If (_dirty) _Validate()
 		
-		Local m:MethodInfo = basic.GetClass().GetMethod(functionName,[])
-		Local i:Int = 0
-
-		While(i < _length)
-			basic = _members[i]
-			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).CallAll(functionName, recurse)	
-				Else
-					m.Invoke(basic,[])
-				End If
-			End If
-			i+=1		
-		Wend
+		If ( Not _defrag) Then
+			_FastCallAll(functionName, recurse)
+		Else
+			_SlowCallAll(functionName, recurse)
+		End If
 	End Method
 	
 	Method GetFirstAvailable:FlxBasic(objectClass:ClassInfo = null)
@@ -384,7 +391,7 @@ Public
 		While(i < _length)
 			basic = _members[i]
 			If (basic <> Null And Not basic.exists And 
-					(objectClass = Null Or basic.GetClass().ExtendsClass(objectClass))) Return basic
+					(objectClass = Null Or basic.GetClassInfo().ExtendsClass(objectClass))) Return basic
 			i+=1
 		Wend
 
@@ -503,7 +510,13 @@ Public
 			
 		While(i < _length)
 			basic = _members[i]
-			If (basic <> Null And Not basic.exists) basic.Revive()
+			If (basic <> Null And Not basic.exists) Then
+				If (FlxGroup(basic) <> Null) Then
+					FlxGroup(basic).ReviveAll()
+				Else
+					basic.Revive()
+				End If
+			End If
 			i+=1
 		Wend
 
@@ -524,10 +537,151 @@ Public
 	End Method
 	
 	Method ObjectEnumerator:Enumerator()
-		Return New Enumerator(Self)
+		Return _Enumerators.Allocate()._Reset(Self)
 	End
 	
 Private
+	Method _FastSetAll:Void(variableName:String, value:Object, recurse:Bool = True)
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Return
+		
+		Local f:FieldInfo = basic.GetClassInfo().GetField(variableName)
+
+		If (f = Null) Then
+			Local prop:MethodInfo = basic.GetClassInfo().GetMethod(variableName,[GetClass(value)])
+			If (prop <> Null) _FastCallAll(prop,[value], recurse)
+			Return
+		End If
+		
+		Local i:Int = 0
+		
+		While(i < _length)
+			basic = _members[i]
+			
+			If (basic <> Null) Then
+				If (FlxGroup(basic) <> Null) Then
+					If (recurse) FlxGroup(basic).SetAll(variableName, value, recurse)
+					Local groupField:FieldInfo = basic.GetClassInfo().GetField(variableName)
+					
+					If (groupField = Null) Then
+						Local groupProp:MethodInfo = basic.GetClassInfo().GetMethod(variableName,[GetClass(value)])
+						If (groupProp <> Null) _FastCallAll(groupProp,[value], recurse)
+					Else
+						groupField.SetValue(basic, value)
+					End If
+				Else
+					f.SetValue(basic, value)
+				End If
+			End If
+			
+			i+=1		
+		Wend
+	End Method
+	
+	Method _SlowSetAll:Void(variableName:String, value:Object, recurse:Bool = True)
+		Local basic:FlxBasic, f:FieldInfo, p:MethodInfo
+		Local valClass:ClassInfo[] =[GetClass(value)]
+		Local valArray:Object[] =[value]
+		
+		Local i:Int = 0
+		
+		While (i < _length)
+			basic = _members[i]
+			
+			If (basic <> Null) Then
+				If (recurse And FlxGroup(basic) <> Null) FlxGroup(basic)._SlowSetAll(variableName, value, recurse)
+				f = basic.GetClassInfo().GetField(variableName)
+				
+				If (f = Null) Then
+					p = basic.GetClassInfo().GetMethod(variableName, valClass)
+					If (p <> Null) p.Invoke(basic, valArray)
+				Else
+					f.SetValue(basic, value)
+				End If
+			End If
+			
+			i += 1
+		Wend
+	End Method
+	
+	Method _FastCallAll:Void(methodName:String, recurse:Bool = True)
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Return
+		
+		Local m:MethodInfo = basic.GetClassInfo().GetMethod(methodName,[])
+		If (m <> Null) Then
+			_FastCallAll(m,[], recurse)
+		End If
+	End Method
+	
+	Method _FastCallAll:Void(methodObject:MethodInfo, values:Object[], recurse:Bool = True)
+		Local basic:FlxBasic
+		Local i:Int = 0
+
+		While(i < _length)
+			basic = _members[i]
+			
+			If (basic <> Null) Then				
+				If (FlxGroup(basic) <> Null) Then
+					If (recurse) FlxGroup(basic)._FastCallAll(methodObject, values, recurse)
+					Local groupMethod:MethodInfo
+					
+					If (values.Length() > 0) Then
+						groupMethod = basic.GetClassInfo().GetMethod(methodObject.Name,[GetClass(values[0])])
+					Else
+						groupMethod = basic.GetClassInfo().GetMethod(methodObject.Name,[])
+					End If
+					
+					If (groupMethod <> Null) groupMethod.Invoke(basic, values)
+				Else
+					methodObject.Invoke(basic, values)
+				End If
+			End If
+			
+			i += 1
+		Wend
+	End Method
+	
+	Method _SlowCallAll:Void(methodName:String, recurse:Bool = True)
+		Local basic:FlxBasic, m:MethodInfo
+		Local i:Int = 0
+		
+		While (i < _length)
+			basic = _members[i]
+			
+			If (basic <> Null) Then
+				If (recurse And FlxGroup(basic) <> Null) FlxGroup(basic)._SlowCallAll(methodName, recurse)
+				m = basic.GetClassInfo().GetMethod(methodName,[])
+				
+				If (m <> Null) Then
+					m.Invoke(basic,[])
+				End If
+			End If
+			
+			i += 1
+		Wend
+	End Method
+
+	Method _Validate:Void()
+		_dirty = False
+		_defrag = False
+		
+		Local basic:FlxBasic = GetFirstNotNull()
+		If (basic = Null) Then Return
+	
+		Local i:Int = 0
+		Local first:ClassInfo = basic.GetClassInfo()
+			
+		While (i < _length)
+			If (_members[i] <> Null And Not first.ExtendsClass(_members[i].GetClassInfo()) And FlxGroup(_members[i]) = Null) Then
+				_defrag = True
+				Return
+			End If
+			
+			i+=1		
+		Wend
+	End Method
+
 	Method _IndexOf:Int(object:FlxBasic)
 		Local i:Int = 0		
 			
@@ -539,17 +693,17 @@ Private
 		Return -1
 	End Method
 	
-	Method _QSortBool:Void(left:Int, right:Int)
+	Method _FastQSort:Void(left:Int, right:Int)
 		If (right > left) Then
 			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortBool(left, right, pivot)
+			Local newPivot:Int = _FastDoSort(left, right, pivot)
 			
-			_QSortBool(left, newPivot - 1)
-			_QSortBool(newPivot + 1, right)		
+			_FastQSort(left, newPivot - 1)
+			_FastQSort(newPivot + 1, right)
 		End If
 	End Method
 	
-	Method _DoSortBool:Int(left:Int, right:Int, pivot:Int)
+	Method _FastDoSort:Int(left:Int, right:Int, pivot:Int)
 		Local basic:FlxBasic = _members[pivot]
 		
 		_members[pivot] = _members[right]
@@ -561,15 +715,26 @@ Private
 		
 		While (i < right)
 			basicToCompare = _members[i]
-			
+
+			If (basicToCompare = Null Or basic = Null) Then
+				If (basicToCompare <> Null And basic = Null) Then
+					_members[i] = _members[store]
+					_members[store] = basicToCompare
+					store+=1	
+				End If
+				
+				i += 1
+				Continue
+			End If
+				
 			If (_sortDescending) Then
-				If (Int(UnboxBool(_sortIndex.GetValue(basicToCompare))) - Int(UnboxBool(_sortIndex.GetValue(basic))) >= 0) Then
+				If (_comparator.Compare(basicToCompare, basic) >= 0) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
 				End If
 			Else
-				If (Int(UnboxBool(_sortIndex.GetValue(basicToCompare))) - Int(UnboxBool(_sortIndex.GetValue(basic))) <= 0) Then
+				If (_comparator.Compare(basicToCompare, basic) <= 0) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
@@ -582,20 +747,21 @@ Private
 		basic = _members[store]
 		_members[store] = _members[right]
 		_members[right] = basic
+		
 		Return store	
 	End Method
 	
-	Method _QSortInt:Void(left:Int, right:Int)
+	Method _SlowQSort:Void(left:Int, right:Int)
 		If (right > left) Then
 			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortInt(left, right, pivot)
+			Local newPivot:Int = _SlowDoSort(left, right, pivot)
 			
-			_QSortInt(left, newPivot - 1)
-			_QSortInt(newPivot + 1, right)		
+			_SlowQSort(left, newPivot - 1)
+			_SlowQSort(newPivot + 1, right)
 		End If
 	End Method
 	
-	Method _DoSortInt:Int(left:Int, right:Int, pivot:Int)
+	Method _SlowDoSort:Int(left:Int, right:Int, pivot:Int)
 		Local basic:FlxBasic = _members[pivot]
 		
 		_members[pivot] = _members[right]
@@ -607,169 +773,224 @@ Private
 		
 		While (i < right)
 			basicToCompare = _members[i]
-			
-			If (_sortDescending) Then
-				If (UnboxInt(_sortIndex.GetValue(basicToCompare)) >= UnboxInt(_sortIndex.GetValue(basic))) Then
+
+			If (basicToCompare = Null Or basic = Null) Then
+				If (basicToCompare <> Null And basic = Null) Then
 					_members[i] = _members[store]
 					_members[store] = basicToCompare
 					store+=1	
 				End If
-			Else
-				If (UnboxInt(_sortIndex.GetValue(basicToCompare)) <= UnboxInt(_sortIndex.GetValue(basic))) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
+				
+				i += 1
+				Continue
 			End If
 			
-			i+=1
-		Wend
-		
-		basic = _members[store]
-		_members[store] = _members[right]
-		_members[right] = basic
-		Return store	
-	End Method
-	
-	Method _QSortFloat:Void(left:Int, right:Int)
-		If (right > left) Then
-			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortFloat(left, right, pivot)
+			_comparator = _GetComparator(basicToCompare.GetClassInfo().GetField(_slowIndex))
 			
-			_QSortFloat(left, newPivot - 1)
-			_QSortFloat(newPivot + 1, right)		
-		End If
-	End Method
-	
-	Method _DoSortFloat:Int(left:Int, right:Int, pivot:Int)
-		Local basic:FlxBasic = _members[pivot]
-		
-		_members[pivot] = _members[right]
-		_members[right] = basic
-		
-		Local store:Int = left
-		Local basicToCompare:FlxBasic
-		Local i:Int = left
-		
-		While (i < right)
-			basicToCompare = _members[i]
-			
-			If (_sortDescending) Then
-				If (UnboxFloat(_sortIndex.GetValue(basicToCompare)) >= UnboxFloat(_sortIndex.GetValue(basic))) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			Else
-				If (UnboxFloat(_sortIndex.GetValue(basicToCompare)) <= UnboxFloat(_sortIndex.GetValue(basic))) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			End If
-			
-			i+=1
-		Wend
-		
-		basic = _members[store]
-		_members[store] = _members[right]
-		_members[right] = basic
-		Return store	
-	End Method
-	
-	Method _QSortString:Void(left:Int, right:Int)
-		If (right > left) Then
-			Local pivot:Int = left + (right-left)/2
-			Local newPivot:Int = _DoSortString(left, right, pivot)
-			
-			_QSortString(left, newPivot - 1)
-			_QSortString(newPivot + 1, right)		
-		End If
-	End Method
-	
-	Method _DoSortString:Int(left:Int, right:Int, pivot:Int)
-		Local basic:FlxBasic = _members[pivot]
-		
-		_members[pivot] = _members[right]
-		_members[right] = basic
-		
-		Local store:Int = left
-		Local basicToCompare:FlxBasic
-		Local i:Int = left
-		
-		While (i < right)
-			basicToCompare = _members[i]
-			
-			If (_sortDescending) Then
-				If (UnboxString(_sortIndex.GetValue(basicToCompare)).Compare(UnboxString(_sortIndex.GetValue(basic))) >= 0) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			Else
-				If (UnboxString(_sortIndex.GetValue(basicToCompare)).Compare(UnboxString(_sortIndex.GetValue(basic))) <= 0) Then
-					_members[i] = _members[store]
-					_members[store] = basicToCompare
-					store+=1	
-				End If
-			End If
-			
-			i+=1
-		Wend
-		
-		basic = _members[store]
-		_members[store] = _members[right]
-		_members[right] = basic
-		Return store	
-	End Method
-	
-	Method _SetAllProperties:Void(variableName:String, value:Object, recurse:Bool = True)
-		Local basic:FlxBasic = GetFirstNotNull()
-		If (basic = Null) Return
-		
-		Local prop:MethodInfo
-		
-		prop = basic.GetClass().GetMethod(variableName,[MonkeyGetClass(value)])
-		If (prop = Null) Return
-		
-		Local i:Int = 0
-			
-		While(i < _length)
-			basic = _members[i]
-			If (basic <> Null) Then
-				If (recurse And FlxGroup(basic) <> Null) Then
-					FlxGroup(basic).SetAll(variableName, value, recurse)	
+			If (_comparator <> Null) Then
+				If (_sortDescending) Then
+					If (_comparator.Compare(basicToCompare, basic) >= 0) Then
+						_members[i] = _members[store]
+						_members[store] = basicToCompare
+						store+=1	
+					End If
 				Else
-					prop.Invoke(basic,[value])
+					If (_comparator.Compare(basicToCompare, basic) <= 0) Then
+						_members[i] = _members[store]
+						_members[store] = basicToCompare
+						store+=1	
+					End If
 				End If
 			End If
-			i+=1		
+			
+			i+=1
 		Wend
+		
+		basic = _members[store]
+		_members[store] = _members[right]
+		_members[right] = basic
+		
+		Return store	
+	End Method
+	Method _GetComparator:Comparator(sortIndex:FieldInfo)
+		If (sortIndex = Null) Return Null
+	
+		Local key:String = sortIndex.Type.Name
+		Local comparator:Comparator = _comparators.Get(key)
+		
+		If (comparator = Null) Then
+			Select key
+				Case FloatClass().Name
+					comparator = New FloatComparator()
+			
+				Case IntClass().Name
+					comparator = New IntComparator()
+					
+				Case BoolClass().Name
+					comparator = New BoolComparator()
+					
+				Case StringClass().Name
+					comparator = New StringComparator()
+					
+				Default
+					key = FlxU.GetObjectClass().Name
+					comparator = _comparators.Get(key)
+					
+					If (comparator = Null) comparator = New ObjectComparator()
+			End Select
+			
+			_comparators.Set(key, comparator)
+		End If
+		
+		comparator.Clear()
+		
+		If (key <> FlxU.GetObjectClass().Name) Then
+			comparator.Reset(sortIndex)
+		Else
+			Local sortMethod:MethodInfo = sortIndex.Type.GetMethod("Compare",[sortIndex.Type])
+			If (sortMethod = Null) sortMethod = sortIndex.Type.GetMethod("Compare",[FlxU.GetObjectClass()])
+			
+			If (sortMethod <> Null) Then
+				comparator.Reset(sortIndex, sortMethod)
+			Else
+				comparator = Null
+			End If
+		End If
+		
+		Return comparator
 	End Method
 	
 End Class
 
 Class Enumerator
 
-	Method New(group:FlxGroup)
-		_group = group
-	End
-
 	Method HasNext:Bool()
-		Return _index < _group.Length
+		If (_dirty) Then
+			_dirty = False
+			_hasNext = False
+			
+			Repeat
+				If (_nextIndex = _group._length) Then
+					_Enumerators.Free(Self)
+					Return _hasNext
+				End If
+			
+				_basic = _group._members[_nextIndex]
+				
+				_nextIndex += 1
+			Until (_basic <> Null)
+			
+			_hasNext = True
+		End If
+		
+		If ( Not _hasNext) _Enumerators.Free(Self)
+		Return _hasNext
 	End
 
 	Method NextObject:FlxBasic()
-		_index+=1
-		Return _group.Members[_index-1]
+		If (_dirty And Not HasNext()) Return Null
+		
+		_dirty = True
+		Return _basic
 	End
+	
+	Method Destroy:Void()
+		_Reset(Null)
+		_basic = Null
+	End Method
 
 Private
 
 	Field _group:FlxGroup
+	
 	Field _index:Int
+	
+	Field _nextIndex:Int
+	
+	Field _hasNext:Bool
+	
+	Field _dirty:Bool
+	
+	Field _basic:FlxBasic
+	
+	Method _Reset:Enumerator(group:FlxGroup)
+		_group = group
+		_nextIndex = 0
+		_hasNext = False
+		_dirty = True
+		
+		Return Self
+	End Method
 
 End
+
+Private
+
+Global _Enumerators:Pool<Enumerator> = New Pool<Enumerator>()
+
+Class Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic) Abstract
+	
+	Method Reset:Comparator(sortIndex:FieldInfo, sortMethod:MethodInfo = Null)
+		_sortIndex = sortIndex
+		_sortMethod = sortMethod
+		
+		Return Self
+	End Method
+	
+	Method Clear:Void()
+		_sortIndex = Null
+		_sortMethod = Null
+	End Method
+	
+Private
+
+	Field _sortIndex:FieldInfo
+	
+	Field _sortMethod:MethodInfo
+
+End Class
+
+Class BoolComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return Int(UnboxBool(_sortIndex.GetValue(basic1))) - Int(UnboxBool(_sortIndex.GetValue(basic2)))
+	End Method
+
+End Class
+
+Class IntComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxInt(_sortIndex.GetValue(basic1)) - UnboxInt(_sortIndex.GetValue(basic2))
+	End Method
+
+End Class
+
+Class FloatComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxFloat(_sortIndex.GetValue(basic1)) - UnboxFloat(_sortIndex.GetValue(basic2))
+	End Method
+
+End Class
+
+Class StringComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxString(_sortIndex.GetValue(basic1)).Compare(UnboxString(_sortIndex.GetValue(basic2)))
+	End Method
+
+End Class
+
+Class ObjectComparator Extends Comparator
+	
+	Method Compare:Int(basic1:FlxBasic, basic2:FlxBasic)
+		Return UnboxInt(_sortMethod.Invoke(_sortIndex.GetValue(basic1),[_sortIndex.GetValue(basic2)]))
+	End Method
+
+End Class
 
 #Rem 
 footer:Flixel is an open source game-making library that is completely free for personal or commercial use.

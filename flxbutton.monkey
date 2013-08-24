@@ -16,7 +16,7 @@ Import "data/beep_flx.mp3"
 
 Class FlxButton Extends FlxSprite
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	
 	Const NORMAL:Int = 0
 	
@@ -54,11 +54,11 @@ Private
 	Field _initialized:Bool
 	
 Public
-	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonClickListener = Null, driver:ClassInfo = Null)
+	Method New(x:Float = 0, y:Float = 0, label:String = "", onClick:FlxButtonClickListener = Null)
 		Super.New(x, y)
 		
 		If (label.Length() > 0) Then
-			Self.label = New FlxText(0, 0, 80, label, driver)
+			Self.label = New FlxText(0, 0, 80, label)
 			Self.label.SetFormat(FlxText.SYSTEM_FONT, 8, $FF333333, FlxText.ALIGN_CENTER)
 			labelOffset = New FlxPoint(-1, 3)
 		End If
@@ -143,8 +143,8 @@ Public
 		End If
 	End Method
 	
-	Method _ResetHelpers:Void()
-		Super._ResetHelpers()
+	Method ResetHelpers:Void()
+		Super.ResetHelpers()
 		
 		If (label <> Null) Then
 			label.SetWidth(width)			
@@ -182,6 +182,7 @@ Private
 		If (FlxG.Mobile Or FlxG.Mouse.Visible Or FlxG._Game.useSystemCursor) Then
 			Local cameras:Stack<FlxCamera> = FlxG.Cameras
 			Local camera:FlxCamera
+			Local touchInput:TouchInput
 			Local i:Int = 0
 			Local l:Int = cameras.Length()
 			Local offAll:Bool = True
@@ -189,40 +190,59 @@ Private
 			
 			While (i < l)
 				camera = cameras.Get(i)
-				FlxG.Mouse.GetWorldPosition(camera, _point)
 				
-				If (OverlapsPoint(_point, True, camera)) Then
-					offAll = False
-					
-					If (FlxG.Mouse.JustPressed()) Then
-						status = PRESSED
-						
-						If (onDown <> Null) Then
-							onDown.OnButtonDown()
-						End If
-						
-						If (soundDown <> Null) Then
-							soundDown.Play(True)
-						End If
+			#If FLX_MULTITOUCH_ENABLED = "1"
+				Local tc:Int = FlxG.TouchCount()
+			#Else
+				Local tc:Int = 1
+			#End
+				
+				For Local ti:Int = 0 Until tc
+					touchInput = FlxG.Touch(ti)
+					If ( Not touchInput.Pressed() And Not touchInput.JustReleased()) Then
+						Exit
 					End If
 					
-					If (FlxG.Mouse.JustReleased() And status = PRESSED) Then
-						status = NORMAL
-						click = True
+					If (_cameras <> Null And Not _cameras.Contains(camera)) Then
+						i += 1
+						Continue
 					End If
 					
-					If (status = NORMAL) Then
-						status = HIGHLIGHT
+					touchInput.GetWorldPosition(camera, _point)
+				
+					If (OverlapsPoint(_point, True, camera)) Then
+						offAll = False
 						
-						If (onOver <> Null) Then
-							onOver.OnButtonOver()
+						If (touchInput.JustPressed()) Then
+							status = PRESSED
+							
+							If (onDown <> Null) Then
+								onDown.OnButtonDown(Self)
+							End If
+							
+							If (soundDown <> Null) Then
+								soundDown.Play(True)
+							End If
 						End If
 						
-						If (soundOver <> Null) Then
-							soundOver.Play(True)
+						If (touchInput.JustReleased() And status = PRESSED) Then
+							status = NORMAL
+							click = True
+						End If
+						
+						If (status = NORMAL) Then
+							status = HIGHLIGHT
+							
+							If (onOver <> Null) Then
+								onOver.OnButtonOver(Self)
+							End If
+							
+							If (soundOver <> Null) Then
+								soundOver.Play(True)
+							End If
 						End If
 					End If
-				End If
+				Next
 				
 				i += 1
 			Wend
@@ -230,7 +250,7 @@ Private
 			If(offAll) Then
 				If (status <> NORMAL) Then
 					If (onOut <> Null) Then
-						onOut.OnButtonOut()
+						onOut.OnButtonOut(Self)
 					End If
 					
 					If (soundOut <> Null) Then
@@ -243,7 +263,7 @@ Private
 			
 			If(click) Then
 				If (onUp <> Null) Then
-					onUp.OnButtonClick()
+					onUp.OnButtonClick(Self)
 				End If
 				
 				If (soundUp <> Null) Then
@@ -273,24 +293,24 @@ End Class
 
 Interface FlxButtonClickListener
 	
-	Method OnButtonClick:Void()
+	Method OnButtonClick:Void(button:FlxButton)
 
 End Interface
 
 Interface FlxButtonDownListener
 	
-	Method OnButtonDown:Void()
+	Method OnButtonDown:Void(button:FlxButton)
 
 End Interface
 
 Interface FlxButtonOverListener
 	
-	Method OnButtonOver:Void()
+	Method OnButtonOver:Void(button:FlxButton)
 
 End Interface
 
 Interface FlxButtonOutListener
 	
-	Method OnButtonOut:Void()
+	Method OnButtonOut:Void(button:FlxButton)
 
 End Interface

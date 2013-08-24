@@ -12,16 +12,20 @@ Class FlxAnim
 	
 	Method New(name:String, frames:Int[], frameRate:Float = 0, looped:Bool = True)
 		Self.name = name
+		Self.frames = frames
+		Self.looped = looped
+		SetFrameRate(frameRate)
+	End Method
+	
+	Method SetFrameRate:Void(frameRate:Float)
 		delay = 0
 		If (frameRate > 0) delay = 1.0 / frameRate
-		Self.frames = frames
-		Self.looped = looped	
 	End Method
 
 End Class
 
 Interface FlxAnimationListener
 	
-	Method OnAnimationFrame:Void(animName:String, frame:Int, index:Int)
+	Method OnAnimationFrame:Void(animation:FlxAnim, frame:Int, index:Int)
 
 End Interface

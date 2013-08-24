@@ -11,7 +11,7 @@ Import system.flxcolor
 
 Class FlxCamera Extends FlxBasic
 
-	Global ClassObject:Object
+	Global __CLASS__:Object
 
 	Const STYLE_LOCKON:Int = 0
 	
@@ -101,10 +101,6 @@ Private
 	Field _fxShakeDirection:Int
 	
 	Field _fill:FlxColor
-	
-	Field _id:Int
-	
-	Global _Inkrement:Int
 
 Public
 	Method New(x:Int, y:Int, width:Int, height:Int, zoom:Float = 0)
@@ -141,9 +137,6 @@ Public
 		active = True
 		
 		_fill = New FlxColor(0)
-		
-		_id = _Inkrement
-		_Inkrement += 1
 	End Method
 	
 	Method Destroy:Void()
@@ -250,7 +243,7 @@ Public
 			_fxFlashAlpha -= FlxG.Elapsed / _fxFlashDuration
 			
 			If (_fxFlashAlpha <= 0 And _fxFlashComplete <> Null) Then
-				_fxFlashComplete.OnFlashComplete()
+				_fxFlashComplete.OnCameraFlashComplete(Self)
 				_fxFlashComplete = Null
 			End If
 		End If
@@ -261,7 +254,7 @@ Public
 			If (_fxFadeAlpha >= 1) Then
 				_fxFadeAlpha = 1				
 				If (_fxFadeComplete <> Null) Then
-					_fxFadeComplete.OnFadeComplete()
+					_fxFadeComplete.OnCameraFadeComplete(Self)
 					_fxFadeComplete = Null
 				End If				
 			End If
@@ -273,7 +266,7 @@ Public
 				_fxShakeOffset.Make()
 								
 				If (_fxShakeComplete <> Null) Then
-					_fxShakeComplete.OnShakeComplete()
+					_fxShakeComplete.OnCameraShakeComplete(Self)
 					_fxShakeComplete = Null
 				End If
 			Else
@@ -523,10 +516,6 @@ Public
 		End If
 	End Method
 	
-	Method ID:Int() Property
-		Return _id
-	End Method
-	
 Private
 	Method _IsClipped:Bool()
 		Return _realX <> 0 Or _realY <> 0 Or _realWidth <> FlxG.DeviceWidth Or _realHeight <> FlxG.DeviceHeight
@@ -536,18 +525,18 @@ End Class
 
 Interface FlxCameraFlashListener
 	
-	Method OnFlashComplete:Void()
+	Method OnCameraFlashComplete:Void(camera:FlxCamera)
 
 End Interface
 
 Interface FlxCameraFadeListener
 	
-	Method OnFadeComplete:Void()
+	Method OnCameraFadeComplete:Void(camera:FlxCamera)
 
 End Interface
 
 Interface FlxCameraShakeListener
 	
-	Method OnShakeComplete:Void()
+	Method OnCameraShakeComplete:Void(camera:FlxCamera)
 
 End Interface

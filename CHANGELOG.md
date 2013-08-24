@@ -1,6 +1,8 @@
 Changelog
-=
 ______________________________________________________
+###v1.0.0-beta.1 (2013.08.24)
+* See: http://flixelmonkey.tumblr.com/post/59159365865/release-v1-0-0-beta-1
+
 ###v1.0a5 (2013.03.19)
 * Compatibility with Monkey V67 and higher
 * Win8/WP8 targets support added

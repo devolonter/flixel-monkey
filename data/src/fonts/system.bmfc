@@ -3,16 +3,21 @@ fileVersion=1
 
 # font settings
 fontName=Nokia Cellphone FC
+fontFile=
 charSet=0
-fontSize=9
+fontSize=12
 aa=1
 scaleH=100
-useSmoothing=1
+useSmoothing=0
 isBold=0
 isItalic=0
 useUnicode=0
 disableBoxChars=1
 outputInvalidCharGlyph=0
+dontIncludeKerningPairs=0
+useHinting=1
+renderFromOutline=0
+useClearType=1
 
 # character alignment
 paddingDown=0
@@ -21,12 +26,14 @@ paddingRight=0
 paddingLeft=0
 spacingHoriz=1
 spacingVert=1
+useFixedHeight=0
+forceZero=0
 
 # output file
 outWidth=256
 outHeight=256
 outBitDepth=32
-fontDescFormat=0
+fontDescFormat=1
 fourChnlPacked=0
 textureFormat=png
 textureCompression=0

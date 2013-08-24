@@ -109,40 +109,33 @@ Public
 		Local keysRecord:Stack<KeyRecord>
 		Local mouseRecord:XYRecord
 	
-	#If TARGET = "html5" Or TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
-		accelRecord = FlxG.Accel.RecordXYZ()
-	#End	
-	
-	#If TARGET = "xna" Or TARGET = "glfw" Or TARGET = "psm"
-	
-	#If TARGET = "xna"
-		If ( Not FlxG.Mobile) Then
-	#End
-			Local joyCount:Int = FlxG.JoystickCount()
-			Local joyXYZRecord:XYZRecord[]
 		
-			For Local i:Int = 0 Until joyCount
-				joyXYZRecord = FlxG.Joystick(i).RecordXYZ()
-				
-				If (joyXYZRecord.Length() > 0) Then
-					If (joystickRecord = Null) joystickRecord = New Stack<XYZRecord[]>()
-					joystickRecord.Insert(i, joyXYZRecord)
-				End If				
-				
-				keysRecord = FlxG.Joystick(i).RecordKeys(keysRecord)
-			Next
-	#If TARGET = "xna"
-		End If
+	#If FLX_ACCEL_ENABLED = "1"
+		accelRecord = FlxG.Accel.RecordXYZ()
 	#End
 	
+	#If FLX_JOYSTICK_ENABLED = "1"
+		Local joyCount:Int = FlxG.JoystickCount()
+		Local joyXYZRecord:XYZRecord[]
+	
+		For Local i:Int = 0 Until joyCount
+			joyXYZRecord = FlxG.Joystick(i).RecordXYZ()
+			
+			If (joyXYZRecord.Length() > 0) Then
+				If (joystickRecord = Null) joystickRecord = New Stack<XYZRecord[]>()
+				joystickRecord.Insert(i, joyXYZRecord)
+			End If				
+			
+			keysRecord = FlxG.Joystick(i).RecordKeys(keysRecord)
+		Next
 	#End
 	
-	#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
+	#If FLX_MULTITOUCH_ENABLED = "1"
 		Local touchCount:Int = FlxG.TouchCount()
 		Local touchXYRecord:XYRecord
 	
-		For Local i:Int = 0 Until touchCount
-			If (i > 0 And Not FlxG.Touch(i).Used) Exit
+		For Local i:Int = 1 Until touchCount
+			If ( Not FlxG.Touch(i).Used) Exit
 		
 			touchXYRecord = FlxG.Touch(i).RecordXY()
 		
@@ -153,65 +146,24 @@ Public
 			
 			keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
 		Next
-		
-	#ElseIf TARGET = "html5" Or TARGET = "flash"
-		If (Not FlxG.Mobile) Then
-			keysRecord = FlxG.Keys.RecordKeys(keysRecord)	
-		End If
-		
-	#ElseIf TARGET = "xna"
-		If (Not FlxG.Mobile) Then				
-			Local touchXYRecord:XYRecord = FlxG.Touch(0).RecordXY()
-		
-			If (touchXYRecord <> Null) Then
-				If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
-				touchRecord.Insert(0, touchXYRecord)
-			End If
-			
-			keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
-			keysRecord = FlxG.Keys.RecordKeys(keysRecord)
-		Else
-			accelRecord = FlxG.Accel.RecordXYZ()
-		
-			Local touchCount:Int = FlxG.TouchCount()
-			Local touchXYRecord:XYRecord
-		
-			For Local i:Int = 0 Until touchCount
-				If (i > 0 And Not FlxG.Touch(i).Used) Exit
-				
-				touchXYRecord = FlxG.Touch(i).RecordXY()
-			
-				If (touchXYRecord <> Null) Then
-					If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
-					touchRecord.Insert(i, touchXYRecord)
-				End If
-				
-				keysRecord = FlxG.Touch(i).RecordKeys(keysRecord)
-			Next
-		End If
-			
-	#Else
-		keysRecord = FlxG.Keys.RecordKeys(keysRecord)		
 	#End
-	
-	#If TARGET = "android" Or TARGET = "psm"
+		
+	#If FLX_KEYBOARD_ENABLED = "1"
 		keysRecord = FlxG.Keys.RecordKeys(keysRecord)
 	#End
 	
-	#If TARGET = "html5" Or TARGET = "glfw"
-		Local touchXYRecord:XYRecord = FlxG.Touch(0).RecordXY()
+	#If FLX_MOUSE_ENABLED = "1"	
+		mouseRecord = FlxG.Mouse.RecordXY()
+		Local touch0XYRecord:XYRecord = FlxG.Touch(0).RecordXY()
 		
-		If (touchXYRecord <> Null) Then
+		If (touch0XYRecord <> Null) Then
 			If (touchRecord = Null) touchRecord = New Stack<XYRecord>()				
-			touchRecord.Insert(0, touchXYRecord)
+			touchRecord.Insert(0, touch0XYRecord)
 		End If
 		
 		keysRecord = FlxG.Touch(0).RecordKeys(keysRecord)
-	#End 
-		
-		mouseRecord = FlxG.Mouse.RecordXY()
-		keysRecord = FlxG.Mouse.RecordKeys(keysRecord)
-		
+	#End
+			
 		If (keysRecord = Null And mouseRecord = Null And joystickRecord = Null And touchRecord = Null And accelRecord = Null) Then
 			frame += 1
 			Return

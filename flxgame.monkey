@@ -18,15 +18,16 @@ Import system.flxdebugger
 Import system.flxreplay
 Import plugin.timermanager
 
-#If TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
+#If  FLX_SOUND_EXTENSION = "unknown"
+
 	Import "data/beep_flx.wav"
-#ElseIf TARGET = "html5"
 	Import "data/beep_flx.ogg"
 	Import "data/beep_flx.mp3"
-#ElseIf TARGET = "glfw"
-	Import "data/beep_flx.ogg"
+
 #Else
-	Import "data/beep_flx.mp3"
+
+	Import "data/beep_flx.${FLX_SOUND_EXTENSION}"
+
 #End
 
 Class FlxGame extends App
@@ -66,15 +67,7 @@ Class FlxGame extends App
 Private
 	Field _iState:ClassInfo
 	
-	Field _created:Bool
-	
-	Field _total:Int
-	
-	Field _accumulator:Float	
-	
-	Field _step:Float
-	
-	Field _maxAccumulation:Float
+	Field _step:Int
 	
 	Field _soundTrayTimer:Float
 	
@@ -92,15 +85,21 @@ Private
 	
 	Field _updaterate:Int
 	
-	Field _framerate:Int
+	Field _switchStateListener:FlxSwitchStateListener
+
+	'note: BUG: It seems we have bug in HTML5 vesion fo mojo	
+#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+
+	Field _stateIsReady:Bool
+
+#End
 
 Public
-	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, framerate:Int = 30, useSystemCursor:Bool = False)
+	Method New(gameSizeX:Int, gameSizeY:Int, initialState:ClassInfo, zoom:Float = 1, updaterate:Int = 60, useSystemCursor:Bool = False)
 		Local classObject:GlobalInfo
 		
 		For Local classInfo:ClassInfo = EachIn GetClasses()
-			classObject = classInfo.GetGlobal("ClassObject", False)
-			If (classObject = Null) classObject = classInfo.GetGlobal("ClassInfo", False)
+			classObject = classInfo.GetGlobal("__CLASS__", False)
 			
 			If (classObject <> Null) Then
 				classObject.SetValue(classInfo)
@@ -115,13 +114,11 @@ Public
 		_soundTrayVisible = False
 		
 		FlxG.Init(Self, gameSizeX, gameSizeY, zoom)
-		FlxG.Framerate = framerate
 		FlxG.Updaterate = updaterate
-		_total = 0
 		
 		_state = Null
 		
-		useSoundHotKeys = Not IsMobile()
+		useSoundHotKeys = Not FlxG.Mobile
 		Self.useSystemCursor = useSystemCursor
 		
 		If (Not useSystemCursor) HideMouse()
@@ -137,13 +134,12 @@ Public
 		
 		_iState = initialState
 		_requestedState = Null
-		_requestedReset = True
-		_created = False		
+		_requestedReset = True	
 	End Method
 	
 	Method OnCreate:Int()	
 		_InitData()		
-		_Step()
+		_Reset()
 
 		#Rem
 		_soundTrayLabel = New FlxText(10, 32, _soundTrayWidth, "VOLUME")
@@ -153,7 +149,16 @@ Public
 	End Method
 	
 	Method OnUpdate:Int()
+		If (FlxG.Updaterate <> _updaterate) Then
+			_ResetFramerate()
+		End If
+		
+	#If FLX_ASYNC_EVENTS_ENABLED = "1"
+		UpdateAsyncEvents()
+	#End
+	
 		FlxG.UpdateDevice()
+		_Step()
 	
 	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm"
 		If (useSoundHotKeys) Then
@@ -191,33 +196,23 @@ Public
 	End Method
 	
 	Method OnRender:Int()
-		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
-			_ResetFramerate()
-		End If
-	
-		Local mark:Int = Millisecs()
-		Local elapsedMS:Int = mark - _total
-		_total = mark	
-		
-		If (_debugger <> Null) Then
-			'TODO!			
-		Else			
-			_accumulator += elapsedMS
-			
-			if (_accumulator > _maxAccumulation) Then
-				_accumulator = _maxAccumulation
-			End If			
-						
-			While (_accumulator >= _step)
-				_Step()
-				_accumulator -= _step
-			Wend
-		End If
-	
+	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._VisibleCount = 0
+	#End
+	
+	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+
+		If ( Not _stateIsReady) Then
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+			_state.Create()
+			_stateIsReady = True
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
 			
+			Return 0
+		End If
+	
+	#End	
 		_Draw()
-		
 		Return 0
 	End Method
 	
@@ -228,13 +223,39 @@ Public
 	End Method
 	
 	Method OnResume:Int()
+	#If FLX_DEBUG_ENABLED = "1"
 		If (Not _debuggerUp And Not useSystemCursor) Then
 			HideMouse()
 		End If
+	#Else
+		If ( Not useSystemCursor) Then
+			HideMouse()
+		End If
+	#End
 		
 		FlxG.ResetInput()
 		FlxG.ResumeSounds()
 		Return 0
+	End Method
+	
+	Method OnBack:Int()
+		If (_state = Null Or _state.DoBack()) Then
+			Return Super.OnBack()
+		End If
+		
+		Return 0
+	End Method
+	
+	Method OnClose:Int()
+		If (_state = Null Or _state.DoClose()) Then
+			Return Super.OnClose()
+		End If
+		
+		Return 0
+	End Method
+	
+	Method SetSwitchStateListener:Void(listener:FlxSwitchStateListener)
+		_switchStateListener = listener
 	End Method
 	
 	Method OnContentInit:Void()
@@ -255,59 +276,89 @@ Private
 		FlxG.ResetCameras()
 		FlxG.ResetInput()
 		FlxG.DestroySounds()
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_debugger <> Null) Then
-			'TODO!
-		End If		
+			'note: TODO:!
+		End If
+	#End
 		
 		Local timeManager:TimerManager = FlxTimer.Manager()
 		If (timeManager <> Null) timeManager.Clear()		
 		
-		If (_state <> Null) _state.Destroy()		
+		If (_state <> Null) _state.Destroy()
+		If (_switchStateListener <> Null) _switchStateListener.OnSwitchState(_state, _requestedState)
 		
 		_state = _requestedState
-		_state.Create()
 		
-		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then						
+	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+	
+		_stateIsReady = False
+		
+	#Else
+	
+		BeginRender()
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+			_state.Create()
+			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
+		EndRender()
+		
+	#End				
+		
+		If (FlxG.Updaterate <> _updaterate) Then
 			_ResetFramerate()
 		End If
 	End Method
 
 	Method _Step:Void()
 		If (_requestedReset) Then
-			_requestedReset = False
-			_requestedState = FlxState(_iState.NewInstance())
-			_replayTimer = 0
-			_replayCancelKeys = []
 			_Reset()
-			FlxG.Reset()		
 		End If
 		
 		If (_recordingRequested) Then
 			_recordingRequested = False
 			_replay.Create(FlxG.GlobalSeed)
 			_recording = True
-			
+		
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 				FlxG.Log("FLIXEL: starting new flixel gameplay record.")
 			End If
+		#End
 			
 		ElseIf (_replayRequested)
 			_replayRequested = False
 			_replay.Rewind()
 			FlxG.GlobalSeed = _replay.seed
-			
+		
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 			End If
+		#End
 			
 			_replaying = True
 		End If
 		
+	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+	
+		If (_state <> _requestedState) Then
+			_SwitchState()
+			Return
+		End If
+		
+		If ( Not _stateIsReady) Return
+		
+	#Else
+	
 		If (_state <> _requestedState) _SwitchState()
 		
+	#end
+		
+	#If FLX_DEBUG_ENABLED = "1"
 		FlxBasic._ActiveCount = 0
+	#End
 		
 		If (_replaying) Then		
 			If (_replayCancelKeys.Length() > 0 And Not KeyDown(192) And Not KeyDown(220)) Then
@@ -354,26 +405,34 @@ Private
 				End If
 			End If
 			
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 			End If
+		#End
+				
 		Else
 			FlxG.UpdateInput()
 		End If
 		
 		If (_recording) Then
 			_replay.RecordFrame()
-						
+		
+		#If FLX_DEBUG_ENABLED = "1"
 			If (_debugger <> Null) Then
-				'TODO
+				'note: TODO:
 			End If
+		#End
+		
 		End If
 		
 		_Update()
 		
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_debugger <> Null) Then
-			'TODO
+			'note: TODO:
 		End If
+	#End	
 	End Method	
 	
 	Method _Update:Void()
@@ -381,17 +440,19 @@ Private
 				
 		FlxG.UpdateSounds()	
 		FlxG.UpdatePlugins()		
-		_state.Update()
+		_state.DoUpdate()
 		
 		If (FlxG.Tweener.active And FlxG.Tweener.HasTween) Then
 			FlxG.Tweener.UpdateTweens()
 		End If
 		
 		FlxG.UpdateCameras()
-		
+	
+	#If FLX_DEBUG_ENABLED = "1"
 		If (_debuggerUp) Then
-			'TODO!
+			'note: TODO:!
 		End If
+	#End	
 	End Method
 	
 	Method _UpdateSoundTray:Void(ms:Int)
@@ -406,7 +467,7 @@ Private
 			If (_soundTrayY <= -_soundTrayHeight) Then
 				_soundTrayVisible = False
 				
-				'TODO Save sound settings
+				'note: TODO: Save sound settings
 			End If
 		End If
 	End Method
@@ -433,19 +494,14 @@ Private
 		
 		While(i < l)		
 			FlxG._CurrentCamera = FlxG.Cameras.Get(i)
-			
-			If (Not FlxG._CurrentCamera.active) Then
-				i+=1
-				Continue
+
+			If (FlxG._CurrentCamera <> Null And FlxG._CurrentCamera.active And FlxG._CurrentCamera.exists And FlxG._CurrentCamera.visible) Then
+				FlxG._CurrentCamera.DrawFX() 'not really draw. Only calculation
+				FlxG._CurrentCamera.Lock()			
+				_state.DoDraw()
+				FlxG.DrawPlugins()			
+				FlxG._CurrentCamera.Unlock()
 			End If
-			
-			If (FlxG._CurrentCamera = Null Or Not FlxG._CurrentCamera.exists Or Not FlxG._CurrentCamera.visible) Continue
-			
-			FlxG._CurrentCamera.DrawFX() 'not realy draw. Only calculation
-			FlxG._CurrentCamera.Lock()			
-			_state.Draw()
-			FlxG.DrawPlugins()			
-			FlxG._CurrentCamera.Unlock()
 									
 			i+=1
 		Wend
@@ -514,7 +570,12 @@ Private
 	End Method
 	
 	Method _Reset:Void()
-		If (FlxG.Framerate <> _framerate Or FlxG.Updaterate <> _updaterate) Then			
+		_requestedReset = False
+		_requestedState = FlxState(_iState.NewInstance())
+		_replayTimer = 0
+		_replayCancelKeys =[]
+	
+		If (FlxG.Updaterate <> _updaterate) Then			
 			_ResetFramerate()
 		End If
 		
@@ -522,20 +583,14 @@ Private
 				
 		Seed = (date[3] * 3600 + date[4] * 60 + date[5]) * 1000 + date[6]
 		FlxG.UpdateDevice()
+		
+		FlxG.Reset()
 	End Method
 	
 	Method _ResetFramerate:Void()
-		SetUpdateRate(FlxG.Framerate)
-
-		_step = 1000.0 / FlxG.Updaterate		
-		_maxAccumulation = 2000.0 / FlxG.Framerate - 1
-		
-		If (_maxAccumulation < _step) Then
-			_maxAccumulation = _step
-		End If
-		
+		SetUpdateRate(FlxG.Updaterate)
+		_step = 1000 / FlxG.Updaterate
 		_updaterate = FlxG.Updaterate
-		_framerate = FlxG.Framerate
 	End Method
 	
 	Method _InitData:Void()
@@ -548,7 +603,7 @@ Private
 		Local system:FlxFont = 	FlxAssetsManager.AddFont(FlxText.SYSTEM_FONT)	
 		
 		For Local size:Int = minSystemFontSize To maxSystemFontSize
-			system.SetPath(size, fontPathPrefix + Min(size, 17) +  FlxG.DATA_SUFFIX + ".png")
+			system.SetPath(size, fontPathPrefix + size + FlxG.DATA_SUFFIX)
 		Next
 		
 		FlxAssetsManager.AddImage("default" + FlxG.DATA_SUFFIX, "default" +  FlxG.DATA_SUFFIX + ".png")
@@ -559,41 +614,13 @@ Private
 		
 		FlxAssetsManager.AddSound("beep" + FlxG.DATA_SUFFIX, "beep" + FlxG.DATA_SUFFIX + "." + FlxSound.GetValidExt())
 		
+		Local contentInitTrigger:FunctionInfo
+				
+		For Local classInfo:ClassInfo = EachIn GetClasses()
+			contentInitTrigger = classInfo.GetFunction("OnContentInit",[], False)
+			If (contentInitTrigger <> Null) contentInitTrigger.Invoke([])
+		Next
+		
 		Self.OnContentInit()
 	End Method
-End Class
-
-Private
-Class FlxFPSCounter
-	
-	Field FPS:Int
-
-Private	
-	Field _FPSCounter:Int	
-	
-	Field _lastUpdateTime:Int
-
-Public
-	Method New()
-		Reset()
-	End Method
-	
-	Method Update:Void()
-		If (_lastUpdateTime = 0) Then
-			_lastUpdateTime = Millisecs()	
-		ElseIf (Millisecs() - _lastUpdateTime >= 1000) Then
-			FPS = _FPSCounter
-			_lastUpdateTime = Millisecs()
-			_FPSCounter = 0
-		End If
-		
-		_FPSCounter += 1
-	End Method
-	
-	Method Reset:Void()
-		FPS = FlxG.Framerate
-		_FPSCounter = 0
-		_lastUpdateTime = 0
-	End Method
-
 End Class

@@ -10,5 +10,5 @@
   <RemoteSignatureURL>https://raw.github.com/devolonter/flixel-monkey/master/flixel.lmbs</RemoteSignatureURL>
   <ShortDescription>v1.0a5</ShortDescription>
   <RequireCredentials>false</RequireCredentials>
-  <MoreInfoURL>https://github.com/devolonter/flixel-monkey/blob/master/CHANGELOG.md</MoreInfoURL>
+  <MoreInfoURL>https://github.com/devolonter/flixel-monkey/blob/nightly/CHANGELOG.md</MoreInfoURL>
 </ModSignature>
