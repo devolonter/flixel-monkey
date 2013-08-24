@@ -1,5 +1,4 @@
-Thank you!
-______________________________________________________
+#Thank you!
 
 I want to thank everyone without whom this project never would exist:
 

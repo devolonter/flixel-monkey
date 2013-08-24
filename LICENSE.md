@@ -1,5 +1,4 @@
-The MIT License
-______________________________________________________
+#The MIT License
 
 Copyright (C) 2012 Arthur 'devolonter' Bikmullin
 
