@@ -1,36 +1,7 @@
 Changelog
-=
 ______________________________________________________
-###Development Version
-* Added FlxColor.FromString(val:String) function
-* FlxColor.ARGB and FlxColor.RGB functions now return Int instead FlxColor
-* Added method FlxSprite.SetRenderer to be able to redefine render.
-* Removed internal method FlxSprite._DrawSurface
-* FlxSprite.MakeGraphic now really makes the graphics, instead of emulating it
-* In the constructor FlxTileBlock was added a second parameter - makeGraphic, which determines whether to create the graphics for the block. False by default
-* Added config setting #FLX_TEXT_DRIVER. This parameter can take the following values​​: “angelfont” and “fontmachine”.
-* Class FlxText was optimized and now generates less garbage.
-* Added new methods FlxText.SetFontShadowEnabled and FlxText.SetFontBoderEnabled, which work only with  #FLX_TEXT_DRIVER = "fontmachine"
-* Removed the support of standard Monkey fonts
-* FlxG.Framerate are removed. Use FlxG.Updaterate instead FlxG.Framerate
-* Added signals and slots system for event managment 
-* Method FlxBasic.GetClass renamed to FlxBasic.GetClassInfo. To avoid conflicts with Monkey GetClass function
-* #FLX_WEBGL_ENABLED config setting added. False by default
-* #FLX_DEBUG_ENABLED config setting added
-* BlitzMax target support added
-* New class FlxImageData added. It's a simple OO wrapper similar with flash BitmapData to work with image pixels
-* New functions FlxU.SetImageMask and FlxU.SetImagePadding added
-* Improved enumerator of FlxGroup. Now it creates less garbage and skips Null elements
-* Improved sorting of FlxGroup. All Null objects are moved to the end of the list when sorting
-* Added ability to sort in groups by field of Object type. The object class must implement the Compare method
-* Added OnContentInit hook function
-* Game update method has moved to App.OnUpdate and uses a pure Monkey updaterate control
-* The use of #REFLECTION_FILTER was improved.
-* Moves field for FlxText, FlxTileblock and FlxTilemap now is False by default
-* Fixed FlxSprite transformation bug when scale.x <> scale.y
-* Fixed FlxQuadTree null pointer error
-* Fixed incorrect length for FlxGroup in overlaps methods
-* Fixed loading tilemap bug when startIndex > 0
+###v1.0.0-beta.1 (2013.08.24)
+* See: http://flixelmonkey.tumblr.com/post/59159365865/release-v1-0-0-beta-1
 
 ###v1.0a5 (2013.03.19)
 * Compatibility with Monkey V67 and higher
