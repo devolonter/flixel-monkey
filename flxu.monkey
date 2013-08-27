@@ -290,6 +290,40 @@ Public
 		Return result
 	End Function
 	
+	Function Format:String(text:String, placeHolder:String, value:String)
+		Local index:Int = text.Find(placeHolder)
+		Local offset:Int = index
+		Local char:Int
+		Local length:Int = text.Length()
+				
+		While (index >= 0)
+			char = text[index]
+			offset += 1
+			
+			While (offset < length And text[offset] = char)
+				offset += 1
+			Wend
+			
+			If (value.Length() < offset - index) Then
+				Local l:Int = value.Length()
+			
+				While (l < offset - index)
+					value = "0" + value
+					l += 1
+				Wend
+				
+			ElseIf(value.Length() > offset - index) Then
+				value = value[ (value.Length() - (offset - index)) ..]
+			End If
+			
+			text = text.Replace(text[index .. offset], value)
+			index = text.Find(placeHolder)
+			offset = index
+		Wend
+		
+		Return text
+	End Function
+	
 	Function GetClassName:String(obj:Object, simple:Bool = False)
 		If (simple) Then
 			Local name:String = MonkeyGetClass(obj).Name
