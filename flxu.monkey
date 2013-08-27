@@ -228,10 +228,15 @@ Public
 	
 	Function FormatMoney:String(amount:Float, showDecimal:Bool = True, englishStyle:Bool = True)
 		Local helper:Int
+		Local sgn:Int = Sgn(amount)
+		Local showSgn:Bool = False
+		amount = Abs(amount)
 		Local intAmount:Int = amount
 		Local comma:String = ""
 		Local result:String = ""
 		Local zeroes:String = ""
+		
+		If (intAmount = 0) result = "0"
 		
 		While (intAmount > 0)
 			If (result.Length() > 0 And comma.Length() <= 0) Then
@@ -258,20 +263,28 @@ Public
 			End If
 			
 			result = zeroes + helper + comma + result
+			showSgn = True
 		Wend
 		
 		If (showDecimal) Then
-			intAmount = Int(amount * 100) - (Int(amount) * 100)
+			intAmount = Round(amount * 100) - (Int(amount) * 100)
+			If (intAmount <> 0) showSgn = True
 			
 			If (englishStyle) Then
-				result += "." + intAmount
+				result += "."
 			Else
-				result += "," + intAmount
+				result += ","
 			End If
 			
-			If (amount < 10) Then
+			If (intAmount < 10) Then
 				result += "0"
 			End If
+			
+			result += intAmount
+		End If
+		
+		If (sgn < 0 And showSgn) Then
+			Return "-" + result
 		End If
 		
 		Return result
