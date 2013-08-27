@@ -200,7 +200,7 @@ Public
 		Return resluts
 	End Function
 	
-	Function FromatTime:String(seconds:Float, showMS:Bool = False)
+	Function FormatTime:String(seconds:Float, showMS:Bool = False)
 		Local timeString:StringStack = New StringStack()
 		timeString.Push(Int(seconds / 60) + ":")
 		
@@ -226,7 +226,7 @@ Public
 		Return timeString.Join("")
 	End Function
 	
-	Function FromatMoney:String(amount:Float, showDecimal:Bool = True, englishStyle:Bool = True)
+	Function FormatMoney:String(amount:Float, showDecimal:Bool = True, englishStyle:Bool = True)
 		Local helper:Int
 		Local intAmount:Int = amount
 		Local comma:String = ""
