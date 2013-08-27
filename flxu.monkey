@@ -290,6 +290,20 @@ Public
 		Return result
 	End Function
 	
+	Function FormatDate:String(format:String, date:Int[])
+		format = Format(format, "y", date[0])
+		format = Format(format, "M", date[1])
+		format = Format(format, "d", date[2])
+		format = Format(format, "h", date[3])
+		format = Format(format, "m", date[4])
+		format = Format(format, "s", date[5])
+		Return Format(format, "S", date[6])
+	End Function
+	
+	Function FormatDate:String(format:String = "dd/MM/yyyy hh:mm:ss.SSS")
+		Return FormatDate(format, GetDate())
+	End Function
+	
 	Function Format:String(text:String, placeHolder:String, value:String)
 		Local index:Int = text.Find(placeHolder)
 		Local offset:Int = index
