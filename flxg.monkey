@@ -453,11 +453,7 @@ Public
 	
 	Function RemoveBitmap:Void(graphic:String)
 		If (_BitmapCache <> Null) Then
-			Local image:Image = _BitmapCache.Resources.Get(graphic)
-			If (image <> Null) Then
-				image.Discard()
-				_BitmapCache.RemoveResource(graphic)
-			End If
+			_BitmapCache.RemoveResource(graphic)
 		End If
 	End Function
 	
