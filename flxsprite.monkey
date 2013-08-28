@@ -636,7 +636,6 @@ Class ImageResource Extends FlxResource<Image>
 	End Method
 	
 	Method Use:Image()
-		Print "use"
 		Return image
 	End Method
 	
