@@ -63,8 +63,6 @@ Class FlxText Extends FlxSprite Implements FlxSpriteRenderer
 	Const SYSTEM_FONT:String = "system"
 	
 Private
-	Global _FontLoader:FlxFontLoader = New FlxFontLoader()
-	
 	Global _FontsManager:FlxResourcesManager<FlxBitmapFont> = New FlxResourcesManager<FlxBitmapFont>()
 
 	Field _shadow:FlxColor
@@ -277,11 +275,8 @@ Public
 
 Private
 	
-	Method _ResetFont:Void()
-		_FontLoader.fontFamily = _fontFamily
-		_FontLoader.fontSize = _fontSize
-		
-		_fontObject = _FontsManager.GetResource(_fontFamily + _fontSize, _FontLoader)
+	Method _ResetFont:Void()		
+		_fontObject = _FontsManager.GetResource(_fontFamily + _fontSize, New FontResource(_fontFamily, _fontSize))
 		_fontHeight = _fontObject.GetFontHeight(Self)
 	End Method
 
@@ -510,6 +505,7 @@ Private
 End Class
 
 Private
+
 Class FlxTextLine
 
 	Field xOffset:Float
@@ -532,13 +528,29 @@ Class FlxTextLine
 
 End Class
 
-Class FlxFontLoader Extends FlxResourceLoader<FlxBitmapFont>
-		
-	Field fontFamily:String = FlxText.SYSTEM_FONT
-	Field fontSize:Int
+Class FontResource Extends FlxResource<FlxBitmapFont>
 	
-	Method Load:FlxBitmapFont(name:String)
-		Return New FlxBitmapFont(FlxAssetsManager.GetFont(fontFamily).GetPath(fontSize))
+	Field size:Int
+	
+	Field font:FlxBitmapFont
+	
+	Method New(fontFamily:String, fontSize:Int)
+		Super.New(fontFamily)
+		Self.size = fontSize
+	End Method
+	
+	Method Load:FlxBitmapFont()
+		font = New FlxBitmapFont(FlxAssetsManager.GetFont(name).GetPath(size))
+		Return font
+	End Method
+	
+	Method Use:FlxBitmapFont()
+		Return font
+	End Method
+	
+	Method Discard:Void()
+		font.Discard()
+		font = Null
 	End Method
 
 End Class
@@ -621,6 +633,12 @@ End Class
 				End
 			End
 		End
+		
+		Method Discard:Void()
+			For Local i:Image = EachIn image
+				i.Discard()
+			Next
+		End Method
 		
 		Method GetTextWidth:Float(txt:FlxText, startPos:Int = 0, endPos:Int = -1)
 			If (startPos = endPos) Return 0
@@ -733,6 +751,24 @@ End Class
 			_kerning = New drawingpoint.DrawingPoint
 			LoadFontData(text, fontDescriptionFilePath, False)
 		End
+		
+		Method Discard:Void()
+			For Local b:BitMapChar = EachIn borderChars
+				b.UnloadCharImage()
+			Next
+			
+			For Local b:BitMapChar = EachIn faceChars
+				b.UnloadCharImage()
+			Next
+			
+			For Local b:BitMapChar = EachIn shadowChars
+				b.UnloadCharImage()
+			Next
+			
+			For Local i:Image = EachIn packedImages
+				i.Discard()
+			Next
+		End Method
 
 		Method GetTextWidth:Float(text:FlxText, fromChar:Int = 0, toChar:Int = -1)
 			If (fromChar = toChar) Return 0

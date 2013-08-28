@@ -16,8 +16,6 @@ Class Mouse Extends XYDevice
 Private
 	Global _CursorsManager:FlxResourcesManager<Image> = New FlxResourcesManager<Image>()
 	
-	Global _CursorLoader:FlxCursorLoader = New FlxCursorLoader()	
-	
 	Field _cursor:FlxCursor
 	
 Public
@@ -27,11 +25,7 @@ Public
 		_cursor = New FlxCursor()
 	End Method
 	
-	Method Destroy:Void()		
-		For Local cur:Image = EachIn _CursorsManager.Resources.Values()
-			cur.Discard()
-		Next
-		
+	Method Destroy:Void()
 		_CursorsManager.Clear()
 		
 		If (_cursor <> Null) _cursor.Destroy()
@@ -101,7 +95,7 @@ Public
 	Method Load:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)		
 		If (cursor.Length() = 0) cursor = "cursor" + FlxG.DATA_SUFFIX
 		
-		_cursor.pixels = _CursorsManager.GetResource(cursor, _CursorLoader)
+		_cursor.pixels = _CursorsManager.GetResource(cursor, New CursorResource(cursor))
 		_cursor.pixels.SetHandle(xOffset, yOffset)
 		_cursor.scale = scale
 	End Method
@@ -184,10 +178,26 @@ Class FlxCursor Extends FlxPoint
 
 End Class
 
-Class FlxCursorLoader Extends FlxResourceLoader<Image>
+Class CursorResource Extends FlxResource<Image>
 
-	Method Load:Image(name:String)
-		Return LoadImage(FlxAssetsManager.GetCursorPath(name))	
+	Field image:Image
+	
+	Method New(name:String)
+		Super.New(name)
+	End Method
+
+	Method Load:Image()
+		image = LoadImage(FlxAssetsManager.GetCursorPath(name))
+		Return image
+	End Method
+	
+	Method Use:Image()
+		Return image
+	End Method
+	
+	Method Discard:Void()
+		image.Discard()
+		image = Null
 	End Method
 
 End Class

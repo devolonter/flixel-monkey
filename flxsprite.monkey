@@ -42,8 +42,6 @@ Class FlxSprite Extends FlxObject
 	Field _camera:FlxCamera
 	
 Private
-	Global _GraphicLoader:FlxGraphicLoader = New FlxGraphicLoader()
-	
 	Global _Matrix:Float[6]
 
 	Field _animations:StringMap<FlxAnim>
@@ -133,15 +131,9 @@ Public
 	
 	Method LoadGraphic:FlxSprite(graphic:String, animated:Bool = False, reverse:Bool = False, width:Int = 0, height:Int = 0, unique:Bool = False)
 		_bakedRotation = 0
-		
-		_GraphicLoader.name = graphic
-		_GraphicLoader.animated = animated
-		_GraphicLoader.width = width
-		_GraphicLoader.height = height
-		
-		_pixels = FlxG.AddBitmap(graphic, _GraphicLoader, unique)
-		
 		_flipped = reverse
+		
+		_pixels = FlxG.AddBitmap(New ImageResource(graphic, animated, width, height), unique)		
 		
 		Self.width = _pixels.Width()
 		frameWidth = Self.width
@@ -594,15 +586,28 @@ Interface FlxSpriteRenderer
 End Interface
 
 Private
-Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 
-	Field name:String
+Class ImageResource Extends FlxResource<Image>
+	
 	Field animated:Bool
+	
 	Field width:Float
+	
 	Field height:Float
+	
+	Field atlas:Image
 
-	Method Load:Image(name:String)
-		Local image:Image = LoadImage(FlxAssetsManager.GetImagePath(Self.name))
+	Field image:Image
+	
+	Method New(name:String, animated:Bool, width:Float, height:Float)
+		Super.New(name)
+		Self.animated = animated
+		Self.width = width
+		Self.height = height
+	End Method
+
+	Method Load:Image()
+		image = LoadImage(FlxAssetsManager.GetImagePath(name))
 		
 		If (Not animated) Then
 			Return image
@@ -624,8 +629,25 @@ Class FlxGraphicLoader Extends FlxResourceLoader<Image>
 				frames = Ceil((image.Width() * image.Height()) / (width * height))
 			End If
 			
-			Return image.GrabImage(0, 0, width, height, frames)
+			atlas = image
+			image = atlas.GrabImage(0, 0, width, height, frames)
+			Return image
 		End If		
+	End Method
+	
+	Method Use:Image()
+		Print "use"
+		Return image
+	End Method
+	
+	Method Discard:Void()
+		If (atlas <> Null) Then
+			atlas.Discard()
+			atlas = Null
+		End If
+		
+		image.Discard()
+		image = Null
 	End Method
 
 End Class

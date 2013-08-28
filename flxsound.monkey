@@ -35,8 +35,6 @@ Private
 	Global _NextChannel:Int = -1
 	
 	Global _LoopedChannels:Bool[_CHANNELS_COUNT]
-	
-	Global _SoundLoader:FlxSoundLoader = New FlxSoundLoader()	
 
 	Field _sound:Sound
 	
@@ -159,7 +157,7 @@ Public
 		If (looped And _channel >= 0) _LoopedChannels[_channel] = True
 		
 		name = sound
-		_sound = FlxG.AddSound(sound, _SoundLoader)		
+		_sound = FlxG.AddSound(New SoundResource(name))
 		_looped = looped
 		_UpdateTransform()
 		If (_sound <> Null) exists = True		
@@ -383,10 +381,27 @@ Private
 End Class
 
 Private
-Class FlxSoundLoader Extends FlxResourceLoader<Sound>
 
-	Method Load:Sound(name:String)
-		Return LoadSound(FlxAssetsManager.GetSoundPath(name))
+Class SoundResource Extends FlxResource<Sound>
+
+	Field sound:Sound
+	
+	Method New(name:String)
+		Super.New(name)
+	End Method
+
+	Method Load:Sound()
+		sound = LoadSound(FlxAssetsManager.GetSoundPath(name))
+		Return sound
+	End Method
+	
+	Method Use:Sound()
+		Return sound
+	End Method
+	
+	Method Discard:Void()
+		sound.Discard()
+		sound = Null
 	End Method
 	
 End Class

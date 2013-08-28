@@ -428,16 +428,12 @@ Public
 			End If
 		End If
 		
-		If ( Not CheckBitmapCache(key)) Then
-			_BitmapCache.Resources.Set(key, (New FlxImageData(width, height, False, color)).Image)
-		End If
-		
-		Return _BitmapCache.Resources.Get(key)
+		Return _BitmapCache.GetResource(key, New CreateImageResource(key, width, height, color))
 	End Function
 	
-	Function AddBitmap:Image(graphic:String, graphicLoader:FlxResourceLoader<Image>, unique:Bool = False, key:String = "")
+	Function AddBitmap:Image(resource:FlxResource<Image>, unique:Bool = False, key:String = "")
 		If (key.Length() = 0) Then
-			key = graphic
+			key = resource.name
 			
 			If (unique And CheckBitmapCache(key)) Then
 				Local inc:Int = 0
@@ -452,7 +448,7 @@ Public
 			End If
 		End If
 		
-		Return _BitmapCache.GetResource(key, graphicLoader)
+		Return _BitmapCache.GetResource(key, resource)
 	End Function
 	
 	Function RemoveBitmap:Void(graphic:String)
@@ -467,25 +463,15 @@ Public
 	
 	Function ClearBitmapCache:Void()
 		If (_BitmapCache = Null) _BitmapCache = New FlxResourcesManager<Image>()
-		
-		For Local image:Image = EachIn _BitmapCache.Resources.Values()
-			If (image <> Null) image.Discard()
-		Next
-		
 		_BitmapCache.Clear()
 	End Function
 	
-	Function AddSound:Sound(sound:String, soundLoader:FlxResourceLoader<Sound>)		
-		Return _SoundCache.GetResource(sound, soundLoader)
+	Function AddSound:Sound(resource:FlxResource<Sound>)
+		Return _SoundCache.GetResource(resource.name, resource)
 	End Function
 	
 	Function ClearSoundCache:Void()
 		If (_SoundCache = Null) _SoundCache = New FlxResourcesManager<Sound>()
-		
-		For Local sound:Sound = EachIn _SoundCache.Resources.Values()
-			If (sound <> Null) sound.Discard()
-		Next
-		
 		_SoundCache.Clear()
 	End Function
 	
@@ -885,10 +871,44 @@ Interface FlxVolumeChangeListener
  End Interface
 
 Private
+
 Class FlxCollideProcessListener Implements FlxOverlapProcessListener
 	
 	Method OnOverlapProcess:Bool(object1:FlxObject, object2:FlxObject)
 		Return FlxObject.Separate(object1, object2)
+	End Method
+
+End Class
+
+Class CreateImageResource Extends FlxResource<Image>
+	
+	Field width:Float
+	
+	Field height:Float
+	
+	Field color:Int
+
+	Field image:Image
+	
+	Method New(name:String, width:Float, height:Float, color:Int)
+		Super.New(name)
+		Self.width = width
+		Self.height = height
+		Self.color = color
+	End Method
+
+	Method Load:Image()
+		image = (New FlxImageData(width, height, False, color)).Image
+		Return image
+	End Method
+	
+	Method Use:Image()
+		Return image
+	End Method
+	
+	Method Discard:Void()
+		image.Discard()
+		image = Null
 	End Method
 
 End Class

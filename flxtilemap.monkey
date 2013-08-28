@@ -41,8 +41,6 @@ Class FlxTilemap Extends FlxObject
 	Field totalTiles:Int
 	
 Private
-	Global _TileLoader:FlxTileLoader = New FlxTileLoader()
-
 	Field _tiles:Image
 	
 	Field _buffers:IntMap<FlxTilemapBuffer>
@@ -180,7 +178,7 @@ Public
 			Wend
 		End If
 		
-		_tiles = FlxG.AddBitmap(tileGraphic, _TileLoader)
+		_tiles = FlxG.AddBitmap(New TileResource(tileGraphic))
 		
 		_tileWidth = tileWidth		
 		If (_tileWidth = 0) _tileWidth = _tiles.Height()
@@ -1308,10 +1306,26 @@ Public
 
 End Class
 
-Class FlxTileLoader Extends FlxResourceLoader<Image>
+Class TileResource Extends FlxResource<Image>
 
-	Method Load:Image(name:String)
-		Return LoadImage(FlxAssetsManager.GetImagePath(name))	
+	Field image:Image
+	
+	Method New(name:String)
+		Super.New(name)
+	End Method
+
+	Method Load:Image()
+		image = LoadImage(FlxAssetsManager.GetImagePath(name))
+		Return image
+	End Method
+	
+	Method Use:Image()
+		Return image
+	End Method
+	
+	Method Discard:Void()
+		image.Discard()
+		image = Null
 	End Method
 
 End Class
