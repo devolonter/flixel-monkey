@@ -267,20 +267,24 @@ Public
 		Wend
 		
 		If (showDecimal) Then
+			Local floatPart:String
+		
 			intAmount = Round(amount * 100) - (Int(amount) * 100)
 			If (intAmount <> 0) showSgn = True
 			
 			If (englishStyle) Then
-				result += "."
+				floatPart = "."
 			Else
-				result += ","
+				floatPart = ","
 			End If
 			
 			If (intAmount < 10) Then
-				result += "0"
+				floatPart += "0"
 			End If
 			
-			result += intAmount
+			floatPart += intAmount
+			If (floatPart.Length() > 3) floatPart = floatPart[ .. 3]
+			result += floatPart
 		End If
 		
 		If (sgn < 0 And showSgn) Then
