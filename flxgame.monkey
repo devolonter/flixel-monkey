@@ -121,8 +121,6 @@ Public
 		useSoundHotKeys = Not FlxG.Mobile
 		Self.useSystemCursor = useSystemCursor
 		
-		If (Not useSystemCursor) HideMouse()
-		
 		forceDebugger = False
 		_debuggerUp = False		
 		
@@ -137,7 +135,8 @@ Public
 		_requestedReset = True	
 	End Method
 	
-	Method OnCreate:Int()	
+	Method OnCreate:Int()
+		If ( Not useSystemCursor) HideMouse()
 		_InitData()		
 		_Reset()
 
