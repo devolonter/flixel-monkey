@@ -72,9 +72,17 @@ Public
 	
 	Method Show:Void(cursor:String = "", scale:Float = 1, xOffset:Int = 0, yOffset:Int = 0)
 		If (FlxG.Mobile) Return
-		If (_cursor = Null) _cursor = New FlxCursor()
 		
-		HideMouse()
+		If (FlxG._Game.useSystemCursor) Then
+			ShowMouse()
+			Return
+		End If
+		
+		If (_cursor = Null) Then
+			_cursor = New FlxCursor()
+			HideMouse()
+		End If
+		
 		_cursor.visible = True
 		
 		If (cursor.Length() > 0) Then
@@ -85,7 +93,11 @@ Public
 	End Method
 	
 	Method Hide:Void()
-		_cursor.visible = False
+		If (FlxG._Game.useSystemCursor) Then
+			HideMouse()
+		Else
+			_cursor.visible = False
+		End If
 	End Method
 	
 	Method Visible:Bool() Property
