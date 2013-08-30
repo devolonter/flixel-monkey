@@ -114,14 +114,9 @@ Public
 	
 	Method Unload:Void(cursor:String = "")
 		If (_cursor <> Null) Then		
-			If (cursor.Length() = 0) Then	
-				For Local cur:Image = EachIn _CursorsManager.Resources.Values()
-					cur.Discard()
-				Next
-				
+			If (cursor.Length() = 0) Then
 				_CursorsManager.Clear()
 			Else
-				_CursorsManager.GetResource(cursor, _CursorLoader).Discard()
 				_CursorsManager.RemoveResource(cursor)
 			End If
 			
