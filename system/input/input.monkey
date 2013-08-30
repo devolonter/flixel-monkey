@@ -151,9 +151,9 @@ Public
 	
 	Const OFF:Int = 0
 	
-    Const HIT:Int = 1
+    Const HIT:Int = 2
 	
-    Const DOWN:Int = 2
+    Const DOWN:Int = 1
 	
     Const UP:Int = -1
 
