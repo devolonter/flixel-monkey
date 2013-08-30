@@ -393,7 +393,7 @@ Public
 	
 	Function ResumeSounds:Void()
 		If (Music <> Null And Music.exists) Then
-			Music.Play()
+			Music.Resume()
 		End If
 		
 		Local sound:FlxSound
