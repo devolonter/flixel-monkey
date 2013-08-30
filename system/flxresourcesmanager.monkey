@@ -1,6 +1,6 @@
 Strict
 
-Class FlxResource<T>
+Class FlxResource<T> Abstract
 
 	Field name:String
 	
@@ -8,23 +8,11 @@ Class FlxResource<T>
 		Self.name = name
 	End Method
 	
-	Method Load:T()
-		Error "Method FlxResource.Load must be overrided"
-		Return NIL
-	End Method
+	Method Load:T() Abstract
 	
-	Method Use:T()
-		Error "Method FlxResource.Use must be overrided"
-		Return NIL
-	End Method
+	Method Use:T() Abstract
 	
-	Method Discard:Void()
-		Error "Method FlxResource.Discard must be overrided"
-	End Method
-	
-	Private
-	
-	Global NIL:T
+	Method Discard:Void() Abstract
 	
 End Class
 
@@ -64,7 +52,7 @@ Public
 	Method Clear:Void()
 		If (_resources.IsEmpty()) Return
 		
-		For Local res:FlxResource<T> = EachIn _resources.Keys()
+		For Local res:FlxResource<T> = EachIn _resources.Values()
 			res.Discard()
 		Next
 		
