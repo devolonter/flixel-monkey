@@ -115,8 +115,10 @@ Public
 			_comparator = Null
 		End If
 		
-		_comparators.Clear()
-		_comparators = Null
+		If (_comparators <> Null) Then
+			_comparators.Clear()
+			_comparators = Null
+		End If
 		
 		Super.Destroy()
 	End Method
