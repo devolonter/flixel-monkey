@@ -22,7 +22,7 @@ Private
 	
 Public	
 	Method New(unit:Int)
-		Super.New(unit Shl 4 | KEY_JOY0, $20 | unit Shl 4 | KEY_JOY0)
+		Super.New(unit Shl 5 | KEY_JOY0, $20 | unit Shl 5 | KEY_JOY0)
 		Self.unit = unit
 		
 		Local i:Int = 0
@@ -63,15 +63,15 @@ Public
 	End Method
 	
 	Method Pressed:Bool(button:Int)
-		Return Super.Pressed(button | unit Shl 4 | KEY_JOY0)
+		Return Super.Pressed(button | unit Shl 5 | KEY_JOY0)
 	End Method
 	
 	Method JustPressed:Bool(button:Int)
-		Return Super.JustPressed(button | unit Shl 4 | KEY_JOY0)
+		Return Super.JustPressed(button | unit Shl 5 | KEY_JOY0)
 	End Method
 	
 	Method JustReleased:Bool(button:Int)
-		Return Super.JustReleased(button | unit Shl 4 | KEY_JOY0)
+		Return Super.JustReleased(button | unit Shl 5 | KEY_JOY0)
 	End Method
 	
 	Method X:Float() Property
