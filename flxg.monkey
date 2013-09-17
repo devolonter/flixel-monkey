@@ -313,9 +313,7 @@ Public
 	End Function
 	
 	Function Play:FlxSound(sound:String, volume:Float = 1.0, looped:Bool = False, autoDestroy:Bool = True)
-		Local s:FlxSound = FlxG.LoadSound(sound, volume, looped, autoDestroy, True, False)
-		If (Not looped) s.exists = False
-		Return s
+		Return FlxG.LoadSound(sound, volume, looped, autoDestroy, True, False)
 	End Function
 	
 	Function Volume:Float()

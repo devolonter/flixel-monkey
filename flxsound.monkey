@@ -141,6 +141,10 @@ Public
 		End If
 		
 		If (updateNeeded) _UpdateTransform()
+		
+		If ( Not _looped And _channel >= 0 And ChannelState(_channel) <= 0) Then
+			exists = False
+		End If
 	End Method
 	
 	Method Kill:Void()
