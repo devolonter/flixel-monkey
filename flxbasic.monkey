@@ -100,7 +100,7 @@ Private
 	Pre-update is called right before [a #Update]Update()[/a] on each object in the game loop.
 	#End
 	Method PreUpdate:Void()
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		_ActiveCount += 1
 	#End	
 	End Method
@@ -124,7 +124,7 @@ Private
 	Overriding [a #Draw]Draw()[/a] is rarely necessary, but can be very useful.
 	#End
 	Method Draw:Void()
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		_VisibleCount += 1
 	#End	
 	End Method
@@ -181,7 +181,7 @@ Private
 	
 	Method AddTween:FlxTween(tween:FlxTween, start:Bool = False)
 		If (tween._parent <> Null) Then
-			#If FLX_DEBUG_ENABLED = "1"
+			#If FLX_DEBUG_ENABLED
 				FlxG.Log("WARNING: Cannot add a FlxTween object more than once")
 			#End
 			
@@ -202,7 +202,7 @@ Private
 		If (_tweens = Null) Return tween
 	
 		If (tween._parent <> Self) Then
-			#If FLX_DEBUG_ENABLED = "1"
+			#If FLX_DEBUG_ENABLED
 				FlxG.Log("WARNING: Core object does not contain FlxTween")
 			#End
 			

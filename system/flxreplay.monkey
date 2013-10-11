@@ -110,11 +110,11 @@ Public
 		Local mouseRecord:XYRecord
 	
 		
-	#If FLX_ACCEL_ENABLED = "1"
+	#If FLX_ACCEL_ENABLED
 		accelRecord = FlxG.Accel.RecordXYZ()
 	#End
 	
-	#If FLX_JOYSTICK_ENABLED = "1"
+	#If FLX_JOYSTICK_ENABLED
 		Local joyCount:Int = FlxG.JoystickCount()
 		Local joyXYZRecord:XYZRecord[]
 	
@@ -130,7 +130,7 @@ Public
 		Next
 	#End
 	
-	#If FLX_MULTITOUCH_ENABLED = "1"
+	#If FLX_MULTITOUCH_ENABLED
 		Local touchCount:Int = FlxG.TouchCount()
 		Local touchXYRecord:XYRecord
 	
@@ -148,11 +148,11 @@ Public
 		Next
 	#End
 		
-	#If FLX_KEYBOARD_ENABLED = "1"
+	#If FLX_KEYBOARD_ENABLED
 		keysRecord = FlxG.Keys.RecordKeys(keysRecord)
 	#End
 	
-	#If FLX_MOUSE_ENABLED = "1"	
+	#If FLX_MOUSE_ENABLED
 		mouseRecord = FlxG.Mouse.RecordXY()
 		Local touch0XYRecord:XYRecord = FlxG.Touch(0).RecordXY()
 		

@@ -17,10 +17,14 @@
 #FLX_ASYNC_EVENTS_ENABLED = False
 
 #FLX_TEXT_DRIVER = "angelfont"
-#FLX_FONT_EXTENSION = ""
-#FLX_FONT_IMAGE_MASK = ""
 
-#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "win8"
+#FLX_MOUSE_ENABLED = True
+#FLX_KEYBOARD_ENABLED = True
+#FLX_JOYSTICK_ENABLED = True
+#FLX_MULTITOUCH_ENABLED = True
+#FLX_ACCEL_ENABLED = True
+
+#If TARGET = "ios" Or TARGET = "android" Or TARGET = "psm" Or TARGET = "winrt"
 	#FLX_KEYBOARD_ENABLED = False
 	
 	#If TARGET <> "psm"
@@ -37,13 +41,7 @@
 	#End
 #End
 
-#FLX_MOUSE_ENABLED = True
-#FLX_KEYBOARD_ENABLED = True
-#FLX_JOYSTICK_ENABLED = True
-#FLX_MULTITOUCH_ENABLED = True
-#FLX_ACCEL_ENABLED = True
-
-#If FLX_ACCEL_ENABLED = "0"
+#If Not FLX_ACCEL_ENABLED
 	#IOS_ACCELEROMETER_ENABLED = False
 #End
 
@@ -59,7 +57,7 @@
 	#FLX_SOUND_EXTENSION = "ogg"
 	#FLX_MUSIC_EXTENSION = "ogg"
 	
-#ElseIf TARGET = "xna" Or TARGET = "psm" Or TARGET = "win8"
+#ElseIf TARGET = "xna" Or TARGET = "psm" Or TARGET = "winrt"
 	#FLX_MUSIC_EXTENSION = "mp3"
 	
 #ElseIf TARGET = "bmax"

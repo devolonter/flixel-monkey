@@ -320,7 +320,7 @@ Public
 						If (_rect <> Null) Then
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height)
 							
-							#If FLX_DEBUG_ENABLED = "1"
+							#If FLX_DEBUG_ENABLED
 								If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
 									'note: TODO:
 								End If
@@ -362,7 +362,7 @@ Public
 						If (_rect <> Null) Then						
 							DrawImageRect(_tiles, _point.x, _point.y, _rect.x, _rect.y, _rect.width, _rect.height, 0, _buffer.scaleFixX, _buffer.scaleFixY)
 							
-							#If FLX_DEBUG_ENABLED = "1"
+							#If FLX_DEBUG_ENABLED
 								If (FlxG.VisualDebug And Not ignoreDrawDebug) Then
 									'note: TODO:
 								End If
@@ -382,7 +382,7 @@ Public
 		PopMatrix()		
 
 		
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		_VisibleCount += 1
 	#End
 	End Method

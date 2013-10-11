@@ -225,7 +225,7 @@ Public
 	End Method
 	
 	Method PreUpdate:Void()
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		_ActiveCount += 1
 	#End
 			
@@ -258,7 +258,7 @@ Public
 		If (_cameras <> Null And Not _cameras.Contains(FlxG._CurrentCamera)) Return
 		If (Not OnScreen(FlxG._CurrentCamera)) Return
 	
-	#If FLX_DEBUG_ENABLED = "1"	
+	#If FLX_DEBUG_ENABLED
 		_VisibleCount += 1
 		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(FlxG._CurrentCamera)
 	#End	
@@ -327,7 +327,7 @@ Public
 	
 	Method FollowPath:Void(path:FlxPath, speed:Float = 100, mode:Int = PATH_FORWARD, autoRotate:Bool = False)		
 		If (path.nodes.Length() <= 0) Then
-			#If FLX_DEBUG_ENABLED = "1"
+			#If FLX_DEBUG_ENABLED
 				FlxG.Log("WARNING: Paths need at least one node in them to be followed.")
 			#End
 			Return

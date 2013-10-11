@@ -1,21 +1,19 @@
 Strict
 
-#If TARGET="android" Or TARGET="flash" Or TARGET="glfw" Or TARGET="html5" Or TARGET="ios" Or TARGET="psm" Or TARGET="win8" Or TARGET="xna" Or TARGET="bmax"
-	Import "native/flixel.${TARGET}.${LANG}"
-	#FLX_NATIVE_IMPLEMENTED = True
+#If Not FLX_NATIVE_IMPLEMENTED
+	#If TARGET="android" Or TARGET="flash" Or TARGET="glfw" Or TARGET="html5" Or TARGET="ios" Or TARGET="psm" Or TARGET="winrt" Or TARGET="xna" Or TARGET="bmax"
+		Import "native/flixel.${TARGET}.${LANG}"
+		#FLX_NATIVE_IMPLEMENTED = True
+	#End
 #End
 
-#FLX_NATIVE_IMPLEMENTED = False
-
-#If TARGET = "html5"
-	#If FLX_WEBGL_ENABLED = "1"
-		Import "native/webgl/mojo.${TARGET}.gl.min.${LANG}" 
-	#End
+#If TARGET = "html5" And FLX_WEBGL_ENABLED
+	Import "native/webgl/mojo.${TARGET}.gl.min.${LANG}"
 #End
 
 Extern
 
-#If FLX_NATIVE_IMPLEMENTED = "1"
+#If FLX_NATIVE_IMPLEMENTED
 	#If LANG="cpp"
 		Function FlxIsMobile:Bool() = "flixel::isMobile"
 	#ElseIf LANG="cs"
@@ -30,7 +28,7 @@ Extern
 #End
 
 #If FLX_SOUND_EXTENSION = "unknown"
-	#If FLX_NATIVE_IMPLEMENTED = "0"
+	#If Not FLX_NATIVE_IMPLEMENTED
 		#Error "Native file for detection extension of sound files not found"
 	#End
 
@@ -44,7 +42,7 @@ Extern
 #End
 
 #If FLX_MUSIC_EXTENSION = "unknown"
-	#If FLX_NATIVE_IMPLEMENTED = "0"
+	#If Not FLX_NATIVE_IMPLEMENTED
 		#Error "Native file for detection extension of music files not found"
 	#End
 
@@ -59,7 +57,7 @@ Extern
 
 Public
 
-#If FLX_NATIVE_IMPLEMENTED = "0"
+#If Not FLX_NATIVE_IMPLEMENTED
 	Function FlxIsMobile:Bool()
 		Return False
 	End Function

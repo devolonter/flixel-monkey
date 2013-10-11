@@ -191,7 +191,7 @@ Private
 			While (i < l)
 				camera = cameras.Get(i)
 				
-			#If FLX_MULTITOUCH_ENABLED = "1"
+			#If FLX_MULTITOUCH_ENABLED
 				Local tc:Int = FlxG.TouchCount()
 			#Else
 				Local tc:Int = 1

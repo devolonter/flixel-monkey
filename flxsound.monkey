@@ -368,7 +368,7 @@ Private
 				
 				counter += 1
 				If (counter >= _CHANNELS_COUNT) Then				
-					#If FLX_DEBUG_ENABLED = "1"
+					#If FLX_DEBUG_ENABLED
 						FlxG.Log("Free channels for sound " + name + " are not found")
 					#End
 				

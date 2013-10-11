@@ -84,7 +84,7 @@ Public
 	
 	Method GetPoint:FlxPoint(index:Int = 0)
 		If (_points.Length() = 0) Then
-			#If FLX_DEBUG_ENABLED = "1"
+			#If FLX_DEBUG_ENABLED
 				FlxG.Log("No points have been added to the path yet")
 			#End
 			
@@ -166,7 +166,7 @@ Public
 Private
 	Method _UpdatePath:Void()
 		If (_points.Length() < 3) Then
-			#If FLX_DEBUG_ENABLED = "1"
+			#If FLX_DEBUG_ENABLED
 				FlxG.Log("WARNING: A QuadPath must have at least 3 points to operate")
 			#End
 			

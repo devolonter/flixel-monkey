@@ -88,7 +88,7 @@ Private
 	Field _switchStateListener:FlxSwitchStateListener
 
 	'note: BUG: It seems we have bug in HTML5 vesion fo mojo	
-#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+#If TARGET = "html5" And Not FLX_WEBGL_ENABLED
 
 	Field _stateIsReady:Bool
 
@@ -152,7 +152,7 @@ Public
 			_ResetFramerate()
 		End If
 		
-	#If FLX_ASYNC_EVENTS_ENABLED = "1"
+	#If FLX_ASYNC_EVENTS_ENABLED
 		UpdateAsyncEvents()
 	#End
 	
@@ -195,11 +195,11 @@ Public
 	End Method
 	
 	Method OnRender:Int()
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		FlxBasic._VisibleCount = 0
 	#End
 	
-	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+	#If TARGET = "html5" And Not FLX_WEBGL_ENABLED
 
 		If ( Not _stateIsReady) Then
 			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
@@ -222,7 +222,7 @@ Public
 	End Method
 	
 	Method OnResume:Int()
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		If (Not _debuggerUp And Not useSystemCursor) Then
 			HideMouse()
 		End If
@@ -276,7 +276,7 @@ Private
 		FlxG.ResetInput()
 		FlxG.DestroySounds()
 	
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		If (_debugger <> Null) Then
 			'note: TODO:!
 		End If
@@ -290,7 +290,7 @@ Private
 		
 		_state = _requestedState
 		
-	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+	#If TARGET = "html5" And Not FLX_WEBGL_ENABLED
 	
 		_stateIsReady = False
 		
@@ -319,7 +319,7 @@ Private
 			_replay.Create(FlxG.GlobalSeed)
 			_recording = True
 		
-		#If FLX_DEBUG_ENABLED = "1"
+		#If FLX_DEBUG_ENABLED
 			If (_debugger <> Null) Then
 				'note: TODO:
 				FlxG.Log("FLIXEL: starting new flixel gameplay record.")
@@ -331,7 +331,7 @@ Private
 			_replay.Rewind()
 			FlxG.GlobalSeed = _replay.seed
 		
-		#If FLX_DEBUG_ENABLED = "1"
+		#If FLX_DEBUG_ENABLED
 			If (_debugger <> Null) Then
 				'note: TODO:
 			End If
@@ -340,7 +340,7 @@ Private
 			_replaying = True
 		End If
 		
-	#If TARGET = "html5" And FLX_WEBGL_ENABLED = "0"
+	#If TARGET = "html5" And Not FLX_WEBGL_ENABLED
 	
 		If (_state <> _requestedState) Then
 			_SwitchState()
@@ -355,7 +355,7 @@ Private
 		
 	#end
 		
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		FlxBasic._ActiveCount = 0
 	#End
 		
@@ -404,7 +404,7 @@ Private
 				End If
 			End If
 			
-		#If FLX_DEBUG_ENABLED = "1"
+		#If FLX_DEBUG_ENABLED
 			If (_debugger <> Null) Then
 				'note: TODO:
 			End If
@@ -417,7 +417,7 @@ Private
 		If (_recording) Then
 			_replay.RecordFrame()
 		
-		#If FLX_DEBUG_ENABLED = "1"
+		#If FLX_DEBUG_ENABLED
 			If (_debugger <> Null) Then
 				'note: TODO:
 			End If
@@ -427,7 +427,7 @@ Private
 		
 		_Update()
 		
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		If (_debugger <> Null) Then
 			'note: TODO:
 		End If
@@ -447,7 +447,7 @@ Private
 		
 		FlxG.UpdateCameras()
 	
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		If (_debuggerUp) Then
 			'note: TODO:!
 		End If
@@ -474,7 +474,7 @@ Private
 	Method _Draw:Void()
 		Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
 	
-	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm" And TARGET <> "win8"
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm" And TARGET <> "winrt"
 		If( Not FlxG.Mobile) Then
 			PushMatrix()
 		End If
@@ -505,7 +505,7 @@ Private
 			i+=1
 		Wend
 		
-	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm" And TARGET <> "win8"
+	#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "psm" And TARGET <> "winrt"
 		If( Not FlxG.Mobile) Then
 			PopMatrix()
 			_DrawSoundTray()

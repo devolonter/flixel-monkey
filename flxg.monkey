@@ -62,7 +62,7 @@ Class FlxG
 	
 	Global Paused:Bool
 	
-#If FLX_DEBUG_ENABLED = "1"
+#If FLX_DEBUG_ENABLED
 	Global Debug:Bool = True
 #Else
 	Global Debug:Bool = False
@@ -174,7 +174,7 @@ Public
 	End Function
 	
 	Function Log:Void(data:String)
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		'note: TODO: to add log objects
 		Print data
 	#End
@@ -234,7 +234,7 @@ Public
 	Function StopReplay:Void()
 		_Game._replaying = False
 		
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		If (_Game._debugger <> Null) Then
 			'note: TODO:
 		End If
@@ -256,7 +256,7 @@ Public
 	Function StopRecording:String()
 		_Game._recording = False
 	
-	#If FLX_DEBUG_ENABLED = "1"	
+	#If FLX_DEBUG_ENABLED
 		If (_Game._debugger <> Null) Then
 			'note: TODO:
 		End If
@@ -659,7 +659,7 @@ Public
 		
 		Plugins = New Stack<FlxBasic>
 		
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		AddPlugin(New DebugPathDisplay())
 	#End
 		AddPlugin(New TimerManager())
@@ -699,15 +699,15 @@ Public
 		FlxG.WorldBounds = New FlxRect(-10, -10, FlxG.Width + 20, FlxG.Height + 20)
 		FlxG.WorldDivisions = 6
 		
-	#If FLX_DEBUG_ENABLED = "1"
+	#If FLX_DEBUG_ENABLED
 		Local debugPathDisplay:DebugPathDisplay = DebugPathDisplay(FlxG.GetPlugin(DebugPathDisplay.__CLASS__))
 		If (debugPathDisplay <> Null) debugPathDisplay.Clear()
 	#End
 	End Function
 	
 	Function UpdateInput:Void()
-	#If FLX_MOUSE_ENABLED = "1"
-		#If FLX_DEBUG_ENABLED = "1"	
+	#If FLX_MOUSE_ENABLED
+		#If FLX_DEBUG_ENABLED
 			If (Not _Game._debuggerUp Or Not _Game._debugger.hasMouse) Then
 				Mouse.Update(MouseX(), MouseY())
 			End If
@@ -718,17 +718,17 @@ Public
 		_Touch[0].Update(TouchX(), TouchY())
 	#End
 	
-	#If FLX_KEYBOARD_ENABLED = "1"
+	#If FLX_KEYBOARD_ENABLED
 		Keys.Update()
 	#End			
 	
-	#If FLX_JOYSTICK_ENABLED = "1"
+	#If FLX_JOYSTICK_ENABLED
 		For Local i:Int = 0 Until _JOY_UNITS_COUNT
 			_Joystick[i].Update()
 		Next
 	#End
 	
-	#If FLX_MULTITOUCH_ENABLED = "1"
+	#If FLX_MULTITOUCH_ENABLED
 		For Local i:Int = 1 Until _TOUCH_COUNT
 			_Touch[i].Update(TouchX(i), TouchY(i))
 			
@@ -736,7 +736,7 @@ Public
 		Next
 	#End
 	
-	#If FLX_ACCEL_ENABLED = "1"
+	#If FLX_ACCEL_ENABLED
 		Accel.Update(AccelX(), AccelY(), AccelZ())
 	#End
 	End Function

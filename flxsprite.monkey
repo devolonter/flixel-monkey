@@ -288,9 +288,9 @@ Public
 			PopMatrix()				
 		End If
 		
-	#If FLX_DEBUG_ENABLED = "1"
-		_VisibleCount += 1;
-		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(_camera);
+	#If FLX_DEBUG_ENABLED
+		_VisibleCount += 1
+		If (FlxG.VisualDebug And Not ignoreDrawDebug) DrawDebug(_camera)
 	#End
 	End Method
 	
@@ -366,7 +366,7 @@ Public
 			Return
 		End If
 		
-		#If FLX_DEBUG_ENABLED = "1"
+		#If FLX_DEBUG_ENABLED
 			FlxG.Log("WARNING: No animation called ~q" + animName + "~q")
 		#End
 	End Method

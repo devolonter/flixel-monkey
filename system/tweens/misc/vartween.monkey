@@ -51,12 +51,12 @@ Public
 				_range = toValue - _start
 				Start()
 			Else
-				#If FLX_DEBUG_ENABLED = "1"
+				#If FLX_DEBUG_ENABLED
 					FlxG.Log("WARNING: The property ~q" + prop + "~q is not numeric")
 				#End
 			End If
 		Else
-			#If FLX_DEBUG_ENABLED = "1"
+			#If FLX_DEBUG_ENABLED
 				FlxG.Log("WARNING: The ~q" + classInfo.Name + "~q does not have the property ~q" + prop + "~q, or it is not accessible")
 			#End
 		End If
