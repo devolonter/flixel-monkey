@@ -1,11 +1,11 @@
 
-#TEXT_FILES += "|*.txt|*.xml|*.json|"
+#TEXT_FILES += "*.txt|*.xml|*.json"
 
 #REFLECTION_FILTER += "flixel.flxbasic*|flixel.flxbutton*|flixel.flxcamera*|flixel.flxemitter*"
 #REFLECTION_FILTER += "flixel.flxgroup*|flixel.flxmusic*|flixel.flxobject*|flixel.flxparticle*"
 #REFLECTION_FILTER += "flixel.flxpath*|flixel.flxpoint*|flixel.flxrect*|flixel.flxsound*"
 #REFLECTION_FILTER += "flixel.flxsprite*|flixel.flxstate*|flixel.flxtext*|flixel.flxtileblock*"
-#REFLECTION_FILTER += "flixel.flxtilemap*|flixel.plugin*"
+#REFLECTION_FILTER += "flixel.flxtilemap*|flixel.plugin.timermanager*|flixel.plugin.debugpathdisplay*"
 
 #If CONFIG = "debug"
 	#FLX_DEBUG_ENABLED = True
