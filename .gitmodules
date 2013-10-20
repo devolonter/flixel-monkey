@@ -1,9 +1,9 @@
 [submodule "bananas"]
 	path = bananas
-	url = git@github.com:devolonter/flixel-monkey-bananas.git
+url=https://github.com/devolonter/flixel-monkey-bananas.git
 [submodule "plugin/photonstorm"]
 	path = plugin/photonstorm
-url=git@github.com:devolonter/monkey-photonstorm.git
+url=https://github.com/devolonter/monkey-photonstorm.git
 [submodule "native/webgl"]
 	path = native/webgl
-	url = git@github.com:devolonter/mojo-html5-gl.git
+url=https://github.com/devolonter/mojo-html5-gl.git
