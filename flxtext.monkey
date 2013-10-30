@@ -307,6 +307,7 @@ Private
 		While (i < l)
 			If (_value[i] = 10 Or _value[i] = KEY_ENTER) Then
 				offset = i
+				If (_value[i] = KEY_ENTER) offset += 1
 				Exit
 			End If
 			
@@ -325,6 +326,7 @@ Private
 				While (i < l)
 					If (_value[i] = 10 Or _value[i] = KEY_ENTER) Then
 						offset = i
+						If (_value[i] = KEY_ENTER) offset += 1
 						Exit
 					End If
 					
@@ -436,7 +438,7 @@ Private
 					
 					maxOffset = Min(minOffset + range, maxOffset)
 					offset = maxOffset
-				Else				
+				Else
 					Local l:Int = endPos
 				
 					For Local i:Int = minOffset Until l
