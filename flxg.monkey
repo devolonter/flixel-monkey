@@ -35,8 +35,8 @@ Alias AccelInput = accel.Accel
 Alias MouseInput = mouse.Mouse
 Alias TouchInput = touch.Touch
 Alias JoystickInput = joystick.Joystick
-Alias MojoDeviceWidth = mojo.graphics.DeviceWidth
-Alias MojoDeviceHeight = mojo.graphics.DeviceHeight
+Alias MojoDeviceWidth = mojo.app.DeviceWidth
+Alias MojoDeviceHeight = mojo.app.DeviceHeight
 
 Class FlxG
 
