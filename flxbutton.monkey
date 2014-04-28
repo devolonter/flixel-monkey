@@ -199,7 +199,7 @@ Private
 				
 				For Local ti:Int = 0 Until tc
 					touchInput = FlxG.Touch(ti)
-					If ( Not touchInput.Pressed() And Not touchInput.JustReleased()) Then
+					If (ti > 0 And Not touchInput.Pressed() And Not touchInput.JustReleased()) Then
 						Exit
 					End If
 					
