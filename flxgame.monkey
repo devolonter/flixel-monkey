@@ -201,7 +201,7 @@ Public
 	
 	#If TARGET = "html5" And Not FLX_WEBGL_ENABLED
 
-		If ( Not _stateIsReady) Then
+		If ( Not _stateIsReady And _state) Then
 			Cls(FlxG._BgColor.r, FlxG._BgColor.g, FlxG._BgColor.b)
 			_state.Create()
 			_stateIsReady = True
