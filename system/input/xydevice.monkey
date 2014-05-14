@@ -55,8 +55,8 @@ Public
 	Method Update:Void(x:Float, y:Float)
 		Super.Update()
 		
-		_globalScreenPosition.x = x
-		_globalScreenPosition.y = y
+		_globalScreenPosition.x = Min(Max(0.0, x), Float(FlxG.DeviceWidth))
+		_globalScreenPosition.y = Min(Max(0.0, y), Float(FlxG.DeviceHeight))
 		
 		_UpdateXY()		
 	End Method	
