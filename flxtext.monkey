@@ -298,21 +298,11 @@ Private
 
 	Method _ParseText:Void()
 		_countLines = 0
-	
-		Local prevOffset:Int = 0
-		Local offset:Int = -1
 		
 		Local i:Int = 0, l:Int = _value.Length()
 		
-		While (i < l)
-			If (_value[i] = 10 Or _value[i] = KEY_ENTER) Then
-				offset = i
-				If (_value[i] = KEY_ENTER) offset += 1
-				Exit
-			End If
-			
-			i += 1
-		Wend
+		Local prevOffset:Int = 0
+		Local offset:Int = _FindNewLine(i, l)
 
 		If (offset >= 0) Then
 			While (offset >= 0)
@@ -321,17 +311,7 @@ Private
 				prevOffset = offset + 1
 				
 				i = prevOffset
-				offset = -1
-		
-				While (i < l)
-					If (_value[i] = 10 Or _value[i] = KEY_ENTER) Then
-						offset = i
-						If (_value[i] = KEY_ENTER) offset += 1
-						Exit
-					End If
-					
-					i += 1
-				Wend
+				offset = _FindNewLine(i, l)
 			Wend
 			
 			_BuildLines(prevOffset, _value.Length())
@@ -367,7 +347,7 @@ Private
 			Local finalTextWidth:Int = 0
 			Local success:Bool
 						
-			Repeat			
+			Repeat
 				Repeat
 					offset -= 1
 					If (offset - minOffset <= 1) Then
@@ -436,7 +416,7 @@ Private
 					minOffset = offset
 					If (success) minOffset += 1
 					
-					maxOffset = Min(minOffset + range, maxOffset)
+					maxOffset = Min(minOffset + range, Min(maxOffset + range, endPos + 1))
 					offset = maxOffset
 				Else
 					Local l:Int = endPos
@@ -473,6 +453,22 @@ Private
 		Else
 			_AddLine(startPos, endPos, textWidth)
 		End If
+	End Method
+	
+	Method _FindNewLine:Int(i:Int, l:Int)
+		Local offset:Int = -1
+	
+		While (i < l)
+			If (_value[i] = 10 Or _value[i] = KEY_ENTER) Then
+				offset = i
+				If (_value[i] = KEY_ENTER) offset += 1
+				Exit
+			End If
+			
+			i += 1
+		Wend
+		
+		Return offset
 	End Method
 	
 	Method _GetMinOffset:Int(startPos:Int, endPos:Int)
