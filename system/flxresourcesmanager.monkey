@@ -21,11 +21,11 @@ Class FlxResourcesManager<T>
 Private
 	Field _resources:StringMap<FlxResource<T>>
 	
+Public
 	Method New()
 		_resources = New StringMap<FlxResource<T>>()
 	End Method
-
-Public
+	
 	Method GetResource:T(name:String, resource:FlxResource<T>)			
 		If (_resources.Contains(name)) Then
 			Return _resources.Get(name).Use()
