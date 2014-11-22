@@ -67,6 +67,7 @@ Private
 
 	Field _classInfo:ClassInfo
 	
+Public
 	#Rem
 	summary:Instantiate the basic flixel object.
 	#End	
