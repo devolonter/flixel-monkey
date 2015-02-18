@@ -14,6 +14,7 @@ Private
 	
 	Global _HexTransform:IntMap<Int>
 	
+Public
 	Method New (argb:Int = $FFFFFFFF)
 		_ParseARGB(argb)
 	End Method
