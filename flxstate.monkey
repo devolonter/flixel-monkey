@@ -4,9 +4,16 @@ Import flxgroup
 
 Class FlxState Extends FlxGroup Abstract
 
+	Const ORDER_ASC:Int = 0
+	Const ORDER_DESC:Int = 1	
+
 	Field persistentUpdate:Bool = False
 	
 	Field persistentDraw:Bool = True
+	
+	Field drawOrder:Int
+	
+	Field updateOrder:Int
 	
 	Method Create:Void() Abstract
 	
@@ -74,11 +81,17 @@ Class FlxState Extends FlxGroup Abstract
 			Return
 		End If
 		
+		If (updateOrder = ORDER_DESC) Then
+			_subState.Update()
+		End If
+		
 		If (persistentUpdate) Then
 			Update()
 		End If
 		
-		_subState.Update()
+		If (updateOrder = ORDER_ASC) Then
+			_subState.Update()
+		End If
 	End Method
 	
 	Method DoDraw:Void()
@@ -87,11 +100,17 @@ Class FlxState Extends FlxGroup Abstract
 			Return
 		End If
 		
+		If (drawOrder = ORDER_DESC) Then			
+			_subState.Draw()
+		End If
+		
 		If (persistentDraw) Then
 			Draw()
 		End If
 		
-		_subState.Draw()
+		If (drawOrder = ORDER_ASC) Then
+			_subState.Draw()
+		End If
 	End Method
 	
 	Method DoBack:Bool()
