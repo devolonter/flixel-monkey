@@ -275,11 +275,11 @@ Private
 		If (label <> Null) Then
 			label.x = x
 			label.y = y
-		End If
-		
-		If (labelOffset <> Null) Then
-			label.x += labelOffset.x
-			label.y += labelOffset.y
+			
+			If (labelOffset <> Null) Then
+				label.x += labelOffset.x
+				label.y += labelOffset.y
+			End If
 		End If
 		
 		If (status = HIGHLIGHT And _onToggle) Then
