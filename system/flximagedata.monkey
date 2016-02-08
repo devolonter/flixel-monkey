@@ -1,5 +1,6 @@
 Strict
 
+Import mojo.app
 Import mojo.graphics
 Import flixel.flxpoint
 Import flixel.flxrect
