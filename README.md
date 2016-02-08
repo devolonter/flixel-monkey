@@ -64,7 +64,7 @@ HTML5, Flash, Android, iOS, XNA, GLFW, PSM, Win8, WP8
 ```
 Import flixel
 
-#REFLECTION_FILTER="your_app*"
+#REFLECTION_FILTER+="${MODPATH}*"
 
 Function Main()
 	New HelloWorld()
