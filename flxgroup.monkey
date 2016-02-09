@@ -208,6 +208,12 @@ Public
 	#End
 	Method Add:FlxBasic(object:FlxBasic)		
 		If (_IndexOf(object) >= 0) Return object
+		
+		If (Not object) Then
+			FlxG.Log("WARNING: Cannot add a `null` object to a FlxGroup.")
+			Return Null
+		End If
+		
 		_dirty = True
 		
 		Local i:Int = 0
