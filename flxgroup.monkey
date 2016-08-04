@@ -823,8 +823,8 @@ Private
 	Method _GetComparator:Comparator(sortIndex:FieldInfo)
 		If (sortIndex = Null) Return Null
 	
-		Local classInfo:ClassInfo = sortIndex.Type 
-		Local key:String = classInfo.Name
+		Local sortIndexType:ClassInfo = sortIndex.Type 
+		Local key:String = sortIndexType.Name
 		Local comparator:Comparator = _comparators.Get(key)
 		
 		If (comparator = Null) Then
@@ -856,8 +856,8 @@ Private
 		If (key <> FlxU.GetObjectClass().Name) Then
 			comparator.Reset(sortIndex)
 		Else
-			Local sortMethod:MethodInfo = classInfo.GetMethod("Compare",[sortIndex.Type])
-			If (sortMethod = Null) sortMethod = classInfo.GetMethod("Compare",[FlxU.GetObjectClass()])
+			Local sortMethod:MethodInfo = sortIndexType.GetMethod("Compare",[sortIndexType])
+			If (sortMethod = Null) sortMethod = sortIndexType.GetMethod("Compare",[FlxU.GetObjectClass()])
 			
 			If (sortMethod <> Null) Then
 				comparator.Reset(sortIndex, sortMethod)
