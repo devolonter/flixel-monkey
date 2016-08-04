@@ -299,9 +299,6 @@ Public
 				helper = Max(_width, _height) / 8
 				deadzone = New FlxRect((_width - helper) / 2, (_height - helper) / 2, helper, helper)
 				
-			Case STYLE_LOCKON
-				deadzone = Null
-				
 			Default
 				deadzone = Null	
 		End Select
@@ -499,18 +496,14 @@ Public
 	End Method
 	
 	Method DrawFX:Void()	
-		If (_fxFlashAlpha > 0) Then
-			Local alphaComponent:Float
-			
-			alphaComponent = _fxFlashColor Shr 24
+		If (_fxFlashAlpha > 0) Then			
+			Local alphaComponent:Float = _fxFlashColor Shr 24
 			If (alphaComponent <= 0) alphaComponent = $FF 
 			Fill(((alphaComponent * _fxFlashAlpha) Shl 24) + (_fxFlashColor & $00FFFFFF))
 		End If
 		
-		If (_fxFadeAlpha > 0) Then
-			Local alphaComponent:Float
-			
-			alphaComponent = _fxFadeColor Shr 24
+		If (_fxFadeAlpha > 0) Then			
+			Local alphaComponent:Float = _fxFadeColor Shr 24
 			If (alphaComponent <= 0) alphaComponent = $FF 
 			Fill(((alphaComponent * _fxFadeAlpha) Shl 24) + (_fxFadeColor & $00FFFFFF))	
 		End If

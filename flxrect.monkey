@@ -33,10 +33,7 @@ Class FlxRect
 	[/list]
 	#End
 	Method New(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0)
-		Self.x = x
-		Self.y = y
-		Self.width = width
-		Self.height = height	
+		Make(x, y, width, height)	
 	End Method
 	
 	'summary:The X-coordinate of the left side of the rectangle.

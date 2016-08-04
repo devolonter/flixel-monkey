@@ -137,7 +137,7 @@ Class Keyboard Extends Input
 	End Method
 	
 	Method Tab:Bool() Property
-		Return Pressed(KEY_BACKSPACE)	
+		Return Pressed(KEY_TAB)	
 	End Method
 	
 	Method Q:Bool() Property

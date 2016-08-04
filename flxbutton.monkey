@@ -125,9 +125,6 @@ Public
 			Case PRESSED
 				label.Alpha = .5
 				label.y += 1
-				
-			Case NORMAL
-				label.Alpha = .8
 			
 			Default
 				label.Alpha = .8

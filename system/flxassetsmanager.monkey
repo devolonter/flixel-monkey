@@ -128,7 +128,7 @@ Public
 	End Function
 	
 	Function AllStrings:MapKeys<String, String>()
-		Return _Cursors.Keys()
+		Return _Strings.Keys()
 	End Function
 
 End Class

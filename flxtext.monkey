@@ -841,55 +841,60 @@ End Class
 				
 				Select kind
 					Case "{BR"
-						index += 3
-						borderChars[char] = New BitMapChar
-						borderChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
-						borderChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
-						borderChars[char].drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
-						borderChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
-						borderChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
+						index += 3						
+						Local bmpChar:BitMapChar = New BitMapChar
+						Local drawingMetrics:BitMapCharMetrics = bmpChar.drawingMetrics
+						drawingMetrics.drawingOffset.x = Int(tokenStream[index])
+						drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
+						drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
+						drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
+						drawingMetrics.drawingWidth = Int(tokenStream[index+4])
 						if dynamicLoad  = False then
-							borderChars[char].image = LoadImage(prefixName + "_BORDER_" + char + ".png")
-							borderChars[char].image.SetHandle(-borderChars[char].drawingMetrics.drawingOffset.x,-borderChars[char].drawingMetrics.drawingOffset.y)
+							bmpChar.image = LoadImage(prefixName + "_BORDER_" + char + ".png")
+							bmpChar.image.SetHandle(-borderChars[char].drawingMetrics.drawingOffset.x,-borderChars[char].drawingMetrics.drawingOffset.y)
 						Else
-							borderChars[char].SetImageResourceName  prefixName + "_BORDER_" + char + ".png"
+							bmpChar.SetImageResourceName  prefixName + "_BORDER_" + char + ".png"
 						endif
+						borderChars[char] = bmpChar
 						index += 5
 						index += 1
 	
 					Case "{SH"
 						index += 3
-						shadowChars[char] = New BitMapChar
-						shadowChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
-						shadowChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
-						shadowChars[char].drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
-						shadowChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
-						shadowChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
+						Local bmpChar:BitMapChar = New BitMapChar
+						Local drawingMetrics:BitMapCharMetrics = bmpChar.drawingMetrics
+						drawingMetrics.drawingOffset.x = Int(tokenStream[index])
+						drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
+						drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
+						drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
+						drawingMetrics.drawingWidth = Int(tokenStream[index+4])
 						Local filename:String = prefixName + "_SHADOW_" + char + ".png"
 						if dynamicLoad  = False then
-							shadowChars[char].image = LoadImage(filename)
-							shadowChars[char].image.SetHandle(-shadowChars[char].drawingMetrics.drawingOffset.x,-shadowChars[char].drawingMetrics.drawingOffset.y)
+							bmpChar.image = LoadImage(filename)
+							bmpChar.image.SetHandle(-shadowChars[char].drawingMetrics.drawingOffset.x,-shadowChars[char].drawingMetrics.drawingOffset.y)
 						Else
-							shadowChars[char].SetImageResourceName  filename 
+							bmpChar.SetImageResourceName  filename 
 						endif
-	
+						shadowChars[char] = bmpChar
 						index+=5
 						index += 1
 						
 					Case "{FC"
 						index += 3
-						faceChars[char] = New BitMapChar
-						faceChars[char].drawingMetrics.drawingOffset.x = Int(tokenStream[index])
-						faceChars[char].drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
-						faceChars[char].drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
-						faceChars[char].drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
-						faceChars[char].drawingMetrics.drawingWidth = Int(tokenStream[index+4])
+						Local bmpChar:BitMapChar = New BitMapChar
+						Local drawingMetrics:BitMapCharMetrics = bmpChar.drawingMetrics
+						drawingMetrics.drawingOffset.x = Int(tokenStream[index])
+						drawingMetrics.drawingOffset.y = Int(tokenStream[index+1])
+						drawingMetrics.drawingSize.x = Int(tokenStream[index+2])
+						drawingMetrics.drawingSize.y = Int(tokenStream[index+3])
+						drawingMetrics.drawingWidth = Int(tokenStream[index+4])
 						if dynamicLoad = False then
-							faceChars[char].image = LoadImage(prefixName + "_" + char + ".png")
-							faceChars[char].image.SetHandle(-faceChars[char].drawingMetrics.drawingOffset.x,-faceChars[char].drawingMetrics.drawingOffset.y)
+							bmpChar.image = LoadImage(prefixName + "_" + char + ".png")
+							bmpChar.image.SetHandle(-faceChars[char].drawingMetrics.drawingOffset.x,-faceChars[char].drawingMetrics.drawingOffset.y)
 						Else
-							faceChars[char].SetImageResourceName prefixName + "_" + char + ".png" 
+							bmpChar.SetImageResourceName prefixName + "_" + char + ".png" 
 						endif
+						faceChars[char] = bmpChar
 						index += 5
 						index += 1
 	

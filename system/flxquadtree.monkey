@@ -299,7 +299,7 @@ Private
 	End Method
 
 	Method _AddObject:Void()
-		If (Not _canSubdivide Or (_leftEdge >= _ObjectLeftEdge And _rightEdge <= _ObjectRightEdge And _topEdge >= _ObjectTopEdge And _bottomEdge <= _ObjectBottomEdge)) Then
+		If ((_leftEdge >= _ObjectLeftEdge And _rightEdge <= _ObjectRightEdge And _topEdge >= _ObjectTopEdge And _bottomEdge <= _ObjectBottomEdge) Or Not _canSubdivide) Then
 			_AddToList()
 			Return	
 		End If

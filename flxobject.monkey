@@ -726,18 +726,15 @@ Public
 	End Function
 	
 Private
-	Method _UpdateMotion:Void()
-		Local delta:Float
-		Local velocityDelta:Float
-		
-		velocityDelta = (FlxU.ComputeVelocity(angularVelocity, angularAcceleration, angularDrag, maxAngular) - angularVelocity) / 2
+	Method _UpdateMotion:Void()		
+		Local velocityDelta:Float = (FlxU.ComputeVelocity(angularVelocity, angularAcceleration, angularDrag, maxAngular) - angularVelocity) / 2
 		angularVelocity += velocityDelta
 		angle += angularVelocity * FlxG.Elapsed
 		angularVelocity += velocityDelta
 		
 		velocityDelta = (FlxU.ComputeVelocity(velocity.x, acceleration.x, drag.x, maxVelocity.x) - velocity.x) / 2
 		velocity.x += velocityDelta
-		delta = velocity.x * FlxG.Elapsed
+		Local delta:Float = velocity.x * FlxG.Elapsed
 		velocity.x += velocityDelta
 		x += delta
 		

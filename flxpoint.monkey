@@ -25,8 +25,7 @@ Class FlxPoint
 	[/list]
 	#End
 	Method New(x:Float = 0, y:Float = 0)
-		Self.x = x
-		Self.y = y	
+		Make(x, y)	
 	End Method
 	
 	#Rem

@@ -797,12 +797,11 @@ Public
 				tileY *= _tileHeight
 				
 				Local rx:Float = 0
-				Local ry:Float = 0
-				Local q:Float
+				Local ry:Float = 0				
 				Local lx:Float = curX - stepX
 				Local ly:Float = curY - stepY
 				
-				q = tileX				
+				Local q:Float = tileX				
 				If (deltaX < 0) q += _tileWidth
 				
 				rx = q
